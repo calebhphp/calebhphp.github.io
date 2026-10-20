@@ -3,6 +3,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const waLink = (text) => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(text)}`;
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   // WhatsApp links with a ready message
   const wire = (root = document) => root.querySelectorAll('[data-wa]').forEach((el) => {
@@ -12,6 +13,22 @@
   });
   wire();
 
+  // Light / dark theme: follows the system until the visitor picks one
+  const root = document.documentElement;
+  const sysDark = matchMedia('(prefers-color-scheme: dark)');
+  const current = () => root.dataset.theme || (sysDark.matches ? 'dark' : 'light');
+  document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+    const sync = () => btn.setAttribute('aria-pressed', current() === 'dark');
+    sync();
+    btn.addEventListener('click', () => {
+      const next = current() === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    });
+    sysDark.addEventListener('change', sync);
+  });
+
   // Translucent nav after leaving the top
   const nav = document.querySelector('.nav');
   if (nav) {
@@ -20,7 +37,7 @@
     addEventListener('scroll', onScroll, { passive: true });
   }
 
-  // Typewriter word in the hero: types, holds, deletes, next word. Text reflows naturally, so nothing overlaps.
+  // Typewriter word in the hero (reflows naturally, the line stays the same height)
   document.querySelectorAll('[data-typer]').forEach((el) => {
     const words = el.dataset.typer.split('|');
     if (reduce || words.length < 2) return;
@@ -28,10 +45,9 @@
     let len = words[0].length;
     let deleting = true;
     const tick = () => {
-      const word = words[w];
       if (deleting) {
         len--;
-        el.textContent = word.slice(0, len) || '​';
+        el.textContent = words[w].slice(0, len) || '​';
         if (len <= 0) { deleting = false; w = (w + 1) % words.length; }
         setTimeout(tick, 45);
       } else {
@@ -42,12 +58,6 @@
       }
     };
     setTimeout(tick, 1900);
-  });
-
-  // Measure WhatsApp clicks as a conversion when Google Analytics is on
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href^="https://wa.me"]');
-    if (a && typeof window.gtag === 'function') window.gtag('event', 'whatsapp_click', { page_path: location.pathname, link_text: a.textContent.trim().slice(0, 60) });
   });
 
   // Live WhatsApp conversation in the phone
@@ -63,7 +73,7 @@
     setInterval(play, 500 + msgs.length * 1100 + 4500);
   }
 
-  // Spotlight that follows the pointer on cards
+  // Spotlight on cards and magnetic buttons (mouse only)
   if (finePointer) {
     document.querySelectorAll('.card').forEach((card) => {
       card.addEventListener('pointermove', (e) => {
@@ -72,88 +82,107 @@
         card.style.setProperty('--my', `${e.clientY - r.top}px`);
       });
     });
-    // Magnetic primary buttons
     if (!reduce) {
       document.querySelectorAll('[data-magnetic]').forEach((btn) => {
         btn.addEventListener('pointermove', (e) => {
           const r = btn.getBoundingClientRect();
-          const x = (e.clientX - r.left - r.width / 2) * 0.18;
-          const y = (e.clientY - r.top - r.height / 2) * 0.25;
-          btn.style.transform = `translate(${x}px, ${y}px)`;
+          btn.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.18}px, ${(e.clientY - r.top - r.height / 2) * 0.25}px)`;
         });
         btn.addEventListener('pointerleave', () => (btn.style.transform = ''));
       });
     }
   }
 
-  // Counters that roll up when they come into view
-  const counters = document.querySelectorAll('[data-count]');
-  if (counters.length && 'IntersectionObserver' in window && !reduce) {
-    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
-      if (!en.isIntersecting) return;
-      const el = en.target;
-      const end = Number(el.dataset.count);
-      const suffix = el.dataset.suffix || '';
-      const t0 = performance.now();
-      const step = (t) => {
-        const p = Math.min(1, (t - t0) / 1200);
-        el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))) + suffix;
-        if (p < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-      io.unobserve(el);
-    }), { threshold: 0.6 });
-    counters.forEach((c) => io.observe(c));
-  }
+  // Google Analytics conversion: WhatsApp clicks
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="https://wa.me"]');
+    if (a && typeof window.gtag === 'function') window.gtag('event', 'whatsapp_click', { page_path: location.pathname, link_text: a.textContent.trim().slice(0, 60) });
+  });
 
-  // ---------- Diagnosis: pick your business and problems, see the plan instantly ----------
+  /* ---------- Interactive diagnosis ---------- */
   const form = document.querySelector('[data-diag]');
   if (form && window.DIAG) {
-    const { services, businesses, problems } = window.DIAG;
+    const { services, businesses, problems, specials, ui } = window.DIAG;
     const out = document.querySelector('[data-diag-result]');
+    const money = (n) => new Intl.NumberFormat(SITE.locale || 'pt-BR', { style: 'currency', currency: SITE.currency || 'BRL', maximumFractionDigits: 0 }).format(n);
     const agenda = new Set(['clinica', 'salao', 'pet', 'academia', 'escola', 'saude']);
+    const food = new Set(['restaurante', 'cafeteria']);
+    let answers = {};
+    let onInput = null;
 
     const pick = (biz, probs) => {
       const list = [];
-      const add = (s) => { if (!list.includes(s)) list.push(s); };
+      const add = (s) => { if (services[s] && !list.includes(s)) list.push(s); };
       probs.forEach((p) => {
-        if (p === 'novos') { biz === 'restaurante' ? add('cardapio-digital') : add('google-meu-negocio'); add(biz === 'servicos' ? 'landing-page' : 'site-profissional'); if (biz === 'servicos') add('cartao-digital'); }
-        if (p === 'demora') { add('atendimento-whatsapp'); if (agenda.has(biz)) add('agendamento-online'); if (biz === 'restaurante') add('cardapio-digital'); }
+        if (p === 'novos') { food.has(biz) ? add('cardapio-digital') : add('google-meu-negocio'); add(biz === 'servicos' ? 'landing-page' : 'site-profissional'); if (biz === 'servicos') add('cartao-digital'); if (food.has(biz)) add('google-meu-negocio'); }
+        if (p === 'demora') { add('atendimento-whatsapp'); if (agenda.has(biz)) add('agendamento-online'); if (food.has(biz)) add('cardapio-digital'); }
         if (p === 'faltas') { add('agendamento-online'); add('atendimento-whatsapp'); }
-        if (p === 'manual') { add(biz === 'loja' || biz === 'restaurante' ? 'painel-estoque' : 'ferramentas-ia'); if (agenda.has(biz)) add('agendamento-online'); add('sistema-sob-medida'); }
+        if (p === 'manual') { add(biz === 'loja' || food.has(biz) ? 'painel-estoque' : 'ferramentas-ia'); if (agenda.has(biz)) add('agendamento-online'); add('sistema-sob-medida'); }
         if (p === 'site') { add('site-profissional'); add('google-meu-negocio'); }
-        if (p === 'online') { add(biz === 'restaurante' ? 'cardapio-digital' : biz === 'loja' ? 'loja-virtual' : 'landing-page'); add('atendimento-whatsapp'); }
+        if (p === 'online') { add(food.has(biz) ? 'cardapio-digital' : biz === 'loja' ? 'loja-virtual' : 'landing-page'); add('atendimento-whatsapp'); }
         if (p === 'estoque') { add('painel-estoque'); }
         if (p === 'seguranca') { add('analise-seguranca'); add('manutencao-e-suporte'); }
       });
       return list.slice(0, 3);
     };
 
+    const fill = (text, b) => String(text).replace(/\{clientes\}/g, b.clientes || '').replace(/\{cliente\}/g, b.cliente || '');
+
     const render = () => {
       const biz = form.querySelector('input[name="negocio"]:checked')?.value;
       const probs = [...form.querySelectorAll('input[name="problema"]:checked')].map((i) => i.value);
-      if (!biz || !probs.length) return;
-      const plan = pick(biz, probs);
+      if (!biz || !probs.length) {
+        out.innerHTML = `<span class="label">${esc(ui.label)}</span><h3>${esc(ui.empty_h3)}</h3><p class="why">${esc(ui.empty_p)}</p>`;
+        return;
+      }
       const b = businesses[biz];
-      const first = problems[probs[0]];
-      const total = plan.reduce((sum, s) => sum + (services[s].value || 0), 0);
-      const hasQuote = plan.some((s) => !services[s].value);
-      const monthly = plan.reduce((sum, s) => sum + (services[s].monthly || 0), 0);
-      const text = `Olá, Matheus! Fiz o diagnóstico no seu site. Tenho ${b.article} e meu desafio é: ${probs.map((p) => problems[p].label.toLowerCase()).join(', ')}. O plano sugerido foi: ${plan.map((s) => services[s].name).join(' + ')}. Podemos conversar?`;
+      const plan = pick(biz, probs);
+      const main = problems[probs[0]];
+      const total = plan.reduce((s, k) => s + (services[k].value || 0), 0);
+      const monthly = plan.reduce((s, k) => s + (services[k].monthly || 0), 0);
+      const hasQuote = plan.some((k) => !services[k].value);
+      const headline = fill(ui.headline.replace('{title}', b.title).replace('{headline}', main.headline), b);
+
+      const items = plan.map((k) => {
+        const sv = services[k];
+        const special = specials[`${biz}:${k}`];
+        const ex = sv.example ? `<a href="/exemplos/${sv.example}/">${esc(ui.see_example)} ↗</a>` : '';
+        return `<li><div class="pl-top"><b>${esc(sv.name)}</b><span>${esc(sv.price)}</span></div><p>${esc(fill(sv.promise, b))}${special ? ` <strong>${esc(special)}</strong>` : ''}</p><div class="pl-links"><a href="${sv.url}">${esc(ui.details)} →</a>${ex}</div></li>`;
+      }).join('');
+
+      const tips = [...new Set(probs.flatMap((p) => problems[p].tips || []))].slice(0, 3);
+      const questions = [...new Set(plan.flatMap((k) => services[k].brief || []))].slice(0, 4);
+      const why = probs.slice(0, 2).map((p) => `<p>${esc(fill(problems[p].why, b))}</p>`).join('');
+
       out.innerHTML = `
-        <span class="label">Seu plano em 10 segundos</span>
-        <h3>${b.title}: comece por ${services[plan[0]].name.toLowerCase()}.</h3>
-        <p class="why">${first.why}</p>
-        <ul class="diag-list">${plan.map((s) => `<li><b><a href="${SITE.base}servicos/${s}/" style="color:inherit">${services[s].name}</a></b><span>${services[s].price}</span></li>`).join('')}</ul>
-        <div class="diag-total"><span>Investimento inicial: <b>${total ? 'a partir de R$ ' + total.toLocaleString('pt-BR') : 'sob orçamento'}${hasQuote && total ? ' + orçamento' : ''}</b></span>${monthly ? `<span>Mensal: <b>a partir de R$ ${monthly}</b></span>` : ''}<span>Prazo: <b>${services[plan[0]].deadline}</b></span></div>
-        <a class="btn btn-wa" data-wa="${text.replace(/"/g, '&quot;')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.5 8.5 0 1 1 21 11.5z"/></svg>Quero esse plano</a>
-        <p class="muted" style="font-size:.85rem">Preço final fechado depois de uma conversa de 15 minutos. Sem compromisso.</p>`;
-      wire(out);
+        <span class="label">${esc(ui.label)}</span>
+        <h3>${esc(headline)}</h3>
+        <div class="dg-block"><span class="dg-h">${esc(ui.why_h)}</span>${why}</div>
+        <div class="dg-block"><span class="dg-h">${esc(ui.plan_h)}</span><ul class="plan-list">${items}</ul>
+          <div class="diag-total"><span>${esc(ui.invest)}: <b>${total ? `${esc(ui.from)} ${money(total)}` : esc(ui.quote)}${hasQuote && total ? ` ${esc(ui.plus_quote)}` : ''}</b></span>${monthly ? `<span>${esc(ui.monthly)}: <b>${esc(ui.from)} ${money(monthly)}</b></span>` : ''}<span>${esc(ui.deadline)}: <b>${esc(services[plan[0]].deadline)}</b></span></div></div>
+        <div class="dg-block"><span class="dg-h">${esc(ui.diy_h)}</span><ol class="diy">${tips.map((t) => `<li>${esc(fill(t, b))}</li>`).join('')}</ol></div>
+        <div class="dg-block"><span class="dg-h">${esc(ui.brief_h)}</span><p class="dg-p">${esc(ui.brief_p)}</p>
+          <div class="brief">${questions.map((q, i) => `<label><span>${esc(fill(q, b))}</span><input type="text" data-q="${esc(fill(q, b))}" id="bq${i}" value="${esc(answers[fill(q, b)] || '')}" autocomplete="off"></label>`).join('')}</div></div>
+        <a class="btn btn-wa" data-send>${esc(ui.cta)}</a>
+        <p class="muted" style="font-size:.85rem">${esc(ui.note)}</p>`;
+
+      const send = out.querySelector('[data-send]');
+      const update = () => {
+        out.querySelectorAll('[data-q]').forEach((inp) => { answers[inp.dataset.q] = inp.value.trim(); });
+        const filled = Object.entries(answers).filter(([q, a]) => a && questions.map((x) => fill(x, b)).includes(q));
+        let text = ui.wa.replace('{biz}', b.article).replace('{probs}', probs.map((p) => problems[p].label.toLowerCase()).join(', ')).replace('{plan}', plan.map((k) => services[k].name).join(' + '));
+        if (filled.length) text += `\n\n${ui.brief_intro}\n${filled.map(([q, a]) => `• ${q} ${a}`).join('\n')}`;
+        send.href = waLink(text);
+        send.target = '_blank';
+        send.rel = 'noopener';
+      };
+      if (onInput) out.removeEventListener('input', onInput);
+      onInput = update;
+      out.addEventListener('input', update);
+      update();
       if (!reduce) { out.classList.remove('diag-anim'); void out.offsetWidth; out.classList.add('diag-anim'); }
     };
     form.addEventListener('change', render);
     render();
   }
-
-  document.querySelectorAll('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
 })();

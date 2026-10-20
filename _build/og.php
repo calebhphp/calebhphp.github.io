@@ -9,6 +9,9 @@ $reg = 'C:/Windows/Fonts/segoeui.ttf';
 $cards = [
     'og.png' => ['SITES · LOJAS · AGENDA ONLINE · WHATSAPP', "Mais clientes para\no seu negócio.\nMenos trabalho para você.", 'Diagnóstico grátis em calebhphp.github.io'],
     'og-clinicas.png' => ['PARA CLÍNICAS DE SAÚDE OCUPACIONAL', "Menos faltas.\nMenos telefone.\nNenhum prazo perdido.", 'Agendamento no WhatsApp · Periódicos · eSocial'],
+    'og-es.png' => ['WEBS · TIENDAS · RESERVAS · CHATBOTS', "Más clientes para
+tu negocio.
+Menos trabajo para ti.", 'calebhphp.github.io/es'],
     'og-en.png' => ['WEBSITES · AUTOMATIONS · AI ASSISTANTS', "Websites and AI\nassistants that bring\nyou customers.", 'calebhphp.github.io/en'],
 ];
 

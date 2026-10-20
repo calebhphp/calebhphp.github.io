@@ -1,0 +1,96 @@
+<?php
+// Contenido del diagnóstico interactivo (español, España). Misma estructura que diag-pt.php.
+// {cliente} y {clientes} se sustituyen por la palabra de cada negocio (paciente, dueño de la mascota, alumno...).
+// Se usa "tu {cliente}" / "tus {clientes}" para que funcione con cualquier género.
+
+return [
+    'businesses' => [
+        'clinica' => ['label' => 'Clínica o consulta', 'title' => 'Para tu clínica', 'article' => 'una clínica o consulta', 'cliente' => 'paciente', 'clientes' => 'pacientes', 'example' => 'assistente'],
+        'restaurante' => ['label' => 'Restaurante o comida a domicilio', 'title' => 'Para tu restaurante', 'article' => 'un restaurante', 'cliente' => 'cliente', 'clientes' => 'clientes', 'example' => 'cafeteria'],
+        'cafeteria' => ['label' => 'Cafetería o panadería', 'title' => 'Para tu cafetería', 'article' => 'una cafetería o panadería', 'cliente' => 'cliente', 'clientes' => 'clientes', 'example' => 'cafeteria'],
+        'salao' => ['label' => 'Peluquería o barbería', 'title' => 'Para tu peluquería', 'article' => 'una peluquería o barbería', 'cliente' => 'cliente', 'clientes' => 'clientes', 'example' => 'assistente'],
+        'pet' => ['label' => 'Tienda de animales', 'title' => 'Para tu tienda de animales', 'article' => 'una tienda de animales', 'cliente' => 'dueño de la mascota', 'clientes' => 'dueños de mascotas', 'example' => 'assistente'],
+        'loja' => ['label' => 'Tienda o comercio', 'title' => 'Para tu tienda', 'article' => 'una tienda', 'cliente' => 'cliente', 'clientes' => 'clientes', 'example' => 'estoque'],
+        'servicos' => ['label' => 'Autónomo o profesional', 'title' => 'Para tu servicio', 'article' => 'un negocio de servicios', 'cliente' => 'cliente', 'clientes' => 'clientes', 'example' => 'cartao'],
+        'academia' => ['label' => 'Gimnasio o estudio', 'title' => 'Para tu estudio', 'article' => 'un gimnasio o estudio', 'cliente' => 'alumno', 'clientes' => 'alumnos', 'example' => 'assistente'],
+        'escola' => ['label' => 'Escuela o academia', 'title' => 'Para tu escuela', 'article' => 'una escuela o academia', 'cliente' => 'alumno', 'clientes' => 'alumnos', 'example' => 'assistente'],
+        'saude' => ['label' => 'Salud laboral', 'title' => 'Para tu clínica de salud laboral', 'article' => 'una clínica de salud laboral', 'cliente' => 'empresa cliente', 'clientes' => 'empresas clientes', 'example' => 'assistente'],
+        'outro' => ['label' => 'Otro', 'title' => 'Para tu negocio', 'article' => 'un negocio', 'cliente' => 'cliente', 'clientes' => 'clientes', 'example' => 'cartao'],
+    ],
+
+    'problems' => [
+        'novos' => ['label' => 'Pocos clientes nuevos', 'headline' => 'que te encuentre quien todavía no te conoce',
+            'why' => 'La mayoría de tus {clientes} busca en Google y en Maps antes de elegir. Si tu negocio no aparece, o aparece sin fotos ni reseñas, la elección se va a la competencia antes de la primera conversación.',
+            'tips' => ['Crea (o completa) hoy tu Perfil de Empresa en Google: horario, fotos reales y teléfono. Es gratis y lleva 20 minutos.', 'Pide una reseña en Google a 5 de tus {clientes} con mejor experiencia. Las reseñas recientes te suben en el mapa.', 'Pon un enlace directo a tu WhatsApp en la bio de Instagram (wa.me/tunúmero).']],
+        'demora' => ['label' => 'Tardo en responder', 'headline' => 'responder al momento, incluso fuera de horario',
+            'why' => 'Quien escribe por WhatsApp y no recibe respuesta en pocos minutos suele escribir al siguiente de la lista. Por la noche y los fines de semana, esos mensajes se convierten en ventas perdidas.',
+            'tips' => ['Activa hoy el mensaje de ausencia y el de bienvenida en WhatsApp Business. Es gratis y ya evita el silencio.', 'Crea respuestas rápidas para las 5 preguntas que más recibes (precio, horario, dirección, pago, cómo funciona).', 'Fija en tu perfil un catálogo con precios, para que tu {cliente} no tenga que preguntar.']],
+        'faltas' => ['label' => 'Ausencias y cambios de cita', 'headline' => 'acabar con los huecos vacíos en la agenda',
+            'why' => 'Cada ausencia es una hora que no vuelve. Sin confirmación ni recordatorio, tu {cliente} se olvida. Y cambiar citas a mano le quita tiempo a quien debería estar atendiendo.',
+            'tips' => ['Envía hoy un mensaje de confirmación la víspera para todas las citas de mañana. Solo con eso bajan las ausencias.', 'Define una política sencilla de cambios (por ejemplo, avisar con 24 horas) y déjala por escrito en el WhatsApp.', 'Para las horas más solicitadas, pide una señal por Bizum al confirmar.']],
+        'manual' => ['label' => 'Mucho trabajo manual', 'headline' => 'dejar de perder horas en tareas repetidas',
+            'why' => 'Libretas, hojas de cálculo y mensajes sueltos parecen baratos, pero se cobran en horas: volver a escribir, buscar información, comprobar quién ha pagado. Ese tiempo podría ir a vender o a atender.',
+            'tips' => ['Apunta durante una semana las 3 tareas que más tiempo te quitan. Por ahí empieza la automatización.', 'Junta todo en una sola hoja de cálculo, con una pestaña por tema (clientes, ventas, pagos).', 'Usa el móvil para dictar notas en lugar de escribirlas: ahorras minutos cada día.']],
+        'site' => ['label' => 'Sin web o con web antigua', 'headline' => 'transmitir confianza desde el primer clic',
+            'why' => 'Una web lenta, desactualizada o que no se ve bien en el móvil hace que tu {cliente} desconfíe y cierre la página. Sin web, dependes solo del boca a boca y de Instagram.',
+            'tips' => ['Abre tu web actual en el móvil y cronometra: si tarda más de 3 segundos, estás perdiendo visitas.', 'Apunta lo que tu {cliente} pregunta antes de decidirse. Eso se convierte en el contenido de la web nueva.', 'Elige de 5 a 10 buenas fotos de tu trabajo, tu local y tu equipo.']],
+        'online' => ['label' => 'Quiero vender online', 'headline' => 'vender también fuera de horario',
+            'why' => 'Vender solo en el mostrador y por mensaje directo limita tu facturación a tu tiempo libre. Con pedidos online, el escaparate trabaja las 24 horas y el pedido llega ya ordenado.',
+            'tips' => ['Elige tus 10 productos más vendidos, con foto y precio. Son el comienzo del catálogo.', 'Define los gastos de envío por zona o distancia antes de empezar.', 'Ten tu número de Bizum listo en un mensaje guardado, para no perder tiempo al cerrar la venta.']],
+        'estoque' => ['label' => 'No controlo el stock', 'headline' => 'saber qué tienes antes de que falte',
+            'why' => 'Un producto que se agota sin aviso es una venta perdida, y un producto parado es dinero inmovilizado en la estantería. Sin números, comprar se vuelve adivinar.',
+            'tips' => ['Define hoy un stock mínimo para tus 10 productos principales.', 'Haz un recuento rápido siempre el mismo día de la semana.', 'Apunta lo que más se vendió el mes pasado: eso no puede faltar nunca.']],
+        'seguranca' => ['label' => 'Miedo a hackeos o estafas', 'headline' => 'proteger tu nombre y los datos de tus {clientes}',
+            'why' => 'Las webs hackeadas se usan para difundir estafas con el nombre de la empresa, desaparecen de Google y pueden filtrar datos de tus {clientes}, lo que trae problemas con el RGPD.',
+            'tips' => ['Cambia hoy las contraseñas de la web, del email y de las redes, y activa la verificación en dos pasos en todo.', 'Comprueba que la dirección de tu web empieza por https:// y muestra el candado.', 'Actualiza plugins y temas si tu web está hecha con WordPress.']],
+    ],
+
+    // Qué hace cada servicio, escrito para el visitante. 'brief' = preguntas que personalizan el proyecto.
+    'services' => [
+        'landing-page' => ['promise' => 'Una página pensada para convertir visitas en conversaciones por WhatsApp, ideal para anuncios.', 'brief' => ['¿Cuál es la oferta principal de la página?', '¿Ya haces anuncios en Google o en Instagram?'], 'example' => ''],
+        'site-profissional' => ['promise' => 'Una web que aparece en Google, carga rápido en el móvil y lleva a tu {cliente} directo a tu WhatsApp.', 'brief' => ['¿Ya tienes web? ¿Cuál es la dirección?', '¿Cuántos servicios o productos principales quieres mostrar?'], 'example' => ''],
+        'loja-virtual' => ['promise' => 'Tienda con tarjeta, Bizum y gastos de envío calculados, que te avisa de cada pedido por WhatsApp.', 'brief' => ['¿Cuántos productos vendes, más o menos?', '¿Entregas en tu ciudad, envías por mensajería o las dos cosas?'], 'example' => 'estoque'],
+        'cardapio-digital' => ['promise' => 'Carta en el móvil con el pedido ordenado llegando a tu WhatsApp, sin comisión por pedido.', 'brief' => ['¿Cuántos platos o productos tiene tu carta?', '¿Haces envío a domicilio, recogida en local o las dos cosas?'], 'example' => 'cafeteria'],
+        'agendamento-online' => ['promise' => 'Tu {cliente} reserva solo, a cualquier hora, y recibe confirmación y recordatorio por WhatsApp.', 'brief' => ['¿Cuántos profesionales atienden?', '¿Qué servicios se pueden reservar?'], 'example' => 'assistente'],
+        'atendimento-whatsapp' => ['promise' => 'Un asistente que responde a tu {cliente} en segundos, resuelve dudas y te avisa cuando hace falta.', 'brief' => ['¿Cuántos mensajes recibes al día, más o menos?', '¿Cuáles son las 3 preguntas que más te llegan?'], 'example' => 'assistente'],
+        'google-meu-negocio' => ['promise' => 'Tu negocio arriba en Maps en tu zona, con fotos, servicios y reseñas.', 'brief' => ['¿Ya tienes Perfil de Empresa en Google?', '¿Qué barrio o ciudad atiendes?'], 'example' => ''],
+        'cartao-digital' => ['promise' => 'Una tarjeta que guarda tu contacto en un toque, con código QR y versión NFC para acercar al móvil.', 'brief' => ['¿La tarjeta es solo para ti o para todo el equipo?', '¿Quieres también la tarjeta NFC física?'], 'example' => 'cartao'],
+        'painel-estoque' => ['promise' => 'Un panel que te avisa antes de que falte un producto y muestra lo que más se vende y cuánto entró en el mes.', 'brief' => ['¿Cómo controlas hoy el stock (hoja de cálculo, programa, libreta)?', '¿Cuántos productos distintos, más o menos?'], 'example' => 'estoque'],
+        'ferramentas-ia' => ['promise' => 'Una herramienta con inteligencia artificial que hace por ti la tarea repetitiva que más tiempo te quita.', 'brief' => ['¿Qué tarea repetitiva te gustaría eliminar primero?', '¿Cuántas veces por semana ocurre?'], 'example' => ''],
+        'analise-seguranca' => ['promise' => 'Una revisión de tu web, con autorización, y un informe sencillo de qué corregir primero.', 'brief' => ['¿Cuál es la dirección de la web?', '¿Está hecha con WordPress, otra plataforma o a medida?'], 'example' => ''],
+        'sistema-sob-medida' => ['promise' => 'Un sistema hecho a la manera en que funciona tu negocio, con todo en un solo sitio.', 'brief' => ['¿Qué controlas hoy fuera de un sistema (hoja de cálculo, libreta)?', '¿Cuántas personas del equipo lo usarían?'], 'example' => 'estoque'],
+        'manutencao-e-suporte' => ['promise' => 'Alguien de confianza cuidando tu web cada mes: copias de seguridad, seguridad y cambios.', 'brief' => ['¿Quién se encarga hoy de tu web?'], 'example' => ''],
+    ],
+
+    // Líneas extra para combinaciones concretas de negocio + servicio
+    'specials' => [
+        'pet:agendamento-online' => 'Cita de peluquería canina reservada sola, con aviso automático de "tu mascota ya está lista".',
+        'pet:atendimento-whatsapp' => 'Responde si hay hueco para baño, precio por tamaño y vacunas obligatorias.',
+        'clinica:agendamento-online' => 'Confirmación de cita la víspera y lista de espera para cubrir huecos.',
+        'clinica:atendimento-whatsapp' => 'Responde sobre mutuas y seguros, preparación para pruebas y precio de la consulta.',
+        'salao:agendamento-online' => 'Agenda por profesional, con la duración de cada servicio y señal por Bizum en las horas punta.',
+        'salao:atendimento-whatsapp' => 'Muestra las horas libres del profesional favorito del cliente.',
+        'restaurante:cardapio-digital' => 'Código QR en la mesa y pedidos a domicilio con los gastos de envío por zona ya calculados.',
+        'restaurante:atendimento-whatsapp' => 'Responde con el menú del día, el tiempo de entrega y el estado del pedido.',
+        'cafeteria:cardapio-digital' => 'Pedido para recoger en barra sin cola, con aviso de "pedido listo".',
+        'cafeteria:site-profissional' => 'Página con fotos del local, wifi, horario y ubicación para quien busca "cafetería cerca de mí".',
+        'loja:loja-virtual' => 'Escaparate online con variantes de talla y color y stock sincronizado.',
+        'loja:painel-estoque' => 'Aviso de reposición por proveedor y ranking de lo que más rota.',
+        'academia:agendamento-online' => 'Reserva de plaza por clase, con límite de alumnos por grupo.',
+        'academia:atendimento-whatsapp' => 'Responde sobre tarifas y horarios de clase, y reserva una clase de prueba.',
+        'escola:atendimento-whatsapp' => 'Responde sobre grupos, precios y matrícula, y concierta una visita.',
+        'escola:sistema-sob-medida' => 'Fichas de alumnos, asistencia, cuotas y área para las familias.',
+        'saude:agendamento-online' => 'La empresa cliente reserva online los reconocimientos médicos iniciales y periódicos, con recordatorio al trabajador.',
+        'saude:sistema-sob-medida' => 'Control de reconocimientos periódicos a punto de vencer y aviso antes de los plazos de cumplimiento.',
+        'servicos:landing-page' => 'Página con tus servicios, opiniones de clientes y un botón de "pedir presupuesto".',
+        'servicos:cartao-digital' => 'Tu tarjeta siempre en el móvil del cliente, para que te recomiende en un toque.',
+    ],
+
+    'ui' => [
+        'why_h' => 'Por qué pasa esto', 'plan_h' => 'Tu plan a medida', 'diy_h' => 'Puedes empezar hoy, por tu cuenta', 'brief_h' => 'Personaliza tu proyecto',
+        'brief_p' => 'Responde lo que sepas. Se envía junto con el mensaje y llego con una propuesta pensada para ti.',
+        'see_example' => 'ver ejemplo', 'details' => 'detalles', 'send' => 'Enviar mi proyecto por WhatsApp',
+        'headline' => '{title}: el camino para {headline}.',
+        'brief_intro' => 'Respuestas de mi proyecto:',
+    ],
+];
