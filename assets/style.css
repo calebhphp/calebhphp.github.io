@@ -107,7 +107,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,label:focus-within{outl
 .phone .bar small{color:#8696a0}
 .chat{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:14px 12px 18px;background:#0b141a radial-gradient(circle at 20% 20%,rgba(255,255,255,.03),transparent 40%);font-size:.84rem;line-height:1.4}
 .msg{max-width:82%;padding:8px 10px 6px;border-radius:12px;color:#e9edef;position:relative;transform-origin:bottom left}
-.msg time{display:block;text-align:right;font-size:.66rem;color:#8696a0;margin-top:2px}
+.msg time{display:block;text-align:right;font-size:.66rem;color:#aebac1;margin-top:2px}
+.msg.out time{color:#bfe3d8}
 .msg.in{align-self:flex-start;background:#202c33;border-top-left-radius:4px}
 .msg.out{align-self:flex-end;background:#005c4b;border-top-right-radius:4px;transform-origin:bottom right}
 .msg.typing{display:flex;gap:4px;padding:12px 14px}
@@ -281,7 +282,7 @@ section{padding-block:clamp(72px,10vw,128px)}
 footer{background:var(--ink);color:var(--on-dark-muted);padding-block:56px calc(36px + env(safe-area-inset-bottom));font-size:.92rem}
 footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
 @media (max-width:860px){footer .cols{grid-template-columns:1fr 1fr}}
-footer h4{font:600 .8rem var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--on-dark);margin-bottom:12px}
+footer .foot-h{font:600 .8rem var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--on-dark);margin-bottom:12px}
 footer ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
 footer a{color:var(--on-dark-muted);text-decoration:none}
 @media (hover:hover){footer a:hover{color:var(--on-dark)}}

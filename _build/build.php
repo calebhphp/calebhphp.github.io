@@ -94,9 +94,9 @@ function layout(array $o, string $body): string
         <a class="brand" href="/"><img src="/assets/logo.svg" alt="" width="34" height="34">{$site['name']}</a>
         <p style="margin-top:14px;max-width:30em">Sites, sistemas e automações para pequenos negócios. Atendimento direto, preço fechado e suporte de verdade. {$site['city']} e todo o Brasil.</p>
       </div>
-      <div><h4>Serviços</h4><ul>{$svcLinks}</ul></div>
-      <div><h4>Para quem</h4><ul>{$nicheLinks}</ul></div>
-      <div><h4>Contato</h4><ul><li><a data-wa="Olá, Matheus! Vi seu site e quero conversar.">WhatsApp</a></li><li><a href="mailto:{$site['email']}">E-mail</a></li><li><a href="{$site['linkedin']}">LinkedIn</a></li><li><a href="{$site['github']}">GitHub</a></li><li><a href="/en/" hreflang="en">English</a></li></ul></div>
+      <div><p class="foot-h">Serviços</p><ul>{$svcLinks}</ul></div>
+      <div><p class="foot-h">Para quem</p><ul>{$nicheLinks}</ul></div>
+      <div><p class="foot-h">Contato</p><ul><li><a data-wa="Olá, Matheus! Vi seu site e quero conversar.">WhatsApp</a></li><li><a href="mailto:{$site['email']}">E-mail</a></li><li><a href="{$site['linkedin']}">LinkedIn</a></li><li><a href="{$site['github']}">GitHub</a></li><li><a href="/en/" hreflang="en">English</a></li></ul></div>
     </div>
     <div class="bottom"><span>© <span data-year>2026</span> {$site['name']} · {$site['city']}, SP{$cnpjLine}</span><span>Feito à mão, sem modelo pronto.</span></div>
   </div>
@@ -131,8 +131,9 @@ HTML;
 <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap"></noscript>
+<style>{$GLOBALS['inlineCss']}</style>
 <script type="application/ld+json">{$schema}</script>
 </head>
 <body>
@@ -153,6 +154,12 @@ HTML;
 </html>
 HTML;
 }
+
+// The stylesheet is inlined in every page so nothing blocks the first paint
+$css = file_get_contents($root.'/assets/style.css');
+$css = preg_replace('!/\*.*?\*/!s', '', $css);
+$GLOBALS['inlineCss'] = trim(preg_replace('/\s*
+\s*/', '', $css));
 
 $waIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.5 8.5 0 1 1 21 11.5z"/></svg>';
 $GLOBALS['waIcon'] = $waIcon;
