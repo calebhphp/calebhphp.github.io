@@ -17,6 +17,10 @@ return [
         'cnpj' => '',
         // Google Analytics 4 measurement ID (ex.: G-XXXXXXX). When filled, visits and WhatsApp clicks are measured.
         'ga4' => '',
+        // Launch / Black Friday promotion. Set promo_off to 0 to turn it off. It also disappears by itself after promo_end.
+        'promo_off' => 30,
+        'promo_end' => '2026-11-30',
+        'promo_code' => 'LANCAMENTO30',
     ],
 
     // Services: each one gets its own page at /servicos/<slug>/

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Studio Bella – exemplo de agendamento online com sinal | Matheus Villanova</title>
+<meta name="description" content="Exemplo fictício de agendamento online: serviço, profissional, dia e horário livres, sinal por Pix e lembrete na agenda do celular.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#fbf4f6">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../demo.css">
+<style>
+:root{--bg:#fbf4f6;--card:#fff;--ink:#2a1420;--muted:#7a5a68;--line:#f0dde4;--rose:#d14d7a;--rose2:#a8365d;--soft:#fde8ef;--ok:#15803d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:560px;margin:0 auto;padding:24px max(16px,env(safe-area-inset-left)) 60px;display:grid;gap:14px}
+.head{display:flex;gap:14px;align-items:center}
+.head i{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-style:normal;font-size:28px;background:linear-gradient(135deg,#f8c7d8,#d14d7a)}
+.head h1{margin:0;font-size:1.5rem;letter-spacing:-.02em}
+.head p{margin:0;color:var(--muted);font-size:.9rem}
+.steps{display:flex;gap:6px}
+.steps span{flex:1;height:5px;border-radius:3px;background:var(--line);transition:background-color 300ms}
+.steps span.on{background:var(--rose)}
+.panel{padding:18px;border-radius:22px;background:var(--card);border:1px solid var(--line);display:grid;gap:12px;animation:in 400ms cubic-bezier(.22,1,.36,1)}
+@keyframes in{from{opacity:0;transform:translateX(16px)}}
+.panel h2{margin:0;font-size:1.1rem}
+.list{display:grid;gap:8px}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border-radius:16px;border:1.5px solid var(--line);background:#fff;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:border-color 150ms,transform 100ms}
+.item:active{transform:scale(.98)}
+.item:hover{border-color:var(--rose)}
+.item small{display:block;color:var(--muted)}
+.item b.p{color:var(--rose2);white-space:nowrap}
+.pros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pro{display:grid;justify-items:center;gap:6px;padding:14px 6px;border-radius:16px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font:inherit;color:inherit}
+.pro i{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;color:#fff}
+.pro small{color:var(--muted);font-size:.75rem}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.day{flex:none;width:64px;padding:10px 0;border-radius:16px;border:1.5px solid var(--line);background:#fff;text-align:center;cursor:pointer;font:inherit;color:inherit}
+.day b{display:block;font-size:1.3rem}
+.day small{color:var(--muted);font-size:.75rem;text-transform:uppercase}
+.day[aria-pressed="true"]{background:var(--rose);border-color:var(--rose);color:#fff}
+.day[aria-pressed="true"] small{color:#ffe1ec}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{padding:11px 0;border-radius:12px;border:1.5px solid var(--line);background:#fff;font:600 .95rem ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:inherit}
+.slot:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.slot:not(:disabled):hover{border-color:var(--rose)}
+.wait{font-size:.85rem;color:var(--muted)}
+.wait a{color:var(--rose2);font-weight:600}
+label.f{display:grid;gap:6px;font-weight:600;font-size:.92rem}
+input.t{font:16px ui-sans-serif,system-ui,sans-serif;padding:12px 14px;border-radius:14px;border:1.5px solid var(--line)}
+input.t:focus{outline:none;border-color:var(--rose)}
+.sum{display:grid;gap:4px;padding:14px;border-radius:16px;background:var(--soft);font-size:.95rem}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:16px;border:0;font:700 1rem ui-sans-serif,system-ui,sans-serif;cursor:pointer;text-decoration:none;transition:transform 110ms}
+.btn:active{transform:scale(.97)}
+.btn.main{background:var(--rose);color:#fff}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.pix{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+.qr{width:120px;height:120px;border-radius:12px;background:#fff;border:1px solid var(--line);display:grid;grid-template-columns:repeat(11,1fr);padding:8px;gap:1px}
+.qr i{background:#2a1420;border-radius:1px}
+.qr i.w{background:transparent}
+.code{font:600 .75rem ui-monospace,monospace;word-break:break-all;color:var(--muted)}
+.done{text-align:center;display:grid;gap:10px;justify-items:center}
+.done .ok{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:36px;background:#dcfce7;color:var(--ok);animation:pop 500ms cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.3)}}
+.back{background:none;border:0;color:var(--muted);font:600 .9rem ui-sans-serif,system-ui,sans-serif;cursor:pointer;justify-self:start;padding:0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="demo-bar"><span><b>Exemplo fictício</b> <span class="hide-sm">· agendamento online criado por Matheus Villanova</span></span><span class="links"><a class="back" href="/#exemplos" style="color:#c9cde6">← Voltar</a><a href="https://wa.me/5511933010415?text=Ol%C3%A1%2C%20Matheus!%20Testei%20o%20exemplo%20de%20agendamento%20online%20e%20quero%20um%20para%20o%20meu%20neg%C3%B3cio." target="_blank" rel="noopener">Quero um assim</a></span></div>
+<main>
+  <div class="head"><i aria-hidden="true">💅</i><div><h1>Studio Bella</h1><p>Agende em 1 minuto · confirmação na hora</p></div></div>
+  <div class="steps" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+  <div id="app"></div>
+</main>
+<script>
+const S = [['Escova', '45 min', 70], ['Corte feminino', '1 h', 120], ['Manicure + pedicure', '1h30', 90], ['Coloração', '2h30', 260], ['Design de sobrancelha', '30 min', 55]];
+const P = [['Ana', 'Cabelo', '#d14d7a'], ['Bia', 'Unhas', '#8b5cf6'], ['Carla', 'Cabelo e cor', '#0ea5a4']];
+const st = { step: 0 };
+const app = document.getElementById('app');
+const fmt = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const days = Array.from({ length: 10 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() + i + 1); return d; }).filter((d) => d.getDay() !== 0);
+const wk = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+const taken = (d, t) => ((d.getDate() * 7 + t.length * 3 + Number(t.slice(0, 2))) % 5) === 0 || (d.getDay() === 6 && t >= '14:00');
+const TIMES = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:30', '18:00'];
+function steps() { document.querySelectorAll('.steps span').forEach((s, i) => s.classList.toggle('on', i <= st.step)); }
+function back() { return st.step > 0 && st.step < 4 ? '<button class="back" data-back>← voltar</button>' : ''; }
+function render() {
+  steps();
+  if (st.step === 0) app.innerHTML = `<div class="panel"><h2>Qual serviço?</h2><div class="list">${S.map(([n, t, p], i) => `<button class="item" data-s="${i}"><span><b>${n}</b><small>${t}</small></span><b class="p">${fmt(p)}</b></button>`).join('')}</div></div>`;
+  if (st.step === 1) app.innerHTML = `<div class="panel">${back()}<h2>Com quem?</h2><div class="pros">${P.map(([n, r, c], i) => `<button class="pro" data-p="${i}"><i style="background:${c}">${n[0]}</i><b>${n}</b><small>${r}</small></button>`).join('')}<button class="pro" data-p="-1"><i style="background:#cbb5be">?</i><b>Tanto faz</b><small>primeiro horário</small></button></div></div>`;
+  if (st.step === 2) {
+    const d = st.day || days[0];
+    app.innerHTML = `<div class="panel">${back()}<h2>Dia e horário</h2><div class="days">${days.map((x, i) => `<button class="day" data-d="${i}" aria-pressed="${x.toDateString() === d.toDateString()}"><small>${wk[x.getDay()]}</small><b>${x.getDate()}</b></button>`).join('')}</div>
+      <div class="slots">${TIMES.map((t) => `<button class="slot" data-t="${t}" ${taken(d, t) ? 'disabled' : ''}>${t}</button>`).join('')}</div>
+      <p class="wait">Horário que você quer está ocupado? <a href="#" data-wait>Entrar na lista de espera</a> e ser avisado se vagar.</p></div>`;
+    st.day = d;
+  }
+  if (st.step === 3) {
+    const [sn, , sp] = S[st.s];
+    app.innerHTML = `<div class="panel">${back()}<h2>Seus dados</h2><label class="f">Nome<input class="t" id="nome" autocomplete="name" placeholder="Seu nome"></label><label class="f">WhatsApp<input class="t" id="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000"></label>
+      <div class="sum"><b>${sn}</b><span>${st.pro} · ${wk[st.day.getDay()]}, ${st.day.toLocaleDateString('pt-BR')} às ${st.t}</span><span>Total ${fmt(sp)} · sinal de ${fmt(20)} para garantir o horário</span></div>
+      <button class="btn main" data-pay>Pagar sinal de ${fmt(20)} no Pix</button></div>`;
+  }
+  if (st.step === 4) {
+    const cells = Array.from({ length: 121 }, (_, i) => `<i class="${((i * 7) % 3 === 0 || [0, 1, 2, 10, 11, 12, 22, 110, 120, 108].includes(i)) ? '' : 'w'}"></i>`).join('');
+    app.innerHTML = `<div class="panel"><h2>Pague o sinal no Pix</h2><div class="pix"><div class="qr" aria-label="QR Code Pix de exemplo">${cells}</div><div><b>${fmt(20)}</b><p class="code">00020126...EXEMPLO-DEMO...5204000053039865406</p><button class="btn ghost" data-copy style="min-height:40px;font-size:.85rem">Copiar código Pix</button></div></div><p class="wait">No projeto real, o pagamento é confirmado sozinho e o horário fica garantido.</p><button class="btn main" data-paid>Simular pagamento aprovado</button></div>`;
+  }
+  if (st.step === 5) {
+    const [sn] = S[st.s];
+    app.innerHTML = `<div class="panel done"><div class="ok">✓</div><h2>Agendado, ${st.nome || 'cliente'}!</h2><p>${sn} com ${st.pro}<br>${wk[st.day.getDay()]}, ${st.day.toLocaleDateString('pt-BR')} às ${st.t}</p><p class="wait">Você vai receber um lembrete no WhatsApp um dia antes.</p><button class="btn ghost" data-ics>📅 Adicionar à agenda do celular</button><button class="btn ghost" data-restart>Fazer outro agendamento</button></div>`;
+  }
+}
+app.addEventListener('click', (e) => {
+  const b = e.target.closest('button, a'); if (!b) return;
+  if (b.dataset.back !== undefined) { st.step--; return render(); }
+  if (b.dataset.s) { st.s = Number(b.dataset.s); st.step = 1; return render(); }
+  if (b.dataset.p) { const i = Number(b.dataset.p); st.pro = i < 0 ? P[0][0] : P[i][0]; st.step = 2; return render(); }
+  if (b.dataset.d) { st.day = days[Number(b.dataset.d)]; return render(); }
+  if (b.dataset.t) { st.t = b.dataset.t; st.step = 3; return render(); }
+  if (b.dataset.wait !== undefined) { e.preventDefault(); b.textContent = 'Pronto! Você está na lista de espera ✓'; return; }
+  if (b.dataset.pay !== undefined) { st.nome = (document.getElementById('nome').value || '').split(' ')[0]; st.step = 4; return render(); }
+  if (b.dataset.copy !== undefined) { try { navigator.clipboard.writeText('PIX-EXEMPLO-DEMO'); } catch (err) {} b.textContent = 'Copiado ✓'; return; }
+  if (b.dataset.paid !== undefined) { st.step = 5; return render(); }
+  if (b.dataset.restart !== undefined) { Object.assign(st, { step: 0, day: null }); return render(); }
+  if (b.dataset.ics !== undefined) {
+    const [h, m] = st.t.split(':').map(Number); const d = new Date(st.day); d.setHours(h, m, 0);
+    const z = (x) => x.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const end = new Date(d.getTime() + 60 * 60000);
+    const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Exemplo//PT', 'BEGIN:VEVENT', `UID:${Date.now()}@exemplo`, `DTSTAMP:${z(new Date())}`, `DTSTART:${z(d)}`, `DTEND:${z(end)}`, `SUMMARY:${S[st.s][0]} – Studio Bella (exemplo)`, 'BEGIN:VALARM', 'TRIGGER:-PT2H', 'ACTION:DISPLAY', 'DESCRIPTION:Lembrete', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })), download: 'agendamento-studio-bella.ics' });
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+});
+render();
+</script>
+</body>
+</html>

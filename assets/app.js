@@ -29,6 +29,22 @@
     sysDark.addEventListener('change', sync);
   });
 
+  // Launch promotion: top bar (dismissible) and a one-time card on the first visit
+  const P = SITE.promo;
+  const store = { get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+  const promoLive = P && new Date() <= new Date(P.end + "T23:59:59");
+  document.querySelectorAll("[data-promo-bar]").forEach((bar) => {
+    if (!promoLive || store.get("promo-bar-closed") === P.end) { bar.hidden = true; return; }
+    const days = Math.max(0, Math.ceil((new Date(P.end + "T23:59:59") - new Date()) / 86400000));
+    const left = bar.querySelector("[data-days-left]"); if (left) left.textContent = P.left.replace("{d}", days);
+    bar.querySelector("[data-promo-close]")?.addEventListener("click", () => { bar.hidden = true; store.set("promo-bar-closed", P.end); });
+  });
+  const card = document.querySelector("[data-promo-card]");
+  if (card && promoLive && !store.get("promo-card-seen")) {
+    setTimeout(() => { card.hidden = false; store.set("promo-card-seen", "1"); }, 7000);
+    card.querySelectorAll("[data-promo-card-close]").forEach((b) => b.addEventListener("click", () => (card.hidden = true)));
+  }
+
   // Translucent nav after leaving the top
   const nav = document.querySelector('.nav');
   if (nav) {
@@ -159,7 +175,7 @@
         <h3>${esc(headline)}</h3>
         <div class="dg-block"><span class="dg-h">${esc(ui.why_h)}</span>${why}</div>
         <div class="dg-block"><span class="dg-h">${esc(ui.plan_h)}</span><ul class="plan-list">${items}</ul>
-          <div class="diag-total"><span>${esc(ui.invest)}: <b>${total ? `${esc(ui.from)} ${money(total)}` : esc(ui.quote)}${hasQuote && total ? ` ${esc(ui.plus_quote)}` : ''}</b></span>${monthly ? `<span>${esc(ui.monthly)}: <b>${esc(ui.from)} ${money(monthly)}</b></span>` : ''}<span>${esc(ui.deadline)}: <b>${esc(services[plan[0]].deadline)}</b></span></div></div>
+          <div class="diag-total"><span>${esc(ui.invest)}: <b>${total ? (promoLive ? `${esc(ui.from)} <s>${money(total)}</s> ${money(Math.round(total * (100 - P.off) / 100))} <span class="off">${esc(P.diag_tag.replace('{off}', P.off))}</span>` : `${esc(ui.from)} ${money(total)}`) : esc(ui.quote)}${hasQuote && total ? ` ${esc(ui.plus_quote)}` : ''}</b></span>${monthly ? `<span>${esc(ui.monthly)}: <b>${esc(ui.from)} ${money(monthly)}</b></span>` : ''}<span>${esc(ui.deadline)}: <b>${esc(services[plan[0]].deadline)}</b></span></div></div>
         <div class="dg-block"><span class="dg-h">${esc(ui.diy_h)}</span><ol class="diy">${tips.map((t) => `<li>${esc(fill(t, b))}</li>`).join('')}</ol></div>
         <div class="dg-block"><span class="dg-h">${esc(ui.brief_h)}</span><p class="dg-p">${esc(ui.brief_p)}</p>
           <div class="brief">${questions.map((q, i) => `<label><span>${esc(fill(q, b))}</span><input type="text" data-q="${esc(fill(q, b))}" id="bq${i}" value="${esc(answers[fill(q, b)] || '')}" autocomplete="off"></label>`).join('')}</div></div>
@@ -171,7 +187,8 @@
         out.querySelectorAll('[data-q]').forEach((inp) => { answers[inp.dataset.q] = inp.value.trim(); });
         const filled = Object.entries(answers).filter(([q, a]) => a && questions.map((x) => fill(x, b)).includes(q));
         let text = ui.wa.replace('{biz}', b.article).replace('{probs}', probs.map((p) => problems[p].label.toLowerCase()).join(', ')).replace('{plan}', plan.map((k) => services[k].name).join(' + '));
-        if (filled.length) text += `\n\n${ui.brief_intro}\n${filled.map(([q, a]) => `• ${q} ${a}`).join('\n')}`;
+        if (promoLive) text += `\n\n${P.wa_code.replace('{code}', P.code)}`;
+        if (filled.length) text +=`\n\n${ui.brief_intro}\n${filled.map(([q, a]) => `• ${q} ${a}`).join('\n')}`;
         send.href = waLink(text);
         send.target = '_blank';
         send.rel = 'noopener';

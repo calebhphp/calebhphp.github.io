@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Barbearia Navalha – exemplo de cartão fidelidade digital | Matheus Villanova</title>
+<meta name="description" content="Exemplo fictício de programa de fidelidade digital com carimbos no celular, prêmio automático e indicação de amigos.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#14110f">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../demo.css">
+<style>
+:root{--bg:#14110f;--card:#1f1a16;--gold:#e8b86b;--gold2:#c98f3a;--text:#f6efe6;--muted:#b3a593;--line:rgba(232,184,107,.18)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;background:radial-gradient(circle at 50% -10%,#3a2a18,transparent 55%),var(--bg);color:var(--text);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:460px;margin:0 auto;padding:26px max(16px,env(safe-area-inset-left)) 48px;display:grid;gap:16px}
+.brand{text-align:center}
+.brand h1{margin:6px 0 0;font:800 1.9rem/1 Georgia,serif;letter-spacing:.02em}
+.brand p{margin:6px 0 0;color:var(--muted)}
+.loyal{padding:22px;border-radius:26px;background:linear-gradient(160deg,#2a221b,#1a1612);border:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(0,0,0,.8);display:grid;gap:16px}
+.who{display:flex;justify-content:space-between;align-items:center}
+.who b{font-size:1.05rem}
+.who span{color:var(--muted);font-size:.85rem}
+.stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.stamp{aspect-ratio:1;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font-size:22px;color:transparent;transition:background-color 300ms ease,border-color 300ms ease}
+.stamp.on{border:2px solid var(--gold);background:radial-gradient(circle,#f3d29a,#c98f3a);color:#2a1d10;animation:pop 520ms cubic-bezier(.34,1.56,.64,1)}
+.stamp.gift{border-style:solid;border-color:var(--gold2);color:var(--gold)}
+@keyframes pop{0%{transform:scale(.4) rotate(-30deg)}100%{transform:none}}
+.bar{height:10px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold2),var(--gold));transition:width 500ms cubic-bezier(.22,1,.36,1)}
+.left{text-align:center;color:var(--muted);font-size:.95rem}
+.left b{color:var(--gold)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:16px;border:0;font:700 1rem ui-sans-serif,system-ui,sans-serif;cursor:pointer;text-decoration:none;touch-action:manipulation;transition:transform 110ms ease}
+.btn:active{transform:scale(.97)}
+.btn.gold{background:linear-gradient(90deg,var(--gold2),var(--gold));color:#22170c}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.reward{display:none;padding:18px;border-radius:20px;background:linear-gradient(135deg,#3b2a12,#5a3d18);border:1px solid var(--gold);text-align:center}
+.reward.show{display:block;animation:pop 600ms cubic-bezier(.34,1.56,.64,1)}
+.reward h2{margin:0 0 6px;font:800 1.4rem Georgia,serif;color:var(--gold)}
+.reward code{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:10px;background:rgba(0,0,0,.3);letter-spacing:.15em;font-weight:700}
+.perks{display:grid;gap:10px;padding:18px;border-radius:20px;background:var(--card);border:1px solid var(--line)}
+.perks h3{margin:0;font-size:1rem}
+.perks li{color:var(--muted)}
+.perks ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.how{font-size:.85rem;color:var(--muted);text-align:center}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:200}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="demo-bar"><span><b>Exemplo fictício</b> <span class="hide-sm">· cartão fidelidade digital criado por Matheus Villanova</span></span><span class="links"><a class="back" href="/#exemplos">← Voltar</a><a href="https://wa.me/5511933010415?text=Ol%C3%A1%2C%20Matheus!%20Vi%20o%20exemplo%20do%20cart%C3%A3o%20fidelidade%20e%20quero%20um%20para%20o%20meu%20neg%C3%B3cio." target="_blank" rel="noopener">Quero um assim</a></span></div>
+<main>
+  <div class="brand"><span aria-hidden="true" style="font-size:34px">💈</span><h1>Barbearia Navalha</h1><p>Cartão fidelidade · a cada 9 cortes, o 10º é por nossa conta</p></div>
+  <section class="loyal" aria-label="Seu cartão fidelidade">
+    <div class="who"><b>Rafael S.</b><span>Cliente desde mar/2026</span></div>
+    <div class="stamps" id="stamps"></div>
+    <div class="bar"><i id="bar"></i></div>
+    <p class="left" id="left"></p>
+    <button class="btn gold" id="visit">✂️ Simular visita (o barbeiro carimba pelo QR Code)</button>
+    <div class="reward" id="reward"><h2>Corte grátis liberado! 🎉</h2><p>Mostre este código no balcão na próxima visita.</p><code id="code">NAV-4821</code></div>
+    <button class="btn ghost" id="reset" hidden>Começar um cartão novo</button>
+  </section>
+  <section class="perks">
+    <h3>Por que isso faz o cliente voltar</h3>
+    <ul>
+      <li>O cartão mora no celular: não amassa, não some, não fica em casa.</li>
+      <li>Lembrete automático no WhatsApp quando faz 30 dias sem visita.</li>
+      <li>Indicou um amigo que cortou? Ganha um carimbo extra.</li>
+      <li>Você vê quem são os clientes mais fiéis e quem sumiu.</li>
+    </ul>
+    <button class="btn ghost" id="share">Indicar um amigo</button>
+  </section>
+  <p class="how">Funciona para cafeterias, salões, lava-rápidos, pet shops, açaí, pizzarias…</p>
+</main>
+<canvas id="confetti"></canvas>
+<script>
+const TOTAL = 10;
+let n = 0;
+try { n = Math.min(TOTAL, Number(localStorage.getItem('navalha-stamps') || 6)); } catch (e) { n = 6; }
+const stamps = document.getElementById('stamps');
+function render(animated) {
+  stamps.innerHTML = Array.from({ length: TOTAL }, (_, i) => `<div class="stamp ${i < n ? 'on' : ''} ${i === TOTAL - 1 ? 'gift' : ''}" style="${animated && i === n - 1 ? '' : 'animation:none'}">${i === TOTAL - 1 ? (i < n ? '✓' : '🎁') : '✂'}</div>`).join('');
+  document.getElementById('bar').style.width = `${(n / TOTAL) * 100}%`;
+  const left = TOTAL - n;
+  document.getElementById('left').innerHTML = left > 0 ? `Faltam <b>${left} ${left === 1 ? 'corte' : 'cortes'}</b> para o seu corte grátis` : 'Cartão completo!';
+  document.getElementById('reward').classList.toggle('show', n >= TOTAL);
+  document.getElementById('visit').hidden = n >= TOTAL;
+  document.getElementById('reset').hidden = n < TOTAL;
+  try { localStorage.setItem('navalha-stamps', n); } catch (e) {}
+}
+function confetti() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = document.getElementById('confetti'), g = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+  const parts = Array.from({ length: 120 }, () => ({ x: innerWidth / 2, y: innerHeight / 3, vx: (Math.random() - .5) * 12, vy: Math.random() * -12 - 4, s: 4 + Math.random() * 5, col: ['#e8b86b', '#f6efe6', '#c98f3a', '#b6f36b'][Math.floor(Math.random() * 4)] }));
+  let t = 0; (function f() { g.clearRect(0, 0, c.width, c.height); parts.forEach((p) => { p.vy += .35; p.x += p.vx; p.y += p.vy; g.fillStyle = p.col; g.fillRect(p.x, p.y, p.s, p.s * .6); }); if (++t < 110) requestAnimationFrame(f); else g.clearRect(0, 0, c.width, c.height); })();
+}
+document.getElementById('visit').addEventListener('click', () => { n = Math.min(TOTAL, n + 1); render(true); if (navigator.vibrate) try { navigator.vibrate(15); } catch (e) {} if (n >= TOTAL) confetti(); });
+document.getElementById('reset').addEventListener('click', () => { n = 0; render(false); });
+document.getElementById('share').addEventListener('click', async () => {
+  const data = { title: 'Barbearia Navalha', text: 'Corta lá na Navalha! Indicando você, nós dois ganhamos carimbo extra.', url: location.href };
+  if (navigator.share) { try { await navigator.share(data); } catch (e) {} } else { try { await navigator.clipboard.writeText(location.href); document.getElementById('share').textContent = 'Link copiado ✓'; } catch (e) {} }
+});
+render(false);
+</script>
+</body>
+</html>

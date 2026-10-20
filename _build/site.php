@@ -78,6 +78,13 @@ function url(string $l, string $kind, string $slug = ''): string
     };
 }
 
+function promoOn(): bool
+{
+    global $site;
+
+    return ! empty($site['promo_off']) && date('Y-m-d') <= $site['promo_end'];
+}
+
 function aurora(): string { return '<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div><div class="grid-lines" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>'; }
 
 $css = file_get_contents("$root/assets/style.css");
@@ -191,7 +198,15 @@ function layout(string $l, string $key, array $o, string $body): string
     $cnpj = ! empty($site['cnpj']) ? ' · CNPJ '.e($site['cnpj']) : '';
     $year = date('Y');
 
-    $siteJs = json_encode(['whatsapp' => $site['whatsapp'], 'lang' => $l, 'locale' => $u['locale'], 'currency' => $u['currency']], JSON_UNESCAPED_SLASHES);
+    $promo = promoOn() ? $u['promo'] : null;
+    $promoBar = $promoCard = '';
+    if ($promo) {
+        $daysLeft = max(0, (int) ceil((strtotime($site['promo_end'].' 23:59:59') - time()) / 86400));
+        $pmsg = e(str_replace('{code}', $site['promo_code'], $promo['msg']));
+        $promoBar = '<div class="promo-bar" data-promo-bar><div class="wrap"><span>'.$promo['bar'].' <em data-days-left>'.e(str_replace('{d}', (string) $daysLeft, $promo['left'])).'</em></span><a data-wa="'.$pmsg.'">'.e($promo['cta']).' →</a><button type="button" data-promo-close aria-label="'.e($promo['close']).'">×</button></div></div>';
+        $promoCard = '<aside class="promo-card" data-promo-card hidden aria-live="polite"><button type="button" class="pc-close" data-promo-card-close aria-label="'.e($promo['close']).'">×</button><span class="pc-badge">–'.$site['promo_off'].'%</span><h2>'.e($promo['card_h']).'</h2><p>'.e($promo['card_p']).'</p><div class="pc-ctas"><a class="btn btn-wa btn-sm" data-wa="'.$pmsg.'">'.e($promo['card_cta']).'</a><a class="btn btn-outline btn-sm" href="'.url($l, 'home').'#diagnostico" data-promo-card-close>'.e($promo['card_alt']).'</a></div></aside>';
+    }
+    $siteJs = json_encode(['whatsapp' => $site['whatsapp'], 'lang' => $l, 'locale' => $u['locale'], 'currency' => $u['currency'], 'promo' => $promo ? ['off' => $site['promo_off'], 'end' => $site['promo_end'], 'code' => $site['promo_code'], 'left' => $promo['left']] + $promo : null], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     $extra = $o['extra_js'] ?? '';
 
     return <<<HTML
@@ -228,6 +243,7 @@ function layout(string $l, string $key, array $o, string $body): string
 </head>
 <body>
 <nav class="nav" aria-label="{$n['main']}">
+{$promoBar}
   <div class="wrap">
     <a class="brand" href="{$home}"><img src="/assets/logo.svg" alt="" width="34" height="34">{$site['name']}</a>
     <ul>{$nav}</ul>
@@ -250,6 +266,7 @@ function layout(string $l, string $key, array $o, string $body): string
     <div class="bottom"><span>© {$year} {$site['name']} · {$f['place']}{$cnpj}</span><span>{$f['made']}</span></div>
   </div>
 </footer>
+{$promoCard}
 <a class="fab" data-wa="{$wa}" aria-label="{$u['fab']}">{$WA}</a>
 <script>window.SITE={$siteJs};{$extra}</script>
 <script src="/assets/app.js" defer></script>
@@ -328,6 +345,10 @@ foreach (array_keys($LANGS) as $l) {
             'cartao' => '<div class="demo-shot shot-card"><span class="s-avatar"></span><span class="s-name">'.e($shot[0]).'</span><span class="s-sub">'.e($shot[1]).'</span><span class="s-pill">'.e($shot[2]).'</span><span class="s-pill alt">'.e($shot[3]).'</span></div>',
             'estoque' => '<div class="demo-shot shot-dash"><span class="s-kpis"><i></i><i></i><i></i></span><span class="s-bars"><i style="height:40%"></i><i style="height:70%"></i><i style="height:55%"></i><i style="height:90%"></i><i style="height:65%"></i><i style="height:80%"></i></span><span class="s-alert">'.e($shot[0]).'</span></div>',
             'assistente' => '<div class="demo-shot shot-bot"><span class="s-msg in">'.e($shot[0]).'</span><span class="s-msg out">'.e($shot[1]).'</span><span class="s-msg in">'.e($shot[2]).'</span></div>',
+            'agenda' => '<div class="demo-shot shot-agenda"><span class="s-day">'.e($shot[0]).'</span><span class="s-slots"><i>'.e($shot[1]).'</i><i class="x">'.e($shot[2]).'</i><i class="on">'.e($shot[3]).'</i><i>'.e($shot[4]).'</i></span><span class="s-pix">'.e($shot[5]).'</span></div>',
+            'orcamento' => '<div class="demo-shot shot-quote"><span class="s-range"><i></i></span><span class="s-chips"><i></i><i></i><i></i></span><span class="s-total"><small>'.e($shot[0]).'</small>'.e($shot[1]).'</span><span class="s-btn">'.e($shot[2]).'</span></div>',
+            'fidelidade' => '<div class="demo-shot shot-loyal"><span class="s-stamps">'.str_repeat('<i class="on">✂</i>', 7).'<i></i><i></i><i class="g">🎁</i></span><span class="s-left">'.e($shot[0]).'</span></div>',
+            default => '',
         };
         $demoHtml .= '<a class="demo reveal" href="/exemplos/'.$slug.'/">'.$shotHtml.'<div class="demo-body"><span class="tag">'.e($tag).'</span><h3>'.e($title).'</h3><p>'.e($desc).'</p><span class="go">'.e($u['demo_go']).'</span></div></a>';
     }
@@ -463,6 +484,9 @@ HTML;
         $priceLine = priceValue($x['price'])
             ? '<span>'.e($sv['from']).'</span><b>'.e($x['price']).'</b><span>'.e($x['price_note']).' · '.e($sv['ready']).' '.e($x['deadline']).'</span>'
             : '<b>'.e($sv['quote_free']).'</b><span>'.e($x['price_note']).'</span>';
+        if (promoOn() && priceValue($x['price'])) {
+            $priceLine .= '<span class="promo-pill">'.e(str_replace('{off}', (string) $site['promo_off'], $u['promo']['svc'])).'</span>';
+        }
         $ex = $dg['services'][$slug]['example'] ?? '';
         $exLink = $ex ? '<a class="btn btn-glass" href="/exemplos/'.$ex.'/">'.e($u['demo_go']).'</a>' : '<a class="btn btn-glass" href="'.url($l, 'home').'#diagnostico">'.e($sv['cta_diag']).'</a>';
         $body = '<header class="dark page-hero">'.aurora().'<div class="wrap"><div class="crumbs"><a href="'.url($l, 'home').'">'.e($sv['home']).'</a> / <a href="'.url($l, 'home').'#servicos">'.e($sv['services']).'</a> / '.e($x['name']).'</div>'

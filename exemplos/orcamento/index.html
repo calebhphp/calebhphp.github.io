@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Limpa Fácil – exemplo de orçamento instantâneo | Matheus Villanova</title>
+<meta name="description" content="Exemplo fictício de orçamento instantâneo online: o cliente escolhe o serviço, vê o preço na hora e agenda pelo WhatsApp.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#eef7f6">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../demo.css">
+<style>
+:root{--bg:#eef7f6;--card:#fff;--ink:#0f2a2a;--muted:#557070;--line:#d6e8e6;--teal:#0f9d8a;--teal2:#0b7a6b;--soft:#dff3ef;--wa:#1ea952}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;font-variant-numeric:tabular-nums}
+.wrap{max-width:1000px;margin:0 auto;padding:26px max(16px,env(safe-area-inset-left)) 120px}
+header{display:grid;gap:6px;margin-bottom:18px}
+header h1{margin:0;font-size:clamp(1.7rem,5vw,2.4rem);letter-spacing:-.02em}
+header p{margin:0;color:var(--muted)}
+.layout{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;align-items:start}
+@media (max-width:820px){.layout{grid-template-columns:1fr}}
+.layout > *,.panel > *{min-width:0}
+.range input{min-width:0}
+.chip{max-width:100%}
+.panel{padding:20px;border-radius:20px;background:var(--card);border:1px solid var(--line);display:grid;gap:18px}
+.q{display:grid;gap:10px}
+.q > b{font-size:.95rem}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:480px){.opts{grid-template-columns:1fr}}
+.opt{position:relative;display:grid;gap:2px;padding:12px;border-radius:14px;border:1.5px solid var(--line);cursor:pointer;transition:border-color 150ms,background-color 150ms,transform 100ms}
+.opt:active{transform:scale(.98)}
+.opt input{position:absolute;opacity:0}
+.opt:has(input:checked){border-color:var(--teal);background:var(--soft)}
+.opt span{font-size:.8rem;color:var(--muted)}
+.range{display:flex;align-items:center;gap:12px}
+.range input{flex:1;accent-color:var(--teal)}
+.range output{min-width:72px;text-align:right;font-weight:700}
+.counts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.counts{grid-template-columns:1fr}}
+.count{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line)}
+.count div{display:flex;align-items:center;gap:8px}
+.count button{width:32px;height:32px;border-radius:50%;border:0;background:var(--soft);color:var(--teal2);font-size:18px;cursor:pointer}
+.count b{min-width:16px;text-align:center}
+.extras{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:999px;border:1.5px solid var(--line);cursor:pointer;font-size:.9rem}
+.chip input{accent-color:var(--teal)}
+.chip:has(input:checked){border-color:var(--teal);background:var(--soft)}
+.summary{position:sticky;top:60px;padding:22px;border-radius:20px;background:var(--ink);color:#eafaf7;display:grid;gap:14px}
+.summary .total{font-size:2.4rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.summary .total small{display:block;font-size:.85rem;font-weight:500;color:#9cc7c0;letter-spacing:0;margin-top:6px}
+.lines{display:grid;gap:6px;font-size:.9rem;color:#bfe1db;margin:0;padding:0;list-style:none}
+.lines li{display:flex;justify-content:space-between;gap:10px}
+.lines li.disc{color:#b6f36b}
+.badge{justify-self:start;padding:4px 10px;border-radius:999px;background:rgba(182,243,107,.15);color:#b6f36b;font-size:.78rem;font-weight:700}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;border-radius:16px;border:0;font:700 1rem ui-sans-serif,system-ui,sans-serif;text-decoration:none;cursor:pointer;transition:transform 110ms}
+.btn:active{transform:scale(.97)}
+.btn.wa{background:var(--wa);color:#fff}
+.note{font-size:.8rem;color:#9cc7c0}
+.bump{animation:bump 300ms ease}
+@keyframes bump{50%{transform:scale(1.06)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="demo-bar"><span><b>Exemplo fictício</b> <span class="hide-sm">· orçamento instantâneo criado por Matheus Villanova</span></span><span class="links"><a class="back" href="/#exemplos">← Voltar</a><a href="https://wa.me/5511933010415?text=Ol%C3%A1%2C%20Matheus!%20Vi%20o%20exemplo%20do%20or%C3%A7amento%20instant%C3%A2neo%20e%20quero%20um%20para%20o%20meu%20neg%C3%B3cio." target="_blank" rel="noopener">Quero um assim</a></span></div>
+<div class="wrap">
+  <header><span style="font-weight:700;color:var(--teal)">🧽 Limpa Fácil · São Paulo</span><h1>Seu orçamento de limpeza em 30 segundos</h1><p>Escolha o que precisa e veja o preço na hora. Sem esperar retorno, sem visita técnica.</p></header>
+  <div class="layout">
+    <form class="panel" id="form" onsubmit="return false">
+      <div class="q"><b>1. Tipo de limpeza</b>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="tipo" value="padrao" checked><b>Padrão</b><span>manutenção do dia a dia</span></label>
+          <label class="opt"><input type="radio" name="tipo" value="pesada"><b>Pesada</b><span>faxina completa</span></label>
+          <label class="opt"><input type="radio" name="tipo" value="obra"><b>Pós-obra</b><span>poeira e resíduos</span></label>
+        </div>
+      </div>
+      <div class="q"><b>2. Tamanho do imóvel</b><div class="range"><input type="range" id="m2" min="30" max="300" step="10" value="70" aria-label="Metros quadrados"><output id="m2o">70 m²</output></div></div>
+      <div class="q"><b>3. Cômodos</b>
+        <div class="counts">
+          <div class="count"><span>Quartos</span><div><button type="button" data-k="quartos" data-d="-1" aria-label="Menos quartos">−</button><b id="quartos">2</b><button type="button" data-k="quartos" data-d="1" aria-label="Mais quartos">+</button></div></div>
+          <div class="count"><span>Banheiros</span><div><button type="button" data-k="banheiros" data-d="-1" aria-label="Menos banheiros">−</button><b id="banheiros">1</b><button type="button" data-k="banheiros" data-d="1" aria-label="Mais banheiros">+</button></div></div>
+        </div>
+      </div>
+      <div class="q"><b>4. Extras</b>
+        <div class="extras">
+          <label class="chip"><input type="checkbox" name="extra" value="janelas" data-price="45"> Janelas por dentro (+R$ 45)</label>
+          <label class="chip"><input type="checkbox" name="extra" value="geladeira" data-price="35"> Geladeira (+R$ 35)</label>
+          <label class="chip"><input type="checkbox" name="extra" value="forno" data-price="35"> Forno (+R$ 35)</label>
+          <label class="chip"><input type="checkbox" name="extra" value="armarios" data-price="60"> Armários por dentro (+R$ 60)</label>
+          <label class="chip"><input type="checkbox" name="extra" value="pet" data-price="25"> Tem pet (+R$ 25)</label>
+        </div>
+      </div>
+      <div class="q"><b>5. Frequência</b>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="freq" value="0" checked><b>Uma vez</b><span>sem compromisso</span></label>
+          <label class="opt"><input type="radio" name="freq" value="10"><b>Quinzenal</b><span>10% de desconto</span></label>
+          <label class="opt"><input type="radio" name="freq" value="15"><b>Semanal</b><span>15% de desconto</span></label>
+        </div>
+      </div>
+    </form>
+    <aside class="summary" aria-live="polite">
+      <span class="badge">Preço fechado, sem surpresa</span>
+      <div class="total" id="total">R$ 0<small id="time"></small></div>
+      <ul class="lines" id="lines"></ul>
+      <a class="btn wa" id="send" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>
+      <p class="note">O orçamento vai pronto na mensagem. No projeto real, os preços e regras são os do seu negócio.</p>
+    </aside>
+  </div>
+</div>
+<script>
+const BASE = { padrao: [3.2, 'Limpeza padrão'], pesada: [4.6, 'Limpeza pesada'], obra: [6.4, 'Limpeza pós-obra'] };
+const state = { quartos: 2, banheiros: 1 };
+const fmt = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+const $ = (id) => document.getElementById(id);
+function calc() {
+  const tipo = document.querySelector('[name=tipo]:checked').value;
+  const m2 = Number($('m2').value);
+  const freq = Number(document.querySelector('[name=freq]:checked').value);
+  $('m2o').textContent = `${m2} m²`;
+  const [rate, label] = BASE[tipo];
+  const lines = [[`${label} · ${m2} m²`, Math.max(120, Math.round(m2 * rate))], [`${state.quartos} quarto(s)`, state.quartos * 20], [`${state.banheiros} banheiro(s)`, state.banheiros * 30]];
+  document.querySelectorAll('[name=extra]:checked').forEach((x) => lines.push([x.parentElement.textContent.replace(/\(\+R\$ \d+\)/, '').trim(), Number(x.dataset.price)]));
+  let total = lines.reduce((s, [, v]) => s + v, 0);
+  if (freq) { const d = Math.round(total * freq / 100); lines.push([`Desconto de ${freq}% pela frequência`, -d]); total -= d; }
+  const hours = Math.max(2, Math.round((m2 / (tipo === 'obra' ? 18 : tipo === 'pesada' ? 25 : 35)) * 2) / 2);
+  $('total').firstChild.textContent = fmt(total);
+  $('time').textContent = `cerca de ${String(hours).replace('.', ',')} horas · 1 profissional`;
+  $('lines').innerHTML = lines.map(([l, v]) => `<li class="${v < 0 ? 'disc' : ''}"><span>${l}</span><span>${v < 0 ? '−' : ''}${fmt(Math.abs(v))}</span></li>`).join('');
+  $('total').classList.remove('bump'); void $('total').offsetWidth; $('total').classList.add('bump');
+  const msg = `*ORÇAMENTO DE DEMONSTRAÇÃO – Limpa Fácil*\n\n${lines.map(([l, v]) => `• ${l}: ${v < 0 ? '−' : ''}${fmt(Math.abs(v))}`).join('\n')}\n\n*Total: ${fmt(total)}*\n\nQuero agendar! (teste do exemplo no site do Matheus)`;
+  $('send').href = `https://wa.me/5511933010415?text=${encodeURIComponent(msg)}`;
+}
+document.getElementById('form').addEventListener('input', calc);
+document.querySelectorAll('[data-k]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.k; state[k] = Math.max(k === 'banheiros' ? 1 : 0, Math.min(8, state[k] + Number(b.dataset.d))); $(k).textContent = state[k]; calc(); }));
+calc();
+</script>
+</body>
+</html>
