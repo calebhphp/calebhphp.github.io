@@ -20,16 +20,34 @@
     addEventListener('scroll', onScroll, { passive: true });
   }
 
-  // Rotating word in the hero
-  document.querySelectorAll('[data-rotator]').forEach((box) => {
-    const items = [...box.children];
-    if (reduce || items.length < 2) return;
-    let i = 0;
-    setInterval(() => {
-      items[i].classList.remove('on');
-      i = (i + 1) % items.length;
-      items[i].classList.add('on');
-    }, 2200);
+  // Typewriter word in the hero: types, holds, deletes, next word. Text reflows naturally, so nothing overlaps.
+  document.querySelectorAll('[data-typer]').forEach((el) => {
+    const words = el.dataset.typer.split('|');
+    if (reduce || words.length < 2) return;
+    let w = 0;
+    let len = words[0].length;
+    let deleting = true;
+    const tick = () => {
+      const word = words[w];
+      if (deleting) {
+        len--;
+        el.textContent = word.slice(0, len) || '​';
+        if (len <= 0) { deleting = false; w = (w + 1) % words.length; }
+        setTimeout(tick, 45);
+      } else {
+        const next = words[w];
+        len++;
+        el.textContent = next.slice(0, len);
+        if (len >= next.length) { deleting = true; setTimeout(tick, 1900); } else { setTimeout(tick, 85); }
+      }
+    };
+    setTimeout(tick, 1900);
+  });
+
+  // Measure WhatsApp clicks as a conversion when Google Analytics is on
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="https://wa.me"]');
+    if (a && typeof window.gtag === 'function') window.gtag('event', 'whatsapp_click', { page_path: location.pathname, link_text: a.textContent.trim().slice(0, 60) });
   });
 
   // Live WhatsApp conversation in the phone
@@ -99,12 +117,14 @@
       const list = [];
       const add = (s) => { if (!list.includes(s)) list.push(s); };
       probs.forEach((p) => {
-        if (p === 'novos') { biz === 'restaurante' ? add('cardapio-digital') : add('google-meu-negocio'); add(biz === 'servicos' ? 'landing-page' : 'site-profissional'); }
+        if (p === 'novos') { biz === 'restaurante' ? add('cardapio-digital') : add('google-meu-negocio'); add(biz === 'servicos' ? 'landing-page' : 'site-profissional'); if (biz === 'servicos') add('cartao-digital'); }
         if (p === 'demora') { add('atendimento-whatsapp'); if (agenda.has(biz)) add('agendamento-online'); if (biz === 'restaurante') add('cardapio-digital'); }
         if (p === 'faltas') { add('agendamento-online'); add('atendimento-whatsapp'); }
-        if (p === 'manual') { add('sistema-sob-medida'); if (agenda.has(biz)) add('agendamento-online'); }
+        if (p === 'manual') { add(biz === 'loja' || biz === 'restaurante' ? 'painel-estoque' : 'ferramentas-ia'); if (agenda.has(biz)) add('agendamento-online'); add('sistema-sob-medida'); }
         if (p === 'site') { add('site-profissional'); add('google-meu-negocio'); }
         if (p === 'online') { add(biz === 'restaurante' ? 'cardapio-digital' : biz === 'loja' ? 'loja-virtual' : 'landing-page'); add('atendimento-whatsapp'); }
+        if (p === 'estoque') { add('painel-estoque'); }
+        if (p === 'seguranca') { add('analise-seguranca'); add('manutencao-e-suporte'); }
       });
       return list.slice(0, 3);
     };

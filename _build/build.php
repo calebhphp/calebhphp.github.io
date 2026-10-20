@@ -28,6 +28,10 @@ function icon(string $name): string
         'shield' => '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>',
         'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
         'bell' => '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+        'card' => '<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><circle cx="8.5" cy="11" r="2"/><path d="M5.5 16c.6-1.5 1.7-2.2 3-2.2s2.4.7 3 2.2M14 10h4M14 13h3"/>',
+        'chart' => '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+        'spark' => '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
+        'lock' => '<rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3M12 14.5v2.5"/>',
     ];
 
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'.($paths[$name] ?? $paths['grid']).'</svg>';
@@ -48,6 +52,12 @@ function layout(array $o, string $body): string
     $og = $site['url'].'/assets/'.($o['og'] ?? 'og.png');
     $schema = json_encode($o['schema'] ?? [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     $verify = $site['google_verification'] ? '<meta name="google-site-verification" content="'.e($site['google_verification']).'">' : '';
+    // Google Analytics 4: measures visits; app.js also sends a "whatsapp_click" event for ads and conversion tracking
+    if (! empty($site['ga4'])) {
+        $id = e($site['ga4']);
+        $verify .= "\n<script async src=\"https://www.googletagmanager.com/gtag/js?id={$id}\"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','{$id}');</script>";
+    }
+    $cnpjLine = ! empty($site['cnpj']) ? ' · CNPJ '.e($site['cnpj']) : '';
     $alt = '';
     if (! empty($o['alternates'])) {
         foreach ($o['alternates'] as $hl => $p) {
@@ -61,7 +71,7 @@ function layout(array $o, string $body): string
 
     $navLinks = $isEn
         ? '<li class="hide-md"><a href="#services">Services</a></li><li class="hide-md"><a href="/">Português</a></li><li><a class="btn btn-wa btn-sm" data-wa="Hi Matheus! I found your website and would like to talk.">WhatsApp</a></li>'
-        : '<li class="hide-md"><a href="/#diagnostico">Diagnóstico grátis</a></li><li class="hide-md"><a href="/#servicos">Serviços</a></li><li class="hide-md"><a href="/#pacotes">Pacotes</a></li><li class="hide-md"><a href="/#projetos">Projetos</a></li><li><a class="btn btn-wa btn-sm" data-wa="'.$wa.'">Falar no WhatsApp</a></li>';
+        : '<li class="hide-md"><a href="/#diagnostico">Diagnóstico grátis</a></li><li class="hide-md"><a href="/#servicos">Serviços</a></li><li class="hide-md"><a href="/#pacotes">Pacotes</a></li><li class="hide-md"><a href="/#exemplos">Exemplos</a></li><li><a class="btn btn-wa btn-sm" data-wa="'.$wa.'">Falar no WhatsApp</a></li>';
 
     $svcLinks = '';
     foreach ($services as $slug => $s) {
@@ -88,7 +98,7 @@ function layout(array $o, string $body): string
       <div><h4>Para quem</h4><ul>{$nicheLinks}</ul></div>
       <div><h4>Contato</h4><ul><li><a data-wa="Olá, Matheus! Vi seu site e quero conversar.">WhatsApp</a></li><li><a href="mailto:{$site['email']}">E-mail</a></li><li><a href="{$site['linkedin']}">LinkedIn</a></li><li><a href="{$site['github']}">GitHub</a></li><li><a href="/en/" hreflang="en">English</a></li></ul></div>
     </div>
-    <div class="bottom"><span>© <span data-year>2026</span> {$site['name']} · {$site['city']}, SP</span><span>Feito à mão, sem modelo pronto.</span></div>
+    <div class="bottom"><span>© <span data-year>2026</span> {$site['name']} · {$site['city']}, SP{$cnpjLine}</span><span>Feito à mão, sem modelo pronto.</span></div>
   </div>
 </footer>
 HTML;
@@ -207,6 +217,10 @@ $business = [
     'hasOfferCatalog' => ['@type' => 'OfferCatalog', 'name' => 'Serviços', 'itemListElement' => array_values(array_map(fn ($s) => ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => $s['name'], 'description' => $s['short']]], $services))],
 ];
 
+if (! empty($site['cnpj'])) {
+    $business['taxID'] = $site['cnpj'];
+}
+
 /* ================= HOME ================= */
 $homeFaq = [
     ['Preciso entender de tecnologia?', 'Não. Você me conta como o seu negócio funciona e eu cuido de todo o resto. Te explico só o que você vai usar, em linguagem simples.'],
@@ -263,6 +277,8 @@ $diag = [
         'manual' => ['label' => 'Muito trabalho manual', 'why' => 'Planilha, caderno e mensagens espalhadas consomem horas. Juntar tudo num sistema devolve esse tempo para você.'],
         'site' => ['label' => 'Sem site ou site antigo', 'why' => 'Um site lento ou desatualizado afasta quem pesquisa antes de comprar. Um site profissional faz o seu negócio parecer tão bom quanto ele é.'],
         'online' => ['label' => 'Quero vender online', 'why' => 'Sua vitrine pode vender 24 horas. O caminho certo depende do que você vende, e já deixei pronto abaixo.'],
+        'estoque' => ['label' => 'Não controlo o estoque', 'why' => 'Produto que acaba sem aviso é venda perdida, e produto parado é dinheiro preso. Um painel mostra tudo num relance.'],
+        'seguranca' => ['label' => 'Medo de invasão ou golpe', 'why' => 'Site invadido some do Google e pode vazar dados de clientes. Uma análise encontra as brechas antes que alguém se aproveite.'],
     ],
 ];
 $bizChips = '';
@@ -284,7 +300,7 @@ $home = <<<HTML
   <div class="wrap grid">
     <div>
       <span class="pill"><b>AGENDA ABERTA</b>Novos projetos para este mês</span>
-      <h1>Mais clientes para o seu <span class="rotator grad-text" data-rotator><span class="on">negócio.</span><span>consultório.</span><span>restaurante.</span><span>salão.</span><span>pet shop.</span><span>comércio.</span></span><br>Menos trabalho para você.</h1>
+      <h1>Mais clientes para o seu<br><span class="typer"><span class="grad-text" data-typer="negócio|restaurante|consultório|salão|pet shop|comércio|cafeteria">negócio</span><span class="caret" aria-hidden="true"></span></span><br>Menos trabalho para você.</h1>
       <p class="lede">Eu crio o site, a loja, a agenda online e o atendimento automático que fazem o seu negócio vender mais, atender rápido e parar de perder tempo com tarefa repetida. Tudo feito sob medida, com preço fechado.</p>
       <div class="ctas">
         <a class="btn btn-wa" data-magnetic data-wa="Olá, Matheus! Vi seu site e quero conversar sobre o meu negócio.">{$waIcon}Conversar no WhatsApp</a>
@@ -356,33 +372,45 @@ $home = <<<HTML
   </div>
 </section>
 
-<section id="projetos">
+<section id="exemplos">
   <div class="wrap">
-    <div class="stats">
-      <div class="stat reveal"><b><span data-count="8" data-suffix="+">8+</span> anos</b><span>criando sistemas e sites</span></div>
-      <div class="stat reveal"><b><span data-count="2">2</span> países</b><span>Brasil e Alemanha no currículo</span></div>
-      <div class="stat reveal"><b><span data-count="1">1</span> pessoa</b><span>do começo ao fim, sem repasse</span></div>
-      <div class="stat reveal"><b>24h</b><span>seu negócio atendendo, mesmo fechado</span></div>
+    <div class="section-head reveal">
+      <span class="eyebrow">Exemplos ao vivo</span>
+      <h2>Não é print. Abra e use.</h2>
+      <p>Criei estes exemplos com negócios fictícios para você testar no seu celular como ficaria no seu.</p>
     </div>
-    <div class="section-head reveal" style="margin-bottom:40px">
-      <span class="eyebrow">Projetos</span>
-      <h2>O que eu já construí</h2>
-      <p>Alguns trabalhos reais da minha carreira, explicados sem tecniquês.</p>
+    <div class="demos">
+      <a class="demo reveal" href="/exemplos/cafeteria/"><div class="demo-shot shot-cafe"><span class="s-title">Café Aroma</span><span class="s-row"><i></i><b>Cappuccino</b><em>R$ 12</em></span><span class="s-row"><i></i><b>Pão de queijo</b><em>R$ 7</em></span><span class="s-btn">Enviar pedido no WhatsApp</span></div><div class="demo-body"><span class="tag">Site + cardápio digital</span><h3>Cafeteria com pedido no WhatsApp</h3><p>O cliente monta o pedido e ele chega pronto no WhatsApp, sem comissão.</p><span class="go">Abrir exemplo →</span></div></a>
+      <a class="demo reveal" href="/exemplos/cartao/"><div class="demo-shot shot-card"><span class="s-avatar"></span><span class="s-name">Dra. Júlia Mendes</span><span class="s-sub">Fisioterapeuta</span><span class="s-pill">Salvar contato</span><span class="s-pill alt">WhatsApp</span></div><div class="demo-body"><span class="tag">Cartão digital + NFC</span><h3>Cartão de visita digital</h3><p>Salva o contato em um toque, com QR Code e versão para encostar no celular.</p><span class="go">Abrir exemplo →</span></div></a>
+      <a class="demo reveal" href="/exemplos/estoque/"><div class="demo-shot shot-dash"><span class="s-kpis"><i></i><i></i><i></i></span><span class="s-bars"><i style="height:40%"></i><i style="height:70%"></i><i style="height:55%"></i><i style="height:90%"></i><i style="height:65%"></i><i style="height:80%"></i></span><span class="s-alert">3 produtos acabando</span></div><div class="demo-body"><span class="tag">Painel de estoque</span><h3>Dashboard de estoque e vendas</h3><p>Alerta de produto acabando, mais vendidos e faturamento do mês.</p><span class="go">Abrir exemplo →</span></div></a>
+      <a class="demo reveal" href="/exemplos/assistente/"><div class="demo-shot shot-bot"><span class="s-msg in">Oi! Quero marcar uma limpeza</span><span class="s-msg out">Claro! Tenho quinta às 14h ou sexta às 9h 😊</span><span class="s-msg in">Sexta!</span></div><div class="demo-body"><span class="tag">Chatbot com IA</span><h3>Assistente virtual de clínica</h3><p>Responde dúvidas, mostra preços e marca horário sozinho.</p><span class="go">Abrir exemplo →</span></div></a>
     </div>
-    <div class="works">
-      <article class="work reveal"><span class="tag">Sistema sob medida</span><h3>O sistema completo de uma empresa de saúde</h3><p>Sozinho, construí o sistema que organiza RH, exames dos funcionários, financeiro e logística de uma empresa de saúde ocupacional, com painéis para os gestores.</p></article>
-      <article class="work reveal"><span class="tag">Atendimento automático</span><h3>Atendimento automático para uma plataforma de saúde</h3><p>Liguei uma plataforma de atendimento automático ao sistema de uma empresa de saúde ocupacional, para responder clientes sem fila.</p></article>
-      <article class="work reveal"><span class="tag">Empresa internacional</span><h3>Ferramentas para uma empresa de tecnologia da Alemanha</h3><p>Por mais de dois anos, trabalhei remoto num time alemão criando sistemas internos, ferramentas para empresas e páginas de venda.</p></article>
-      <article class="work reveal"><span class="tag">Sistema web</span><h3>Ficha de anamnese digital para personal trainers</h3><p>Um passo a passo de 10 etapas que coleta as informações do aluno, salva sozinho e envia os dados para outros sistemas.</p></article>
-      <article class="work reveal"><span class="tag">Experiências interativas</span><h3>Campanhas digitais para grandes empresas farmacêuticas</h3><p>Liderei a criação de sites, jogos e experiências interativas para campanhas e eventos de grandes laboratórios.</p></article>
-      <article class="work reveal"><span class="tag">Ferramenta online</span><h3>Conversor de vídeos do Bluesky</h3><p>Uma ferramenta gratuita que transforma vídeos da rede social Bluesky em arquivos MP4. Um dos meus projetos mais usados no GitHub.</p></article>
+
+    <div class="section-head reveal" style="margin:88px auto 40px">
+      <span class="eyebrow">O que eu construo</span>
+      <h2>Se o seu negócio precisa, provavelmente eu faço</h2>
     </div>
+    <div class="builds">
+      <div class="build reveal"><b>Sites para cafeterias, restaurantes e lojas</b><span>Com cardápio, catálogo e pedido online</span></div>
+      <div class="build reveal"><b>Cardápios e catálogos digitais</b><span>QR Code na mesa, pedido no WhatsApp, sem taxa</span></div>
+      <div class="build reveal"><b>Cartões de visita digitais e NFC</b><span>Encostou no celular, salvou o contato</span></div>
+      <div class="build reveal"><b>Chatbots e assistentes com IA</b><span>No WhatsApp, no site e no Instagram</span></div>
+      <div class="build reveal"><b>Ferramentas com inteligência artificial</b><span>Lê documentos, escreve propostas, faz resumos</span></div>
+      <div class="build reveal"><b>Dashboards de estoque e vendas</b><span>Tudo o que importa numa tela só</span></div>
+      <div class="build reveal"><b>Agendamento online</b><span>Com lembrete automático e sinal por Pix</span></div>
+      <div class="build reveal"><b>Lojas virtuais</b><span>Pix, cartão, frete e aviso de pedido</span></div>
+      <div class="build reveal"><b>Análise de segurança</b><span>Brechas do seu site encontradas antes dos outros</span></div>
+      <div class="build reveal"><b>Automações e integrações</b><span>Planilhas, ERP, Pix, e-mail e WhatsApp conversando</span></div>
+      <div class="build reveal"><b>Sistemas sob medida</b><span>Cadastro, agenda, financeiro e área do cliente</span></div>
+      <div class="build reveal"><b>Reforma de sites antigos</b><span>Mais rápido, bonito e achado no Google</span></div>
+    </div>
+
     <div class="about reveal">
       <div class="avatar"><img src="/assets/logo.svg" alt="" width="80" height="80"></div>
       <div>
         <h3 style="font-size:1.6rem;margin-bottom:10px">Oi, eu sou o Matheus.</h3>
-        <p>Sou desenvolvedor de software em São Paulo, com mais de 8 anos de experiência. Já criei sistemas para empresas brasileiras e trabalhei para uma empresa de tecnologia da Alemanha.</p>
-        <p>Hoje uso essa bagagem para ajudar pequenos negócios a ter a mesma tecnologia das grandes empresas, sem a burocracia e o preço de agência. Você fala direto comigo, do primeiro contato ao suporte.</p>
+        <p>Sou desenvolvedor de software sênior em São Paulo. Já construí sozinho o sistema completo de uma empresa de saúde, liderei projetos digitais para grandes empresas farmacêuticas e trabalhei por mais de dois anos num time de tecnologia da Alemanha.</p>
+        <p>Hoje uso essa bagagem, e as melhores ferramentas de inteligência artificial, para entregar a pequenos negócios a mesma tecnologia das grandes empresas, sem a burocracia e o preço de agência. Você fala direto comigo, do primeiro contato ao suporte.</p>
       </div>
     </div>
   </div>

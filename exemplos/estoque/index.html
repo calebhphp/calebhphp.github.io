@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mercadinho Bom Preço – exemplo de painel de estoque | Matheus Villanova</title>
+<meta name="description" content="Exemplo fictício de dashboard de estoque e vendas com alertas de estoque baixo.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f3f5fb">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../demo.css">
+<style>
+:root{--bg:#f3f5fb;--card:#fff;--ink:#11131f;--muted:#646a85;--line:#e4e7f1;--accent:#5b4cf0;--good:#15803d;--warn:#b45309;--bad:#c2410c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding:22px max(16px,env(safe-area-inset-left)) 48px}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+header h1{margin:0;font-size:1.5rem;letter-spacing:-.02em}
+header p{margin:2px 0 0;color:var(--muted)}
+.seg{display:inline-flex;padding:4px;border-radius:12px;background:#e7e9f4}
+.seg button{border:0;background:transparent;padding:8px 14px;border-radius:9px;font:600 14px ui-sans-serif,system-ui,sans-serif;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(17,19,31,.12)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+@media (max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{padding:16px 18px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.kpi span{color:var(--muted);font-size:.85rem}
+.kpi b{display:block;font-size:1.6rem;letter-spacing:-.02em;margin-top:4px}
+.kpi small{font-weight:700}
+.kpi small.up{color:var(--good)}.kpi small.down{color:var(--bad)}
+.row{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px}
+@media (max-width:860px){.row{grid-template-columns:1fr}}
+.panel{padding:18px;border-radius:16px;background:var(--card);border:1px solid var(--line);min-width:0}
+.panel h2{margin:0 0 12px;font-size:1rem}
+canvas{width:100%;height:240px;display:block}
+.alert{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.alert:last-child{border-bottom:0}
+.alert b{font-weight:600}
+.pill{padding:3px 9px;border-radius:999px;font-size:.75rem;font-weight:700;white-space:nowrap}
+.pill.bad{background:#ffe6de;color:var(--bad)}.pill.warn{background:#fff3d6;color:var(--warn)}.pill.ok{background:#dcfce7;color:var(--good)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+td.num,th.num{text-align:right}
+.bar{height:6px;border-radius:3px;background:#eceef6;overflow:hidden;min-width:80px}
+.bar i{display:block;height:100%;border-radius:3px}
+.act{display:flex;gap:6px;justify-content:flex-end}
+.act button{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:18px;cursor:pointer;touch-action:manipulation}
+.act button:active{transform:scale(.92)}
+.note{margin-top:14px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="demo-bar"><span><b>Exemplo fictício</b> <span class="hide-sm">· painel de estoque criado por Matheus Villanova</span></span><span class="links"><a class="back" href="/#exemplos">← Voltar</a><a href="https://wa.me/5511933010415?text=Ol%C3%A1%2C%20Matheus!%20Vi%20o%20exemplo%20do%20painel%20de%20estoque%20e%20quero%20um%20assim." target="_blank" rel="noopener">Quero um assim</a></span></div>
+<div class="wrap">
+  <header>
+    <div><h1>Mercadinho Bom Preço</h1><p>Painel de estoque e vendas · dados fictícios</p></div>
+    <div class="seg" role="group" aria-label="Período"><button aria-pressed="false" data-days="7">7 dias</button><button aria-pressed="true" data-days="30">30 dias</button></div>
+  </header>
+  <div class="kpis" id="kpis"></div>
+  <div class="row">
+    <div class="panel"><h2>Vendas por dia</h2><canvas id="chart" aria-label="Gráfico de vendas por dia"></canvas></div>
+    <div class="panel"><h2>Precisa de atenção</h2><div id="alerts"></div></div>
+  </div>
+  <div class="panel">
+    <h2>Estoque</h2>
+    <div class="tablewrap"><table><thead><tr><th>Produto</th><th>Categoria</th><th class="num">Estoque</th><th>Nível</th><th class="num">Vendidos (30d)</th><th class="num">Ajustar</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <p class="note">Use + e − para simular entrada e venda de produtos. Os alertas e indicadores atualizam na hora.</p>
+  </div>
+</div>
+<script>
+const products = [
+  ['Arroz 5 kg', 'Mercearia', 42, 20, 118, 27.9], ['Feijão carioca 1 kg', 'Mercearia', 8, 15, 96, 8.5], ['Café 500 g', 'Mercearia', 5, 12, 74, 18.9],
+  ['Leite integral 1 L', 'Laticínios', 64, 30, 210, 5.2], ['Queijo muçarela kg', 'Laticínios', 3, 5, 31, 44.9], ['Detergente 500 ml', 'Limpeza', 37, 15, 58, 2.9],
+  ['Papel higiênico 12 un.', 'Limpeza', 12, 10, 45, 21.9], ['Refrigerante 2 L', 'Bebidas', 26, 24, 132, 9.9], ['Cerveja lata 350 ml', 'Bebidas', 140, 60, 388, 4.2], ['Pão de forma', 'Padaria', 9, 10, 67, 8.9],
+].map(([name, cat, stock, min, sold, price]) => ({ name, cat, stock, min, sold, price }));
+const fmt = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+let days = 30;
+// deterministic pseudo-random daily sales
+const daily = Array.from({ length: 30 }, (_, i) => Math.round(1800 + 900 * Math.sin(i / 2.2) + ((i * 37) % 11) * 90 + (i % 7 === 5 ? 1500 : 0)));
+
+function level(p) { return p.stock <= p.min * 0.5 ? 'bad' : p.stock <= p.min ? 'warn' : 'ok'; }
+function render() {
+  const sales = daily.slice(-days);
+  const total = sales.reduce((a, b) => a + b, 0);
+  const prev = daily.slice(0, days).reduce((a, b) => a + b, 0) * (days === 30 ? 0.92 : 1.05);
+  const low = products.filter((p) => level(p) !== 'ok');
+  const value = products.reduce((s, p) => s + p.stock * p.price, 0);
+  const diff = ((total - prev) / prev) * 100;
+  document.getElementById('kpis').innerHTML = [
+    ['Faturamento', fmt(total), `${diff >= 0 ? '▲' : '▼'} ${Math.abs(diff).toFixed(1)}%`, diff >= 0 ? 'up' : 'down'],
+    ['Ticket médio', fmt(total / (days * 41)), 'por cliente', ''],
+    ['Valor em estoque', fmt(value), `${products.length} produtos`, ''],
+    ['Estoque baixo', String(low.length), low.length ? 'repor esta semana' : 'tudo certo', low.length ? 'down' : 'up'],
+  ].map(([l, v, s, c]) => `<div class="kpi"><span>${l}</span><b>${v}</b><small class="${c}">${s}</small></div>`).join('');
+  document.getElementById('alerts').innerHTML = low.length
+    ? low.sort((a, b) => a.stock / a.min - b.stock / b.min).map((p) => `<div class="alert"><div><b>${p.name}</b><div style="color:var(--muted);font-size:.85rem">${p.stock} em estoque · mínimo ${p.min}</div></div><span class="pill ${level(p)}">${level(p) === 'bad' ? 'Acabando' : 'Baixo'}</span></div>`).join('')
+    : '<p style="color:var(--muted)">Nenhum produto abaixo do mínimo.</p>';
+  document.getElementById('rows').innerHTML = products.map((p, i) => {
+    const pct = Math.min(100, (p.stock / (p.min * 3)) * 100);
+    const color = { bad: '#ef4444', warn: '#f59e0b', ok: '#22c55e' }[level(p)];
+    return `<tr><td>${p.name}</td><td>${p.cat}</td><td class="num">${p.stock}</td><td><div class="bar"><i style="width:${pct}%;background:${color}"></i></div></td><td class="num">${p.sold}</td><td><div class="act"><button data-i="${i}" data-d="-1" aria-label="Vender 1 ${p.name}">−</button><button data-i="${i}" data-d="1" aria-label="Entrada de 1 ${p.name}">+</button></div></td></tr>`;
+  }).join('');
+  draw(sales);
+}
+function draw(sales) {
+  const c = document.getElementById('chart'); const dpr = devicePixelRatio || 1;
+  const w = c.clientWidth, h = c.clientHeight; c.width = w * dpr; c.height = h * dpr;
+  const g = c.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
+  const max = Math.max(...sales) * 1.15, pad = 28, bw = (w - pad) / sales.length;
+  g.font = '11px system-ui'; g.fillStyle = '#646a85'; g.strokeStyle = '#e4e7f1';
+  for (let i = 0; i <= 3; i++) { const y = 8 + ((h - 30) * i) / 3; g.beginPath(); g.moveTo(pad, y); g.lineTo(w, y); g.stroke(); g.fillText(`${Math.round((max * (3 - i)) / 3 / 1000)}k`, 0, y + 4); }
+  const grad = g.createLinearGradient(0, 0, 0, h); grad.addColorStop(0, '#6d5cff'); grad.addColorStop(1, '#22d3ee');
+  sales.forEach((v, i) => { const bh = ((h - 30) * v) / max; g.fillStyle = grad; const x = pad + i * bw + bw * 0.18; const y = h - 22 - bh; g.beginPath(); g.roundRect ? g.roundRect(x, y, bw * 0.64, bh, 4) : g.rect(x, y, bw * 0.64, bh); g.fill(); });
+  g.fillStyle = '#646a85'; g.fillText(`há ${sales.length} dias`, pad, h - 4); g.textAlign = 'right'; g.fillText('hoje', w, h - 4);
+}
+document.getElementById('rows').addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  const p = products[b.dataset.i]; const d = Number(b.dataset.d);
+  p.stock = Math.max(0, p.stock + d); if (d < 0) p.sold++; render();
+});
+document.querySelectorAll('.seg button').forEach((b) => b.addEventListener('click', () => {
+  days = Number(b.dataset.days); document.querySelectorAll('.seg button').forEach((x) => x.setAttribute('aria-pressed', x === b)); render();
+}));
+addEventListener('resize', () => draw(daily.slice(-days)));
+render();
+</script>
+</body>
+</html>
