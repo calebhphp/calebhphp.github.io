@@ -148,7 +148,10 @@ function layout(string $l, string $key, array $o, string $body): string
     $u = $UI[$l];
     $path = $pages[$key][$l];
     $canonical = $site['url'].$path;
-    $title = e($o['title']);
+    // Google corta títulos perto de 60 caracteres: tira o nome do fim quando o título já é longo.
+    $rawTitle = $o['title'];
+    if ($key !== 'home' && mb_strlen($rawTitle) > 62) $rawTitle = preg_replace('/ \| Matheus Villanova$/u', '', $rawTitle);
+    $title = e($rawTitle);
     $desc = e($o['description']);
     $og = $site['url'].'/assets/'.($o['og'] ?? $u['og']);
     $schema = json_encode($o['schema'] ?? [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -348,6 +351,7 @@ foreach (array_keys($LANGS) as $l) {
             'agenda' => '<div class="demo-shot shot-agenda"><span class="s-day">'.e($shot[0]).'</span><span class="s-slots"><i>'.e($shot[1]).'</i><i class="x">'.e($shot[2]).'</i><i class="on">'.e($shot[3]).'</i><i>'.e($shot[4]).'</i></span><span class="s-pix">'.e($shot[5]).'</span></div>',
             'orcamento' => '<div class="demo-shot shot-quote"><span class="s-range"><i></i></span><span class="s-chips"><i></i><i></i><i></i></span><span class="s-total"><small>'.e($shot[0]).'</small>'.e($shot[1]).'</span><span class="s-btn">'.e($shot[2]).'</span></div>',
             'fidelidade' => '<div class="demo-shot shot-loyal"><span class="s-stamps">'.str_repeat('<i class="on">✂</i>', 7).'<i></i><i></i><i class="g">🎁</i></span><span class="s-left">'.e($shot[0]).'</span></div>',
+            'loja-accra' => '<div class="demo-shot shot-shop"><span class="s-logo">'.e($shot[0]).'</span><span class="s-prod"><i></i><span><b>'.e($shot[1]).'</b><em>'.e($shot[2]).'</em></span></span><span class="s-btn">'.e($shot[3]).'</span></div>',
             default => '',
         };
         $demoHtml .= '<a class="demo reveal" href="/exemplos/'.$slug.'/">'.$shotHtml.'<div class="demo-body"><span class="tag">'.e($tag).'</span><h3>'.e($title).'</h3><p>'.e($desc).'</p><span class="go">'.e($u['demo_go']).'</span></div></a>';

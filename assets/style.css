@@ -327,6 +327,13 @@ footer .bottom{margin-top:40px;padding-top:22px;border-top:1px solid var(--line-
 .shot-cafe .s-row b{flex:1;font-weight:600}
 .shot-cafe .s-row em{font-style:normal;color:#ffd7a1}
 .shot-cafe .s-btn{margin-top:4px;text-align:center;padding:9px;border-radius:999px;background:#1ea952;color:#fff;font-size:.8rem;font-weight:700}
+.shot-shop{background:#EBDFC8;color:#2B1E15}
+.shot-shop .s-logo{font:400 1.5rem Marcellus,var(--display),serif;letter-spacing:.01em}
+.shot-shop .s-prod{display:flex;align-items:center;gap:12px;padding:10px;background:#F3EAD7;border-top:3px solid #9C4124}
+.shot-shop .s-prod i{width:44px;height:44px;flex:none;background:url(/exemplos/loja-accra/img/cena-06.webp) center/cover,#BD9468}
+.shot-shop .s-prod b{display:block;font-weight:600;font-size:.9rem}
+.shot-shop .s-prod em{font-style:normal;font-size:.8rem;opacity:.75}
+.shot-shop .s-btn{text-align:center;padding:9px;background:#9C4124;color:#EBDFC8;font-size:.8rem;font-weight:600}
 .shot-card{align-items:center;background:radial-gradient(circle at 30% 20%,#3b2f8f,#0f1226 70%);color:#fff;text-align:center}
 .shot-card .s-avatar{width:54px;height:54px;border-radius:50%;background:var(--grad);box-shadow:0 0 0 4px rgba(255,255,255,.12)}
 .shot-card .s-name{font:700 1.05rem var(--display)}
