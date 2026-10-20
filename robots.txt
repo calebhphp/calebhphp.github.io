@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /_antigo/
+Disallow: /_build/
 
 Sitemap: https://calebhphp.github.io/sitemap.xml
