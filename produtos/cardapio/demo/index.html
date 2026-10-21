@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Cardápio</title>
+<meta name="description" content="Cardápio digital. Escolha os itens e envie o pedido pelo WhatsApp.">
+<meta name="theme-color" content="#1c120c">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap">
+<!--
+  ============================================================
+  CARDÁPIO DIGITAL COM PEDIDO NO WHATSAPP
+  Para mudar nome, WhatsApp, cores, categorias e preços,
+  role até o bloco "CONFIG" (perto do fim deste arquivo).
+  Não precisa mexer em mais nada. Veja o COMO-USAR.md.
+  ============================================================
+-->
+<style>
+:root{--fundo:#fbf6ef;--texto:#23160f;--suave:#7a6656;--principal:#5a3622;--claro:#f3e6d4;--destaque:#c46a2b;--topo:#1c120c;--wa:#1ea952;--borda:#eadbc8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fundo);color:var(--texto);font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0;letter-spacing:-.02em}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.aviso{background:#1d1a2e;color:#fff;padding:9px 16px;font-size:.84rem;line-height:1.4;text-align:center;letter-spacing:.01em}.aviso b{display:inline-block;background:#ffd84d;color:#1d1a2e;border-radius:999px;padding:1px 9px;margin-right:6px;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em}
+.hero{background:var(--topo);color:#fff;padding:56px 0 48px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 0%,rgba(255,255,255,.14),transparent 55%);pointer-events:none}
+.hero .wrap{position:relative;z-index:1}
+.logo{width:76px;height:76px;border-radius:20px;object-fit:cover;background:#fff;margin-bottom:16px;display:block}
+.hero h1{font-size:clamp(2.4rem,8vw,4.4rem);line-height:1.02}
+.hero p{max-width:32em;margin:14px 0 0;opacity:.88;font-size:1.08rem}
+.hero .info{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:20px;font-size:.92rem;opacity:.88}
+nav.cats{position:sticky;top:0;z-index:5;background:var(--fundo);border-bottom:1px solid var(--borda)}
+nav.cats .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
+nav.cats .wrap::-webkit-scrollbar{display:none}
+nav.cats a{flex:none;padding:8px 14px;border-radius:999px;background:var(--claro);color:var(--principal);text-decoration:none;font-weight:600;font-size:.92rem}
+main section{padding:32px 0 8px;scroll-margin-top:64px}
+main section h2{font-size:1.8rem;margin-bottom:14px}
+.items{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:700px){.items{grid-template-columns:1fr}}
+.item{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:12px;border-radius:16px;background:#fff;border:1px solid var(--borda)}
+.item .pic{width:64px;height:64px;border-radius:14px;display:grid;place-items:center;font-size:30px;background:var(--claro);overflow:hidden}
+.item .pic img{width:100%;height:100%;object-fit:cover}
+.item h3{font:600 1rem/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:0}
+.item p{margin:2px 0 0;color:var(--suave);font-size:.86rem}
+.item .price{font-weight:700;color:var(--destaque);margin-top:4px}
+.item .price.consulte{color:var(--suave);font-weight:600;font-size:.9rem}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:36px;height:36px;border-radius:50%;border:0;background:var(--principal);color:#fff;font-size:20px;line-height:1;cursor:pointer;touch-action:manipulation;transition:transform 100ms ease}
+.qty button:active{transform:scale(.9)}
+.qty button.menos{background:var(--claro);color:var(--principal)}
+.qty span{min-width:18px;text-align:center;font-weight:700}
+.sobre{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;padding:40px 0}
+@media (max-width:700px){.sobre{grid-template-columns:1fr}}
+.sobre .box{padding:22px;border-radius:20px;background:var(--claro)}
+.sobre h2{font-size:1.6rem;margin-bottom:8px}
+.sobre p{color:var(--suave);margin:0}
+footer{padding:24px 0 130px;color:var(--suave);font-size:.88rem;text-align:center}
+footer a{color:inherit}
+/* barra do pedido */
+.barra{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));z-index:50;transform:translate(-50%,160%);width:min(560px,calc(100% - 28px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 12px 12px 18px;border-radius:20px;background:var(--topo);color:#fff;box-shadow:0 20px 50px -15px rgba(0,0,0,.5);transition:transform 400ms cubic-bezier(.22,1,.36,1)}
+.barra.show{transform:translate(-50%,0)}
+.barra b{display:block;font-size:1.05rem}
+.barra small{opacity:.75}
+.btn-wa{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:999px;border:0;background:var(--wa);color:#fff;font-weight:700;white-space:nowrap;cursor:pointer;text-decoration:none}
+/* painel do pedido */
+.fundo-escuro{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);display:none}
+.fundo-escuro.show{display:block}
+.painel{position:fixed;z-index:61;left:50%;bottom:0;transform:translate(-50%,105%);width:min(600px,100%);max-height:92vh;max-height:92dvh;overflow:auto;background:var(--fundo);border-radius:22px 22px 0 0;padding:20px 18px max(20px,env(safe-area-inset-bottom));transition:transform 350ms cubic-bezier(.22,1,.36,1);visibility:hidden}
+.painel.show{transform:translate(-50%,0);visibility:visible}
+.painel header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.painel h2{font-size:1.5rem}
+.fechar{border:0;background:var(--claro);color:var(--principal);width:38px;height:38px;border-radius:50%;font-size:22px;cursor:pointer}
+.linhas{list-style:none;margin:0 0 6px;padding:0}
+.linhas li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--borda)}
+.linhas li .nome{flex:1}
+.linhas li .val{font-weight:600;white-space:nowrap}
+.form{display:grid;gap:12px;margin-top:14px}
+.form label{display:grid;gap:4px;font-size:.92rem;font-weight:600}
+.form input,.form select,.form textarea{font-size:16px;padding:11px 12px;border-radius:12px;border:1.5px solid var(--borda);background:#fff;width:100%}
+.form textarea{min-height:70px;resize:vertical}
+.modos{display:flex;flex-wrap:wrap;gap:8px}
+.modos label{display:flex;align-items:center;gap:6px;padding:9px 14px;border-radius:999px;background:var(--claro);color:var(--principal);cursor:pointer;font-weight:600}
+.modos input{width:auto;accent-color:var(--principal)}
+.totais{margin-top:14px;padding:14px;border-radius:14px;background:#fff;border:1px solid var(--borda);display:grid;gap:4px}
+.totais div{display:flex;justify-content:space-between}
+.totais .total{font-weight:800;font-size:1.1rem}
+.totais .nota{color:var(--suave);font-size:.86rem;display:block}
+.erro{color:#b3261e;font-size:.9rem;font-weight:600;min-height:1.2em;margin:10px 0 0}
+.painel .btn-wa{width:100%;margin-top:6px;font-size:1.05rem}
+[hidden]{display:none!important}
+/* tela do QR Code */
+.qr-tela{padding:32px 0 60px}
+.qr-tela h1{font-size:2rem;margin-bottom:8px}
+.qr-tela .controles{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:18px 0}
+.qr-tela .controles label{display:grid;gap:4px;font-weight:600;font-size:.92rem}
+.qr-tela input,.qr-tela select{font-size:16px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--borda);background:#fff;min-width:140px}
+.qr-tela .btn{padding:12px 18px;border-radius:999px;border:0;background:var(--principal);color:#fff;font-weight:700;cursor:pointer}
+.qr-tela .btn.sec{background:var(--claro);color:var(--principal);text-decoration:none;display:inline-block}
+.qr-folha{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.qr-cartao{background:#fff;border:2px dashed var(--borda);border-radius:18px;padding:20px;text-align:center;break-inside:avoid}
+.qr-cartao h2{font-size:1.4rem}
+.qr-cartao .qr{display:flex;justify-content:center;margin:12px 0}
+.qr-cartao .qr img,.qr-cartao .qr canvas{width:170px!important;height:170px!important}
+.qr-cartao p{margin:0;color:var(--suave);font-size:.92rem}
+.qr-cartao .mesa{display:inline-block;margin-top:8px;padding:4px 12px;border-radius:999px;background:var(--claro);color:var(--principal);font-weight:700}
+.qr-url{word-break:break-all;color:var(--suave);font-size:.85rem}
+@media print{
+  body{background:#fff}
+  body>*:not(#tela-qr){display:none!important}
+  #tela-qr{display:block!important;padding:0}
+  #tela-qr .nao-imprimir{display:none!important}
+  .qr-folha{grid-template-columns:repeat(2,1fr)}
+  .qr-cartao{border:1.5px dashed #999}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="aviso" id="aviso" hidden></div>
+
+<div id="site">
+  <header class="hero">
+    <div class="wrap">
+      <img class="logo" id="logo" alt="" hidden>
+      <h1 id="nome"></h1>
+      <p id="slogan"></p>
+      <div class="info" id="info"></div>
+    </div>
+  </header>
+  <nav class="cats" aria-label="Categorias"><div class="wrap" id="cats"></div></nav>
+  <main class="wrap" id="menu"></main>
+  <div class="wrap"><div class="sobre" id="sobre"></div></div>
+  <footer class="wrap"><span id="rodape"></span><span id="link-qr"></span></footer>
+</div>
+
+<div class="barra" id="barra" aria-live="polite">
+  <div><b id="barra-total">R$ 0,00</b><small id="barra-qtd">0 itens</small></div>
+  <button class="btn-wa" id="abrir" type="button">Ver pedido</button>
+</div>
+
+<div class="fundo-escuro" id="fundo"></div>
+<div class="painel" id="painel" role="dialog" aria-modal="true" aria-labelledby="titulo-painel">
+  <header><h2 id="titulo-painel">Seu pedido</h2><button class="fechar" id="fechar" type="button" aria-label="Fechar">×</button></header>
+  <ul class="linhas" id="linhas"></ul>
+  <div class="form">
+    <label>Seu nome<input id="f-nome" autocomplete="name" placeholder="Como podemos te chamar?"></label>
+    <div><div style="font-weight:600;font-size:.92rem;margin-bottom:6px">Como você quer receber?</div><div class="modos" id="modos"></div></div>
+    <label id="campo-endereco" hidden>Endereço de entrega<input id="f-endereco" autocomplete="street-address" placeholder="Rua, número, complemento e bairro"></label>
+    <label id="campo-mesa" hidden>Número da mesa<input id="f-mesa" inputmode="numeric" placeholder="Ex.: 5"></label>
+    <label id="campo-pagamento">Forma de pagamento<select id="f-pagamento"></select></label>
+    <label>Observação (opcional)<textarea id="f-obs" placeholder="Ex.: sem cebola, troco para R$ 50, ponto da carne"></textarea></label>
+  </div>
+  <div class="totais" id="totais"></div>
+  <p class="erro" id="erro" role="alert"></p>
+  <button class="btn-wa" id="enviar" type="button">Enviar pedido pelo WhatsApp</button>
+</div>
+
+<section class="qr-tela wrap" id="tela-qr" hidden>
+  <div class="nao-imprimir">
+    <h1>QR Code para as mesas</h1>
+    <p>Imprima e cole na mesa, no balcão ou na vitrine. Quem apontar a câmera do celular abre o cardápio na hora.</p>
+    <p class="qr-url" id="qr-url"></p>
+    <div class="controles">
+      <label>Número da mesa (opcional)<input id="qr-mesa" inputmode="numeric" placeholder="Deixe vazio para balcão"></label>
+      <label>Cópias na folha<select id="qr-copias"><option>1</option><option>2</option><option selected>4</option><option>6</option></select></label>
+      <button class="btn" id="qr-imprimir" type="button">Imprimir</button>
+      <a class="btn sec" href="#">Voltar ao cardápio</a>
+    </div>
+  </div>
+  <div class="qr-folha" id="qr-folha"></div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* =====================================================================
+   CONFIG – EDITE SÓ ESTA PARTE
+   Regras simples:
+   - Textos ficam entre aspas: "assim".
+   - Preço é número com PONTO no lugar da vírgula: 12.50 (sem "R$").
+   - Para mostrar "Consulte" no lugar do preço, use: preco: null
+   - Não apague as vírgulas no fim das linhas.
+   ===================================================================== */
+const CONFIG = {
+  nome: "Café Aroma (fictício)",
+  slogan: "Café especial, pão de queijo saindo do forno e um cantinho para trabalhar. Escolha abaixo e envie o pedido pelo WhatsApp.",
+  endereco: "Rua Exemplo, 120 – Bairro Fictício",
+  infoExtra: ["Entrega em até 40 min"],   // frases curtas que aparecem no topo (pode deixar [])
+
+  // WhatsApp que recebe os pedidos: 55 + DDD + número, só números.
+  // Exemplo: (11) 98765-4321 vira "5511987654321"
+  whatsapp: "",
+
+  logo: "",   // opcional: nome do arquivo da logo, ex.: "logo.png" (na mesma pasta)
+
+  cores: {
+    fundo: "#fbf6ef",      // fundo da página
+    texto: "#23160f",      // cor das letras
+    principal: "#5a3622",  // botões e categorias
+    claro: "#f3e6d4",      // fundo das categorias e figuras
+    destaque: "#c46a2b",   // cor dos preços
+    topo: "#1c120c",       // faixa do topo e barra do pedido
+    whatsapp: "#1ea952"    // botão de enviar
+  },
+
+  // Formas de receber o pedido. Use true (liga) ou false (desliga).
+  retirada: true,
+  consumoNoLocal: true,             // "Comer aqui" (pede o número da mesa)
+  entrega: { ativa: true, taxa: 5.00, pedidoMinimo: 20.00 },  // taxa e mínimo em reais (0 = sem)
+
+  pagamentos: ["Pix", "Cartão de crédito", "Cartão de débito", "Dinheiro"],  // deixe [] para não perguntar
+
+  horarios: ["Segunda a sexta: 7h às 20h", "Sábado: 8h às 18h", "Domingo: 8h às 14h"],
+  sobre: "Grãos de pequenos produtores, torrados toda semana. Wi-Fi rápido e tomadas em todas as mesas.",
+
+  // Endereço do site depois de publicado (usado no QR Code). Pode deixar "" que ele descobre sozinho.
+  enderecoDoSite: "",
+  mostrarLinkQRNoRodape: true,      // mude para false depois de imprimir seus QR Codes
+
+  // CARDÁPIO: cada categoria tem um nome e uma lista de itens.
+  // figura: um emoji (☕ 🍔 🍰) OU o nome de uma foto na pasta, ex.: "fotos/cappuccino.jpg"
+  categorias: [
+    { nome: "Cafés", itens: [
+      { figura: "☕", nome: "Espresso", descricao: "Curto e encorpado", preco: 7.00 },
+      { figura: "☕", nome: "Cappuccino", descricao: "Com canela e cacau", preco: 12.00 },
+      { figura: "🥛", nome: "Latte", descricao: "Leite vaporizado e espresso duplo", preco: 13.00 },
+      { figura: "🍫", nome: "Mocha", descricao: "Espresso, chocolate e leite", preco: 14.00 }
+    ]},
+    { nome: "Salgados", itens: [
+      { figura: "🧀", nome: "Pão de queijo (3 un.)", descricao: "Saindo do forno", preco: 9.00 },
+      { figura: "🥐", nome: "Croissant de presunto e queijo", descricao: "Massa amanteigada", preco: 15.00 },
+      { figura: "🥪", nome: "Misto quente", descricao: "Pão de fermentação natural", preco: 16.00 }
+    ]},
+    { nome: "Doces", itens: [
+      { figura: "🍰", nome: "Bolo do dia", descricao: "Pergunte o sabor de hoje", preco: null },
+      { figura: "🍪", nome: "Cookie de chocolate", descricao: "Crocante por fora", preco: 8.00 },
+      { figura: "🎂", nome: "Bolo inteiro por encomenda", descricao: "Tamanho e sabor a combinar", preco: null }
+    ]},
+    { nome: "Bebidas geladas", itens: [
+      { figura: "🧋", nome: "Iced latte", descricao: "Com leite gelado", preco: 14.00 },
+      { figura: "🍋", nome: "Limonada suíça", descricao: "500 ml", preco: 11.00 },
+      { figura: "🍓", nome: "Smoothie de frutas vermelhas", descricao: "400 ml", preco: 15.00 }
+    ]}
+  ]
+};
+/* ===================== FIM DO CONFIG – não precisa mexer abaixo ===================== */
+
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmt = (n) => Number(n).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const temPreco = (p) => typeof p === 'number' && isFinite(p);
+  const guardar = (k, v) => { try { localStorage.setItem('cardapio-' + k, v); } catch (e) { /* sem armazenamento */ } };
+  const ler = (k) => { try { return localStorage.getItem('cardapio-' + k) || ''; } catch (e) { return ''; } };
+
+  const C = CONFIG;
+  const cats = Array.isArray(C.categorias) ? C.categorias : [];
+  const entrega = C.entrega && C.entrega.ativa ? C.entrega : null;
+  const numeroWa = String(C.whatsapp || '').replace(/\D/g, '');
+  const waOk = numeroWa.length >= 12 && !/^550+$/.test(numeroWa);
+
+  // cores
+  const mapa = { fundo: '--fundo', texto: '--texto', principal: '--principal', claro: '--claro', destaque: '--destaque', topo: '--topo', whatsapp: '--wa' };
+  Object.keys(mapa).forEach((k) => { if (C.cores && C.cores[k]) document.documentElement.style.setProperty(mapa[k], C.cores[k]); });
+  if (C.cores && C.cores.topo) document.querySelector('meta[name="theme-color"]').setAttribute('content', C.cores.topo);
+
+  // topo
+  document.title = (C.nome || 'Cardápio') + ' – Cardápio';
+  $('nome').textContent = C.nome || '';
+  $('slogan').textContent = C.slogan || '';
+  if (C.logo) { $('logo').src = C.logo; $('logo').alt = 'Logo ' + (C.nome || ''); $('logo').hidden = false; }
+  const infos = [];
+  if (C.endereco) infos.push('📍 ' + C.endereco);
+  (C.infoExtra || []).forEach((t) => infos.push(t));
+  $('info').innerHTML = infos.map((t) => '<span>' + esc(t) + '</span>').join('');
+  $('aviso').innerHTML = '<b>Demonstração</b> Negócio fictício. O WhatsApp abre sem número, só para você ver o pedido.'; $('aviso').hidden = false;
+
+  // cardápio
+  const figura = (f) => (/\.(png|jpe?g|webp|gif|svg)$/i.test(String(f || '')) ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : esc(f || '🍽️'));
+  $('cats').innerHTML = cats.map((c, ci) => '<a href="#cat-' + ci + '">' + esc(c.nome) + '</a>').join('') + ((C.horarios && C.horarios.length) || C.sobre ? '<a href="#sobre">Horários</a>' : '');
+  $('menu').innerHTML = cats.map((c, ci) => '<section id="cat-' + ci + '"><h2>' + esc(c.nome) + '</h2><div class="items">' + (c.itens || []).map((it, ii) =>
+    '<div class="item"><div class="pic" aria-hidden="true">' + figura(it.figura) + '</div><div><h3>' + esc(it.nome) + '</h3>' + (it.descricao ? '<p>' + esc(it.descricao) + '</p>' : '') +
+    (temPreco(it.preco) ? '<div class="price">' + fmt(it.preco) + '</div>' : '<div class="price consulte">Consulte</div>') + '</div>' +
+    '<div class="qty" data-key="' + ci + '-' + ii + '"><button type="button" class="menos" aria-label="Tirar ' + esc(it.nome) + '">−</button><span>0</span><button type="button" class="mais" aria-label="Adicionar ' + esc(it.nome) + '">+</button></div></div>'
+  ).join('') + '</div></section>').join('');
+
+  // sobre e horários
+  let sobre = '';
+  if (C.sobre) sobre += '<div><h2>Sobre nós</h2><p>' + esc(C.sobre) + '</p>' + (C.endereco ? '<p style="margin-top:10px">📍 ' + esc(C.endereco) + '</p>' : '') + '</div>';
+  if (C.horarios && C.horarios.length) sobre += '<div class="box"><h2>Horários</h2><p>' + C.horarios.map(esc).join('<br>') + '</p></div>';
+  $('sobre').innerHTML = sobre; $('sobre').id = 'sobre';
+  $('rodape').textContent = (C.nome || '') + (C.endereco ? ' · ' + C.endereco : '');
+  if (C.mostrarLinkQRNoRodape) $('link-qr').innerHTML = '<br><a href="#qr">Imprimir QR Code das mesas</a>';
+
+  // carrinho
+  const cart = {};
+  const item = (key) => { const p = key.split('-'); return cats[+p[0]].itens[+p[1]]; };
+  const linhas = () => Object.keys(cart).filter((k) => cart[k] > 0).map((k) => ({ key: k, q: cart[k], it: item(k) }));
+
+  function mudar(key, delta) {
+    cart[key] = Math.max(0, (cart[key] || 0) + delta);
+    document.querySelectorAll('.qty[data-key="' + key + '"] span').forEach((s) => { s.textContent = cart[key]; });
+    atualizar();
+  }
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.qty button'); if (!btn) return;
+    const key = btn.parentElement.getAttribute('data-key');
+    const mais = btn.classList.contains('mais');
+    mudar(key, mais ? 1 : -1);
+    if (mais && navigator.vibrate) navigator.vibrate(8);
+  });
+
+  // modos de receber
+  const modos = [];
+  if (C.retirada) modos.push(['retirada', 'Retirar no local']);
+  if (entrega) modos.push(['entrega', 'Entrega' + (temPreco(entrega.taxa) && entrega.taxa > 0 ? ' (+ ' + fmt(entrega.taxa) + ')' : '')]);
+  if (C.consumoNoLocal) modos.push(['mesa', 'Comer aqui']);
+  if (!modos.length) modos.push(['retirada', 'Retirar no local']);
+  $('modos').innerHTML = modos.map((m, i) => '<label><input type="radio" name="modo" value="' + m[0] + '"' + (i === 0 ? ' checked' : '') + '> ' + esc(m[1]) + '</label>').join('');
+  const modo = () => { const r = document.querySelector('input[name="modo"]:checked'); return r ? r.value : 'retirada'; };
+
+  const pags = Array.isArray(C.pagamentos) ? C.pagamentos : [];
+  if (pags.length) $('f-pagamento').innerHTML = pags.map((p) => '<option>' + esc(p) + '</option>').join(''); else $('campo-pagamento').hidden = true;
+
+  // mesa vinda do QR Code (?mesa=5)
+  const params = new URLSearchParams(location.search);
+  const mesaUrl = (params.get('mesa') || '').replace(/[^\w -]/g, '').slice(0, 10);
+  if (mesaUrl && C.consumoNoLocal) { const r = document.querySelector('input[name="modo"][value="mesa"]'); if (r) r.checked = true; $('f-mesa').value = mesaUrl; }
+
+  $('f-nome').value = ler('nome');
+  $('f-endereco').value = ler('endereco');
+
+  function calcular() {
+    const ls = linhas();
+    const sub = ls.reduce((s, l) => s + (temPreco(l.it.preco) ? l.it.preco * l.q : 0), 0);
+    const qtd = ls.reduce((s, l) => s + l.q, 0);
+    const consulta = ls.some((l) => !temPreco(l.it.preco));
+    const taxa = modo() === 'entrega' && entrega && temPreco(entrega.taxa) ? entrega.taxa : 0;
+    return { ls, sub, qtd, consulta, taxa, total: sub + taxa };
+  }
+
+  function atualizar() {
+    const r = calcular();
+    $('barra').classList.toggle('show', r.qtd > 0);
+    $('barra-total').textContent = r.sub > 0 || !r.consulta ? fmt(r.sub) + (r.consulta ? ' + consulta' : '') : 'A consultar';
+    $('barra-qtd').textContent = r.qtd + ' ' + (r.qtd === 1 ? 'item' : 'itens');
+    $('campo-endereco').hidden = modo() !== 'entrega';
+    $('campo-mesa').hidden = modo() !== 'mesa';
+    $('linhas').innerHTML = r.ls.map((l) => '<li><span class="nome">' + esc(l.it.nome) + '</span><span class="val">' + (temPreco(l.it.preco) ? fmt(l.it.preco * l.q) : 'Consulte') + '</span>' +
+      '<span class="qty" data-key="' + l.key + '"><button type="button" class="menos" aria-label="Tirar ' + esc(l.it.nome) + '">−</button><span>' + l.q + '</span><button type="button" class="mais" aria-label="Adicionar ' + esc(l.it.nome) + '">+</button></span></li>').join('');
+    let t = '<div><span>Itens</span><span>' + fmt(r.sub) + '</span></div>';
+    if (r.taxa > 0) t += '<div><span>Taxa de entrega</span><span>' + fmt(r.taxa) + '</span></div>';
+    t += '<div class="total"><span>Total</span><span>' + fmt(r.total) + '</span></div>';
+    if (r.consulta) t += '<span class="nota">Alguns itens têm preço a consultar. O valor final será confirmado pelo WhatsApp.</span>';
+    if (modo() === 'entrega' && entrega && entrega.pedidoMinimo > 0) t += '<span class="nota">Pedido mínimo para entrega: ' + fmt(entrega.pedidoMinimo) + '</span>';
+    $('totais').innerHTML = t;
+    if (r.qtd === 0 && $('painel').classList.contains('show')) fecharPainel();
+  }
+
+  $('modos').addEventListener('change', () => { $('erro').textContent = ''; atualizar(); });
+
+  function abrirPainel() { $('erro').textContent = ''; $('painel').classList.add('show'); $('fundo').classList.add('show'); document.body.style.overflow = 'hidden'; }
+  function fecharPainel() { $('painel').classList.remove('show'); $('fundo').classList.remove('show'); document.body.style.overflow = ''; }
+  $('abrir').addEventListener('click', abrirPainel);
+  $('fechar').addEventListener('click', fecharPainel);
+  $('fundo').addEventListener('click', fecharPainel);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharPainel(); });
+
+  $('enviar').addEventListener('click', () => {
+    const r = calcular();
+    const nome = $('f-nome').value.trim();
+    const end = $('f-endereco').value.trim();
+    const mesa = $('f-mesa').value.trim();
+    const obs = $('f-obs').value.trim();
+    const m = modo();
+    let erro = '';
+    if (!r.qtd) erro = 'Escolha pelo menos um item.';
+    else if (!nome) erro = 'Escreva seu nome.';
+    else if (m === 'entrega' && !end) erro = 'Escreva o endereço de entrega.';
+    else if (m === 'mesa' && !mesa) erro = 'Escreva o número da mesa.';
+    else if (m === 'entrega' && entrega.pedidoMinimo > 0 && r.sub < entrega.pedidoMinimo && !r.consulta) erro = 'O pedido mínimo para entrega é ' + fmt(entrega.pedidoMinimo) + '.';
+    $('erro').textContent = erro;
+    if (erro) return;
+    guardar('nome', nome); if (end) guardar('endereco', end);
+
+    const txt = [];
+    txt.push('*Novo pedido – ' + (C.nome || 'Cardápio') + '*', '');
+    txt.push('*Cliente:* ' + nome);
+    if (m === 'entrega') txt.push('*Entrega em:* ' + end);
+    else if (m === 'mesa') txt.push('*Comer aqui – mesa ' + mesa + '*');
+    else txt.push('*Retirada no local*');
+    txt.push('');
+    r.ls.forEach((l) => txt.push(l.q + 'x ' + l.it.nome + ' – ' + (temPreco(l.it.preco) ? fmt(l.it.preco * l.q) : 'preço a consultar')));
+    txt.push('');
+    if (r.taxa > 0) txt.push('Itens: ' + fmt(r.sub), 'Taxa de entrega: ' + fmt(r.taxa));
+    txt.push('*Total: ' + fmt(r.total) + '*' + (r.consulta ? ' + itens a consultar' : ''));
+    if (pags.length) txt.push('Pagamento: ' + $('f-pagamento').value);
+    if (obs) txt.push('', '*Observação:* ' + obs);
+    const url = 'https://wa.me/' + numeroWa + '?text=' + encodeURIComponent(txt.join('\n'));
+    window.open(url, '_blank', 'noopener');
+  });
+
+  // QR Code
+  function urlDoSite() {
+    let base = String(C.enderecoDoSite || '').trim();
+    if (!base) base = location.origin + location.pathname;
+    return base.split('#')[0].split('?')[0];
+  }
+  function desenharQR() {
+    const mesa = $('qr-mesa').value.trim().replace(/[^\w -]/g, '').slice(0, 10);
+    const copias = parseInt($('qr-copias').value, 10) || 1;
+    const alvo = urlDoSite() + (mesa ? '?mesa=' + encodeURIComponent(mesa) : '');
+    $('qr-url').textContent = location.protocol === 'file:' && !C.enderecoDoSite
+      ? 'Atenção: você abriu o arquivo direto do computador. Publique o site primeiro (veja o COMO-USAR.md) e abra esta tela pelo link publicado, senão o QR Code não funciona no celular dos clientes.'
+      : 'O QR Code abre: ' + alvo;
+    const folha = $('qr-folha');
+    folha.innerHTML = '';
+    for (let i = 0; i < copias; i++) {
+      const card = document.createElement('div');
+      card.className = 'qr-cartao';
+      card.innerHTML = '<h2>' + esc(C.nome || 'Cardápio') + '</h2><div class="qr"></div><p><b>Aponte a câmera do celular</b><br>e faça seu pedido pelo WhatsApp</p>' + (mesa ? '<span class="mesa">Mesa ' + esc(mesa) + '</span>' : '');
+      folha.appendChild(card);
+      if (window.QRCode) new QRCode(card.querySelector('.qr'), { text: alvo, width: 340, height: 340, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+      else card.querySelector('.qr').textContent = 'Sem internet para gerar o QR Code. Conecte e recarregue a página.';
+    }
+  }
+  function rota() {
+    const qr = location.hash === '#qr';
+    $('tela-qr').hidden = !qr;
+    $('site').hidden = qr;
+    if (qr) { $('barra').classList.remove('show'); desenharQR(); window.scrollTo(0, 0); } else atualizar();
+  }
+  $('qr-mesa').addEventListener('input', desenharQR);
+  $('qr-copias').addEventListener('change', desenharQR);
+  $('qr-imprimir').addEventListener('click', () => window.print());
+  window.addEventListener('hashchange', rota);
+  rota();
+})();
+</script>
+</body>
+</html>

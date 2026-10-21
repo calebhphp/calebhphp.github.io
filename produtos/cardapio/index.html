@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Cardápio Digital com Pedido no WhatsApp | Matheus Villanova</title>
+<meta name="description" content="O cliente monta o pedido no celular e ele chega pronto no seu WhatsApp, com total, pagamento e endereço. Pague uma vez, sem mensalidade e sem taxa por pedido.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6eee2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14100d" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="product">
+<meta property="og:title" content="Cardápio Digital com Pedido no WhatsApp – sem mensalidade">
+<meta property="og:description" content="O pedido chega pronto no seu WhatsApp. Pague uma vez, sem taxa por pedido.">
+<meta property="og:image" content="https://matheusvillanova.com/produtos/cardapio/capa.png">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&display=swap">
+<style>
+:root{
+  --bg:#f6eee2; --surface:#fffaf2; --surface-2:#efe3d2; --text:#1e1611; --muted:#665649; --line:#e0d0bb;
+  --tomato:#c4351d; --tomato-ink:#ffffff; --mustard:#f2b134; --leaf:#1f7a3f; --wa:#13803c;
+  --board:#1e1611; --board-text:#f6ecdf; --board-muted:#c9b8a5; --board-line:#3a2d23;
+  --shadow:0 1px 2px rgba(50,25,10,.06),0 22px 44px -22px rgba(50,25,10,.32);
+  --display:"Archivo",ui-sans-serif,system-ui,sans-serif;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SFMono-Regular","Cascadia Mono",Consolas,monospace;
+  --ease-out:cubic-bezier(.23,1,.32,1); --ease-drawer:cubic-bezier(.32,.72,0,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14100d; --surface:#1f1914; --surface-2:#271f19; --text:#f6ecdf; --muted:#c2b19f; --line:#3a2e25;
+  --tomato:#ff6b4f; --tomato-ink:#1e0b05; --mustard:#f5c053; --leaf:#4cc27a; --wa:#25b85c;
+  --board:#0d0a08; --board-line:#2c221b;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 22px 44px -22px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14100d; --surface:#1f1914; --surface-2:#271f19; --text:#f6ecdf; --muted:#c2b19f; --line:#3a2e25;
+  --tomato:#ff6b4f; --tomato-ink:#1e0b05; --mustard:#f5c053; --leaf:#4cc27a; --wa:#25b85c;
+  --board:#0d0a08; --board-line:#2c221b;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 22px 44px -22px rgba(0,0,0,.7); color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-stretch:72%;font-weight:900;text-transform:uppercase;line-height:.95;letter-spacing:-.005em;margin:0;text-wrap:balance}
+h2{font-size:clamp(2.2rem,6vw,3.9rem)}
+h3{font-size:1.45rem;line-height:1}
+p{margin:0}
+.wrap{max-width:1140px;margin:0 auto;padding:0 16px}
+@media (min-width:700px){.wrap{padding:0 28px}}
+.skip{position:absolute;left:12px;top:-60px;background:var(--text);color:var(--bg);padding:10px 14px;border-radius:8px;z-index:100;text-decoration:none}
+.skip:focus{top:12px}
+:focus-visible{outline:3px solid var(--tomato);outline-offset:3px;border-radius:4px}
+.tag{display:inline-block;font:800 .8rem/1 var(--display);font-stretch:100%;letter-spacing:.12em;text-transform:uppercase;background:var(--mustard);color:#1e1611;padding:7px 10px 6px;border-radius:4px;transform:rotate(-1.5deg)}
+section{padding:72px 0;scroll-margin-top:64px}
+@media (min-width:900px){section{padding:100px 0}}
+.lead{color:var(--muted);font-size:1.08rem;max-width:38rem}
+mark{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--mustard) 85%,transparent) 58%,color-mix(in srgb,var(--mustard) 85%,transparent) 92%,transparent 92%);color:inherit;padding:0 .06em}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 24px;border-radius:10px;font:800 1.02rem/1 var(--display);font-stretch:92%;text-transform:uppercase;letter-spacing:.02em;text-decoration:none;border:0;cursor:pointer;transition:transform 160ms var(--ease-out),background-color 200ms ease,box-shadow 160ms var(--ease-out);-webkit-tap-highlight-color:transparent;user-select:none}
+.btn-buy{background:var(--tomato);color:var(--tomato-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--tomato) 55%,#000)}
+.btn-buy:active{transform:translateY(3px) scale(.98);box-shadow:0 1px 0 color-mix(in srgb,var(--tomato) 55%,#000)}
+.btn-line{background:transparent;color:var(--text);box-shadow:inset 0 0 0 2px var(--text)}
+.btn-line:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){
+  .btn-buy:hover{background:color-mix(in srgb,var(--tomato) 90%,#000)}
+  .btn-line:hover{background:color-mix(in srgb,var(--text) 6%,transparent)}
+}
+
+/* topo */
+.top{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:2px solid var(--text)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:.95rem;margin-right:auto;min-width:0}
+.brand img{width:30px;height:30px;border-radius:8px;flex:none}
+.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.theme{width:42px;height:42px;border-radius:10px;border:2px solid var(--text);background:var(--surface);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:transform 160ms var(--ease-out)}
+.theme:active{transform:scale(.94)}
+.theme svg{width:19px;height:19px}
+.top .btn{min-height:42px;padding:0 16px;font-size:.92rem;box-shadow:0 3px 0 color-mix(in srgb,var(--tomato) 55%,#000)}
+@media (max-width:640px){.top .btn{display:none}}
+
+/* hero */
+.hero{padding:44px 0 60px}
+.hero-grid{display:grid;gap:44px;align-items:center}
+.hero-grid>*,.board-grid>*{min-width:0}
+@media (min-width:940px){.hero{padding:70px 0 90px}.hero-grid{grid-template-columns:1.1fr .9fr;gap:56px}}
+.hero h1{font-size:clamp(3rem,10vw,6.1rem);margin:18px 0 20px}
+.hero .lead{font-size:1.14rem}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 22px}
+.asks{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
+.asks li{font-size:.88rem;padding:6px 12px;border-radius:999px 999px 999px 4px;background:var(--surface);border:1.5px solid var(--line);color:var(--muted)}
+.asks li:nth-child(2n){transform:rotate(-1.2deg)}
+.asks li:nth-child(3n){transform:rotate(1.4deg)}
+.asks-label{font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+
+/* comanda */
+.ticket-wrap{position:relative;max-width:380px;width:100%;margin:0 auto;padding-top:14px}
+.slot{height:14px;border-radius:8px;background:var(--text);margin:0 -10px;position:relative;z-index:2;box-shadow:0 3px 0 color-mix(in srgb,var(--text) 50%,transparent)}
+.ticket{position:relative;margin:-6px 8px 0;background:#fffdf8;color:#1e1611;padding:26px 22px 34px;font:14px/1.55 var(--mono);box-shadow:var(--shadow);
+  -webkit-mask:linear-gradient(#000 0 0) top/100% calc(100% - 12px) no-repeat,radial-gradient(circle 7px at 50% 100%,transparent 6.5px,#000 7px) bottom/16px 13px repeat-x;
+  mask:linear-gradient(#000 0 0) top/100% calc(100% - 12px) no-repeat,radial-gradient(circle 7px at 50% 100%,transparent 6.5px,#000 7px) bottom/16px 13px repeat-x}
+.ticket h4{margin:0 0 2px;font:800 1rem/1.2 var(--mono);text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.ticket .sub{text-align:center;color:#6a5a4c;font-size:12px;margin-bottom:12px}
+.ticket hr{border:0;border-top:1.5px dashed #c9b8a5;margin:10px 0}
+.ticket .row{display:flex;justify-content:space-between;gap:10px}
+.ticket .row span:last-child{white-space:nowrap}
+.ticket .tot{font-weight:800;font-size:16px}
+.ticket .obs{color:#6a5a4c}
+.js .ticket{animation:print 1.6s cubic-bezier(.45,.05,.55,.95) .35s both}
+@keyframes print{from{clip-path:inset(0 0 100% 0);transform:translateY(-30px)}to{clip-path:inset(0 0 0 0);transform:none}}
+.arrived{position:absolute;right:-6px;bottom:-14px;display:flex;align-items:center;gap:8px;background:var(--wa);color:#fff;font:700 .88rem/1 var(--sans);padding:11px 14px;border-radius:999px;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);transform-origin:100% 100%;z-index:3}
+.arrived svg{width:18px;height:18px}
+.js .arrived{animation:pop 380ms var(--ease-out) 2.1s both}
+@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.94)}to{opacity:1;transform:none}}
+@media (max-width:420px){.arrived{right:0}}
+
+/* faixa */
+.strip{background:var(--text);color:var(--bg);padding:20px 0;overflow:hidden}
+.strip ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px}
+.strip li{font:800 1.12rem/1.2 var(--display);font-stretch:80%;text-transform:uppercase;letter-spacing:.02em;display:flex;align-items:center;gap:10px}
+.strip li::before{content:"✦";color:var(--mustard);font-size:.8rem}
+
+/* demonstração (quadro) */
+.board{background:var(--board);color:var(--board-text)}
+.board .lead{color:var(--board-muted)}
+.board-grid{display:grid;gap:44px;align-items:center}
+@media (min-width:940px){.board-grid{grid-template-columns:1.05fr .95fr;gap:64px}}
+.board h2{margin:16px 0 16px;color:#fff}
+.board h2 span{color:var(--mustard)}
+.chalk{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:4px;counter-reset:c}
+.chalk li{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:baseline;padding:12px 0;border-bottom:1px dashed var(--board-line)}
+.chalk li::before{counter-increment:c;content:"0" counter(c);font:900 1.8rem/1 var(--display);font-stretch:70%;color:var(--mustard)}
+.board .note{margin-top:22px;font-size:.92rem;color:var(--board-muted);border-left:3px solid var(--mustard);padding:4px 0 4px 14px}
+.board .full{display:inline-block;margin-top:16px;font-weight:700;color:var(--mustard);text-underline-offset:3px}
+.phone-wrap{display:flex;justify-content:center}
+.phone{position:relative;width:min(352px,100%);padding:11px;border-radius:50px;background:#2a211b;box-shadow:0 0 0 2px #4a3b30,0 40px 70px -30px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.07);transform:rotate(-1.5deg)}
+.phone::before{content:"";position:absolute;top:20px;left:50%;width:92px;height:24px;margin-left:-46px;border-radius:20px;background:#000;z-index:2;pointer-events:none}
+.screen{position:relative;border-radius:40px;overflow:hidden;background:#1c120c;height:min(680px,78vh);min-height:540px}
+.screen::before{content:"";position:absolute;inset:0 0 auto 0;height:34px;background:#1c120c;z-index:1}
+.screen iframe{display:block;width:100%;height:100%;border:0;padding-top:34px;background:#1c120c}
+.sticker{position:absolute;top:-16px;right:-8px;z-index:3;background:var(--mustard);color:#1e1611;font:900 .9rem/1 var(--display);font-stretch:80%;text-transform:uppercase;padding:10px 12px;border-radius:6px;transform:rotate(6deg);box-shadow:0 6px 14px -6px rgba(0,0,0,.6)}
+
+/* o que vem (cardápio) */
+.menu-card{background:var(--surface);border:2px solid var(--text);border-radius:18px;padding:34px 22px 30px;box-shadow:8px 8px 0 var(--text);max-width:920px;margin:40px auto 0}
+@media (min-width:760px){.menu-card{padding:46px 48px 42px}}
+.menu-card .cat{font:900 1.05rem/1 var(--display);font-stretch:85%;text-transform:uppercase;letter-spacing:.08em;color:var(--tomato);margin:0 0 6px}
+.menu-cols{display:grid;gap:26px}
+@media (min-width:760px){.menu-cols{grid-template-columns:1fr 1fr;gap:20px 48px}}
+.dish{list-style:none;padding:0;margin:0}
+.dish li{padding:12px 0}
+.dish .l{display:flex;align-items:baseline;gap:8px}
+.dish .l b{font-weight:800}
+.dish .l i{flex:1;border-bottom:2px dotted color-mix(in srgb,var(--text) 35%,transparent);transform:translateY(-4px);min-width:20px}
+.dish .l em{font:800 .78rem/1 var(--display);font-stretch:90%;font-style:normal;text-transform:uppercase;letter-spacing:.06em;color:var(--leaf);white-space:nowrap}
+.dish p{color:var(--muted);font-size:.94rem;margin-top:2px}
+.menu-foot{margin-top:24px;padding-top:20px;border-top:2px solid var(--text);display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+.menu-foot img{width:120px;border-radius:12px;border:2px solid var(--text);transform:rotate(-3deg)}
+.menu-foot p{color:var(--muted);font-size:.94rem;flex:1;min-width:200px}
+.center{text-align:center}
+.center .lead{margin:14px auto 0}
+
+/* para quem */
+.fit{background:var(--surface-2);border-block:2px solid var(--text)}
+.fit-grid{display:grid;gap:22px;margin-top:40px}
+@media (min-width:820px){.fit-grid{grid-template-columns:1fr 1fr;gap:28px}}
+.order{background:var(--surface);border:2px solid var(--text);border-radius:14px;padding:26px 22px 24px;position:relative}
+.order h3{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.order h3 .dot{width:14px;height:14px;border-radius:50%;flex:none}
+.order.yes h3 .dot{background:var(--leaf)}
+.order.no h3 .dot{background:var(--tomato)}
+.order ul{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.order li{padding-left:28px;position:relative}
+.order li::before{position:absolute;left:0;top:0;font:900 1.1rem/1.5 var(--display)}
+.order.yes li::before{content:"✓";color:var(--leaf)}
+.order.no li::before{content:"✕";color:var(--tomato)}
+.order .more{margin-top:18px;padding-top:16px;border-top:2px dashed var(--line);font-size:.95rem;color:var(--muted)}
+.order .more a{color:var(--tomato);font-weight:700}
+
+/* passos */
+.steps{list-style:none;padding:0;margin:44px 0 0;display:grid;gap:0}
+@media (min-width:860px){.steps{grid-template-columns:repeat(3,1fr);gap:28px}}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;padding:22px 0;border-top:2px solid var(--text)}
+@media (min-width:860px){.steps li{grid-template-columns:1fr;gap:10px}}
+.steps .n{font:900 4.6rem/.8 var(--display);font-stretch:62%;color:var(--tomato)}
+.steps p{color:var(--muted);margin-top:8px;font-size:.98rem}
+
+/* preço */
+.coupon{max-width:820px;margin:0 auto;display:grid;background:var(--surface);border:2px solid var(--text);border-radius:20px;box-shadow:8px 8px 0 var(--text);position:relative}
+@media (min-width:760px){.coupon{grid-template-columns:.9fr 1.1fr}}
+.coupon-left{padding:34px 24px 28px;text-align:center;background:var(--tomato);color:var(--tomato-ink);border-radius:18px 18px 0 0;position:relative}
+@media (min-width:760px){.coupon-left{border-radius:18px 0 0 18px;display:flex;flex-direction:column;justify-content:center}}
+.coupon-left::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:0;border-bottom:3px dashed var(--bg)}
+@media (min-width:760px){.coupon-left::after{left:auto;top:0;bottom:0;right:-2px;height:auto;border-bottom:0;border-right:3px dashed var(--bg)}}
+.coupon-left .k{font:800 .85rem/1 var(--display);text-transform:uppercase;letter-spacing:.14em}
+.amount{display:flex;align-items:flex-start;justify-content:center;gap:6px;font-family:var(--display);font-weight:900;font-stretch:68%;line-height:.85;margin:14px 0 10px}
+.amount .cur{font-size:2rem;margin-top:10px}
+.amount .val{font-size:clamp(6rem,18vw,8.2rem)}
+.coupon-left p{font-weight:600;font-size:.98rem;opacity:.92}
+.coupon-right{padding:30px 24px 30px;display:grid;gap:20px;align-content:center}
+@media (min-width:760px){.coupon-right{padding:36px 36px}}
+.coupon-right h2{font-size:clamp(1.7rem,4vw,2.3rem)}
+.checks{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.checks li{display:flex;gap:10px;font-size:.97rem}
+.checks li::before{content:"✓";font-weight:900;color:var(--leaf);flex:none}
+.coupon-right .btn{width:100%;min-height:60px;font-size:1.12rem}
+.secure{color:var(--muted);font-size:.88rem;text-align:center;margin-top:-6px}
+.vs{max-width:820px;margin:30px auto 0;text-align:center;color:var(--muted);font-size:1rem}
+.vs b{color:var(--text)}
+.guarantee{max-width:820px;margin:34px auto 0;display:flex;gap:20px;align-items:center;padding:6px 0}
+.stamp{flex:none;width:96px;height:96px;border-radius:50%;border:3px solid var(--leaf);color:var(--leaf);display:grid;place-items:center;text-align:center;font:900 .8rem/1 var(--display);font-stretch:80%;text-transform:uppercase;letter-spacing:.06em;transform:rotate(-10deg);box-shadow:inset 0 0 0 4px var(--bg),inset 0 0 0 6px var(--leaf)}
+.stamp b{display:block;font-size:2.2rem;line-height:.9}
+.guarantee h3{margin-bottom:6px}
+.guarantee p{color:var(--muted);font-size:.97rem}
+
+/* faq */
+.faq-list{max-width:800px;margin:36px auto 0}
+.faq-list details{border:2px solid var(--text);border-radius:12px;background:var(--surface);margin-bottom:10px}
+.faq-list summary{list-style:none;cursor:pointer;padding:18px 54px 18px 20px;font:700 1.04rem/1.35 var(--sans);position:relative}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);font:900 1.6rem/1 var(--display);color:var(--tomato);transition:transform 200ms var(--ease-out)}
+.faq-list details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq-list details p{padding:0 20px 20px;color:var(--muted)}
+
+/* final */
+.final-box{background:var(--mustard);color:#1e1611;border:2px solid var(--text);border-radius:20px;padding:46px 24px;text-align:center;box-shadow:8px 8px 0 var(--text)}
+.final-box h2{margin-bottom:14px}
+.final-box p{max-width:32rem;margin:0 auto 26px;font-weight:600}
+.final-box .btn-buy{background:#1e1611;color:#fffaf2;box-shadow:0 4px 0 #000}
+footer{padding:44px 0 50px;color:var(--muted);font-size:.9rem;text-align:center}
+footer a{color:var(--text);font-weight:700;text-underline-offset:3px}
+
+/* barra fixa no celular */
+.buybar{display:none}
+@media (max-width:860px){
+  body{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+  .buybar{display:flex;align-items:center;gap:12px;position:fixed;left:0;right:0;bottom:0;z-index:50;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--text);color:var(--bg);transition:transform 320ms var(--ease-drawer)}
+  .buybar[data-hidden="true"]{transform:translateY(110%)}
+  .buybar .p{line-height:1.1;min-width:0}
+  .buybar .p b{display:block;font:900 1.7rem/1 var(--display);font-stretch:70%}
+  .buybar .p small{opacity:.8;font-size:.78rem;white-space:nowrap}
+  .buybar .btn{margin-left:auto;min-height:50px;padding:0 22px;flex:none;box-shadow:none}
+}
+
+/* aparecer ao rolar */
+.js .rv{opacity:0;transform:translateY(16px)}
+.js .rv.in{opacity:1;transform:none;transition:opacity 600ms var(--ease-out),transform 600ms var(--ease-out)}
+
+@media (prefers-reduced-motion: reduce){
+  .js .ticket{animation:fade 400ms ease both}
+  .js .arrived{animation:fade 300ms ease .3s both}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .js .rv{transform:none}
+  .js .rv.in{transition:opacity 300ms ease}
+  .btn:active,.theme:active{transform:none}
+  .buybar{transition:opacity 200ms ease}
+  .buybar[data-hidden="true"]{transform:none;opacity:0;pointer-events:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/logo.svg" alt="" width="30" height="30"><span>Matheus Villanova</span></a>
+    <button class="theme" type="button" id="tema" aria-label="Trocar tema claro ou escuro">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+    </button>
+    
+    <a class="btn btn-buy" href="https://pay.hotmart.com/C108124359W" target="_blank" rel="noopener">Comprar · R$ 47</a>
+  </div>
+</header>
+
+<main id="conteudo">
+  <!-- 1. A dor -->
+  <section class="hero" aria-labelledby="titulo">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="tag">Para café, doceria, lanchonete e marmita</span>
+        <h1 id="titulo">Pare de anotar pedido <mark>na mão</mark> no WhatsApp.</h1>
+        <p class="lead">O cliente escolhe os itens no celular, toca em enviar e o pedido chega pronto para você: itens, total, forma de pagamento e endereço. Sem mensalidade e sem taxa por pedido.</p>
+        <div class="hero-cta">
+          
+          <a class="btn btn-buy" href="https://pay.hotmart.com/C108124359W" target="_blank" rel="noopener">Quero meu cardápio · R$ 47</a>
+          <a class="btn btn-line" href="#demo">Fazer um pedido teste</a>
+        </div>
+        <p class="asks-label">O que você responde todo dia:</p>
+        <ul class="asks">
+          <li>“o que tem hoje?”</li>
+          <li>“quanto é o misto?”</li>
+          <li>“faz entrega no Centro?”</li>
+          <li>“aceita Pix?”</li>
+          <li>“tem pão de queijo ainda?”</li>
+        </ul>
+      </div>
+
+      <div class="ticket-wrap" role="img" aria-label="Exemplo de pedido que chega no WhatsApp: cliente, endereço de entrega, itens com preço, taxa de entrega, total, forma de pagamento e observação.">
+        <div class="slot" aria-hidden="true"></div>
+        <div class="ticket" aria-hidden="true">
+          <h4>Novo pedido – Café Aroma</h4>
+          <div class="sub">pedido de exemplo</div>
+          <div><b>Cliente:</b> Rafael</div>
+          <div><b>Entrega em:</b> Rua Exemplo, 45</div>
+          <hr>
+          <div class="row"><span>2x Cappuccino</span><span>R$ 24,00</span></div>
+          <div class="row"><span>1x Pão de queijo (3 un.)</span><span>R$ 9,00</span></div>
+          <div class="row"><span>1x Cookie de chocolate</span><span>R$ 8,00</span></div>
+          <hr>
+          <div class="row"><span>Itens</span><span>R$ 41,00</span></div>
+          <div class="row"><span>Taxa de entrega</span><span>R$ 5,00</span></div>
+          <div class="row tot"><span>TOTAL</span><span>R$ 46,00</span></div>
+          <hr>
+          <div><b>Pagamento:</b> Pix</div>
+          <div class="obs"><b>Observação:</b> cappuccino sem canela</div>
+        </div>
+        <div class="arrived" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2 1-2.3.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>Chegou no seu WhatsApp</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip" aria-label="Vantagens">
+    <ul>
+      <li>Paga uma vez</li>
+      <li>Sem taxa por pedido</li>
+      <li>Publica grátis</li>
+      <li>QR Code na mesa</li>
+      <li>Garantia de 7 dias</li>
+    </ul>
+  </div>
+
+  <!-- 2. Demonstração -->
+  <section class="board" id="demo" aria-labelledby="t-demo">
+    <div class="wrap board-grid">
+      <div>
+        <span class="tag">Pedido teste</span>
+        <h2 id="t-demo">Faça um pedido. <span>Aqui mesmo.</span></h2>
+        <p class="lead">Este é o cardápio de verdade, funcionando no celular. É assim que o seu cliente vai ver.</p>
+        <ol class="chalk">
+          <li>Toque no + dos itens que quiser.</li>
+          <li>Abra “Ver pedido” e escolha retirada, entrega ou comer aqui.</li>
+          <li>Escolha o pagamento e escreva uma observação.</li>
+          <li>Toque em enviar e veja a mensagem pronta no WhatsApp.</li>
+        </ol>
+        <p class="note">Na demonstração, a cafeteria é fictícia e o WhatsApp abre sem número: nada é enviado para ninguém.</p>
+        <a class="full" href="demo/" target="_blank" rel="noopener">Abrir a demonstração em tela cheia ↗</a>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <span class="sticker" aria-hidden="true">Toque aqui</span>
+          <div class="screen">
+            <iframe src="demo/" title="Demonstração do cardápio digital" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. O que vem -->
+  <section id="o-que-vem" aria-labelledby="t-vem">
+    <div class="wrap">
+      <div class="center">
+        <span class="tag">O que vem no pacote</span>
+        <h2 id="t-vem" style="margin-top:16px">O cardápio do que vem</h2>
+        <p class="lead">Tudo incluso no mesmo preço. Você troca pelos seus itens e suas cores.</p>
+      </div>
+      <div class="menu-card rv">
+        <div class="menu-cols">
+          <div>
+            <p class="cat">Para o seu cliente</p>
+            <ul class="dish">
+              <li><div class="l"><b>Cardápio pronto para celular</b><i></i><em>incluso</em></div><p>Já vem com exemplo de cafeteria para trocar.</p></li>
+              <li><div class="l"><b>Categorias, fotos e preços</b><i></i><em>incluso</em></div><p>Use foto do produto ou uma figura.</p></li>
+              <li><div class="l"><b>Itens “Consulte”</b><i></i><em>incluso</em></div><p>Para bolo por encomenda ou prato do dia.</p></li>
+              <li><div class="l"><b>Retirada, entrega ou mesa</b><i></i><em>incluso</em></div><p>Com endereço ou número da mesa.</p></li>
+              <li><div class="l"><b>Pagamento e observação</b><i></i><em>incluso</em></div><p>“Sem cebola”, “troco para 50”.</p></li>
+            </ul>
+          </div>
+          <div>
+            <p class="cat">Para você</p>
+            <ul class="dish">
+              <li><div class="l"><b>Taxa de entrega e pedido mínimo</b><i></i><em>incluso</em></div><p>Você escolhe os valores, ou deixa sem.</p></li>
+              <li><div class="l"><b>QR Code das mesas</b><i></i><em>incluso</em></div><p>Para imprimir, com o número da mesa, de 1 a 6 por folha.</p></li>
+              <li><div class="l"><b>Suas cores e sua logo</b><i></i><em>incluso</em></div><p>Fica com a cara do seu negócio.</p></li>
+              <li><div class="l"><b>Guia passo a passo</b><i></i><em>incluso</em></div><p>Em português, para trocar os textos e publicar grátis.</p></li>
+              <li><div class="l"><b>Licença de uso</b><i></i><em>incluso</em></div><p>No seu negócio e em sites de clientes (um por cliente).</p></li>
+            </ul>
+          </div>
+        </div>
+        <div class="menu-foot">
+          <img src="capa.png" alt="Capa do produto: Cardápio digital com pedido no WhatsApp" width="1080" height="1080" loading="lazy" decoding="async">
+          <p>Entrega em arquivo para baixar, pela Hotmart. Quantos itens quiser: use fotos leves para o cardápio abrir rápido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Para quem é e para quem não é -->
+  <section class="fit" aria-labelledby="t-fit">
+    <div class="wrap">
+      <div class="center">
+        <span class="tag">Sem surpresa depois</span>
+        <h2 id="t-fit" style="margin-top:16px">Serve? Não serve?</h2>
+      </div>
+      <div class="fit-grid">
+        <div class="order yes rv">
+          <h3><span class="dot" aria-hidden="true"></span>Serve para você se…</h3>
+          <ul>
+            <li>Tem cafeteria, doceria, confeitaria, hamburgueria, lanchonete, açaí ou marmita.</li>
+            <li>Anota pedido no WhatsApp na mão e perde tempo perguntando o que o cliente quer.</li>
+            <li>Quer o cliente lendo o cardápio na mesa pelo QR Code.</li>
+            <li>Não quer pagar mensalidade nem comissão por pedido.</li>
+          </ul>
+        </div>
+        <div class="order no rv">
+          <h3><span class="dot" aria-hidden="true"></span>Não é para você se precisa de…</h3>
+          <ul>
+            <li><b>Pagamento online.</b> O cardápio não cobra pelo site: o pagamento é combinado no WhatsApp, como você já faz hoje.</li>
+            <li><b>Controle de estoque.</b> Se um item acabar, você tira ele do cardápio.</li>
+            <li><b>Uma tela para acompanhar os pedidos</b> ou impressão automática na cozinha. O pedido chega como mensagem no seu WhatsApp.</li>
+          </ul>
+          <p class="more">Precisa de algo maior? Eu faço sistemas sob medida. <a href="/servicos/">Veja os serviços</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Passo a passo -->
+  <section aria-labelledby="t-passos">
+    <div class="wrap">
+      <div class="center">
+        <span class="tag">Do pagamento à mesa</span>
+        <h2 id="t-passos" style="margin-top:16px">No ar em 3 passos</h2>
+        <p class="lead">Não precisa saber programar. O guia mostra cada passo com exemplos.</p>
+      </div>
+      <ol class="steps">
+        <li class="rv"><span class="n">1</span><div><h3>Baixe o pacote</h3><p>Depois da compra, a Hotmart libera o arquivo. Abra no computador e veja o cardápio funcionando.</p></div></li>
+        <li class="rv"><span class="n">2</span><div><h3>Troque pelos seus itens</h3><p>Nome, WhatsApp, cores, itens e preços ficam num bloco em português. É só trocar o texto entre aspas.</p></div></li>
+        <li class="rv"><span class="n">3</span><div><h3>Publique e imprima</h3><p>Coloque no ar de graça (Netlify ou GitHub Pages), imprima o QR Code das mesas e ponha o link na bio.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6. Preço e garantia -->
+  <section id="comprar" aria-labelledby="t-preco" style="padding-top:20px">
+    <div class="wrap">
+      <div class="coupon rv">
+        <div class="coupon-left">
+          <span class="k">Pagamento único</span>
+          <div class="amount" aria-label="47 reais"><span class="cur" aria-hidden="true">R$</span><span class="val" aria-hidden="true">47</span></div>
+          <p>Sem mensalidade. Sem taxa por pedido.</p>
+        </div>
+        <div class="coupon-right">
+          <h2 id="t-preco">Cardápio Digital com Pedido no WhatsApp</h2>
+          <ul class="checks">
+            <li>Cardápio pronto para celular</li>
+            <li>Retirada, entrega e mesa</li>
+            <li>Taxa de entrega e pedido mínimo</li>
+            <li>QR Code das mesas para imprimir</li>
+            <li>Guia passo a passo em português</li>
+          </ul>
+          
+          <a class="btn btn-buy" href="https://pay.hotmart.com/C108124359W" target="_blank" rel="noopener">Quero meu cardápio</a>
+          <p class="secure">Compra pela Hotmart, no Pix ou no cartão. O arquivo é liberado após a confirmação do pagamento.</p>
+        </div>
+      </div>
+      <p class="vs">Aplicativos de cardápio costumam cobrar <b>todo mês</b>. Aqui você paga <b>uma vez</b> e o pedido vem direto para você.</p>
+      <div class="guarantee rv">
+        <div class="stamp" aria-hidden="true"><div><b>7</b>dias</div></div>
+        <div>
+          <h3>Garantia de 7 dias</h3>
+          <p>Baixou, testou e não serviu para o seu negócio? Peça o reembolso pela própria Hotmart em até 7 dias.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Perguntas -->
+  <section aria-labelledby="t-faq" style="padding-top:20px">
+    <div class="wrap">
+      <div class="center">
+        <span class="tag">Dúvidas</span>
+        <h2 id="t-faq" style="margin-top:16px">Perguntas frequentes</h2>
+      </div>
+      <div class="faq-list">
+        <details><summary>Tem mensalidade?</summary><p>Não. Você paga uma vez. Para colocar no ar, o guia mostra como usar o Netlify ou o GitHub Pages, que são grátis.</p></details>
+        <details><summary>O cliente paga pelo site?</summary><p>Não. O pagamento é combinado no WhatsApp, como você já faz hoje. O cliente só escolhe a forma de pagamento (Pix, cartão na entrega, dinheiro) e ela vem escrita no pedido.</p></details>
+        <details><summary>Preciso saber programar?</summary><p>Não. Você troca textos entre aspas em um bloco no topo do arquivo, como nome, item e preço. O guia mostra cada passo.</p></details>
+        <details><summary>Funciona no celular do cliente?</summary><p>Sim, foi feito primeiro para celular. O cliente não precisa baixar aplicativo.</p></details>
+        <details><summary>Quantos itens posso colocar?</summary><p>Quantos quiser. Recomendamos fotos leves para o cardápio abrir rápido.</p></details>
+        <details><summary>Preciso ter um domínio (.com.br)?</summary><p>Não. O serviço grátis já dá um endereço para você usar. Se quiser um domínio próprio, dá para ligar depois, pagando o domínio à parte.</p></details>
+        <details><summary>Posso usar no site de um cliente meu?</summary><p>Pode, um site por cliente. Só não pode revender o template.</p></details>
+        <details><summary>E se eu travar na edição?</summary><p>O guia mostra cada passo com exemplos. E você tem 7 dias de garantia: se não der certo, pede o reembolso pela Hotmart.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Comprar" style="padding-top:20px">
+    <div class="wrap">
+      <div class="final-box rv">
+        <h2>Menos “o que vai querer?”. Mais pedido pronto.</h2>
+        <p>Seu cardápio no celular do cliente, e o pedido chegando completo no seu WhatsApp.</p>
+        
+        <a class="btn btn-buy" href="https://pay.hotmart.com/C108124359W" target="_blank" rel="noopener">Comprar por R$ 47</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Um produto de <a href="/">Matheus Villanova</a> · Sites e automação para pequenos negócios</div>
+</footer>
+
+<div class="buybar" id="buybar" data-hidden="false">
+  <div class="p"><b>R$ 47</b><small>pagamento único · garantia de 7 dias</small></div>
+  
+  <a class="btn btn-buy" href="https://pay.hotmart.com/C108124359W" target="_blank" rel="noopener">Comprar</a>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  // tema claro/escuro (mesma chave do site)
+  document.getElementById('tema').addEventListener('click', function () {
+    var escuro = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    var novo = escuro ? 'light' : 'dark';
+    root.dataset.theme = novo;
+    try { localStorage.setItem('theme', novo); } catch (e) {}
+  });
+
+  // aparecer ao rolar
+  var itens = document.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    itens.forEach(function (el) { io.observe(el); });
+  } else { itens.forEach(function (el) { el.classList.add('in'); }); }
+
+  // barra de compra no celular: some no topo e na seção de preço
+  var barra = document.getElementById('buybar');
+  var hero = document.querySelector('.hero-cta');
+  var preco = document.getElementById('comprar');
+  if ('IntersectionObserver' in window) {
+    var vis = { hero: true, preco: false };
+    var atualiza = function () { barra.dataset.hidden = (vis.hero || vis.preco) ? 'true' : 'false'; };
+    new IntersectionObserver(function (es) { es.forEach(function (e) { vis.hero = e.isIntersecting; }); atualiza(); }).observe(hero);
+    new IntersectionObserver(function (es) { es.forEach(function (e) { vis.preco = e.isIntersecting; }); atualiza(); }, { threshold: .25 }).observe(preco);
+    atualiza();
+  }
+})();
+</script>
+</body>
+</html>

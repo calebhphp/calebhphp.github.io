@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Agende seu horário</title>
+<meta name="description" content="Escolha o serviço, o dia e o horário e envie o pedido de agendamento pelo WhatsApp.">
+<meta name="theme-color" content="#fbf7f4">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Manrope:wght@400;600;700;800&family=Oswald:wght@500;600&display=swap">
+<!--
+  ============================================================
+  AGENDA ONLINE PELO WHATSAPP
+  Para mudar nome, WhatsApp, serviços, horários, equipe e cores,
+  role até o bloco "CONFIG" (perto do fim deste arquivo).
+  Não precisa mexer em mais nada. Veja o COMO-USAR.md.
+  ============================================================
+-->
+<style>
+:root{
+  --fundo:#fbf7f4;--cartao:#ffffff;--texto:#2b1d22;--suave:#7d6a70;--linha:#eddfe2;
+  --principal:#b4476a;--principal-texto:#ffffff;--claro:#f7e8ec;--destaque:#b88a4a;
+  --topo1:#f9e3ea;--topo2:#f3ede4;--wa:#1ea952;
+  --fonte-titulo:"Fraunces",Georgia,serif;--peso-titulo:700;--caixa-titulo:none;--espaco-titulo:-.025em;
+  --raio:22px;--sombra:0 1px 2px rgba(40,20,30,.04),0 12px 32px -12px rgba(40,20,30,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fundo);color:var(--texto);font:16px/1.6 "Manrope",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);text-transform:var(--caixa-titulo);letter-spacing:var(--espaco-titulo);margin:0;line-height:1.08}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--principal) 55%,transparent);outline-offset:2px;border-radius:10px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+[hidden]{display:none!important}
+.aviso{background:#1d1a2e;color:#fff;padding:9px 16px;font-size:.84rem;line-height:1.4;text-align:center;letter-spacing:.01em}.aviso b{display:inline-block;background:#ffd84d;color:#1d1a2e;border-radius:999px;padding:1px 9px;margin-right:6px;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em}
+
+/* topo */
+.topo{position:relative;overflow:hidden;padding:22px 0 64px;background:
+  radial-gradient(60% 80% at 100% 0%,var(--topo1),transparent 70%),
+  radial-gradient(50% 70% at 0% 100%,var(--topo2),transparent 70%)}
+.barra-topo{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:44px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:800}
+.monograma{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--principal);color:var(--principal-texto);font-family:var(--fonte-titulo);font-size:1.25rem;font-weight:700;overflow:hidden;flex:none}
+.monograma img{width:100%;height:100%;object-fit:cover}
+.link-wa{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;background:var(--cartao);border:1px solid var(--linha);text-decoration:none;font-weight:700;font-size:.9rem;white-space:nowrap}
+.link-wa svg{width:18px;height:18px;color:var(--wa)}
+.topo-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:40px;align-items:center}
+@media (max-width:860px){.topo-grid{grid-template-columns:1fr;gap:28px}}
+.selo{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--cartao) 75%,transparent);border:1px solid var(--linha);font-size:.82rem;font-weight:700;color:var(--suave)}
+.selo i{width:8px;height:8px;border-radius:50%;background:#9ca3af;display:inline-block}
+.selo.aberto i{background:#16a34a;box-shadow:0 0 0 4px rgba(22,163,74,.15)}
+.topo h1{font-size:clamp(2.6rem,7.5vw,4.6rem);margin:18px 0 14px}
+.topo .slogan{font-size:clamp(1.05rem,2.4vw,1.25rem);color:var(--suave);max-width:30em;margin:0}
+.acoes{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;border:0;font-weight:800;font-size:1rem;text-decoration:none;transition:transform 120ms ease,box-shadow 200ms ease,background-color 200ms ease;touch-action:manipulation}
+.btn:active{transform:scale(.97)}
+.btn.principal{background:var(--principal);color:var(--principal-texto);box-shadow:0 10px 24px -10px color-mix(in srgb,var(--principal) 70%,transparent)}
+.btn.sec{background:var(--cartao);color:var(--texto);border:1.5px solid var(--linha)}
+.btn.wa{background:var(--wa);color:#fff}
+.btn[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+.info-topo{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:26px;font-size:.92rem;color:var(--suave)}
+.info-topo span{display:inline-flex;align-items:center;gap:6px}
+.passos{background:var(--cartao);border:1px solid var(--linha);border-radius:28px;padding:26px;box-shadow:var(--sombra);position:relative}
+.passos::before{content:"";position:absolute;inset:-1px;border-radius:28px;padding:1px;background:linear-gradient(135deg,color-mix(in srgb,var(--principal) 40%,transparent),transparent 45%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.passos h2{font-size:1.4rem;margin-bottom:16px}
+.passos ol{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.passos li{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start}
+.passos li b{display:block}
+.passos li small{color:var(--suave);font-size:.88rem;line-height:1.45;display:block}
+.passos .n{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--claro);color:var(--principal);font-weight:800}
+.passos .nota{margin:18px 0 0;padding-top:14px;border-top:1px dashed var(--linha);font-size:.84rem;color:var(--suave)}
+
+/* seções */
+section.bloco{padding:56px 0 8px;scroll-margin-top:70px}
+.cab{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.cab h2{font-size:clamp(1.9rem,4.5vw,2.6rem)}
+.cab p{margin:6px 0 0;color:var(--suave)}
+.olho{font:800 .74rem/1 "Manrope",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--principal);margin-bottom:10px;display:block}
+nav.cats{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--fundo) 92%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--linha)}
+nav.cats .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
+nav.cats .wrap::-webkit-scrollbar{display:none}
+nav.cats a{flex:none;padding:8px 16px;border-radius:999px;background:var(--claro);color:var(--principal);text-decoration:none;font-weight:700;font-size:.9rem}
+.categoria{margin-top:28px;scroll-margin-top:76px}
+.categoria h3{font-size:1.35rem;margin-bottom:12px}
+.servicos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:760px){.servicos{grid-template-columns:1fr}}
+.servico{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:14px;border-radius:var(--raio);background:var(--cartao);border:1.5px solid var(--linha);text-align:left;width:100%;transition:border-color 160ms ease,box-shadow 200ms ease,transform 120ms ease}
+.servico:hover{border-color:color-mix(in srgb,var(--principal) 45%,var(--linha))}
+.servico:active{transform:scale(.985)}
+.servico[aria-pressed="true"]{border-color:var(--principal);box-shadow:0 0 0 3px color-mix(in srgb,var(--principal) 16%,transparent)}
+.servico .fig{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:var(--claro);overflow:hidden}
+.servico .fig img{width:100%;height:100%;object-fit:cover}
+.servico b{display:block;font-size:1rem;line-height:1.3}
+.servico small{display:block;color:var(--suave);font-size:.86rem;line-height:1.4;margin-top:2px}
+.servico .meta{display:flex;gap:10px;margin-top:6px;font-size:.86rem;font-weight:700}
+.servico .meta .preco{color:var(--principal)}
+.servico .meta .dur{color:var(--suave);font-weight:600}
+.marcar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--linha);background:var(--fundo);color:var(--principal);font-size:20px;font-weight:700;transition:background-color 160ms ease,color 160ms ease,border-color 160ms ease}
+.servico[aria-pressed="true"] .marcar{background:var(--principal);border-color:var(--principal);color:var(--principal-texto)}
+.equipe{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.pessoa{padding:20px;border-radius:var(--raio);background:var(--cartao);border:1px solid var(--linha);display:grid;gap:4px}
+.avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-family:var(--fonte-titulo);font-size:1.6rem;font-weight:700;color:#fff;overflow:hidden;margin-bottom:8px}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.pessoa small{color:var(--suave)}
+.pessoa .atende{font-size:.8rem;color:var(--suave);margin-top:6px}
+.galeria{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.galeria img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:18px;display:block}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.duas{grid-template-columns:1fr}}
+.caixa{padding:24px;border-radius:var(--raio);background:var(--cartao);border:1px solid var(--linha)}
+.caixa h3{font-size:1.3rem;margin-bottom:12px}
+.caixa p{margin:0;color:var(--suave)}
+.horarios{width:100%;border-collapse:collapse;font-size:.95rem}
+.horarios td{padding:9px 0;border-bottom:1px solid var(--linha)}
+.horarios td:last-child{text-align:right;color:var(--suave)}
+.horarios tr.hoje td{font-weight:800;color:var(--texto)}
+.horarios tr.hoje td:first-child::after{content:"hoje";margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--claro);color:var(--principal);font-size:.72rem;font-weight:800;vertical-align:2px}
+.regras{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.regras li{display:grid;grid-template-columns:22px 1fr;gap:10px;color:var(--suave)}
+.regras li::before{content:"✓";color:var(--principal);font-weight:800}
+.endereco{display:grid;gap:12px}
+.endereco .btn{justify-self:start;min-height:44px;font-size:.92rem}
+footer{padding:48px 0 140px;color:var(--suave);font-size:.88rem;text-align:center}
+footer a{color:inherit}
+
+/* barra de seleção */
+.barra{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));z-index:40;transform:translate(-50%,170%);width:min(580px,calc(100% - 28px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 12px 12px 20px;border-radius:22px;background:var(--texto);color:var(--fundo);box-shadow:0 24px 50px -18px rgba(0,0,0,.55);transition:transform 420ms cubic-bezier(.22,1,.36,1)}
+.barra.show{transform:translate(-50%,0)}
+.barra b{display:block;font-size:1rem}
+.barra small{opacity:.75;font-size:.85rem}
+.barra .btn{min-height:46px;padding:0 18px;font-size:.95rem;flex:none}
+
+/* painel de agendamento */
+.escuro{position:fixed;inset:0;z-index:60;background:rgba(15,8,12,.5);opacity:0;pointer-events:none;transition:opacity 250ms ease}
+.escuro.show{opacity:1;pointer-events:auto}
+.painel{position:fixed;z-index:61;left:50%;bottom:0;transform:translate(-50%,104%);width:min(620px,100%);max-height:94vh;max-height:94dvh;display:flex;flex-direction:column;background:var(--fundo);border-radius:26px 26px 0 0;transition:transform 380ms cubic-bezier(.22,1,.36,1);visibility:hidden}
+.painel.show{transform:translate(-50%,0);visibility:visible}
+@media (min-width:760px){.painel{bottom:auto;top:50%;transform:translate(-50%,-46%) scale(.98);opacity:0;border-radius:26px;max-height:88vh;transition:transform 300ms cubic-bezier(.22,1,.36,1),opacity 200ms ease}.painel.show{transform:translate(-50%,-50%);opacity:1}}
+.painel header{padding:18px 20px 12px;border-bottom:1px solid var(--linha);display:grid;gap:12px}
+.painel header .linha{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.painel header h2{font-size:1.45rem}
+.voltar,.fechar{border:0;background:var(--claro);color:var(--principal);height:38px;min-width:38px;border-radius:999px;font-size:1rem;font-weight:800;padding:0 12px}
+.fechar{font-size:22px;padding:0;width:38px}
+.progresso{display:flex;gap:6px}
+.progresso span{flex:1;height:4px;border-radius:4px;background:var(--linha);transition:background-color 300ms ease}
+.progresso span.on{background:var(--principal)}
+.corpo{padding:18px 20px;overflow:auto;flex:1}
+.rodape-painel{padding:12px 20px max(16px,env(safe-area-inset-bottom));border-top:1px solid var(--linha);background:var(--fundo)}
+.rodape-painel .btn{width:100%}
+.etapa{animation:entra 320ms cubic-bezier(.22,1,.36,1)}
+@keyframes entra{from{opacity:0;transform:translateX(14px)}}
+.resumo{display:grid;gap:4px;padding:14px 16px;border-radius:18px;background:var(--claro);font-size:.92rem;margin-bottom:16px}
+.resumo b{font-size:1rem}
+.resumo span{color:var(--suave)}
+.pros{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.pro{display:grid;justify-items:center;gap:6px;padding:16px 8px;border-radius:20px;border:1.5px solid var(--linha);background:var(--cartao);text-align:center}
+.pro .avatar{width:56px;height:56px;font-size:1.3rem;margin:0}
+.pro small{color:var(--suave);font-size:.78rem;line-height:1.3}
+.pro[aria-pressed="true"]{border-color:var(--principal);box-shadow:0 0 0 3px color-mix(in srgb,var(--principal) 16%,transparent)}
+.rotulo{font-weight:800;font-size:.92rem;margin:4px 0 10px;display:block}
+.dias{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin;scroll-snap-type:x proximity}
+.dia{flex:none;width:66px;padding:10px 0;border-radius:18px;border:1.5px solid var(--linha);background:var(--cartao);text-align:center;scroll-snap-align:start;line-height:1.2}
+.dia small{display:block;color:var(--suave);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.dia b{display:block;font-size:1.35rem;margin:2px 0}
+.dia em{display:block;font-style:normal;font-size:.68rem;color:var(--suave)}
+.dia[aria-pressed="true"]{background:var(--principal);border-color:var(--principal);color:var(--principal-texto)}
+.dia[aria-pressed="true"] small,.dia[aria-pressed="true"] em{color:inherit;opacity:.85}
+.dia:disabled{opacity:.4;cursor:not-allowed}
+.turno{margin-top:16px}
+.turno h4{margin:0 0 8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--suave)}
+.horas{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px}
+.hora{padding:11px 0;border-radius:14px;border:1.5px solid var(--linha);background:var(--cartao);font-weight:800;font-size:.95rem}
+.hora:hover{border-color:var(--principal)}
+.hora[aria-pressed="true"]{background:var(--principal);border-color:var(--principal);color:var(--principal-texto)}
+.vazio{padding:18px;border-radius:18px;background:var(--cartao);border:1px dashed var(--linha);color:var(--suave);text-align:center;font-size:.92rem}
+.form{display:grid;gap:14px}
+.form label{display:grid;gap:6px;font-weight:700;font-size:.92rem}
+.form label small{font-weight:600;color:var(--suave)}
+.form input[type=text],.form input[type=tel],.form textarea{font-size:16px;padding:13px 14px;border-radius:14px;border:1.5px solid var(--linha);background:var(--cartao);width:100%}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--principal)}
+.form textarea{min-height:76px;resize:vertical}
+.check{display:flex!important;grid-template-columns:none;align-items:flex-start;gap:10px!important;font-weight:600!important}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--principal);flex:none}
+.pix{display:grid;gap:12px;padding:16px;border-radius:20px;background:var(--cartao);border:1.5px solid var(--linha)}
+.pix .topo-pix{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.pix .topo-pix b{font-size:1.05rem}
+.pix .valor{font-family:var(--fonte-titulo);font-size:1.5rem;color:var(--principal);font-weight:700}
+.pix .qr-pix{display:flex;justify-content:center;padding:10px;background:#fff;border-radius:14px;border:1px solid var(--linha)}
+.pix .qr-pix img,.pix .qr-pix canvas{width:180px!important;height:180px!important}
+.pix code{font:600 .72rem/1.4 ui-monospace,Menlo,Consolas,monospace;word-break:break-all;color:var(--suave);background:var(--fundo);padding:10px;border-radius:12px;display:block;max-height:4.4em;overflow:hidden}
+.pix .btn{min-height:44px;font-size:.92rem}
+.pix p{margin:0;font-size:.84rem;color:var(--suave)}
+.erro{color:#b3261e;font-size:.9rem;font-weight:700;min-height:1.2em;margin:8px 0 0}
+.feito{text-align:center;display:grid;gap:12px;justify-items:center;padding:12px 0}
+.feito .ok{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;font-size:36px;background:#dcfce7;color:#15803d;animation:pop 520ms cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.feito h3{font-size:1.6rem}
+.feito p{margin:0;color:var(--suave)}
+.feito .btns{display:grid;gap:8px;width:100%;max-width:360px}
+
+/* tela do QR Code */
+.qr-tela{padding:32px 0 60px}
+.qr-tela h1{font-size:2rem;margin-bottom:8px}
+.qr-tela .controles{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:18px 0}
+.qr-tela .controles label{display:grid;gap:4px;font-weight:700;font-size:.92rem}
+.qr-tela select{font-size:16px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--linha);background:var(--cartao);min-width:140px}
+.qr-folha{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.qr-cartao{background:#fff;color:#1a1a1a;border:2px dashed #d6d6d6;border-radius:20px;padding:22px;text-align:center;break-inside:avoid}
+.qr-cartao h2{font-size:1.45rem}
+.qr-cartao .qr{display:flex;justify-content:center;margin:14px 0}
+.qr-cartao .qr img,.qr-cartao .qr canvas{width:170px!important;height:170px!important}
+.qr-cartao p{margin:0;color:#555;font-size:.92rem}
+.qr-url{word-break:break-all;color:var(--suave);font-size:.85rem}
+@media print{
+  body{background:#fff}
+  body>*:not(#tela-qr){display:none!important}
+  #tela-qr{display:block!important;padding:0}
+  #tela-qr .nao-imprimir{display:none!important}
+  .qr-folha{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="aviso" id="aviso" hidden></div>
+
+<div id="site">
+  <header class="topo">
+    <div class="wrap">
+      <div class="barra-topo">
+        <a class="marca" href="#"><span class="monograma" id="monograma"></span><span id="nome-curto"></span></a>
+        <a class="link-wa" id="wa-topo" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.4-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.7 11.7 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>WhatsApp</a>
+      </div>
+      <div class="topo-grid">
+        <div>
+          <span class="selo" id="selo"><i></i><span></span></span>
+          <h1 id="nome"></h1>
+          <p class="slogan" id="slogan"></p>
+          <div class="acoes">
+            <a class="btn principal" href="#servicos">Agendar horário</a>
+            <a class="btn sec" id="wa-duvida" target="_blank" rel="noopener">Tirar uma dúvida</a>
+          </div>
+          <div class="info-topo" id="info-topo"></div>
+        </div>
+        <aside class="passos" aria-label="Como agendar">
+          <h2>Agende em 1 minuto</h2>
+          <ol>
+            <li><span class="n">1</span><span><b>Escolha o serviço</b><small>Pode marcar mais de um. Você vê o tempo e o valor na hora.</small></span></li>
+            <li><span class="n">2</span><span><b>Escolha o dia e o horário</b><small id="passo2">E, se quiser, com quem quer ser atendida.</small></span></li>
+            <li><span class="n">3</span><span><b>Envie pelo WhatsApp</b><small>O pedido chega pronto e a confirmação vem por lá.</small></span></li>
+          </ol>
+          <p class="nota" id="nota-passos">Sem cadastro e sem baixar aplicativo.</p>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <nav class="cats" aria-label="Categorias de serviço"><div class="wrap" id="cats"></div></nav>
+
+  <main>
+    <section class="bloco wrap" id="servicos" style="padding-top:36px">
+      <div class="cab"><div><span class="olho">Serviços</span><h2>O que você quer fazer?</h2><p>Toque para escolher. Dá para juntar mais de um no mesmo horário.</p></div></div>
+      <div id="lista-servicos"></div>
+    </section>
+
+    <section class="bloco wrap" id="equipe" hidden>
+      <div class="cab"><div><span class="olho">Equipe</span><h2>Quem vai cuidar de você</h2></div></div>
+      <div class="equipe" id="lista-equipe"></div>
+    </section>
+
+    <section class="bloco wrap" id="galeria" hidden>
+      <div class="cab"><div><span class="olho">Trabalhos</span><h2>Alguns resultados</h2></div></div>
+      <div class="galeria" id="lista-galeria"></div>
+    </section>
+
+    <section class="bloco wrap" id="sobre">
+      <div class="duas">
+        <div class="caixa" id="caixa-sobre"><span class="olho">Sobre</span><h3 id="sobre-titulo"></h3><p id="sobre-texto"></p></div>
+        <div class="caixa" id="caixa-regras"><span class="olho">Antes de agendar</span><h3>Combinados</h3><ul class="regras" id="regras"></ul></div>
+      </div>
+    </section>
+
+    <section class="bloco wrap" id="onde">
+      <div class="duas">
+        <div class="caixa"><span class="olho">Horários</span><h3>Quando atendemos</h3><table class="horarios" id="tabela-horarios"></table></div>
+        <div class="caixa endereco"><span class="olho">Endereço</span><h3>Como chegar</h3><p id="endereco"></p><a class="btn sec" id="mapa" target="_blank" rel="noopener">Abrir no mapa</a><p id="contato-extra"></p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap"><span id="rodape"></span><span id="link-qr"></span></footer>
+</div>
+
+<div class="barra" id="barra" aria-live="polite">
+  <div><b id="barra-titulo"></b><small id="barra-sub"></small></div>
+  <button class="btn principal" id="abrir">Escolher horário</button>
+</div>
+
+<div class="escuro" id="escuro"></div>
+<div class="painel" id="painel" role="dialog" aria-modal="true" aria-labelledby="painel-titulo">
+  <header>
+    <div class="linha">
+      <button class="voltar" id="voltar" aria-label="Voltar">←</button>
+      <h2 id="painel-titulo">Agendar</h2>
+      <button class="fechar" id="fechar" aria-label="Fechar">×</button>
+    </div>
+    <div class="progresso" id="progresso"></div>
+  </header>
+  <div class="corpo" id="corpo"></div>
+  <div class="rodape-painel" id="rodape-painel"><button class="btn principal" id="seguir">Continuar</button><p class="erro" id="erro" role="alert"></p></div>
+</div>
+
+<div id="tela-qr" class="qr-tela wrap" hidden>
+  <div class="nao-imprimir">
+    <h1>QR Code para o balcão</h1>
+    <p>Imprima e deixe no balcão, no espelho ou na recepção. A cliente aponta a câmera e cai direto na sua agenda.</p>
+    <div class="controles">
+      <label>Cópias por folha
+        <select id="qr-copias"><option>1</option><option>2</option><option selected>4</option><option>6</option></select>
+      </label>
+      <button class="btn principal" onclick="window.print()">Imprimir</button>
+      <a class="btn sec" href="#">Voltar para a agenda</a>
+    </div>
+    <p class="qr-url" id="qr-url"></p>
+  </div>
+  <div class="qr-folha" id="qr-folha"></div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG – EDITE SÓ ESTA PARTE
+   Troque os textos entre aspas. Preço usa ponto: 49.90
+   Duração é em minutos: 60 = 1 hora, 90 = 1h30.
+   ============================================================ */
+/* CONFIG-INICIO */
+const CONFIG = {
+  nome: "Essenza Estética (fictícia)",
+  slogan: "Cuidados de pele e corpo com hora marcada, em um espaço calmo e reservado.",
+  logo: "",
+  whatsapp: "",
+  endereco: "Rua Exemplo, 789 – Bairro Fictício",
+  linkMapa: "",
+  instagram: "",
+  tratamento: "",
+  tema: "salvia",
+  cores: { principal: "#2f6f5e", fundo: "#f5f8f6", texto: "#1c2a26" },
+  funcionamento: {
+    seg: ["09:00-12:00", "13:00-19:00"],
+    ter: ["09:00-12:00", "13:00-19:00"],
+    qua: ["09:00-12:00", "13:00-19:00"],
+    qui: ["09:00-12:00", "13:00-19:00"],
+    sex: ["09:00-12:00", "13:00-18:00"],
+    sab: ["09:00-13:00"],
+    dom: []
+  },
+  intervaloMinutos: 30,
+  antecedenciaMinimaHoras: 4,
+  diasParaAgendar: 30,
+  folgas: ["2026-12-25", "2027-01-01"],
+  categorias: [
+    { nome: "Rosto", servicos: [
+      { figura: "🫧", nome: "Limpeza de pele", descricao: "Higienização, extração e máscara calmante", duracao: 90, preco: 180 },
+      { figura: "💧", nome: "Hidratação facial", descricao: "Para pele seca ou sensível", duracao: 60, preco: 140 },
+      { figura: "📋", nome: "Avaliação de pele", descricao: "Conversa e análise para indicar o melhor cuidado", duracao: 30, preco: null }
+    ]},
+    { nome: "Corpo", servicos: [
+      { figura: "🌿", nome: "Drenagem linfática", descricao: "Sessão de 60 minutos", duracao: 60, preco: 150 },
+      { figura: "🤲", nome: "Massagem relaxante", descricao: "Com óleos aromáticos", duracao: 60, preco: 160 },
+      { figura: "🎁", nome: "Pacote 5 sessões de drenagem", descricao: "Agende aqui a primeira sessão", duracao: 60, preco: 650 }
+    ]}
+  ],
+  profissionais: [],
+  sinal: {
+    ativo: false,
+    tipo: "porcentagem",
+    valor: 30,
+    pixChave: "",
+    pixTipo: "email",
+    pixNome: "",
+    pixCidade: "Sao Paulo"
+  },
+  sobreTitulo: "Um tempo só seu",
+  sobre: "Atendimento individual, com hora marcada e produtos escolhidos para o seu tipo de pele.",
+  combinados: [
+    "Chegue com 10 minutos de antecedência.",
+    "Venha sem maquiagem para os cuidados de rosto.",
+    "Cancelamentos com até 24 horas de antecedência, pelo WhatsApp.",
+    "O horário fica garantido depois da nossa confirmação."
+  ],
+  fotos: [],
+  mostrarLinkQRNoRodape: true
+};
+/* CONFIG-FIM */
+/* ===================== FIM DO CONFIG ===================== */
+
+(function () {
+  const C = CONFIG;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const DIAS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+  const DIA_CURTO = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  const DIA_LONGO = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+  const ORDEM = ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom'];
+  const NOME_ORDEM = { seg: 'Segunda', ter: 'Terça', qua: 'Quarta', qui: 'Quinta', sex: 'Sexta', sab: 'Sábado', dom: 'Domingo' };
+  const brl = (n) => Number(n).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const durTxt = (m) => m < 60 ? m + ' min' : Math.floor(m / 60) + 'h' + (m % 60 ? String(m % 60).padStart(2, '0') : '');
+  const hhmm = (m) => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+  const min = (s) => { const [h, m] = String(s).trim().split(':').map(Number); return h * 60 + (m || 0); };
+  const iso = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const fone = String(C.whatsapp || '').replace(/\D/g, '');
+  const waLink = (txt) => 'https://wa.me/' + (fone.length >= 12 ? fone : '') + '?text=' + encodeURIComponent(txt);
+  const trat = C.tratamento === 'o' ? 'o' : C.tratamento === 'a' ? 'a' : '';
+  const atendid = trat ? 'atendid' + trat : 'atendido(a)';
+
+  /* ---------- tema ---------- */
+  const TEMAS = {
+    rose: {},
+    noite: { fundo: '#121214', cartao: '#1b1b1f', texto: '#f3efe8', suave: '#a7a195', linha: '#2c2b2e', principal: '#c9a46a', 'principal-texto': '#16130e', claro: '#25221d', topo1: '#2a2419', topo2: '#18181c', 'fonte-titulo': '"Oswald",Impact,sans-serif', 'peso-titulo': '600', 'caixa-titulo': 'uppercase', 'espaco-titulo': '.01em' },
+    salvia: { fundo: '#f5f8f6', texto: '#1c2a26', suave: '#5e706a', linha: '#dbe6e1', principal: '#2f6f5e', claro: '#e3efea', topo1: '#dcebe4', topo2: '#eef1e6', destaque: '#8a7a4a' }
+  };
+  const params = new URLSearchParams(location.search);
+  let tema = params.get('tema') || C.tema || 'rose';
+  let vars = TEMAS[tema] || {};
+  if (tema === 'personalizado' && C.cores) {
+    vars = { principal: C.cores.principal, fundo: C.cores.fundo, texto: C.cores.texto, claro: 'color-mix(in srgb,' + C.cores.principal + ' 12%,' + C.cores.fundo + ')', topo1: 'color-mix(in srgb,' + C.cores.principal + ' 18%,' + C.cores.fundo + ')', linha: 'color-mix(in srgb,' + C.cores.texto + ' 12%,' + C.cores.fundo + ')', suave: 'color-mix(in srgb,' + C.cores.texto + ' 62%,' + C.cores.fundo + ')' };
+  }
+  Object.entries(vars).forEach(([k, v]) => v && document.documentElement.style.setProperty('--' + k, v));
+  const metaCor = document.querySelector('meta[name=theme-color]');
+  metaCor.content = getComputedStyle(document.documentElement).getPropertyValue('--fundo').trim() || '#fbf7f4';
+
+  /* ---------- dados ---------- */
+  const SERV = [];
+  (C.categorias || []).forEach((cat, ci) => (cat.servicos || []).forEach((s, si) => SERV.push(Object.assign({ id: ci + '-' + si, cat: cat.nome, duracao: 60 }, s))));
+  const PROS = (C.profissionais || []).filter((p) => p && p.nome);
+  const sel = new Set();
+  const st = { etapa: 0, pro: null, dia: null, hora: null, nome: '', obs: '', pago: false };
+  const cores = ['#b4476a', '#7c5cbf', '#2f8f83', '#c07a2c', '#4a6fd1', '#9c4a3a'];
+
+  /* ---------- aviso ---------- */
+  if (fone.length < 12) {
+    $('aviso').hidden = false;
+    $('aviso').innerHTML = '<b>Demonstração</b> Negócio fictício. O WhatsApp abre sem número, só para você ver a mensagem.';
+  }
+
+  /* ---------- topo ---------- */
+  document.title = C.nome + ' – agende seu horário';
+  $('nome').textContent = C.nome;
+  $('nome-curto').textContent = C.nome;
+  $('slogan').textContent = C.slogan || '';
+  if (C.logo) $('monograma').innerHTML = '<img src="' + esc(C.logo) + '" alt="">';
+  else $('monograma').textContent = (C.nome || '?').trim().charAt(0).toUpperCase();
+  $('wa-topo').href = waLink('Olá! Vim pelo site de agendamento.');
+  $('wa-duvida').href = waLink('Olá! Tenho uma dúvida antes de agendar.');
+  if (!PROS.length) $('passo2').textContent = 'Só aparecem os horários em que atendemos.';
+  if (trat === 'o') $('passo2').textContent = $('passo2').textContent.replace('atendida', 'atendido');
+  if (!trat) $('passo2').textContent = $('passo2').textContent.replace('ser atendida', 'ser atendido(a)');
+  const info = [];
+  if (C.endereco) info.push('<span>📍 ' + esc(C.endereco) + '</span>');
+  if (C.instagram) info.push('<span>📷 <a href="https://instagram.com/' + esc(String(C.instagram).replace('@', '')) + '" target="_blank" rel="noopener">' + esc(C.instagram) + '</a></span>');
+  $('info-topo').innerHTML = info.join('');
+  if (C.sinal && C.sinal.ativo) $('nota-passos').textContent = 'Sem cadastro e sem baixar aplicativo. O horário é garantido com um sinal pelo Pix.';
+
+  /* ---------- aberto agora ---------- */
+  function periodos(d) {
+    if ((C.folgas || []).includes(iso(d))) return [];
+    return (C.funcionamento[DIAS[d.getDay()]] || []).map((p) => p.split('-').map(min)).filter((p) => p.length === 2 && p[1] > p[0]);
+  }
+  (function selo() {
+    const agora = new Date(); const m = agora.getHours() * 60 + agora.getMinutes();
+    const hoje = periodos(agora).find(([a, b]) => m >= a && m < b);
+    const el = $('selo');
+    if (hoje) { el.classList.add('aberto'); el.querySelector('span').textContent = 'Aberto agora · até ' + hhmm(hoje[1]); return; }
+    for (let i = 0; i < 8; i++) {
+      const d = new Date(agora); d.setDate(d.getDate() + i);
+      const p = periodos(d).find(([a]) => i > 0 || a > m);
+      if (p) { const q = i === 0 ? 'hoje' : i === 1 ? 'amanhã' : DIA_LONGO[d.getDay()]; el.querySelector('span').textContent = 'Fechado agora · abre ' + q + ' às ' + hhmm(p[0]); return; }
+    }
+    el.querySelector('span').textContent = 'Agendamento online';
+  })();
+
+  /* ---------- serviços ---------- */
+  function precoTxt(s) { return s.preco == null ? 'Consulte' : (s.aPartirDe ? 'a partir de ' : '') + brl(s.preco); }
+  function figura(f) { return f && /\.(png|jpe?g|webp|gif|svg)$/i.test(f) ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : esc(f || '•'); }
+  $('cats').innerHTML = (C.categorias || []).map((c, i) => '<a href="#cat-' + i + '">' + esc(c.nome) + '</a>').join('');
+  if ((C.categorias || []).length < 2) document.querySelector('nav.cats').hidden = true;
+  $('lista-servicos').innerHTML = (C.categorias || []).map((c, ci) => '<div class="categoria" id="cat-' + ci + '"><h3>' + esc(c.nome) + '</h3><div class="servicos">' +
+    (c.servicos || []).map((s, si) => { const x = SERV.find((y) => y.id === ci + '-' + si); return '<button class="servico" data-id="' + x.id + '" aria-pressed="false"><span class="fig">' + figura(x.figura) + '</span><span><b>' + esc(x.nome) + '</b>' + (x.descricao ? '<small>' + esc(x.descricao) + '</small>' : '') + '<span class="meta"><span class="preco">' + precoTxt(x) + '</span><span class="dur">' + durTxt(x.duracao) + '</span></span></span><span class="marcar" aria-hidden="true">+</span></button>'; }).join('') + '</div></div>').join('');
+  $('lista-servicos').addEventListener('click', (e) => {
+    const b = e.target.closest('.servico'); if (!b) return;
+    const id = b.dataset.id;
+    if (sel.has(id)) sel.delete(id); else sel.add(id);
+    b.setAttribute('aria-pressed', sel.has(id)); b.querySelector('.marcar').textContent = sel.has(id) ? '✓' : '+';
+    barra();
+  });
+  function escolhidos() { return SERV.filter((s) => sel.has(s.id)); }
+  function totais() {
+    const l = escolhidos(); const dur = l.reduce((a, s) => a + (Number(s.duracao) || 0), 0);
+    const semPreco = l.some((s) => s.preco == null); const aPartir = l.some((s) => s.aPartirDe);
+    const valor = l.reduce((a, s) => a + (Number(s.preco) || 0), 0);
+    let txt = valor ? (aPartir || semPreco ? 'a partir de ' : '') + brl(valor) : 'valor a combinar';
+    return { l, dur, valor, txt, exato: !semPreco && !aPartir };
+  }
+  function barra() {
+    const t = totais();
+    $('barra').classList.toggle('show', t.l.length > 0);
+    $('barra-titulo').textContent = t.l.length === 1 ? t.l[0].nome : t.l.length + ' serviços';
+    $('barra-sub').textContent = durTxt(t.dur) + ' · ' + t.txt;
+  }
+
+  /* ---------- equipe, galeria, sobre ---------- */
+  function avatar(p, i) { return '<span class="avatar" style="background:' + cores[i % cores.length] + '">' + (p.foto ? '<img src="' + esc(p.foto) + '" alt="">' : esc(p.nome.charAt(0).toUpperCase())) + '</span>'; }
+  if (PROS.length) {
+    $('equipe').hidden = false;
+    $('lista-equipe').innerHTML = PROS.map((p, i) => '<div class="pessoa">' + avatar(p, i) + '<b>' + esc(p.nome) + '</b><small>' + esc(p.funcao || '') + '</small>' + (p.dias && p.dias.length ? '<span class="atende">Atende: ' + ORDEM.filter((d) => p.dias.includes(d)).map((d) => DIA_CURTO[DIAS.indexOf(d)]).join(', ') + '</span>' : '') + '</div>').join('');
+  }
+  if ((C.fotos || []).length) { $('galeria').hidden = false; $('lista-galeria').innerHTML = C.fotos.map((f) => '<img src="' + esc(f) + '" alt="" loading="lazy">').join(''); }
+  $('sobre-titulo').textContent = C.sobreTitulo || C.nome;
+  $('sobre-texto').textContent = C.sobre || '';
+  if (!C.sobre) $('caixa-sobre').hidden = true;
+  $('regras').innerHTML = (C.combinados || []).map((r) => '<li>' + esc(r) + '</li>').join('');
+  if (!(C.combinados || []).length) $('caixa-regras').hidden = true;
+  const hojeK = DIAS[new Date().getDay()];
+  $('tabela-horarios').innerHTML = ORDEM.map((k) => { const p = C.funcionamento[k] || []; return '<tr class="' + (k === hojeK ? 'hoje' : '') + '"><td>' + NOME_ORDEM[k] + '</td><td>' + (p.length ? p.map((x) => x.replace('-', ' – ')).join(' · ') : 'Fechado') + '</td></tr>'; }).join('');
+  $('endereco').textContent = C.endereco || '';
+  $('mapa').href = C.linkMapa || 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent((C.nome || '') + ' ' + (C.endereco || ''));
+  if (!C.endereco && !C.linkMapa) $('mapa').hidden = true;
+  $('contato-extra').innerHTML = fone.length >= 12 ? 'WhatsApp: <a href="' + waLink('Olá!') + '" target="_blank" rel="noopener">+' + fone.slice(0, 2) + ' (' + fone.slice(2, 4) + ') ' + fone.slice(4, -4) + '-' + fone.slice(-4) + '</a>' : '';
+  $('rodape').innerHTML = '© ' + new Date().getFullYear() + ' ' + esc(C.nome) + '. ';
+  if (C.mostrarLinkQRNoRodape) $('link-qr').innerHTML = '<a href="#qr">Imprimir QR Code do balcão</a>';
+
+  /* ---------- horários livres ---------- */
+  function prosPossiveis() {
+    const cats = [...new Set(escolhidos().map((s) => s.cat))];
+    return PROS.filter((p) => !p.categorias || !p.categorias.length || cats.every((c) => p.categorias.includes(c)));
+  }
+  function horarios(d, dur, pro) {
+    const k = DIAS[d.getDay()];
+    if (pro && pro.dias && pro.dias.length && !pro.dias.includes(k)) return [];
+    if (!pro && PROS.length && prosPossiveis().length && !prosPossiveis().some((p) => !p.dias || !p.dias.length || p.dias.includes(k))) return [];
+    const passo = Math.max(5, Number(C.intervaloMinutos) || 30);
+    const agora = new Date();
+    const limite = iso(d) === iso(agora) ? agora.getHours() * 60 + agora.getMinutes() + (Number(C.antecedenciaMinimaHoras) || 0) * 60 : -1;
+    const out = [];
+    periodos(d).forEach(([a, b]) => { for (let t = a; t + dur <= b; t += passo) if (t >= limite) out.push(t); });
+    return out;
+  }
+  function dias() {
+    const out = []; const base = new Date(); base.setHours(12, 0, 0, 0);
+    const n = Math.max(1, Number(C.diasParaAgendar) || 14);
+    const maxAntec = Math.ceil((Number(C.antecedenciaMinimaHoras) || 0) / 24);
+    for (let i = 0; i < n + maxAntec; i++) { const d = new Date(base); d.setDate(d.getDate() + i); out.push(d); }
+    return out;
+  }
+
+  /* ---------- painel ---------- */
+  const ETAPAS = () => PROS.length && prosPossiveis().length ? ['pro', 'quando', 'dados', 'feito'] : ['quando', 'dados', 'feito'];
+  const painel = $('painel'), escuro = $('escuro');
+  function abrir() {
+    if (!sel.size) return;
+    Object.assign(st, { etapa: 0, pro: null, dia: null, hora: null, pago: false });
+    if (!ETAPAS().includes('pro')) st.pro = null;
+    painel.classList.add('show'); escuro.classList.add('show'); document.body.style.overflow = 'hidden';
+    render(); setTimeout(() => $('fechar').focus(), 50);
+  }
+  function fechar() { painel.classList.remove('show'); escuro.classList.remove('show'); document.body.style.overflow = ''; }
+  $('abrir').onclick = abrir; $('fechar').onclick = fechar; escuro.onclick = fechar;
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && painel.classList.contains('show')) fechar(); });
+  $('voltar').onclick = () => { if (st.etapa > 0) { st.etapa--; render(); } else fechar(); };
+
+  function resumoHTML() {
+    const t = totais();
+    let quem = st.pro ? ' com ' + esc(st.pro.nome) : '';
+    let quando = st.dia && st.hora != null ? '<span>' + DIA_LONGO[st.dia.getDay()] + ', ' + st.dia.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' às ' + hhmm(st.hora) + quem + '</span>' : (quem ? '<span>' + quem.trim() + '</span>' : '');
+    return '<div class="resumo"><b>' + t.l.map((s) => esc(s.nome)).join(' + ') + '</b><span>' + durTxt(t.dur) + ' · ' + t.txt + '</span>' + quando + '</div>';
+  }
+  function valorSinal() {
+    const s = C.sinal || {}; if (!s.ativo) return 0;
+    const t = totais();
+    const v = s.tipo === 'porcentagem' ? t.valor * (Number(s.valor) || 0) / 100 : Number(s.valor) || 0;
+    return Math.round(v * 100) / 100;
+  }
+
+  function render() {
+    const etapas = ETAPAS(); const nome = etapas[st.etapa];
+    $('progresso').innerHTML = etapas.slice(0, -1).map((_, i) => '<span class="' + (i <= st.etapa ? 'on' : '') + '"></span>').join('');
+    $('voltar').style.visibility = nome === 'feito' ? 'hidden' : 'visible';
+    $('erro').textContent = '';
+    const corpo = $('corpo'); const seguir = $('seguir');
+    $('rodape-painel').hidden = nome === 'feito';
+    seguir.disabled = false;
+
+    if (nome === 'pro') {
+      $('painel-titulo').textContent = 'Com quem?';
+      const lista = prosPossiveis();
+      corpo.innerHTML = '<div class="etapa">' + resumoHTML() + '<div class="pros">' +
+        '<button class="pro" data-pro="-1" aria-pressed="' + (st.pro === null) + '"><span class="avatar" style="background:var(--suave)">★</span><b>Sem preferência</b><small>primeiro horário livre</small></button>' +
+        lista.map((p) => '<button class="pro" data-pro="' + PROS.indexOf(p) + '" aria-pressed="' + (st.pro === p) + '">' + avatar(p, PROS.indexOf(p)) + '<b>' + esc(p.nome) + '</b><small>' + esc(p.funcao || '') + '</small></button>').join('') + '</div></div>';
+      seguir.textContent = 'Escolher dia e horário';
+    }
+
+    if (nome === 'quando') {
+      $('painel-titulo').textContent = 'Dia e horário';
+      const dur = totais().dur;
+      const ds = dias().map((d) => ({ d, h: horarios(d, dur, st.pro) }));
+      if (!st.dia || !ds.find((x) => iso(x.d) === iso(st.dia) && x.h.length)) { const f = ds.find((x) => x.h.length); st.dia = f ? f.d : null; st.hora = null; }
+      const atual = ds.find((x) => st.dia && iso(x.d) === iso(st.dia));
+      const turnos = [['Manhã', 0, 720], ['Tarde', 720, 1080], ['Noite', 1080, 1440]];
+      const horasHTML = !atual ? '<div class="vazio">Não encontramos horário para essa combinação nos próximos dias. <a href="' + waLink('Olá! Quero agendar: ' + totais().l.map((s) => s.nome).join(' + ') + '. Vocês têm horário?') + '" target="_blank" rel="noopener">Fale com a gente no WhatsApp</a>.</div>' :
+        turnos.map(([n, a, b]) => { const h = atual.h.filter((t) => t >= a && t < b); return h.length ? '<div class="turno"><h4>' + n + '</h4><div class="horas">' + h.map((t) => '<button class="hora" data-hora="' + t + '" aria-pressed="' + (st.hora === t) + '">' + hhmm(t) + '</button>').join('') + '</div></div>' : ''; }).join('');
+      corpo.innerHTML = '<div class="etapa">' + resumoHTML() + '<span class="rotulo">Dia</span><div class="dias">' +
+        ds.slice(0, Number(C.diasParaAgendar) || 14).map(({ d, h }) => '<button class="dia" data-dia="' + iso(d) + '" aria-pressed="' + (st.dia && iso(d) === iso(st.dia)) + '"' + (h.length ? '' : ' disabled') + '><small>' + DIA_CURTO[d.getDay()] + '</small><b>' + d.getDate() + '</b><em>' + (h.length ? d.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '') : periodos(d).length ? 'sem vaga' : 'fechado') + '</em></button>').join('') +
+        '</div><span class="rotulo" style="margin-top:14px">Horário</span>' + horasHTML + '<p class="turno" style="font-size:.84rem;color:var(--suave)">Você escolhe o horário que prefere e a confirmação chega pelo WhatsApp.</p></div>';
+      seguir.textContent = 'Continuar';
+      seguir.disabled = st.hora == null;
+      const dsel = corpo.querySelector('.dia[aria-pressed="true"]'); if (dsel) dsel.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+
+    if (nome === 'dados') {
+      $('painel-titulo').textContent = 'Seus dados';
+      const v = valorSinal(); const s = C.sinal || {};
+      let pix = '';
+      if (v > 0) {
+        const temChave = String(s.pixChave || '').trim() !== '';
+        pix = '<div class="pix"><div class="topo-pix"><b>Sinal para garantir o horário</b><span class="valor">' + brl(v) + '</span></div>' +
+          (temChave ? '<div class="qr-pix" id="qr-pix" aria-label="QR Code do Pix"></div><code id="pix-codigo"></code><button class="btn sec" type="button" id="copiar">Copiar código Pix</button><p>Pague pelo app do banco (Pix copia e cola ou QR Code) e mande o comprovante na conversa.</p>' : '<p>A chave Pix para o sinal é enviada pelo WhatsApp junto com a confirmação.</p>') +
+          '<label class="check"><input type="checkbox" id="pago"' + (st.pago ? ' checked' : '') + '> Já paguei o sinal e vou mandar o comprovante</label></div>';
+      }
+      corpo.innerHTML = '<div class="etapa">' + resumoHTML() + '<div class="form"><label>Seu nome<input type="text" id="f-nome" autocomplete="name" placeholder="Como podemos te chamar?" value="' + esc(st.nome) + '"></label>' +
+        '<label><span>Observação <small>(opcional)</small></span><textarea id="f-obs" placeholder="Ex.: primeira vez, cabelo na altura do ombro">' + esc(st.obs) + '</textarea></label>' + pix + '</div></div>';
+      seguir.textContent = 'Enviar pedido pelo WhatsApp';
+      if (v > 0 && String(s.pixChave || '').trim()) {
+        const cod = pixCodigo(v);
+        $('pix-codigo').textContent = cod;
+        qr($('qr-pix'), cod, 180);
+        $('copiar').onclick = (e) => { copiar(cod); e.target.textContent = 'Código copiado ✓'; };
+      }
+      setTimeout(() => { const n = $('f-nome'); if (n && !n.value) n.focus({ preventScroll: true }); }, 350);
+    }
+
+    if (nome === 'feito') {
+      $('painel-titulo').textContent = 'Pedido enviado';
+      const quando = DIA_LONGO[st.dia.getDay()] + ', ' + st.dia.toLocaleDateString('pt-BR') + ' às ' + hhmm(st.hora);
+      corpo.innerHTML = '<div class="etapa feito"><div class="ok">✓</div><h3>Quase lá' + (st.nome ? ', ' + esc(st.nome.split(' ')[0]) : '') + '!</h3><p>Seu pedido foi para o WhatsApp de ' + esc(C.nome) + '.<br>O horário fica garantido quando chegar a confirmação.</p>' +
+        resumoHTML() + '<div class="btns"><button class="btn sec" id="ics">📅 Salvar na agenda do celular</button><a class="btn sec" id="gcal" target="_blank" rel="noopener">Abrir no Google Agenda</a><a class="btn wa" id="reenviar" target="_blank" rel="noopener">Abrir o WhatsApp de novo</a><button class="btn sec" id="novo">Fazer outro agendamento</button></div></div>';
+      $('ics').onclick = baixarICS;
+      $('gcal').href = gcal();
+      $('reenviar').href = waLink(mensagem());
+      $('novo').onclick = () => { sel.clear(); document.querySelectorAll('.servico').forEach((b) => { b.setAttribute('aria-pressed', 'false'); b.querySelector('.marcar').textContent = '+'; }); barra(); fechar(); location.hash = '#servicos'; };
+      void quando;
+    }
+  }
+
+  $('corpo').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.pro) { const i = Number(b.dataset.pro); st.pro = i < 0 ? null : PROS[i]; st.dia = null; st.hora = null; st.etapa++; return render(); }
+    if (b.dataset.dia) { st.dia = new Date(b.dataset.dia + 'T12:00:00'); st.hora = null; return render(); }
+    if (b.dataset.hora) { st.hora = Number(b.dataset.hora); document.querySelectorAll('.hora').forEach((x) => x.setAttribute('aria-pressed', x === b)); $('seguir').disabled = false; return; }
+  });
+
+  $('seguir').onclick = () => {
+    const nome = ETAPAS()[st.etapa];
+    if (nome === 'pro') { st.etapa++; return render(); }
+    if (nome === 'quando') { if (st.hora == null) { $('erro').textContent = 'Escolha um horário.'; return; } st.etapa++; return render(); }
+    if (nome === 'dados') {
+      st.nome = $('f-nome').value.trim(); st.obs = $('f-obs').value.trim(); st.pago = !!($('pago') && $('pago').checked);
+      if (!st.nome) { $('erro').textContent = 'Escreva o seu nome.'; $('f-nome').focus(); return; }
+      window.open(waLink(mensagem()), '_blank', 'noopener');
+      st.etapa++; return render();
+    }
+  };
+
+  function mensagem() {
+    const t = totais();
+    const linhas = ['Olá! Quero agendar um horário:', '', '*Serviço:* ' + t.l.map((s) => s.nome).join(' + ')];
+    if (PROS.length) linhas.push('*Profissional:* ' + (st.pro ? st.pro.nome : 'sem preferência'));
+    linhas.push('*Dia:* ' + DIA_LONGO[st.dia.getDay()] + ', ' + st.dia.toLocaleDateString('pt-BR'));
+    linhas.push('*Horário:* ' + hhmm(st.hora) + ' (cerca de ' + durTxt(t.dur) + ')');
+    linhas.push('*Valor:* ' + t.txt);
+    linhas.push('*Nome:* ' + st.nome);
+    if (st.obs) linhas.push('*Observação:* ' + st.obs);
+    const v = valorSinal();
+    if (v > 0) linhas.push('', st.pago ? 'Paguei o sinal de ' + brl(v) + ' pelo Pix e vou mandar o comprovante.' : 'Sinal de ' + brl(v) + ': ' + (String((C.sinal || {}).pixChave || '').trim() ? 'vou pagar pelo Pix e mando o comprovante.' : 'pode me mandar a chave Pix?'));
+    linhas.push('', 'Fico no aguardo da confirmação.');
+    return linhas.join('\n');
+  }
+
+  /* ---------- agenda do celular ---------- */
+  function datas() {
+    const d = new Date(st.dia); d.setHours(Math.floor(st.hora / 60), st.hora % 60, 0, 0);
+    const f = new Date(d.getTime() + totais().dur * 60000);
+    const z = (x) => x.getFullYear() + String(x.getMonth() + 1).padStart(2, '0') + String(x.getDate()).padStart(2, '0') + 'T' + String(x.getHours()).padStart(2, '0') + String(x.getMinutes()).padStart(2, '0') + '00';
+    return [z(d), z(f)];
+  }
+  function titulo() { return totais().l.map((s) => s.nome).join(' + ') + ' – ' + C.nome + ' (aguardando confirmação)'; }
+  function gcal() {
+    const [a, b] = datas();
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(titulo()) + '&dates=' + a + '/' + b + '&location=' + encodeURIComponent(C.endereco || '') + '&details=' + encodeURIComponent('Pedido enviado pelo WhatsApp. Aguardando confirmação.');
+  }
+  function baixarICS() {
+    const [a, b] = datas(); const limpa = (s) => String(s).replace(/[,;\\]/g, (c) => '\\' + c);
+    const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Agenda WhatsApp//PT-BR', 'BEGIN:VEVENT', 'UID:' + Date.now() + '@agenda', 'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z', 'DTSTART:' + a, 'DTEND:' + b, 'SUMMARY:' + limpa(titulo()), 'LOCATION:' + limpa(C.endereco || ''), 'BEGIN:VALARM', 'TRIGGER:-PT3H', 'ACTION:DISPLAY', 'DESCRIPTION:Lembrete do seu horário', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+    const el = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })), download: 'meu-horario.ics' });
+    document.body.appendChild(el); el.click(); el.remove();
+  }
+
+  /* ---------- Pix copia e cola (padrão do Banco Central) ---------- */
+  function semAcento(s, n) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9 ]/g, '').trim().slice(0, n); }
+  function chavePix() {
+    const s = C.sinal || {}; const k = String(s.pixChave || '').trim();
+    if (s.pixTipo === 'telefone') { let d = k.replace(/\D/g, ''); if (!d.startsWith('55') || d.length <= 11) d = '55' + d; return '+' + d; }
+    if (s.pixTipo === 'cpf' || s.pixTipo === 'cnpj') return k.replace(/\D/g, '');
+    return k.toLowerCase();
+  }
+  const tlv = (id, v) => id + String(v.length).padStart(2, '0') + v;
+  function crc16(s) { let c = 0xFFFF; for (let i = 0; i < s.length; i++) { c ^= s.charCodeAt(i) << 8; for (let j = 0; j < 8; j++) c = (c & 0x8000 ? (c << 1) ^ 0x1021 : c << 1) & 0xFFFF; } return c.toString(16).toUpperCase().padStart(4, '0'); }
+  function pixCodigo(valor) {
+    const s = C.sinal || {};
+    let p = tlv('00', '01') + tlv('26', tlv('00', 'br.gov.bcb.pix') + tlv('01', chavePix())) + tlv('52', '0000') + tlv('53', '986') +
+      (valor > 0 ? tlv('54', valor.toFixed(2)) : '') + tlv('58', 'BR') + tlv('59', semAcento(s.pixNome || C.nome, 25) || 'RECEBEDOR') + tlv('60', semAcento(s.pixCidade || 'Sao Paulo', 15) || 'SAO PAULO') + tlv('62', tlv('05', '***')) + '6304';
+    return p + crc16(p);
+  }
+  window.__pix = { pixCodigo, crc16, tlv };
+
+  /* ---------- QR Code (biblioteca qrcodejs, licença MIT) ---------- */
+  let carregando = null;
+  function libQR() {
+    if (window.QRCode) return Promise.resolve();
+    if (!carregando) carregando = new Promise((ok, erro) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'; s.onload = ok; s.onerror = erro; document.head.appendChild(s); });
+    return carregando;
+  }
+  function qr(el, texto, tam) {
+    libQR().then(() => { el.innerHTML = ''; new QRCode(el, { text: texto, width: tam * 2, height: tam * 2, correctLevel: QRCode.CorrectLevel.M }); })
+      .catch(() => { el.innerHTML = '<p>Sem internet para desenhar o QR Code. Use o código abaixo.</p>'; });
+  }
+  function copiar(t) {
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).catch(() => {});
+    else { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); } catch (e) {} a.remove(); }
+  }
+
+  /* ---------- tela do QR Code do balcão ---------- */
+  function urlPublica() { return location.href.split('#')[0].split('?')[0]; }
+  function telaQR() {
+    const ver = location.hash === '#qr';
+    $('tela-qr').hidden = !ver; $('site').hidden = ver; $('barra').hidden = ver; $('aviso').hidden = ver || fone.length >= 12;
+    if (!ver) return;
+    fechar();
+    const url = urlPublica();
+    $('qr-url').textContent = location.protocol === 'file:' ? 'Atenção: você abriu o arquivo do computador. Publique o site e abra esta tela pelo link publicado para o QR Code funcionar no celular da cliente.' : 'O QR Code leva para: ' + url;
+    const n = Number($('qr-copias').value);
+    $('qr-folha').innerHTML = Array.from({ length: n }, () => '<div class="qr-cartao"><h2>' + esc(C.nome) + '</h2><p>Agende seu próximo horário pelo celular</p><div class="qr"></div><p>Aponte a câmera do celular</p></div>').join('');
+    document.querySelectorAll('.qr-cartao .qr').forEach((el) => qr(el, url, 170));
+    window.scrollTo(0, 0);
+  }
+  $('qr-copias').onchange = telaQR;
+  window.addEventListener('hashchange', telaQR);
+  telaQR();
+})();
+</script>
+</body>
+</html>

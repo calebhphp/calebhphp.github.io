@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Agenda Online pelo WhatsApp | Matheus Villanova</title>
+<meta name="description" content="Sua cliente escolhe o serviço, o dia e o horário pelo celular e o pedido chega pronto no seu WhatsApp. Pague uma vez, sem mensalidade.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbf6f1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#160f12" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="product">
+<meta property="og:title" content="Agenda Online pelo WhatsApp – sem mensalidade">
+<meta property="og:description" content="A cliente escolhe serviço, dia e horário. O pedido chega pronto no seu WhatsApp. Pague uma vez e publique grátis.">
+<meta property="og:image" content="https://matheusvillanova.com/produtos/agenda/capa.png">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500;1,9..144,700&display=swap">
+<style>
+:root{
+  --bg:#fbf6f1; --surface:#ffffff; --surface-2:#f5ebe5; --text:#2a1a20; --muted:#6c5860; --line:#ead9d4;
+  --rose:#b03f64; --rose-ink:#ffffff; --rose-soft:#f8e4ea; --gold:#97692c; --wa:#13803c;
+  --chat-bg:#efe7dd; --bubble-in:#ffffff; --bubble-out:#d9fdd3; --bubble-text:#111b21; --bubble-meta:#667781;
+  --shadow:0 1px 2px rgba(60,25,35,.05),0 18px 40px -18px rgba(60,25,35,.22);
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --ease-out:cubic-bezier(.23,1,.32,1); --ease-drawer:cubic-bezier(.32,.72,0,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#160f12; --surface:#21171a; --surface-2:#2a1d22; --text:#f7ecee; --muted:#c4adb4; --line:#3b2a30;
+  --rose:#f08aab; --rose-ink:#2a0f19; --rose-soft:#3a2029; --gold:#e2b878; --wa:#25b85c;
+  --chat-bg:#0b141a; --bubble-in:#202c33; --bubble-out:#005c4b; --bubble-text:#e9edef; --bubble-meta:#8696a0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 18px 40px -18px rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#160f12; --surface:#21171a; --surface-2:#2a1d22; --text:#f7ecee; --muted:#c4adb4; --line:#3b2a30;
+  --rose:#f08aab; --rose-ink:#2a0f19; --rose-soft:#3a2029; --gold:#e2b878; --wa:#25b85c;
+  --chat-bg:#0b141a; --bubble-in:#202c33; --bubble-out:#005c4b; --bubble-text:#e9edef; --bubble-meta:#8696a0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 18px 40px -18px rgba(0,0,0,.6); color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.08;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-size:clamp(1.9rem,4.4vw,2.9rem)}
+h3{font-size:1.22rem;letter-spacing:-.01em}
+p{margin:0}
+em{font-style:italic;font-weight:500;color:var(--rose)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+@media (min-width:700px){.wrap{padding:0 28px}}
+.skip{position:absolute;left:12px;top:-60px;background:var(--text);color:var(--bg);padding:10px 14px;border-radius:10px;z-index:100;text-decoration:none}
+.skip:focus{top:12px}
+:focus-visible{outline:3px solid var(--rose);outline-offset:3px;border-radius:6px}
+.eyebrow{font:700 .78rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+section{padding:72px 0;scroll-margin-top:62px}
+@media (min-width:900px){section{padding:104px 0}}
+.lead{color:var(--muted);font-size:1.08rem;max-width:40rem}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;font:700 1rem/1 var(--sans);text-decoration:none;border:0;cursor:pointer;transition:transform 160ms var(--ease-out),background-color 200ms ease,box-shadow 200ms ease;-webkit-tap-highlight-color:transparent;user-select:none}
+.btn:active{transform:scale(.97)}
+.btn-buy{background:var(--rose);color:var(--rose-ink);box-shadow:0 10px 24px -10px color-mix(in srgb,var(--rose) 70%,transparent)}
+.btn-ghost{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line)}
+@media (hover:hover) and (pointer:fine){
+  .btn-buy:hover{background:color-mix(in srgb,var(--rose) 88%,var(--text))}
+  .btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--rose)}
+}
+.btn small{font-weight:600;opacity:.85}
+
+/* topo */
+.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:.95rem;margin-right:auto;min-width:0}
+.brand img{width:30px;height:30px;border-radius:9px;flex:none}
+.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.theme{width:42px;height:42px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:transform 160ms var(--ease-out)}
+.theme:active{transform:scale(.94)}
+.theme svg{width:19px;height:19px}
+.top .btn{min-height:42px;padding:0 18px;font-size:.92rem}
+@media (max-width:640px){.top .btn{display:none}}
+
+/* hero */
+.hero{padding:40px 0 64px;position:relative}
+.hero::before{content:"";position:absolute;inset:-62px 0 auto 0;height:640px;background:radial-gradient(60% 60% at 85% 20%,color-mix(in srgb,var(--rose) 16%,transparent),transparent 70%),radial-gradient(50% 50% at 5% 0%,color-mix(in srgb,var(--gold) 14%,transparent),transparent 70%);pointer-events:none;z-index:-1}
+.hero-grid{display:grid;gap:40px;align-items:center}
+@media (min-width:920px){.hero{padding:72px 0 96px}.hero-grid{grid-template-columns:1.08fr .92fr;gap:56px}}
+.hero h1{font-size:clamp(2.35rem,6.6vw,4.3rem);margin:16px 0 20px}
+.hero h1 .q{font-style:italic;font-weight:500;color:var(--rose)}
+.hero-grid>*,.demo-grid>*,.inc-grid>*{min-width:0}
+.hero .lead{font-size:1.14rem}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 16px}
+.trust{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.92rem;padding:0;margin:0;list-style:none}
+.trust li{display:flex;align-items:center;gap:7px}
+.trust li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--rose)}
+
+/* conversa do topo */
+.chat{background:var(--chat-bg);border-radius:28px;padding:18px 14px 20px;box-shadow:var(--shadow);max-width:430px;width:100%;margin:0 auto;border:1px solid color-mix(in srgb,var(--line) 60%,transparent);font-family:var(--sans)}
+.chat-head{display:flex;align-items:center;gap:10px;padding:2px 6px 14px;color:var(--bubble-text);border-bottom:1px solid color-mix(in srgb,var(--bubble-meta) 25%,transparent);margin-bottom:14px}
+.chat-head .av{width:36px;height:36px;border-radius:50%;background:var(--rose);color:var(--rose-ink);display:grid;place-items:center;font:700 .95rem var(--serif)}
+.chat-head b{display:block;font-size:.95rem}
+.chat-head small{color:var(--bubble-meta);font-size:.78rem}
+.msgs{display:flex;flex-direction:column;gap:8px}
+.b{max-width:84%;padding:8px 11px 6px;border-radius:12px;font-size:.93rem;line-height:1.42;color:var(--bubble-text);background:var(--bubble-in);box-shadow:0 1px .5px rgba(0,0,0,.13);position:relative}
+.b time{display:block;text-align:right;font-size:.7rem;color:var(--bubble-meta);margin-top:2px}
+.b.in{align-self:flex-start;border-top-left-radius:4px;transform-origin:0 100%}
+.b.out{align-self:flex-end;background:var(--bubble-out);border-top-right-radius:4px;transform-origin:100% 100%;max-width:92%}
+.b.out p+p{margin-top:2px}
+.divider{align-self:center;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bubble-text);background:color-mix(in srgb,var(--bubble-in) 85%,transparent);padding:5px 12px;border-radius:8px;margin:8px 0 4px;transform-origin:50% 50%}
+.js .msgs > *{animation:pop 420ms var(--ease-out) both;animation-delay:calc(var(--i) * 420ms + 250ms)}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
+
+/* o que muda */
+.gains{padding:0 0 24px}
+.gain-list{display:grid;gap:14px;list-style:none;padding:0;margin:0}
+@media (min-width:820px){.gain-list{grid-template-columns:repeat(3,1fr);gap:18px}}
+.gain-list li{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px 22px 24px}
+.gain-list b{display:block;font:700 1.18rem/1.2 var(--serif);margin-bottom:6px}
+.gain-list p{color:var(--muted);font-size:.98rem}
+
+/* demonstração */
+.demo{background:var(--surface-2);border-block:1px solid var(--line)}
+.demo-grid{display:grid;gap:40px;align-items:center}
+@media (min-width:920px){.demo-grid{grid-template-columns:.95fr 1.05fr;gap:64px}}
+.demo-copy h2{margin:12px 0 16px}
+.models{display:inline-flex;flex-wrap:wrap;gap:6px;padding:5px;border-radius:999px;background:var(--surface);border:1px solid var(--line);margin:24px 0 8px}
+.models button{border:0;background:transparent;color:var(--text);font:700 .92rem/1 var(--sans);padding:11px 16px;border-radius:999px;cursor:pointer;transition:background-color 200ms ease,color 200ms ease,transform 160ms var(--ease-out)}
+.models button:active{transform:scale(.96)}
+.models button[aria-pressed="true"]{background:var(--rose);color:var(--rose-ink)}
+.models .sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:-1px;box-shadow:0 0 0 1.5px rgba(255,255,255,.6)}
+.try{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:12px;counter-reset:t}
+.try li{display:flex;gap:12px;align-items:flex-start;color:var(--text)}
+.try li::before{counter-increment:t;content:counter(t);flex:none;width:28px;height:28px;border-radius:50%;background:var(--surface);border:1.5px solid var(--rose);color:var(--rose);font:700 .85rem/25px var(--sans);text-align:center}
+.note{margin-top:20px;font-size:.9rem;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:12px 14px}
+.full{display:inline-block;margin-top:14px;font-weight:700;color:var(--rose);text-underline-offset:3px}
+
+.phone-wrap{display:flex;justify-content:center}
+.phone{position:relative;width:min(352px,100%);padding:11px;border-radius:50px;background:#1b1316;box-shadow:0 0 0 1.5px #3a2c31,0 40px 70px -30px rgba(40,10,20,.55),inset 0 0 0 1px rgba(255,255,255,.06)}
+.phone::before{content:"";position:absolute;top:20px;left:50%;width:92px;height:24px;margin-left:-46px;border-radius:20px;background:#000;z-index:2;pointer-events:none}
+.screen{position:relative;border-radius:40px;overflow:hidden;background:#fff;height:min(680px,78vh);min-height:540px}
+.screen iframe{display:block;width:100%;height:100%;border:0;padding-top:34px;background:#fff;transition:opacity 220ms ease}
+.screen::before{content:"";position:absolute;inset:0 0 auto 0;height:34px;background:inherit;z-index:1}
+.screen.loading iframe{opacity:0}
+.screen.dark{background:#121214}
+
+/* o que vem */
+.inc-grid{display:grid;gap:40px;align-items:start}
+@media (min-width:920px){.inc-grid{grid-template-columns:1.25fr .75fr;gap:56px}}
+.inc-head{margin-bottom:28px}
+.inc-head h2{margin:12px 0 12px}
+.slots{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.slots li{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.slots time{font:700 .86rem/1 var(--sans);color:var(--rose);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.slots b{display:block;font-weight:700}
+.slots span{color:var(--muted);font-size:.95rem}
+.cover{position:sticky;top:90px;border-radius:26px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);transform:rotate(1.2deg)}
+.cover-cap{margin-top:14px;color:var(--muted);font-size:.9rem;text-align:center}
+
+/* para quem */
+.fit{background:var(--surface-2);border-block:1px solid var(--line)}
+.fit-grid{display:grid;gap:18px;margin-top:36px}
+@media (min-width:820px){.fit-grid{grid-template-columns:1fr 1fr;gap:22px}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:28px 24px}
+.card h3{margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.card ul{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.card li{display:flex;gap:12px;align-items:flex-start}
+.ic{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;margin-top:2px}
+.ic svg{width:14px;height:14px}
+.yes .ic{background:color-mix(in srgb,var(--wa) 16%,transparent);color:var(--wa)}
+.no .ic{background:color-mix(in srgb,var(--rose) 14%,transparent);color:var(--rose)}
+.no{background:color-mix(in srgb,var(--surface) 70%,var(--surface-2))}
+.no .more{margin-top:20px;padding-top:18px;border-top:1px dashed var(--line);font-size:.95rem;color:var(--muted)}
+.no .more a{color:var(--rose);font-weight:700}
+
+/* passos */
+.steps{list-style:none;padding:0;margin:40px 0 0;display:grid;gap:18px}
+@media (min-width:820px){.steps{grid-template-columns:repeat(3,1fr);gap:22px}}
+.steps li{position:relative;padding:26px 24px 26px;border-radius:26px;background:var(--surface);border:1px solid var(--line)}
+.steps .n{font:italic 500 3.4rem/1 var(--serif);color:var(--rose);display:block;margin-bottom:10px}
+.steps p{color:var(--muted);margin-top:8px;font-size:.98rem}
+
+/* preço */
+.price{position:relative}
+.price-card{max-width:760px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:34px;box-shadow:var(--shadow);overflow:hidden}
+.price-top{padding:36px 24px 30px;text-align:center;background:linear-gradient(180deg,var(--rose-soft),transparent)}
+.price-top h2{font-size:clamp(1.7rem,4vw,2.3rem);margin:10px 0 18px}
+.amount{display:flex;align-items:flex-start;justify-content:center;gap:6px;font-family:var(--serif);font-weight:700;line-height:1}
+.amount .cur{font-size:1.5rem;margin-top:12px}
+.amount .val{font-size:clamp(4.2rem,12vw,5.6rem);letter-spacing:-.04em}
+.price-sub{color:var(--muted);margin-top:10px;font-size:.98rem}
+.price-body{padding:6px 24px 34px;display:grid;gap:24px}
+@media (min-width:700px){.price-body{padding:6px 44px 40px}}
+.checks{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+@media (min-width:700px){.checks{grid-template-columns:1fr 1fr;gap:10px 24px}}
+.checks li{display:flex;gap:10px;font-size:.97rem}
+.checks li::before{content:"";flex:none;width:18px;height:18px;margin-top:4px;border-radius:50%;background:var(--wa) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.4l2.6 2.6L12 5.6' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat}
+.price-body .btn{width:100%;min-height:60px;font-size:1.08rem}
+.secure{text-align:center;color:var(--muted);font-size:.88rem;margin-top:-10px}
+.guarantee{display:flex;gap:18px;align-items:center;max-width:760px;margin:22px auto 0;padding:22px 24px;border-radius:26px;border:1.5px dashed color-mix(in srgb,var(--gold) 60%,transparent);background:color-mix(in srgb,var(--gold) 7%,transparent)}
+.seal{flex:none;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;text-align:center;background:var(--gold);color:var(--bg);font:700 .72rem/1.05 var(--sans);letter-spacing:.04em;text-transform:uppercase}
+.seal b{display:block;font:700 1.7rem/1 var(--serif);letter-spacing:0;text-transform:none}
+.guarantee h3{margin-bottom:4px}
+.guarantee p{color:var(--muted);font-size:.96rem}
+
+/* faq */
+.faq-list{max-width:780px;margin:36px auto 0;border-top:1px solid var(--line)}
+.faq-list details{border-bottom:1px solid var(--line)}
+.faq-list summary{list-style:none;cursor:pointer;padding:20px 44px 20px 0;font:700 1.08rem/1.35 var(--sans);position:relative}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:"";position:absolute;right:6px;top:50%;width:12px;height:12px;margin-top:-8px;border-right:2px solid var(--rose);border-bottom:2px solid var(--rose);transform:rotate(45deg);transition:transform 200ms var(--ease-out)}
+.faq-list details[open] summary::after{transform:translateY(4px) rotate(-135deg)}
+.faq-list details p{padding:0 0 22px;color:var(--muted);max-width:44rem}
+.center{text-align:center}
+.center .lead{margin:12px auto 0}
+
+/* final */
+.final{padding-top:24px}
+.final-box{border-radius:34px;border:1px solid var(--line);padding:48px 24px;text-align:center;background:#2a1a20;color:#fbf1f3;position:relative;overflow:hidden}
+.final-box::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 50% 0%,rgba(240,138,171,.35),transparent 70%);pointer-events:none}
+.final-box > *{position:relative}
+.final-box h2{color:#fff;margin-bottom:14px}
+.final-box p{color:#e5cfd5;max-width:34rem;margin:0 auto 26px}
+.final-box .btn-buy{background:#f08aab;color:#2a0f19}
+footer{padding:40px 0 48px;color:var(--muted);font-size:.9rem;text-align:center}
+footer a{color:var(--text);font-weight:700;text-underline-offset:3px}
+
+/* barra fixa no celular */
+.buybar{display:none}
+@media (max-width:860px){
+  body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  .buybar{display:flex;align-items:center;gap:12px;position:fixed;left:0;right:0;bottom:0;z-index:50;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);box-shadow:0 -12px 30px -18px rgba(40,10,20,.35);transition:transform 320ms var(--ease-drawer)}
+  .buybar[data-hidden="true"]{transform:translateY(110%)}
+  .buybar .p{line-height:1.15;min-width:0}
+  .buybar .p b{display:block;font:700 1.3rem/1.1 var(--serif)}
+  .buybar .p small{color:var(--muted);font-size:.78rem;white-space:nowrap}
+  .buybar .btn{margin-left:auto;min-height:50px;padding:0 22px;flex:none}
+}
+
+/* aparecer ao rolar */
+.js .rv{opacity:0;transform:translateY(16px)}
+.js .rv.in{opacity:1;transform:none;transition:opacity 600ms var(--ease-out),transform 600ms var(--ease-out)}
+
+@media (prefers-reduced-motion: reduce){
+  .js .msgs > *{animation-name:fade;animation-duration:300ms}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .js .rv{transform:none}
+  .js .rv.in{transition:opacity 300ms ease}
+  .btn:active,.theme:active,.models button:active{transform:none}
+  .buybar{transition:opacity 200ms ease}
+  .buybar[data-hidden="true"]{transform:none;opacity:0;pointer-events:none}
+  .cover{transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/logo.svg" alt="" width="30" height="30"><span>Matheus Villanova</span></a>
+    <button class="theme" type="button" id="tema" aria-label="Trocar tema claro ou escuro">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    
+    <a class="btn btn-buy" href="https://pay.hotmart.com/U108124329M" target="_blank" rel="noopener">Comprar · R$ 47</a>
+  </div>
+</header>
+
+<main id="conteudo">
+  <!-- 1. A dor -->
+  <section class="hero" aria-labelledby="titulo">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Agenda online para salão, barbearia e estética</p>
+        <h1 id="titulo">Chega de responder <span class="q">“tem horário sábado?”</span> o dia inteiro.</h1>
+        <p class="lead">Sua cliente escolhe o serviço, o dia e o horário pelo celular. O pedido chega pronto no seu WhatsApp, com nome, serviço, valor e duração. Você só confirma.</p>
+        <div class="hero-cta">
+          
+          <a class="btn btn-buy" href="https://pay.hotmart.com/U108124329M" target="_blank" rel="noopener">Quero a minha agenda <small>R$ 47</small></a>
+          <a class="btn btn-ghost" href="#demo">Testar agora</a>
+        </div>
+        <ul class="trust">
+          <li>Paga uma vez</li>
+          <li>Sem mensalidade</li>
+          <li>Publica grátis</li>
+          <li>Garantia de 7 dias</li>
+        </ul>
+      </div>
+
+      <div class="chat" role="img" aria-label="Exemplo: várias clientes perguntando horário e preço no WhatsApp, e depois um pedido de agendamento que já chega completo.">
+        <div class="chat-head" aria-hidden="true">
+          <span class="av">S</span>
+          <div><b>Seu WhatsApp, hoje</b><small>4 conversas sem resposta</small></div>
+        </div>
+        <div class="msgs" aria-hidden="true">
+          <div class="b in" style="--i:0">Oi! Tem horário sábado? <time>08:12</time></div>
+          <div class="b in" style="--i:1">Quanto tá a escova? <time>09:40</time></div>
+          <div class="b in" style="--i:2">Vocês fazem sobrancelha com henna? <time>11:05</time></div>
+          <div class="b in" style="--i:3">Oi?? Tem sábado de manhã? <time>13:20</time></div>
+          <div class="divider" style="--i:4">Com a agenda online</div>
+          <div class="b out" style="--i:5">
+            <p>Olá! Quero agendar um horário:</p>
+            <p><b>Serviço:</b> Escova + Design com henna</p>
+            <p><b>Profissional:</b> Carla</p>
+            <p><b>Dia:</b> sábado, 24/10/2026</p>
+            <p><b>Horário:</b> 10:00 (cerca de 1h30)</p>
+            <p><b>Valor:</b> R$ 145,00</p>
+            <p><b>Nome:</b> Juliana</p>
+            <p>Fico no aguardo da confirmação.</p>
+            <time>13:24 ✓✓</time>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- O que muda -->
+  <section class="gains" aria-label="O que muda no seu dia">
+    <div class="wrap">
+      <ul class="gain-list">
+        <li class="rv"><b>Menos tempo no celular</b><p>Preço, duração e horários ficam à vista. A cliente não precisa perguntar.</p></li>
+        <li class="rv"><b>Pedido completo, sem ida e volta</b><p>Chega com serviço, dia, horário, valor e nome. Você responde só “confirmado”.</p></li>
+        <li class="rv"><b>Sem conta todo mês</b><p>Você paga uma vez e publica grátis. Não tem taxa por agendamento.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. Demonstração -->
+  <section class="demo" id="demo" aria-labelledby="t-demo">
+    <div class="wrap demo-grid">
+      <div class="demo-copy">
+        <p class="eyebrow">Teste aqui mesmo</p>
+        <h2 id="t-demo">Marque um horário como se fosse <em>a sua cliente</em>.</h2>
+        <p class="lead">Esta é a agenda de verdade, funcionando. Escolha um dos três modelos que vêm no pacote:</p>
+        <div class="models" role="group" aria-label="Escolher modelo da demonstração">
+          <button type="button" aria-pressed="true" data-src="demo/" data-dark="0"><span class="sw" style="background:#b4476a"></span>Salão</button>
+          <button type="button" aria-pressed="false" data-src="demo/modelos/barbearia.html" data-dark="1"><span class="sw" style="background:#c9a46a"></span>Barbearia</button>
+          <button type="button" aria-pressed="false" data-src="demo/modelos/estetica.html" data-dark="0"><span class="sw" style="background:#2f6f5e"></span>Estética</button>
+        </div>
+        <ol class="try">
+          <li>Toque em “Agendar horário”.</li>
+          <li>Escolha um ou mais serviços e, se quiser, a profissional.</li>
+          <li>Escolha o dia e o horário. Só aparecem horários dentro do expediente.</li>
+          <li>Toque em enviar e veja a mensagem que chegaria no seu WhatsApp.</li>
+        </ol>
+        <p class="note">Na demonstração, o negócio é fictício e o WhatsApp abre sem número: nada é enviado para ninguém.</p>
+        <a class="full" id="tela-cheia" href="demo/" target="_blank" rel="noopener">Abrir a demonstração em tela cheia ↗</a>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="screen" id="tela">
+            <iframe id="demo-frame" src="demo/" title="Demonstração da agenda online (modelo salão)" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. O que vem -->
+  <section id="o-que-vem" aria-labelledby="t-vem">
+    <div class="wrap inc-grid">
+      <div>
+        <div class="inc-head">
+          <p class="eyebrow">O que vem no pacote</p>
+          <h2 id="t-vem">Tudo pronto. Você só troca <em>pelos seus dados</em>.</h2>
+        </div>
+        <ul class="slots">
+          <li class="rv"><time>09:00</time><div><b>Agenda completa, feita para celular</b><span>Já vem com um exemplo de salão para você trocar.</span></div></li>
+          <li class="rv"><time>09:30</time><div><b>Mais 2 modelos prontos</b><span>Barbearia (preto e dourado) e estética (verde-sálvia).</span></div></li>
+          <li class="rv"><time>10:00</time><div><b>Seus serviços com preço e duração</b><span>Inclusive “a partir de” e “valor a combinar”.</span></div></li>
+          <li class="rv"><time>10:30</time><div><b>Seu horário de atendimento</b><span>Almoço, folgas, feriados e tempo mínimo para não marcarem em cima da hora.</span></div></li>
+          <li class="rv"><time>11:00</time><div><b>Equipe (se tiver)</b><span>Cada pessoa com os dias em que atende e o que faz.</span></div></li>
+          <li class="rv"><time>11:30</time><div><b>Sinal por Pix (se quiser)</b><span>QR Code e “Pix copia e cola” com o valor certo, fixo ou em porcentagem.</span></div></li>
+          <li class="rv"><time>12:00</time><div><b>“Aberto agora” no topo</b><span>A página mostra sozinha se está aberto ou quando abre.</span></div></li>
+          <li class="rv"><time>13:00</time><div><b>QR Code para o balcão</b><span>Tela pronta para imprimir, de 1 a 6 por folha.</span></div></li>
+          <li class="rv"><time>13:30</time><div><b>Guia passo a passo em português</b><span>Como trocar os textos, testar e publicar grátis.</span></div></li>
+          <li class="rv"><time>14:00</time><div><b>Licença de uso</b><span>No seu negócio e em sites de clientes (um por cliente).</span></div></li>
+        </ul>
+      </div>
+      <figure style="margin:0">
+        <div class="cover"><img src="capa.png" alt="Capa do produto: Agenda online pelo WhatsApp, para salão, barbearia e estética" width="1080" height="1080" loading="lazy" decoding="async"></div>
+        <figcaption class="cover-cap">Entrega em arquivo para baixar, pela Hotmart.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 4. Para quem é e para quem não é -->
+  <section class="fit" aria-labelledby="t-fit">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow">Sem surpresa depois da compra</p>
+        <h2 id="t-fit">Para quem é, e para quem <em>não é</em>.</h2>
+      </div>
+      <div class="fit-grid">
+        <div class="card yes rv">
+          <h3>Serve para você se…</h3>
+          <ul>
+            <li><span class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.4l3 3L12.5 5"/></svg></span><span>Atende com hora marcada: salão, barbearia, unhas, sobrancelha, cílios, estética, massagem, personal, tatuagem, fotografia.</span></li>
+            <li><span class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.4l3 3L12.5 5"/></svg></span><span>Passa o dia respondendo “tem horário?” e “quanto custa?” no WhatsApp.</span></li>
+            <li><span class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.4l3 3L12.5 5"/></svg></span><span>Trabalha sozinha ou com equipe pequena.</span></li>
+            <li><span class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.4l3 3L12.5 5"/></svg></span><span>Não quer pagar mensalidade de aplicativo de agendamento.</span></li>
+          </ul>
+        </div>
+        <div class="card no rv">
+          <h3>Não é para você se precisa que…</h3>
+          <ul>
+            <li><span class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg></span><span><b>A agenda bloqueie sozinha</b> os horários já marcados. Ela mostra os horários em que você atende e o pedido chega para você confirmar. Se o horário já estiver ocupado, você sugere outro na conversa.</span></li>
+            <li><span class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg></span><span><b>A cliente pague no cartão pelo site.</b> O sinal é por Pix e você confere o comprovante na conversa.</span></li>
+            <li><span class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg></span><span><b>Saia lembrete automático</b> para a cliente antes do horário.</span></li>
+          </ul>
+          <p class="more">Precisa disso tudo? Eu faço uma agenda sob medida, com bloqueio automático. <a href="/servicos/">Veja os serviços</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Passo a passo -->
+  <section aria-labelledby="t-passos">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow">Do pagamento ao link na bio</p>
+        <h2 id="t-passos">Pronta em 3 passos.</h2>
+        <p class="lead">Não precisa saber programar. O guia mostra cada passo com exemplos.</p>
+      </div>
+      <ol class="steps">
+        <li class="rv"><span class="n">1</span><h3>Baixe o pacote</h3><p>Depois da compra, a Hotmart libera o arquivo para baixar. Abra no computador e veja a agenda funcionando.</p></li>
+        <li class="rv"><span class="n">2</span><h3>Troque pelos seus dados</h3><p>Nome, WhatsApp, serviços, preços e horários ficam num bloco em português. É só trocar o texto entre aspas.</p></li>
+        <li class="rv"><span class="n">3</span><h3>Publique e divulgue</h3><p>Coloque no ar de graça (Netlify ou GitHub Pages) e use o link na bio do Instagram, no Google e no QR Code do balcão.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6. Preço e garantia -->
+  <section class="price" id="comprar" aria-labelledby="t-preco">
+    <div class="wrap">
+      <div class="price-card rv">
+        <div class="price-top">
+          <p class="eyebrow">Preço de lançamento</p>
+          <h2 id="t-preco">Agenda Online pelo WhatsApp</h2>
+          <div class="amount" aria-label="47 reais"><span class="cur" aria-hidden="true">R$</span><span class="val" aria-hidden="true">47</span></div>
+          <p class="price-sub">Pagamento único. Sem mensalidade e sem taxa por agendamento.</p>
+        </div>
+        <div class="price-body">
+          <ul class="checks">
+            <li>Agenda pronta para celular</li>
+            <li>3 modelos: salão, barbearia, estética</li>
+            <li>Serviços, horários, folgas e equipe</li>
+            <li>Sinal por Pix com QR Code</li>
+            <li>QR Code para o balcão</li>
+            <li>Guia passo a passo em português</li>
+          </ul>
+          
+          <a class="btn btn-buy" href="https://pay.hotmart.com/U108124329M" target="_blank" rel="noopener">Quero a minha agenda</a>
+          <p class="secure">Compra pela Hotmart, no Pix ou no cartão. O arquivo é liberado após a confirmação do pagamento.</p>
+        </div>
+      </div>
+      <div class="guarantee rv">
+        <div class="seal" aria-hidden="true"><div><b>7</b>dias</div></div>
+        <div>
+          <h3>Garantia de 7 dias</h3>
+          <p>Baixou, testou e não serviu para você? Peça o reembolso pela própria Hotmart em até 7 dias.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Perguntas -->
+  <section aria-labelledby="t-faq" style="padding-top:24px">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow">Dúvidas</p>
+        <h2 id="t-faq">Perguntas frequentes</h2>
+      </div>
+      <div class="faq-list">
+        <details><summary>Tem mensalidade?</summary><p>Não. Você paga uma vez. Para colocar no ar, o guia mostra como usar o Netlify ou o GitHub Pages, que são grátis.</p></details>
+        <details><summary>A agenda bloqueia o horário que já foi marcado?</summary><p>Não. Ela mostra os horários em que você atende e manda o pedido para você confirmar no WhatsApp. Se o horário estiver ocupado, você sugere outro na conversa. A própria página avisa a cliente que a confirmação vem pelo WhatsApp.</p></details>
+        <details><summary>Preciso saber programar?</summary><p>Não. Você troca textos entre aspas em um bloco no topo do arquivo, como nome, preço e horário. O guia mostra cada passo.</p></details>
+        <details><summary>Funciona no celular da cliente?</summary><p>Sim, foi feita primeiro para celular. A cliente não precisa baixar aplicativo nem criar cadastro.</p></details>
+        <details><summary>A cliente paga pelo site?</summary><p>Não. Se você ligar o sinal, ela paga pelo app do banco com o QR Code ou o código Pix e manda o comprovante na conversa. O site não confirma o pagamento sozinho.</p></details>
+        <details><summary>Trabalho sozinha. Serve?</summary><p>Serve. Deixe a equipe vazia e a etapa “com quem” some da agenda.</p></details>
+        <details><summary>Preciso ter um domínio (.com.br)?</summary><p>Não. O serviço grátis já dá um endereço para você usar. Se quiser um domínio próprio, dá para ligar depois, pagando o domínio à parte.</p></details>
+        <details><summary>Posso usar no site de um cliente meu?</summary><p>Pode, um site por cliente. Só não pode revender o template.</p></details>
+        <details><summary>E se eu travar na edição?</summary><p>O guia mostra cada passo com exemplos. E você tem 7 dias de garantia: se não der certo, pede o reembolso pela Hotmart.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" aria-label="Comprar">
+    <div class="wrap">
+      <div class="final-box rv">
+        <h2>Sua agenda aberta 24 horas, sem conta todo mês.</h2>
+        <p>A cliente escolhe quando quiser. Você confirma quando puder.</p>
+        
+        <a class="btn btn-buy" href="https://pay.hotmart.com/U108124329M" target="_blank" rel="noopener">Comprar por R$ 47</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Um produto de <a href="/">Matheus Villanova</a> · Sites e automação para pequenos negócios</div>
+</footer>
+
+<div class="buybar" id="buybar" data-hidden="false">
+  <div class="p"><b>R$ 47</b><small>pagamento único · garantia de 7 dias</small></div>
+  
+  <a class="btn btn-buy" href="https://pay.hotmart.com/U108124329M" target="_blank" rel="noopener">Comprar</a>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  // tema claro/escuro (mesma chave do site)
+  var btnTema = document.getElementById('tema');
+  function escuroAgora() { return root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+  btnTema.addEventListener('click', function () {
+    var novo = escuroAgora() ? 'light' : 'dark';
+    root.dataset.theme = novo;
+    try { localStorage.setItem('theme', novo); } catch (e) {}
+  });
+
+  // troca de modelo na demonstração
+  var frame = document.getElementById('demo-frame');
+  var tela = document.getElementById('tela');
+  var cheia = document.getElementById('tela-cheia');
+  var botoes = document.querySelectorAll('.models button');
+  botoes.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.getAttribute('aria-pressed') === 'true') return;
+      botoes.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      tela.classList.add('loading');
+      tela.classList.toggle('dark', b.dataset.dark === '1');
+      frame.title = 'Demonstração da agenda online (modelo ' + b.textContent.trim().toLowerCase() + ')';
+      cheia.href = b.dataset.src;
+      setTimeout(function () { frame.src = b.dataset.src; }, 180);
+    });
+  });
+  frame.addEventListener('load', function () { tela.classList.remove('loading'); });
+
+  // aparecer ao rolar
+  var itens = document.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    itens.forEach(function (el) { io.observe(el); });
+  } else { itens.forEach(function (el) { el.classList.add('in'); }); }
+
+  // barra de compra no celular: some no topo e na seção de preço
+  var barra = document.getElementById('buybar');
+  var hero = document.querySelector('.hero-cta');
+  var preco = document.getElementById('comprar');
+  if ('IntersectionObserver' in window) {
+    var vis = { hero: true, preco: false };
+    var atualiza = function () { barra.dataset.hidden = (vis.hero || vis.preco) ? 'true' : 'false'; };
+    new IntersectionObserver(function (es) { es.forEach(function (e) { vis[e.target === hero ? 'hero' : 'preco'] = e.isIntersecting; }); atualiza(); }).observe(hero);
+    new IntersectionObserver(function (es) { es.forEach(function (e) { vis.preco = e.isIntersecting; }); atualiza(); }, { threshold: .25 }).observe(preco);
+    atualiza();
+  }
+})();
+</script>
+</body>
+</html>
