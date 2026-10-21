@@ -32,7 +32,7 @@ return [
             'price' => 'R$ 997',
             'price_note' => 'pagamento único',
             'deadline' => '5 dias',
-            'title' => 'Criação de landing page que converte | São Paulo e todo o Brasil',
+            'title' => 'Criação de landing page em São Paulo | Pronta em 5 dias',
             'description' => 'Landing page personalizada, rápida no celular e feita para virar contato no WhatsApp. Ideal para anúncios no Google e Instagram. Pronta em até 5 dias.',
             'h1' => 'Landing page que transforma visita em cliente',
             'intro' => 'Você paga por anúncio, a pessoa clica e cai numa página lenta ou confusa. Ela fecha e vai para o concorrente. Uma landing page bem feita mostra o que você oferece em segundos e leva a pessoa direto para o seu WhatsApp.',
@@ -56,8 +56,8 @@ return [
             'price' => 'R$ 1.497',
             'price_note' => 'pagamento único',
             'deadline' => '7 a 10 dias',
-            'title' => 'Criação de site profissional para pequenas empresas | São Paulo',
-            'description' => 'Site profissional, exclusivo e otimizado para o Google, para pequenas empresas, clínicas, lojas e prestadores de serviço. Funciona perfeito no celular e leva o cliente direto ao WhatsApp.',
+            'title' => 'Criação de site profissional em São Paulo | Preço fechado',
+            'description' => 'Site profissional para clínicas, lojas e prestadores de serviço em São Paulo e no Brasil. Rápido no celular, bom para o Google e com botão de WhatsApp.',
             'h1' => 'Um site que passa confiança e traz clientes',
             'intro' => 'Hoje o cliente pesquisa antes de comprar. Se ele não te acha no Google, ou acha um site antigo que não abre no celular, a venda vai para outro. Um site profissional faz o seu negócio parecer tão bom quanto ele é.',
             'benefits' => [
@@ -105,7 +105,7 @@ return [
             'price_note' => 'pagamento único',
             'deadline' => '3 dias',
             'title' => 'Cardápio digital com pedido no WhatsApp, sem taxa por pedido',
-            'description' => 'Cardápio digital ou catálogo de produtos com fotos, preços e pedido direto no seu WhatsApp, sem pagar comissão por pedido. Ideal para restaurantes, lanchonetes, docerias e lojas.',
+            'description' => 'Cardápio digital com fotos, preços e pedido direto no seu WhatsApp, sem comissão por pedido. Para restaurantes, cafeterias, lanchonetes, docerias e lojas.',
             'h1' => 'Cardápio digital com pedido no WhatsApp, sem comissão',
             'intro' => 'Aplicativos de entrega cobram uma fatia de cada pedido. Com um cardápio digital próprio, o cliente escolhe, monta o pedido e manda no seu WhatsApp, já organizado. O lucro fica com você.',
             'benefits' => [
@@ -129,7 +129,7 @@ return [
             'price_note' => '+ a partir de R$ 59/mês',
             'deadline' => '5 a 7 dias',
             'title' => 'Sistema de agendamento online com lembrete no WhatsApp',
-            'description' => 'Agendamento online para clínicas, salões, barbearias, estúdios e consultórios. O cliente marca sozinho 24 horas, recebe confirmação e lembrete no WhatsApp, e as faltas caem.',
+            'description' => 'Agendamento online para clínicas, salões, barbearias e estúdios. O cliente marca sozinho 24 horas, recebe lembrete no WhatsApp e as faltas caem.',
             'h1' => 'O cliente marca sozinho. E aparece.',
             'intro' => 'Marcar horário pelo WhatsApp toma o seu dia, e quem marca e esquece deixa um buraco na agenda. Com agendamento online, o cliente escolhe o horário livre a qualquer hora e recebe lembrete antes.',
             'benefits' => [
@@ -152,8 +152,8 @@ return [
             'price' => 'R$ 997',
             'price_note' => '+ a partir de R$ 249/mês',
             'deadline' => '1 a 2 semanas',
-            'title' => 'Atendimento automático no WhatsApp com IA para pequenos negócios',
-            'description' => 'Assistente no WhatsApp oficial que responde clientes na hora, tira dúvidas, marca horários e passa para você quando precisa. Para clínicas, lojas, salões e prestadores de serviço.',
+            'title' => 'Chatbot e atendimento automático no WhatsApp com IA',
+            'description' => 'Assistente no WhatsApp oficial que responde clientes na hora, tira dúvidas, marca horários e chama você quando precisa. Para clínicas, lojas e salões.',
             'h1' => 'Ninguém fica sem resposta. Nem às 23h.',
             'intro' => 'Cliente que espera resposta desiste. Um assistente no WhatsApp responde na hora as perguntas de sempre (preço, horário, endereço), marca horário e chama você quando o assunto precisa de uma pessoa.',
             'benefits' => [
@@ -171,7 +171,7 @@ return [
         ],
         'google-meu-negocio' => [
             'name' => 'Aparecer no Google e no Maps',
-            'short' => 'Seu negócio no topo das buscas da sua região, com avaliações e fotos.',
+            'short' => 'Seu negócio mais fácil de achar nas buscas e no Maps da sua região, com avaliações e fotos.',
             'icon' => 'pin',
             'price' => 'R$ 297',
             'price_note' => 'pagamento único',
@@ -201,7 +201,7 @@ return [
             'price_note' => 'pagamento único · cartão NFC físico opcional',
             'deadline' => '2 dias',
             'title' => 'Cartão de visita digital com QR Code e cartão NFC',
-            'description' => 'Cartão de visita digital com botão de WhatsApp, redes sociais, localização e "salvar contato" em um toque. Com QR Code e versão em cartão NFC para encostar no celular.',
+            'description' => 'Cartão de visita digital com WhatsApp, redes sociais, localização e "salvar contato" em um toque. Com QR Code e versão em cartão NFC.',
             'h1' => 'Um cartão de visita que nunca acaba e vai direto para o WhatsApp',
             'intro' => 'Cartão de papel acaba, amassa e vai para o lixo. O cartão digital abre no celular de quem recebe, salva seu contato em um toque e leva para o seu WhatsApp, Instagram, site e localização. Com o cartão NFC, basta encostar no celular.',
             'benefits' => [
@@ -224,7 +224,7 @@ return [
             'price' => 'R$ 1.497',
             'price_note' => 'pagamento único · + hospedagem a partir de R$ 49/mês',
             'deadline' => '7 a 10 dias',
-            'title' => 'Painel de controle de estoque e vendas para pequenos negócios',
+            'title' => 'Controle de estoque e vendas para pequenos negócios',
             'description' => 'Painel simples de estoque e vendas: entradas e saídas, alerta de produto acabando, produtos mais vendidos e faturamento do mês, no computador e no celular.',
             'h1' => 'Saiba o que tem na prateleira sem contar caixa por caixa',
             'intro' => 'Produto que acaba sem ninguém perceber é venda perdida. Produto parado é dinheiro preso. Um painel de estoque e vendas mostra tudo isso num relance, com alerta antes de faltar.',
@@ -248,8 +248,8 @@ return [
             'price' => 'R$ 1.200',
             'price_note' => 'a partir de, conforme a tarefa',
             'deadline' => '1 a 3 semanas',
-            'title' => 'Ferramentas e automações com inteligência artificial para empresas',
-            'description' => 'Automações com inteligência artificial para pequenas empresas: leitura de notas e documentos, geração de propostas e orçamentos, resumo de atendimentos, triagem de e-mails e relatórios automáticos.',
+            'title' => 'Automação com inteligência artificial para empresas',
+            'description' => 'Automações com IA para pequenas empresas: leitura de notas e documentos, propostas e orçamentos, resumo de atendimentos, triagem de e-mails e relatórios.',
             'h1' => 'A inteligência artificial fazendo o trabalho chato',
             'intro' => 'Você não precisa aprender a usar IA. Eu crio a ferramenta pronta, do jeito do seu negócio: ela lê, escreve, organiza e avisa, e você só confere o resultado.',
             'benefits' => [
@@ -273,7 +273,7 @@ return [
             'price_note' => 'por site · relatório em linguagem simples',
             'deadline' => '3 a 5 dias',
             'title' => 'Análise de segurança e vulnerabilidades de sites e sistemas',
-            'description' => 'Verificação de segurança do seu site ou sistema, com autorização por escrito: falhas conhecidas, senhas e acessos, certificado, formulários, plugins desatualizados e exposição de dados. Relatório claro com o que corrigir primeiro.',
+            'description' => 'Verificação de segurança do seu site, com autorização por escrito: falhas conhecidas, senhas, certificado, formulários e plugins. Relatório simples.',
             'h1' => 'Seu site está seguro? Vamos descobrir antes dos outros',
             'intro' => 'Site invadido some do Google, espalha golpe com o seu nome e pode vazar dados de clientes, o que traz problema com a LGPD. Uma análise de segurança encontra as brechas mais comuns e diz exatamente o que corrigir.',
             'benefits' => [
@@ -297,7 +297,7 @@ return [
             'price_note' => 'em até 2 dias',
             'deadline' => 'conforme o projeto',
             'title' => 'Desenvolvimento de sistema sob medida para empresas',
-            'description' => 'Sistemas sob medida para pequenas e médias empresas: cadastro de clientes, agenda, estoque, financeiro, relatórios e área do cliente. Feito por desenvolvedor sênior com mais de 8 anos de experiência.',
+            'description' => 'Sistemas sob medida para pequenas e médias empresas: clientes, agenda, estoque, financeiro e relatórios. Feito por desenvolvedor sênior com mais de 8 anos.',
             'h1' => 'Chega de planilha espalhada e caderno',
             'intro' => 'Quando o negócio cresce, as planilhas viram bagunça e as informações se perdem. Um sistema feito para o seu jeito de trabalhar junta tudo num lugar só e mostra como a empresa está indo.',
             'benefits' => [
@@ -348,12 +348,27 @@ return [
 
     // Niche pages at /para/<slug>/ (and the occupational health page at /clinicas/)
     'niches' => [
-        'clinicas-e-consultorios' => ['name' => 'Clínicas e consultórios', 'title' => 'Site e agendamento online para clínicas e consultórios', 'description' => 'Site profissional, agendamento online e atendimento automático no WhatsApp para clínicas, consultórios, dentistas, psicólogos e fisioterapeutas. Menos faltas e mais pacientes.', 'h1' => 'Mais pacientes, menos faltas, recepção mais leve', 'pains' => ['Paciente que marca e não aparece', 'Recepção presa no telefone e no WhatsApp', 'Pacientes novos que não acham a clínica no Google'], 'services' => ['agendamento-online', 'atendimento-whatsapp', 'site-profissional', 'google-meu-negocio'], 'intro' => 'Agenda cheia começa com o paciente te achando e termina com ele aparecendo no horário. Eu cuido do caminho todo: o site que passa confiança, o perfil no Google, o agendamento online e o lembrete no WhatsApp.'],
-        'restaurantes-e-delivery' => ['name' => 'Restaurantes e delivery', 'title' => 'Cardápio digital e site para restaurantes, sem comissão por pedido', 'description' => 'Cardápio digital com pedido direto no WhatsApp, sem taxa por pedido, site e perfil no Google para restaurantes, lanchonetes, pizzarias e docerias.', 'h1' => 'Pedidos direto no seu WhatsApp, sem comissão', 'pains' => ['Comissão alta dos aplicativos de entrega', 'Pedido bagunçado no WhatsApp', 'Cliente novo que não te acha no Google'], 'services' => ['cardapio-digital', 'google-meu-negocio', 'atendimento-whatsapp', 'site-profissional'], 'intro' => 'Cada pedido que vem por aplicativo deixa uma parte do seu lucro pelo caminho. Com cardápio digital próprio, o pedido chega organizado no seu WhatsApp e o dinheiro fica com você.'],
-        'saloes-e-barbearias' => ['name' => 'Salões e barbearias', 'title' => 'Agendamento online e site para salões de beleza e barbearias', 'description' => 'Agendamento online 24 horas com lembrete no WhatsApp, site e perfil no Google para salões de beleza, barbearias, esmalterias e estúdios de estética.', 'h1' => 'Agenda cheia sem largar a tesoura para responder WhatsApp', 'pains' => ['Responder mensagem no meio do atendimento', 'Cliente que esquece o horário', 'Buracos na agenda durante a semana'], 'services' => ['agendamento-online', 'atendimento-whatsapp', 'google-meu-negocio', 'landing-page'], 'intro' => 'Você está atendendo e o celular não para. Com agendamento online, o cliente escolhe o horário sozinho, recebe lembrete e você só confere a agenda.'],
-        'pet-shops' => ['name' => 'Pet shops e banho e tosa', 'title' => 'Agendamento de banho e tosa e site para pet shops', 'description' => 'Agendamento online de banho e tosa, atendimento automático no WhatsApp, catálogo de produtos e site para pet shops e clínicas veterinárias.', 'h1' => 'Banho e tosa marcado sozinho, tutor avisado na hora', 'pains' => ['Marcação de banho e tosa toda pelo WhatsApp', 'Tutor perguntando "já está pronto?"', 'Pouca gente nova achando o pet shop'], 'services' => ['agendamento-online', 'atendimento-whatsapp', 'cardapio-digital', 'google-meu-negocio'], 'intro' => 'O tutor quer marcar rápido e saber quando buscar. Com agendamento online e avisos automáticos, a equipe para de responder as mesmas mensagens e foca no bicho.'],
-        'lojas-e-comercio' => ['name' => 'Lojas e comércio', 'title' => 'Loja virtual e catálogo digital para lojas e comércios', 'description' => 'Loja virtual com Pix e cartão, catálogo com pedido no WhatsApp e perfil no Google para lojas de roupa, presentes, cosméticos e comércio local.', 'h1' => 'Venda também para quem não passa na sua porta', 'pains' => ['Vender só para quem passa na frente', 'Responder preço por preço no direct', 'Perder venda fora do horário'], 'services' => ['loja-virtual', 'cardapio-digital', 'google-meu-negocio', 'atendimento-whatsapp'], 'intro' => 'Seus produtos podem vender 24 horas. Uma loja virtual ou um catálogo com pedido no WhatsApp leva sua vitrine para o celular de toda a cidade.'],
-        'prestadores-de-servico' => ['name' => 'Prestadores de serviço', 'title' => 'Site e landing page para prestadores de serviço e profissionais liberais', 'description' => 'Site, landing page e perfil no Google para advogados, contadores, arquitetos, personal trainers, eletricistas, diaristas e outros prestadores de serviço.', 'h1' => 'Mais orçamentos pedidos, menos tempo explicando', 'pains' => ['Depender só de indicação', 'Explicar a mesma coisa para cada cliente', 'Não passar a confiança que você merece'], 'services' => ['landing-page', 'site-profissional', 'google-meu-negocio', 'atendimento-whatsapp'], 'intro' => 'Indicação é ótima, mas não paga as contas todo mês. Um site bem feito e um perfil forte no Google trazem clientes que ainda não te conhecem e já chegam confiando.'],
+        'clinicas-e-consultorios' => ['name' => 'Clínicas e consultórios', 'title' => 'Site e agendamento online para clínicas em São Paulo', 'description' => 'Site, agendamento online e WhatsApp automático para clínicas, consultórios, psicólogos e fisioterapeutas em São Paulo e no Brasil. Menos faltas.', 'h1' => 'Mais pacientes, menos faltas, recepção mais leve', 'pains' => ['Paciente que marca e não aparece', 'Recepção presa no telefone e no WhatsApp', 'Pacientes novos que não acham a clínica no Google'], 'services' => ['agendamento-online', 'atendimento-whatsapp', 'site-profissional', 'google-meu-negocio'], 'intro' => 'Agenda cheia começa com o paciente te achando e termina com ele aparecendo no horário. Eu cuido do caminho todo: o site que passa confiança, o perfil no Google, o agendamento online e o lembrete no WhatsApp.', 'faq' => [['Quanto custa um site com agendamento online para clínica?', 'O site profissional custa R$ 1.497, pagamento único. O agendamento online custa R$ 697 mais mensalidade a partir de R$ 59. O preço fecha antes de começar, depois de uma conversa grátis de 15 minutos.'], ['O agendamento online ajuda a reduzir faltas?', 'O paciente recebe lembrete no WhatsApp antes da consulta, o que ajuda a reduzir as faltas.'], ['Você atende clínicas de São Paulo?', 'Sim. Moro em São Paulo e atendo clínicas da cidade e de todo o Brasil, por WhatsApp ou videochamada.']]],
+        'restaurantes-e-delivery' => ['name' => 'Restaurantes e delivery', 'title' => 'Cardápio digital para restaurantes, sem comissão por pedido', 'description' => 'Cardápio digital com pedido direto no WhatsApp, sem taxa por pedido, site e perfil no Google para restaurantes, lanchonetes, pizzarias e docerias.', 'h1' => 'Pedidos direto no seu WhatsApp, sem comissão', 'pains' => ['Comissão alta dos aplicativos de entrega', 'Pedido bagunçado no WhatsApp', 'Cliente novo que não te acha no Google'], 'services' => ['cardapio-digital', 'google-meu-negocio', 'atendimento-whatsapp', 'site-profissional'], 'intro' => 'Cada pedido que vem por aplicativo deixa uma parte do seu lucro pelo caminho. Com cardápio digital próprio, o pedido chega organizado no seu WhatsApp e o dinheiro fica com você.', 'faq' => [['Quanto custa um cardápio digital com pedido no WhatsApp?', 'R$ 497, pagamento único, pronto em cerca de 3 dias e sem comissão por pedido.'], ['Preciso sair do aplicativo de entrega que já uso?', 'Não. O cardápio próprio recebe os pedidos de quem já conhece o seu restaurante, sem comissão sobre eles. Você decide como combinar com os aplicativos.']]],
+        'saloes-e-barbearias' => ['name' => 'Salões e barbearias', 'title' => 'Agendamento online para salão de beleza e barbearia', 'description' => 'Agendamento online 24 horas com lembrete no WhatsApp, site e perfil no Google para salões de beleza, barbearias, esmalterias e estúdios de estética.', 'h1' => 'Agenda cheia sem largar a tesoura para responder WhatsApp', 'pains' => ['Responder mensagem no meio do atendimento', 'Cliente que esquece o horário', 'Buracos na agenda durante a semana'], 'services' => ['agendamento-online', 'atendimento-whatsapp', 'google-meu-negocio', 'landing-page'], 'intro' => 'Você está atendendo e o celular não para. Com agendamento online, o cliente escolhe o horário sozinho, recebe lembrete e você só confere a agenda.', 'faq' => [['Quanto custa o agendamento online para salão?', 'R$ 697 para montar, mais mensalidade a partir de R$ 59, que cobre servidor, lembretes de WhatsApp e suporte. Sem fidelidade.'], ['Dá para cobrar sinal para garantir o horário?', 'Sim. Dá para pedir um sinal por Pix na hora de marcar.'], ['Funciona com mais de um profissional?', 'Sim. Cada um tem a sua agenda e os seus serviços.']]],
+        'pet-shops' => ['name' => 'Pet shops e banho e tosa', 'title' => 'Agendamento de banho e tosa e site para pet shops', 'description' => 'Agendamento online de banho e tosa, atendimento automático no WhatsApp, catálogo de produtos e site para pet shops e clínicas veterinárias.', 'h1' => 'Banho e tosa marcado sozinho, tutor avisado na hora', 'pains' => ['Marcação de banho e tosa toda pelo WhatsApp', 'Tutor perguntando "já está pronto?"', 'Pouca gente nova achando o pet shop'], 'services' => ['agendamento-online', 'atendimento-whatsapp', 'cardapio-digital', 'google-meu-negocio'], 'intro' => 'O tutor quer marcar rápido e saber quando buscar. Com agendamento online e avisos automáticos, a equipe para de responder as mesmas mensagens e foca no bicho.', 'faq' => [['Dá para marcar banho e tosa pelo site?', 'Sim. O tutor escolhe o serviço e o horário e recebe lembrete no WhatsApp.'], ['Quanto custa o agendamento online para pet shop?', 'R$ 697 para montar, mais mensalidade a partir de R$ 59. Sem fidelidade.']]],
+        'lojas-e-comercio' => ['name' => 'Lojas e comércio', 'title' => 'Loja virtual e catálogo digital para lojas e comércios', 'description' => 'Loja virtual com Pix e cartão, catálogo com pedido no WhatsApp e perfil no Google para lojas de roupa, presentes, cosméticos e comércio local.', 'h1' => 'Venda também para quem não passa na sua porta', 'pains' => ['Vender só para quem passa na frente', 'Responder preço por preço no direct', 'Perder venda fora do horário'], 'services' => ['loja-virtual', 'cardapio-digital', 'google-meu-negocio', 'atendimento-whatsapp'], 'intro' => 'Seus produtos podem vender 24 horas. Uma loja virtual ou um catálogo com pedido no WhatsApp leva sua vitrine para o celular de toda a cidade.', 'faq' => [['Qual a diferença entre loja virtual e catálogo no WhatsApp?', 'A loja virtual (R$ 2.497) tem carrinho, Pix, cartão e frete. O catálogo com pedido no WhatsApp (R$ 497) é mais simples: o cliente monta o pedido e ele chega pronto na sua conversa.'], ['O cliente precisa baixar aplicativo?', 'Não. O catálogo abre direto no navegador do celular.']]],
+        'prestadores-de-servico' => ['name' => 'Prestadores de serviço', 'title' => 'Site para prestadores de serviço e profissionais liberais', 'description' => 'Site, landing page e perfil no Google para advogados, contadores, arquitetos, personal trainers, eletricistas, diaristas e outros prestadores de serviço.', 'h1' => 'Mais orçamentos pedidos, menos tempo explicando', 'pains' => ['Depender só de indicação', 'Explicar a mesma coisa para cada cliente', 'Não passar a confiança que você merece'], 'services' => ['landing-page', 'site-profissional', 'google-meu-negocio', 'atendimento-whatsapp'], 'intro' => 'Indicação é ótima, mas não paga as contas todo mês. Um site bem feito e um perfil forte no Google trazem clientes que ainda não te conhecem e já chegam confiando.', 'faq' => [['Preciso de site ou de landing page?', 'A landing page (R$ 997) tem um objetivo só e serve para anúncios. O site profissional (R$ 1.497) apresenta o negócio inteiro, com várias páginas.'], ['O perfil no Google ajuda a receber pedidos de orçamento?', 'Um perfil completo no Google ajuda quem procura o seu serviço na região a te encontrar e a chamar no WhatsApp. Ninguém garante a posição.']]],
+        'cafeterias-e-padarias' => ['name' => 'Cafeterias e padarias', 'title' => 'Cardápio digital para cafeteria e padaria em São Paulo', 'description' => 'Cardápio digital com QR Code e pedido direto no WhatsApp, sem comissão, mais perfil no Google Maps para cafeterias, padarias e docerias em São Paulo.', 'h1' => 'Seu cardápio no balcão e no celular, com o pedido pronto no WhatsApp', 'pains' => ['Pedido de balcão e de delivery anotado na mão', 'Cardápio de papel desatualizado toda vez que o preço muda', 'Quem passa na rua não encontra a sua cafeteria no Google Maps'], 'services' => ['cardapio-digital', 'google-meu-negocio', 'cartao-digital', 'atendimento-whatsapp'], 'intro' => 'Cafeteria boa vive de gente que volta e de gente nova que descobre o lugar. Um cardápio digital sempre atualizado, com pedido pronto no WhatsApp, e um perfil forte no Google Maps trazem as duas coisas, sem pagar comissão por pedido.', 'who' => 'uma cafeteria ou padaria', 'faq' => [
+            ['Quanto custa um cardápio digital para cafeteria?', 'R$ 497, pagamento único, pronto em cerca de 3 dias e sem comissão por pedido.'],
+            ['Como o cliente abre o cardápio no balcão?', 'O QR Code vem pronto para imprimir. O cliente aponta o celular e o cardápio abre no navegador, sem baixar aplicativo.'],
+            ['Posso cobrar taxa de entrega por bairro?', 'Sim. O horário de funcionamento e a taxa de entrega por bairro fazem parte do cardápio.'],
+        ]],
+        'dentistas' => ['name' => 'Dentistas e consultórios odontológicos', 'title' => 'Site e agendamento online para dentistas em São Paulo', 'description' => 'Site, agendamento online com lembrete no WhatsApp e perfil no Google Maps para dentistas e consultórios odontológicos em São Paulo e no Brasil.', 'h1' => 'Cadeira ocupada, menos faltas e paciente novo achando você no Google', 'pains' => ['Paciente que desmarca ou some em cima da hora', 'Recepção respondendo "tem horário?" o dia todo', 'Quem procura dentista perto de casa não encontra o seu consultório'], 'services' => ['agendamento-online', 'google-meu-negocio', 'site-profissional', 'atendimento-whatsapp'], 'intro' => 'Quem procura dentista olha o Google, compara e marca pelo celular. Eu monto o caminho todo: o perfil no Google Maps, o site que passa confiança e o agendamento online com lembrete no WhatsApp, para a cadeira não ficar vazia.', 'who' => 'um consultório odontológico', 'faq' => [
+            ['Quanto custa um site com agendamento online para dentista?', 'O site profissional custa R$ 1.497, pagamento único. O agendamento online custa R$ 697 mais mensalidade a partir de R$ 59, sem fidelidade. O preço fecha antes de começar.'],
+            ['O consultório vai aparecer no Google Maps?', 'O serviço de Google Meu Negócio (R$ 297) cria ou revisa o Perfil da Empresa, com categorias, serviços, fotos e pedido de avaliações. Ninguém garante a posição, mas um perfil completo ajuda a ser encontrado.'],
+            ['Dá para ter a agenda de mais de um dentista?', 'Sim. Cada profissional tem a sua agenda e os seus serviços.'],
+        ]],
+        'estudios-e-academias' => ['name' => 'Estúdios de pilates, yoga e personal', 'title' => 'Agendamento online para estúdio de pilates, yoga e personal', 'description' => 'Agenda online com lembrete no WhatsApp, site e perfil no Google para estúdios de pilates, yoga, treino funcional e personal trainers em São Paulo.', 'h1' => 'Aulas marcadas sozinhas, aluno avisado e menos faltas na agenda', 'pains' => ['Aluno marcando e desmarcando aula pelo WhatsApp', 'Falta sem aviso que deixa o horário vazio', 'Aluno novo que não encontra seus planos e horários'], 'services' => ['agendamento-online', 'site-profissional', 'google-meu-negocio', 'cartao-digital'], 'intro' => 'Quem dá aula não deveria passar o dia no celular organizando horário. Com agendamento online, o aluno escolhe o horário, recebe lembrete e você só confere a agenda. O site e o perfil no Google mostram planos e localização e deixam o aluno novo falar com você em um toque.', 'who' => 'um estúdio', 'faq' => [
+            ['Quanto custa a agenda online para um estúdio?', 'R$ 697 para montar, mais mensalidade a partir de R$ 59, que cobre servidor, lembretes de WhatsApp e suporte. Sem fidelidade.'],
+            ['Dá para ter uma agenda por professor?', 'Sim. Cada profissional tem a sua agenda e os seus serviços.'],
+            ['Existe uma opção mais barata para eu configurar sozinho?', 'Existe a Agenda Online pronta, um modelo para você mesmo configurar, por R$ 47 em pagamento único.'],
+        ]],
     ],
     'sst' => ['name' => 'Clínicas de saúde ocupacional', 'title' => 'Automação para clínicas de saúde ocupacional e SST', 'description' => 'Agendamento no WhatsApp, lembrete de exames periódicos e alerta de prazos do eSocial (S-2220) para clínicas de medicina do trabalho e consultorias de SST.', 'h1' => 'Menos faltas, menos telefone, nenhum prazo do eSocial perdido', 'intro' => 'Eu já construí o sistema completo de uma empresa de saúde ocupacional, com ASO, RH e financeiro. Sei como a recepção perde o dia agendando exame por exame. Seu sistema de SST continua sendo o centro: eu automatizo o operacional em volta dele.', 'pains' => ['Recepção presa agendando exame por exame', 'Trabalhador que não aparece no admissional', 'Periódico vencido e S-2220 em cima do prazo'], 'services' => ['agendamento-online', 'atendimento-whatsapp', 'sistema-sob-medida', 'site-profissional'], 'who' => 'uma clínica de saúde ocupacional'],
 ];

@@ -148,14 +148,16 @@ function layout(string $l, string $key, array $o, string $body): string
     $u = $UI[$l];
     $path = $pages[$key][$l];
     $canonical = $site['url'].$path;
+    $is404 = $key === '404';
     // Google corta títulos perto de 60 caracteres: tira o nome do fim quando o título já é longo.
     $rawTitle = $o['title'];
-    if ($key !== 'home' && mb_strlen($rawTitle) > 62) $rawTitle = preg_replace('/ \| Matheus Villanova$/u', '', $rawTitle);
+    if ($key !== 'home' && mb_strlen($rawTitle) > 60) $rawTitle = preg_replace('/ \| Matheus Villanova$/u', '', $rawTitle);
     $title = e($rawTitle);
     $desc = e($o['description']);
     $og = $site['url'].'/assets/'.($o['og'] ?? $u['og']);
     $schema = json_encode($o['schema'] ?? [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
+    $ldTag = ! empty($o['schema']) ? '<script type="application/ld+json">'.$schema.'</script>' : '';
     $head = '';
     if (! empty($site['google_verification'])) {
         $head .= '<meta name="google-site-verification" content="'.e($site['google_verification']).'">';
@@ -173,10 +175,13 @@ function layout(string $l, string $key, array $o, string $body): string
     if (isset($pages[$key]['pt'])) {
         $alts .= '<link rel="alternate" hreflang="x-default" href="'.$site['url'].$pages[$key]['pt'].'">';
     }
-    if (! empty($o['noindex'])) {
-        $head .= '<meta name="robots" content="noindex">';
-    }
+    $head .= ! empty($o['noindex']) ? '<meta name="robots" content="noindex">' : '<meta name="robots" content="index, follow, max-image-preview:large">';
 
+    $canonicalTag = $is404 ? '' : '<link rel="canonical" href="'.$canonical.'">';
+    $ogUrl = $is404 ? '' : '<meta property="og:url" content="'.$canonical.'">';
+    if ($is404) {
+        $alts = '';
+    }
     $n = $u['nav'];
     $home = url($l, 'home');
     $wa = e($o['wa'] ?? $n['wa_msg']);
@@ -220,14 +225,14 @@ function layout(string $l, string $key, array $o, string $body): string
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{$title}</title>
 <meta name="description" content="{$desc}">
-<link rel="canonical" href="{$canonical}">
+{$canonicalTag}
 {$alts}
 <meta name="theme-color" content="#0a0c18">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="{$u['og_locale']}">
 <meta property="og:site_name" content="{$site['name']}">
-<meta property="og:url" content="{$canonical}">
+{$ogUrl}
 <meta property="og:title" content="{$title}">
 <meta property="og:description" content="{$desc}">
 <meta property="og:image" content="{$og}">
@@ -242,7 +247,7 @@ function layout(string $l, string $key, array $o, string $body): string
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap"></noscript>
 <style>{$INLINE_CSS}</style>
-<script type="application/ld+json">{$schema}</script>
+{$ldTag}
 </head>
 <body>
 <nav class="nav" aria-label="{$n['main']}">
@@ -286,6 +291,46 @@ function write(string $path, string $html): void
         mkdir(dirname($file), 0777, true);
     }
     file_put_contents($file, $html);
+}
+
+// Related blocks: demos and ready-made products linked from niche and service pages (products exist in Portuguese only)
+$NICHE_DEMO = ['clinicas-e-consultorios' => 'assistente', 'dentistas' => 'assistente', 'restaurantes-e-delivery' => 'cafeteria', 'cafeterias-e-padarias' => 'cafeteria', 'saloes-e-barbearias' => 'agenda', 'estudios-e-academias' => 'agenda', 'pet-shops' => 'agenda', 'lojas-e-comercio' => 'loja-accra', 'prestadores-de-servico' => 'orcamento', '__sst' => 'assistente'];
+$PRODUCTS = [
+    'cardapio' => ['path' => '/produtos/cardapio/', 'name' => 'Cardápio Digital pronto', 'services' => ['cardapio-digital'], 'niches' => ['restaurantes-e-delivery', 'cafeterias-e-padarias']],
+    'agenda' => ['path' => '/produtos/agenda/', 'name' => 'Agenda Online pronta', 'services' => ['agendamento-online'], 'niches' => ['saloes-e-barbearias', 'estudios-e-academias']],
+];
+function productBlock(string $l, string $kind, string $slug): string
+{
+    global $PRODUCTS, $UI;
+    if ($l !== 'pt') {
+        return '';
+    }
+    foreach ($PRODUCTS as $p) {
+        if (in_array($slug, $p[$kind], true)) {
+            $t = $UI[$l]['niche'];
+
+            return '<section style="padding-top:0"><div class="wrap" style="text-align:center"><div class="section-head reveal"><span class="eyebrow">'.e($t['prod_eyebrow']).'</span><h2>'.e($t['prod_h2']).'</h2><p>'.e(str_replace('{name}', $p['name'], $t['prod_p'])).'</p></div><a class="btn btn-outline" href="'.$p['path'].'">'.e($t['prod_cta']).'</a></div></section>';
+        }
+    }
+
+    return '';
+}
+function demoBlock(string $l, string $slug): string
+{
+    global $NICHE_DEMO, $UI;
+    $d = $NICHE_DEMO[$slug] ?? null;
+    if (! $d) {
+        return '';
+    }
+    foreach ($UI[$l]['demos'] as [$ds, $tag, $title, $desc]) {
+        if ($ds === $d) {
+            $t = $UI[$l]['niche'];
+
+            return '<section style="padding-top:0"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($t['demo_eyebrow']).'</span><h2>'.e($t['demo_h2']).'</h2><p>'.e($t['demo_p']).'</p></div><div class="demos"><a class="demo reveal" href="/exemplos/'.$ds.'/"><div class="demo-body"><span class="tag">'.e($tag).'</span><h3>'.e($title).'</h3><p>'.e($desc).'</p><span class="go">'.e($UI[$l]['demo_go']).'</span></div></a></div></div></section>';
+        }
+    }
+
+    return '';
 }
 
 /* ---------- Register every page and its translations ---------- */
@@ -436,7 +481,7 @@ foreach (array_keys($LANGS) as $l) {
     <div class="section-head reveal" style="margin:88px auto 40px"><span class="eyebrow">{$s['builds_eyebrow']}</span><h2>{$s['builds_h2']}</h2></div>
     <div class="builds">{$builds}</div>
     <div class="about reveal">
-      <div class="avatar"><img src="/assets/logo.svg" alt="" width="80" height="80"></div>
+      <div class="avatar"><img src="/assets/logo.svg" alt="" width="80" height="80" loading="lazy" decoding="async"></div>
       <div>
         <h3 style="font-size:1.6rem;margin-bottom:10px">{$s['about_h3']}</h3>
         <p>{$s['about_p1']}</p>
@@ -491,6 +536,15 @@ HTML;
         if (promoOn() && priceValue($x['price'])) {
             $priceLine .= '<span class="promo-pill">'.e(str_replace('{off}', (string) $site['promo_off'], $u['promo']['svc'])).'</span>';
         }
+        $nt = $u['niche'];
+        $forLinks = '';
+        foreach ($d['niches'] as $ns => $nn) {
+            if (in_array($slug, $nn['services'], true)) {
+                $forLinks .= '<a class="btn btn-outline btn-sm" href="'.url($l, 'niche', $ns).'">'.e($nn['name']).'</a>';
+            }
+        }
+        $forBlock = $forLinks ? '<section style="padding-top:0"><div class="wrap" style="text-align:center"><div class="section-head reveal"><span class="eyebrow">'.e($nt['svcfor_eyebrow']).'</span><h2>'.e($nt['svcfor_h2']).'</h2></div><div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">'.$forLinks.'</div></div></section>' : '';
+        $forBlock .= productBlock($l, 'services', $slug);
         $ex = $dg['services'][$slug]['example'] ?? '';
         $exLink = $ex ? '<a class="btn btn-glass" href="/exemplos/'.$ex.'/">'.e($u['demo_go']).'</a>' : '<a class="btn btn-glass" href="'.url($l, 'home').'#diagnostico">'.e($sv['cta_diag']).'</a>';
         $body = '<header class="dark page-hero">'.aurora().'<div class="wrap"><div class="crumbs"><a href="'.url($l, 'home').'">'.e($sv['home']).'</a> / <a href="'.url($l, 'home').'#servicos">'.e($sv['services']).'</a> / '.e($x['name']).'</div>'
@@ -500,10 +554,11 @@ HTML;
             .'<section style="padding-top:0"><div class="wrap split"><div class="reveal"><span class="eyebrow">'.e($sv['inc_eyebrow']).'</span><h2 style="margin:14px 0 24px">'.e($sv['inc_h2']).'</h2><ul class="includes">'.$includes.'</ul></div>'
             .'<div class="reveal"><span class="eyebrow">'.e($sv['faq_eyebrow']).'</span><h2 style="margin:14px 0 24px">'.e($sv['faq_h2']).'</h2>'.faqHtml($x['faq']).'</div></div></section>'
             .'<section class="dark final">'.aurora().'<div class="wrap"><h2>'.e($sv['final_h2']).'</h2><div class="ctas"><a class="btn btn-wa" data-magnetic data-wa="'.e($msg).'">'.$WA.e($sv['final_cta']).'</a></div></div></section>'
+            .$forBlock
             .'<section><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($sv['combo_eyebrow']).'</span><h2>'.e($sv['combo_h2']).'</h2></div><div class="services">'.$others.'</div></div></section>';
-        $offer = ['@type' => 'Offer', 'priceCurrency' => $u['currency'], 'description' => $x['price_note']];
+        $offer = ['@type' => 'Offer', 'priceCurrency' => $u['currency'], 'description' => $x['price_note'], 'url' => $site['url'].$pages["svc:$slug"][$l]];
         if (priceValue($x['price'])) {
-            $offer['price'] = (string) priceValue($x['price']);
+            $offer['priceSpecification'] = ['@type' => 'PriceSpecification', 'priceCurrency' => $u['currency'], 'minPrice' => priceValue($x['price'])];
         }
         write($pages["svc:$slug"][$l], layout($l, "svc:$slug", [
             'title' => $x['title'].' | '.$site['name'], 'description' => $x['description'], 'wa' => $msg,
@@ -530,19 +585,34 @@ HTML;
         $who = $n['who'] ?? str_replace('{name}', $lower, $nc['who_default']);
         $msg = str_replace('{who}', $who, $nc['wa']);
         $extra = ($slug === '__sst' && $nc['sst_price']) ? '<section style="padding-top:0"><div class="wrap" style="text-align:center"><div class="price-tag" style="background:var(--surface);border-color:var(--line)">'.$nc['sst_price'].'</div></div></section>' : '';
+        $nicheExtra = demoBlock($l, $slug).productBlock($l, 'niches', $slug);
+        $nicheExtra .= '<section style="padding-top:0"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($nc['local_eyebrow']).'</span><h2>'.e(str_replace('{name}', $lower, $nc['local_h2'])).'</h2><p>'.e(str_replace('{name}', $lower, $nc['local_p'])).'</p></div></div></section>';
+        $nFaq = $n['faq'] ?? [];
+        if ($nFaq) {
+            $nicheExtra .= '<section style="padding-top:0"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($nc['faq_eyebrow']).'</span><h2>'.e(str_replace('{name}', $lower, $nc['faq_h2'])).'</h2></div>'.faqHtml($nFaq).'</div></section>';
+        }
+        $others = '';
+        foreach ($nicheList as $os => $on) {
+            if ($on && $os !== $slug && $os !== '__sst') {
+                $others .= '<a class="btn btn-outline btn-sm" href="'.url($l, 'niche', $os).'">'.e($on['name']).'</a>';
+            }
+        }
+        $others .= $slug !== '__sst' ? '<a class="btn btn-outline btn-sm" href="'.url($l, 'sst').'">'.e($u['footer']['sst']).'</a>' : '';
+        $nicheExtra .= '<section style="padding-top:0"><div class="wrap" style="text-align:center"><div class="section-head reveal"><span class="eyebrow">'.e($nc['also_eyebrow']).'</span><h2>'.e($nc['also_h2']).'</h2></div><div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">'.$others.'</div></div></section>';
         $body = '<header class="dark page-hero">'.aurora().'<div class="wrap"><div class="crumbs"><a href="'.url($l, 'home').'">'.e($sv['home']).'</a> / '.e($n['name']).'</div>'
             .'<span class="eyebrow" style="color:var(--lime)">'.e($nc['for'].' '.$lower).'</span><h1>'.e($n['h1']).'</h1><p class="lede">'.e($n['intro']).'</p>'
             .'<div class="ctas"><a class="btn btn-wa" data-magnetic data-wa="'.e($msg).'">'.$WA.e($nc['cta']).'</a><a class="btn btn-glass" href="'.url($l, 'home').'#diagnostico">'.e($nc['cta2']).'</a></div></div></header>'
             .'<section><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($nc['pains_eyebrow']).'</span><h2>'.e($nc['pains_h2']).'</h2></div><div class="pains">'.$pains.'</div></div></section>'
             .$extra
             .'<section style="padding-top:0"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($nc['sol_eyebrow']).'</span><h2>'.e(str_replace('{name}', $lower, $nc['sol_h2'])).'</h2></div><div class="services">'.$svc.'</div></div></section>'
+            .$nicheExtra
             .'<section class="dark final">'.aurora().'<div class="wrap"><h2>'.e($nc['final_h2']).'</h2><p class="muted" style="font-size:1.1rem">'.e($nc['final_p']).'</p><div class="ctas"><a class="btn btn-wa" data-magnetic data-wa="'.e($msg).'">'.$WA.e($nc['final_cta']).'</a></div></div></section>';
         write($pages[$key][$l], layout($l, $key, [
             'title' => $n['title'].' | '.$site['name'], 'description' => $n['description'], 'wa' => $msg, 'og' => $slug === '__sst' && $l === 'pt' ? 'og-clinicas.png' : null,
             'schema' => ['@context' => 'https://schema.org', '@graph' => [
-                ['@type' => 'Service', 'name' => $n['title'], 'description' => $n['description'], 'provider' => ['@id' => $site['url'].'/#negocio'], 'audience' => ['@type' => 'BusinessAudience', 'audienceType' => $n['name']]],
+                ['@type' => 'Service', 'name' => $n['title'], 'description' => $n['description'], 'url' => $site['url'].$pages[$key][$l], 'provider' => ['@id' => $site['url'].'/#negocio'], 'areaServed' => $l === 'pt' ? [['@type' => 'City', 'name' => 'São Paulo'], ['@type' => 'Country', 'name' => 'Brasil']] : 'Worldwide', 'audience' => ['@type' => 'BusinessAudience', 'audienceType' => $n['name']]],
                 crumbs([[$sv['home'], url($l, 'home')], [$n['name'], $pages[$key][$l]]]), business($l),
-            ]],
+            ] + ($nFaq ? [3 => faqSchema($nFaq)] : [])],
         ], $body));
     }
 
@@ -566,19 +636,80 @@ HTML;
     ], $body));
 }
 
+/* ---------- Ready-made product pages (hand-written HTML in /produtos/): SEO block between markers ---------- */
+$PROD_SEO = [
+    'agenda' => [
+        'title' => 'Agenda online para salão e barbearia, sem mensalidade',
+        'description' => 'Modelo pronto de agenda online para salão, barbearia e estética: a cliente escolhe serviço e horário e o pedido chega no WhatsApp. R$ 47, sem mensalidade.',
+        'name' => 'Agenda Online pelo WhatsApp (modelo pronto)',
+        'schema_description' => 'Modelo pronto de agenda online para salão, barbearia e estética. A cliente escolhe serviço, profissional, dia e horário e o pedido chega pronto no WhatsApp. Inclui três modelos visuais, guia em português e licença de uso. Pagamento único, sem mensalidade.',
+        'og_title' => 'Agenda online para salão e barbearia, sem mensalidade',
+    ],
+    'cardapio' => [
+        'title' => 'Cardápio digital com pedido no WhatsApp, sem mensalidade',
+        'description' => 'Modelo pronto de cardápio digital: o cliente monta o pedido no celular e ele chega pronto no seu WhatsApp. R$ 47, sem mensalidade e sem taxa por pedido.',
+        'name' => 'Cardápio Digital com Pedido no WhatsApp (modelo pronto)',
+        'schema_description' => 'Modelo pronto de cardápio digital. O cliente monta o pedido no celular e ele chega pronto no WhatsApp do negócio, com total, forma de pagamento e endereço. Inclui guia em português e licença de uso. Pagamento único, sem mensalidade e sem taxa por pedido.',
+        'og_title' => 'Cardápio digital com pedido no WhatsApp, sem mensalidade',
+    ],
+];
+foreach ($PROD_SEO as $pk => $ps) {
+    $file = "$root/produtos/$pk/index.html";
+    $html = file_get_contents($file);
+    $url = $site['url'].'/produtos/'.$pk.'/';
+    // FAQ taken from the page itself so the schema never drifts from the text
+    $faqItems = [];
+    if (preg_match_all('#<details><summary>(.*?)</summary><p>(.*?)</p></details>#s', $html, $mm, PREG_SET_ORDER)) {
+        foreach ($mm as $m) {
+            $faqItems[] = [html_entity_decode(strip_tags($m[1]), ENT_QUOTES, 'UTF-8'), html_entity_decode(strip_tags($m[2]), ENT_QUOTES, 'UTF-8')];
+        }
+    }
+    preg_match('#href="(https://pay\.hotmart\.com/[^"]+)"#', $html, $hm);
+    $graph = [
+        ['@type' => 'Product', 'name' => $ps['name'], 'description' => $ps['schema_description'], 'image' => $url.'capa.png', 'url' => $url, 'category' => 'Software', 'inLanguage' => 'pt-BR',
+            'brand' => ['@type' => 'Brand', 'name' => $site['name']],
+            'offers' => ['@type' => 'Offer', 'url' => $url, 'price' => '47', 'priceCurrency' => 'BRL', 'availability' => 'https://schema.org/InStock', 'itemCondition' => 'https://schema.org/NewCondition', 'seller' => ['@type' => 'Person', 'name' => $site['name']]]],
+        crumbs([['Início', '/'], [$ps['name'], '/produtos/'.$pk.'/']]),
+    ];
+    if ($faqItems) {
+        $graph[] = faqSchema($faqItems);
+    }
+    $ld = json_encode(['@context' => 'https://schema.org', '@graph' => $graph], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $t = e($ps['title']);
+    $d = e($ps['description']);
+    $block = "<!--seo:start-->\n<title>{$t}</title>\n<meta name=\"description\" content=\"{$d}\">\n<meta name=\"robots\" content=\"index, follow, max-image-preview:large\">\n<link rel=\"canonical\" href=\"{$url}\">\n<link rel=\"alternate\" hreflang=\"pt-BR\" href=\"{$url}\">\n<meta property=\"og:type\" content=\"website\">\n<meta property=\"og:locale\" content=\"pt_BR\">\n<meta property=\"og:site_name\" content=\"{$site['name']}\">\n<meta property=\"og:url\" content=\"{$url}\">\n<meta property=\"og:title\" content=\"".e($ps['og_title'])."\">\n<meta property=\"og:description\" content=\"{$d}\">\n<meta property=\"og:image\" content=\"{$url}capa.png\">\n<meta property=\"og:image:width\" content=\"1080\">\n<meta property=\"og:image:height\" content=\"1080\">\n<meta name=\"twitter:card\" content=\"summary_large_image\">\n<script type=\"application/ld+json\">{$ld}</script>\n<!--seo:end-->";
+    if (str_contains($html, '<!--seo:start-->')) {
+        $html = preg_replace_callback('#<!--seo:start-->.*?<!--seo:end-->#s', fn () => $block, $html);
+    } else {
+        // first run: remove the old hand-written tags and insert the block after the viewport meta
+        $html = preg_replace(['#<meta name="robots" content="noindex">\s*#', '#<title>.*?</title>\s*#s', '#<meta name="description" content="[^"]*">\s*#', '#<meta property="og:[a-z:]+" content="[^"]*">\s*#', '#<meta name="twitter:[a-z]+" content="[^"]*">\s*#'], '', $html);
+        $html = preg_replace_callback('#(<meta name="viewport"[^>]*>\n)#', fn ($mm) => $mm[1].$block."\n", $html, 1);
+    }
+    file_put_contents($file, $html);
+    $pages["prod:$pk"] = ['pt' => '/produtos/'.$pk.'/'];
+}
+
 /* ---------- 404, sitemap, robots ---------- */
 $nf = $UI['pt']['notfound'];
 $pages['404'] = ['pt' => '/404.html'];
-file_put_contents("$root/404.html", layout('pt', '404', ['title' => $nf['title'], 'description' => $nf['p'], 'noindex' => true], '<header class="dark page-hero" style="min-height:70vh">'.aurora().'<div class="wrap"><h1>'.e($nf['h1']).'</h1><p class="lede">'.e($nf['p']).'</p><div class="ctas"><a class="btn btn-primary" href="/">'.e($nf['home']).'</a><a class="btn btn-glass" href="/#diagnostico">'.e($nf['diag']).'</a></div></div></header>'));
+$nfLinks = '';
+foreach ($DATA['pt']['services'] as $slug => $sv404) {
+    $nfLinks .= '<a class="btn btn-outline btn-sm" href="'.url('pt', 'service', $slug).'">'.e($sv404['name']).'</a>';
+}
+foreach ($DATA['pt']['niches'] as $slug => $nn404) {
+    $nfLinks .= '<a class="btn btn-outline btn-sm" href="'.url('pt', 'niche', $slug).'">'.e($nn404['name']).'</a>';
+}
+$nfBlock = '<section><div class="wrap" style="text-align:center"><div class="section-head"><h2>Talvez você procure por</h2><p>Estes são os serviços e os tipos de negócio que eu atendo. Também há páginas em <a href="/en/" hreflang="en" lang="en">English</a> e <a href="/es/" hreflang="es" lang="es">Español</a>.</p></div><div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">'.$nfLinks.'</div></div></section>';
+file_put_contents("$root/404.html", layout('pt', '404', ['title' => $nf['title'], 'description' => $nf['p'], 'noindex' => true], '<header class="dark page-hero" style="min-height:50vh">'.aurora().'<div class="wrap"><h1>'.e($nf['h1']).'</h1><p class="lede">'.e($nf['p']).'</p><div class="ctas"><a class="btn btn-primary" href="/">'.e($nf['home']).'</a><a class="btn btn-glass" href="/#diagnostico">'.e($nf['diag']).'</a></div></div></header>'.$nfBlock));
 
 $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n".'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'."\n";
 $count = 0;
 foreach ($pages as $key => $set) {
-    if ($key === '404') {
+    if ((string) $key === '404') {
         continue;
     }
     foreach ($set as $l => $p) {
-        $prio = $key === 'home' ? '1.0' : (str_starts_with($key, 'svc:') ? '0.9' : '0.8');
+        $prio = $key === 'home' ? '1.0' : (str_starts_with($key, 'svc:') ? '0.9' : (str_starts_with($key, 'prod:') ? '0.7' : '0.8'));
         $xml .= "  <url><loc>{$site['url']}{$p}</loc><lastmod>{$today}</lastmod><priority>{$prio}</priority>";
         foreach ($set as $hl => $hp) {
             $xml .= '<xhtml:link rel="alternate" hreflang="'.$UI[$hl]['hreflang'].'" href="'.$site['url'].$hp.'"/>';
