@@ -3,132 +3,414 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sarta Coffee – prévia de cardápio digital</title>
+<title>Sarta Coffee · cardápio (prévia)</title>
 <meta name="description" content="Prévia não oficial de cardápio digital para a Sarta Coffee, feita por Matheus Villanova.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#2b2622">
+<meta name="theme-color" content="#EDE4D6">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap">
-<style>/* Shared bar shown on top of every live example */
-.demo-bar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px max(16px,env(safe-area-inset-left));padding-top:max(10px,env(safe-area-inset-top));background:#0a0c18;color:#c9cde6;font:500 13px/1.3 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-.demo-bar b{color:#fff}
-.demo-bar a{color:#0a0c18;background:#b6f36b;padding:7px 12px;border-radius:999px;text-decoration:none;font-weight:700;white-space:nowrap}
-.demo-bar a.back{background:transparent;color:#c9cde6;padding:7px 4px}
-.demo-bar .links{display:flex;gap:6px;align-items:center}
-@media (max-width:520px){.demo-bar .hide-sm{display:none}}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f6f2ec;--ink:#1f1b17;--muted:#6f655b;--brown:#3d342c;--cream:#ebe3d7;--accent:#7a5a3a;--wa:#1ea952}
+/* Conceito: extração como ritual. Um coador que pinga devagar, uma régua com os três níveis da Daterra e uma jarra que enche a cada pedido. */
+:root{
+  --areia:#EDE4D6;--areia-2:#e2d6c3;--papel:#f7f2ea;--cafe:#2B1A10;--cafe-2:#4a2f1f;--cinza:#7b6d5f;--linha:#cbbca6;
+  --n1:#B9875A;--n2:#8A5634;--n3:#4A2716;
+  --d:'Instrument Serif',Georgia,serif;--c:'Instrument Sans',system-ui,sans-serif;
+  --out:cubic-bezier(.23,1,.32,1);--io:cubic-bezier(.77,0,.175,1);--drawer:cubic-bezier(.32,.72,0,1);
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
-h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0;letter-spacing:-.02em}
-.wrap{max-width:1040px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}
-.hero{background:radial-gradient(circle at 82% 12%,#5a4a3c,transparent 55%),linear-gradient(160deg,#1f1b17,#3d342c);color:#f6f2ec;padding:72px 0 64px;position:relative;overflow:hidden}
-.hero h1{font-size:clamp(2.6rem,8vw,4.6rem);line-height:1}
-.hero p{max-width:30em;margin-top:16px;color:#ddd2c4;font-size:1.1rem}
-.hero .info{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:.92rem;color:#ddd2c4}
-.hero .open{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(30,169,82,.18);color:#9ff0bd;font-weight:700;font-size:.82rem}
-.hero .open::before{content:"";width:8px;height:8px;border-radius:50%;background:#3ee07c}
-.hero .reserve{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;background:var(--wa);color:#fff;text-decoration:none;font-weight:700}
-.steam{position:absolute;right:8%;top:24%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#3b1d0e 6px,transparent 7px),radial-gradient(circle at 62% 58%,#3b1d0e 7px,transparent 8px),radial-gradient(circle at 45% 70%,#3b1d0e 5px,transparent 6px),radial-gradient(circle at 50% 50%,#e9b26b,#c98a43 60%,transparent 62%);box-shadow:inset 0 -18px 0 rgba(0,0,0,.25)}
-.steam::before,.steam::after{content:"";position:absolute;left:44%;top:-60px;width:16px;height:70px;border-radius:50%;background:rgba(255,255,255,.18);filter:blur(6px);animation:rise 3s ease-in-out infinite}
-.steam::after{left:58%;animation-delay:1.4s}
-@keyframes rise{0%{transform:translateY(20px) scaleY(.6);opacity:0}40%{opacity:1}100%{transform:translateY(-30px) scaleY(1.2);opacity:0}}
-@media (max-width:760px){.steam{display:none}}
-nav.cats{position:sticky;top:44px;z-index:5;background:var(--bg);border-bottom:1px solid #e3d9cb}
-nav.cats .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
-nav.cats a{flex:none;padding:8px 14px;border-radius:999px;background:var(--cream);color:var(--brown);text-decoration:none;font-weight:600;font-size:.92rem}
-section{padding:36px 0}
-section h2{font-size:1.9rem;margin-bottom:16px}
-.items{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-@media (max-width:700px){.items{grid-template-columns:1fr}}
-.item{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:12px;border-radius:16px;background:#fff;border:1px solid #ebe2d6}
-.item .pic{width:64px;height:64px;border-radius:14px;display:grid;place-items:center;font-size:30px;background:var(--cream)}
-.item h3{font:600 1rem/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:0}
-.item p{margin:2px 0 0;color:var(--muted);font-size:.86rem}
-.item .price{font-weight:700;color:var(--accent);margin-top:4px}
-.item .price.ask{font-weight:600;font-style:italic;color:var(--muted)}
-.qty{display:flex;align-items:center;gap:6px}
-.qty button{width:34px;height:34px;border-radius:50%;border:0;background:var(--brown);color:#fff;font-size:20px;line-height:1;cursor:pointer;touch-action:manipulation;transition:transform 100ms ease}
-.qty button:active{transform:scale(.9)}
-.qty button.minus{background:var(--cream);color:var(--brown)}
-.qty span{min-width:18px;text-align:center;font-weight:700}
-.about{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
-@media (max-width:700px){.about{grid-template-columns:1fr}}
-.about .box{padding:24px;border-radius:20px;background:var(--cream)}
-.cart{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));z-index:50;transform:translate(-50%,140%);width:min(560px,calc(100% - 28px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 12px 12px 18px;border-radius:20px;background:#1f1b17;color:#fff;box-shadow:0 20px 50px -15px rgba(0,0,0,.5);transition:transform 450ms cubic-bezier(.22,1,.36,1)}
-.cart.show{transform:translate(-50%,0)}
-.cart b{display:block;font-size:1.05rem}
-.cart small{color:#c9bcab}
-.cart a{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:999px;background:var(--wa);color:#fff;text-decoration:none;font-weight:700;white-space:nowrap}
-footer{padding:40px 0 120px;color:var(--muted);font-size:.9rem;text-align:center}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;background:var(--areia);color:var(--cafe);font:16px/1.55 var(--c);-webkit-tap-highlight-color:transparent;overflow-x:clip;transition:background-color 600ms ease}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+:focus-visible{outline:2px solid var(--cafe);outline-offset:3px;border-radius:6px}
+svg{display:block}
+[data-i18n]{transition:opacity 220ms ease,filter 220ms ease}
+.troca [data-i18n]{opacity:0;filter:blur(3px)}
 
+.aviso{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 16px;padding-top:max(8px,env(safe-area-inset-top));background:var(--cafe);color:#d8c9b5;font-size:12px;line-height:1.35}
+.aviso b{color:#fff;font-weight:600}
+.aviso a{color:var(--cafe);background:var(--areia);padding:6px 11px;border-radius:999px;text-decoration:none;font-weight:600;white-space:nowrap}
+
+.cab{max-width:1080px;margin:0 auto;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.marca{font:400 26px/1 var(--d);letter-spacing:-.01em}
+.marca i{font-style:italic;color:var(--cinza)}
+.lang{position:relative;display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--linha);border-radius:999px;padding:3px}
+.lang button{position:relative;z-index:1;width:40px;height:32px;font-size:12.5px;font-weight:600;letter-spacing:.06em;transition:color 200ms ease}
+.lang button[aria-pressed="true"]{color:var(--areia)}
+.lang .th{position:absolute;top:3px;left:3px;width:40px;height:32px;border-radius:999px;background:var(--cafe);transition:transform 300ms var(--io)}
+.lang.en .th{transform:translateX(40px)}
+
+/* ritual */
+.ritual{max-width:1080px;margin:0 auto;padding:8px 18px 0;display:grid;gap:8px;align-items:end}
+.ritual h1{margin:0;font:400 clamp(58px,17vw,150px)/.9 var(--d);letter-spacing:-.025em}
+.ritual h1 em{color:var(--cinza)}
+.ritual h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
+.ritual h1 .ln>span{display:block}
+.ritual p{margin:10px 0 0;max-width:34ch;color:#5e4d3e}
+.ritual .end{margin-top:12px;font-size:13px;color:var(--cinza)}
+.coador{width:min(64vw,300px);justify-self:end;margin-top:-10px}
+.gota{opacity:0}
+.pinga .gota{animation:pinga 1.9s cubic-bezier(.55,0,.85,.4) infinite}
+.pinga .gota:nth-of-type(2){animation-delay:.95s}
+@keyframes pinga{0%{transform:translateY(0) scaleY(.6);opacity:0}10%{opacity:1}70%{transform:translateY(58px) scaleY(1.1);opacity:1}72%,100%{transform:translateY(60px);opacity:0}}
+.liq-jarra{transition:transform 900ms var(--io),fill 600ms ease}
+.cafe-cone{transition:fill 600ms ease}
+
+/* régua dos níveis */
+.niveis{max-width:1080px;margin:34px auto 0;padding:0 18px}
+.rot{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--cinza);font-weight:600}
+.niveis h2{margin:6px 0 0;font:400 clamp(36px,10vw,56px)/1 var(--d);letter-spacing:-.02em}
+.painel{margin-top:16px;background:var(--papel);border-radius:28px;padding:22px 20px 20px;box-shadow:0 1px 0 rgba(43,26,16,.06),0 30px 60px -40px rgba(43,26,16,.5);position:relative;overflow:hidden}
+.painel::before{content:"";position:absolute;inset:auto -20% -60% auto;width:70%;aspect-ratio:1;border-radius:50%;background:var(--tom,var(--n1));opacity:.12;transition:background-color 500ms ease}
+.vis{display:grid;grid-template-columns:1fr auto;align-items:end;gap:10px;position:relative}
+.vis .nome{font:400 clamp(34px,9.5vw,52px)/1 var(--d);letter-spacing:-.02em;min-height:1em}
+.vis .desc{margin:6px 0 0;color:var(--cinza);font-size:14px}
+.preco{display:flex;align-items:flex-start;font:400 clamp(72px,22vw,120px)/.8 var(--d);letter-spacing:-.04em}
+.preco small{font:500 14px var(--c);letter-spacing:0;margin:10px 4px 0 0;color:var(--cinza)}
+.rolo{position:relative;display:inline-block;overflow:hidden;height:.9em;min-width:1.05em}
+.rolo span{position:absolute;left:0;right:0;text-align:right}
+.regua{position:relative;height:84px;margin:24px 6px 0;touch-action:none;cursor:pointer}
+.regua .trilho{position:absolute;left:0;right:0;top:30px;height:2px;background:var(--linha)}
+.regua .feito{position:absolute;left:0;top:30px;height:2px;width:100%;background:var(--cafe);transform-origin:left;transform:scaleX(0)}
+.regua .tick{position:absolute;top:18px;width:2px;height:26px;margin-left:-1px;background:var(--linha)}
+.regua .marc{position:absolute;top:52px;transform:translateX(-50%);font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--cinza);white-space:nowrap;transition:color 200ms ease;padding:6px 4px}
+.regua .marc[aria-current="true"]{color:var(--cafe)}
+.regua .marc:first-of-type{transform:none}
+.regua .marc.ult{transform:translateX(-100%)}
+.puxa{position:absolute;top:8px;left:0;width:46px;height:46px;margin-left:-23px;border-radius:50%;background:var(--cafe);box-shadow:0 8px 18px -6px rgba(43,26,16,.6);display:grid;place-items:center;cursor:grab;touch-action:none;will-change:transform}
+.puxa::after{content:"";width:14px;height:14px;border-radius:50%;border:2px solid var(--areia)}
+.puxa.pega{cursor:grabbing}
+.puxa.pega::after{transform:scale(.8)}
+.pede{margin-top:6px;width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--cafe);color:var(--areia);padding:16px 20px;border-radius:18px;font-weight:600;font-size:16px;transition:transform 140ms var(--out)}
+.pede:active{transform:scale(.98)}
+.pede span:last-child{font:400 22px var(--d)}
+
+.outros{max-width:1080px;margin:34px auto 0;padding:0 18px;display:grid;gap:12px}
+.cartao{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:16px;border-radius:22px;border:1px solid var(--linha);background:rgba(247,242,234,.6)}
+.cartao>svg{width:56px;height:56px}
+.cartao b{display:block;font:400 26px/1.05 var(--d)}
+.cartao small{display:block;color:var(--cinza);font-size:13.5px;margin-top:2px}
+.cartao .tg{display:inline-block;margin-bottom:4px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--cinza);font-weight:600}
+.cartao .add{width:46px;height:46px;border-radius:50%;border:1px solid var(--cafe);display:grid;place-items:center;transition:transform 140ms var(--out),background-color 200ms ease,color 200ms ease}
+.cartao .add:active{transform:scale(.92)}
+.cartao .consulte{display:block;margin-top:6px;font-style:italic;font-family:var(--d);font-size:17px;color:var(--cafe-2)}
+@media (hover:hover) and (pointer:fine){.cartao .add:hover{background:var(--cafe);color:var(--areia)}}
+
+.como{max-width:1080px;margin:40px auto 0;padding:0 18px}
+.como .bx{border-top:1px solid var(--cafe);padding-top:18px;display:grid;gap:10px}
+.como h2{margin:0;font:400 32px/1.05 var(--d)}
+.como ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;color:#5e4d3e}
+.como li{display:grid;grid-template-columns:28px 1fr}
+.como li span{font:italic 400 18px var(--d);color:var(--cinza)}
+.fonte{max-width:1080px;margin:20px auto 0;padding:0 18px 160px;font-size:12.5px;color:var(--cinza)}
+.revela{opacity:0;transform:translateY(18px);transition:opacity 700ms var(--out),transform 700ms var(--out)}
+.revela.vista{opacity:1;transform:none}
+
+/* jarra / barra */
+.barra{position:fixed;z-index:30;left:50%;bottom:max(12px,env(safe-area-inset-bottom));width:min(520px,calc(100% - 20px));transform:translate(-50%,calc(100% + 30px));transition:transform 480ms var(--drawer);display:flex;gap:8px;align-items:center;background:rgba(43,26,16,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--areia);border-radius:22px;padding:8px;box-shadow:0 20px 40px -14px rgba(43,26,16,.7)}
+.barra.on{transform:translate(-50%,0)}
+.abre{flex:1;min-width:0;display:flex;align-items:center;gap:12px;text-align:left;padding:2px 6px}
+.jar{position:relative;width:40px;height:46px;flex:none}
+.jar svg{width:100%;height:100%}
+.jar .n{position:absolute;right:-8px;top:-6px;min-width:22px;height:22px;border-radius:11px;background:var(--areia);color:var(--cafe);font:600 12px/22px var(--c);text-align:center;overflow:hidden;padding:0 5px}
+.jar .n span{display:block}
+.abre b{display:block;font:400 22px/1.05 var(--d)}
+.abre small{display:block;font-size:12px;color:#cdbca6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.manda{background:var(--areia);color:var(--cafe);text-decoration:none;font-weight:600;padding:14px 16px;border-radius:15px;white-space:nowrap;transition:transform 140ms var(--out)}
+.manda:active{transform:scale(.97)}
+.voo{position:fixed;z-index:60;width:12px;height:16px;pointer-events:none;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:var(--n2)}
+
+/* folha */
+.veu{position:fixed;inset:0;z-index:50;background:rgba(43,26,16,.45);opacity:0;pointer-events:none;transition:opacity 300ms ease}
+.veu.on{opacity:1;pointer-events:auto}
+.folha{position:fixed;z-index:51;left:0;right:0;bottom:0;margin:0 auto;width:min(520px,100%);max-height:86vh;max-height:86dvh;overflow:auto;background:var(--papel);border-radius:28px 28px 0 0;padding:6px 22px calc(22px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform 480ms var(--drawer);overscroll-behavior:contain}
+.folha.on{transform:translateY(0)}
+.alca{display:block;width:100%;height:26px;position:relative;touch-action:none;cursor:grab}
+.alca::before{content:"";position:absolute;left:50%;top:9px;width:44px;height:5px;margin-left:-22px;border-radius:3px;background:var(--linha)}
+.folha h2{margin:4px 0 0;font:400 34px/1 var(--d)}
+.folha ul{list-style:none;margin:14px 0 0;padding:0;border-top:1px solid var(--cafe)}
+.folha li{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--linha)}
+.folha li b{display:block;font:400 21px/1.1 var(--d)}
+.folha li small{color:var(--cinza);font-size:12.5px}
+.mm{display:flex;align-items:center;gap:2px}
+.mm button{width:34px;height:34px;border-radius:50%;border:1px solid var(--linha)}
+.mm span{min-width:24px;text-align:center;font-weight:600}
+.folha .tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;font:400 30px var(--d)}
+.folha .tot span:first-child{font:600 12px var(--c);letter-spacing:.2em;text-transform:uppercase;color:var(--cinza)}
+.folha .ps{margin:6px 0 0;color:var(--cinza);font-size:12.5px}
+.folha .manda{display:block;text-align:center;margin-top:16px;padding:16px;background:var(--cafe);color:var(--areia)}
+
+@media (min-width:860px){
+  .ritual{grid-template-columns:1.3fr 1fr;padding-top:24px}
+  .coador{justify-self:center;width:320px;margin-top:0}
+  .niveis,.outros{padding:0 32px}
+  .painel{padding:34px 40px 30px}
+  .outros{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .pinga .gota{animation:none}
+  .revela{opacity:1;transform:none;transition:none}
+  .liq-jarra,.lang .th{transition:none}
+  [data-i18n]{transition:none}
+  .barra,.folha{transition:opacity 200ms ease}
+  .barra:not(.on),.folha:not(.on){opacity:0}
+}
 </style>
 </head>
 <body>
-<div class="demo-bar"><span><b>Prévia não oficial</b> <span class="hide-sm">· feita por Matheus Villanova para a Sarta Coffee com dados públicos</span></span><span class="links"><a href="https://wa.me/?text=Oi%2C%20Matheus%21%20Vi%20a%20pr%C3%A9via%20do%20card%C3%A1pio%20da%20Sarta%20Coffee." target="_blank" rel="noopener">Falar com o Matheus</a></span></div>
+<div class="aviso"><span data-i18n="aviso"><b>Prévia não oficial</b> feita por Matheus Villanova para a Sarta Coffee com dados públicos</span><a href="https://wa.me/?text=Oi%2C%20Matheus!%20Vi%20a%20pr%C3%A9via%20do%20card%C3%A1pio%20da%20Sarta%20Coffee." target="_blank" rel="noopener" data-i18n="falar">Falar com ele</a></div>
 
-<header class="hero">
-  <div class="wrap">
-    <span class="open">Veja os cafés antes de ir</span>
-    <h1 style="margin-top:16px">Sarta Coffee</h1>
-    <p>Café em ritmo lento. Microlotes da Fazenda Daterra em três categorias e cafés importados, como o El Estoraque Washed da La Cabra. Escolha aqui e o pedido chega pronto no WhatsApp.</p>
-    <div class="info"><span>📍 R. Luminárias, 105, loja 2 · Pinheiros</span></div>
-  </div>
-  <div class="steam" aria-hidden="true"></div>
-</header>
-
-<nav class="cats" aria-label="Categorias"><div class="wrap"><a href="#daterra">Daterra</a><a href="#importados">Importados</a><a href="#levar">Para levar</a><a href="#sobre">Sobre</a></div></nav>
-
-<main class="wrap" id="menu"></main>
-
-<section id="sobre"><div class="wrap about">
-  <div><h2>Como funciona</h2><p style="color:var(--muted)">O cliente vê os cafés e os preços antes de sair de casa, escolhe e manda o pedido pronto no WhatsApp. Sem aplicativo, sem comissão. Dá para trocar o grão e o preço em um minuto, e o link vai direto na bio do Instagram.</p></div>
-  <div class="box"><h3 style="font-size:1.3rem;margin-bottom:8px">O que mais dá para ter</h3><p>Origem e notas de cada grão<br>Versão em inglês para turistas<br>Grãos do mês em destaque<br>Mapa e horários</p></div>
-</div></section>
-
-<footer>Prévia não oficial, feita para mostrar à Sarta como ficaria um cardápio digital próprio.<br>Cafés e preços tirados de matérias do Seu Dinheiro (mai/2026) e da Catraca Livre (jan/2026): podem estar desatualizados. Onde não achamos preço, está "consulte". Nenhum pedido é enviado à loja.</footer>
-
-<div class="cart" id="cart" aria-live="polite">
-  <div><b id="cart-total">R$ 0,00</b><small id="cart-count">0 itens</small></div>
-  <a id="cart-send" target="_blank" rel="noopener">Enviar pedido</a>
+<div class="cab">
+  <span class="marca">Sarta <i>Coffee</i></span>
+  <div class="lang" id="lang" role="group" aria-label="Idioma"><span class="th"></span><button data-l="pt" aria-pressed="true">PT</button><button data-l="en" aria-pressed="false">EN</button></div>
 </div>
 
-<script>
-const MENU = {
-  daterra: ["Microlotes Daterra",[["☕","Collection","Microlote da Fazenda Daterra",15],["☕","Collection Reserve","Microlote da Fazenda Daterra",22],["☕","Masterpiece","Microlote da Fazenda Daterra",29]]],
-  importados: ["Importados",[["🇨🇴","El Estoraque Washed","Café colombiano torrado pela La Cabra (Dinamarca)",null]]],
-  levar: ["Para levar",[["📦","Caixa de grãos Daterra","Linhas Collection, Reserve e Masterpiece",null]]],
-};
-const cart = {};
-const fmt = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-const price = (p) => (p === null ? 'consulte' : fmt(p));
-const menu = document.getElementById('menu');
-menu.innerHTML = Object.entries(MENU).map(([id, [title, items]]) => `<section id="${id}"><h2>${title}</h2><div class="items">${items.map(([pic, name, desc, p], i) => `
-  <div class="item"><div class="pic" aria-hidden="true">${pic}</div><div><h3>${name}</h3><p>${desc}</p><div class="price${p === null ? ' ask' : ''}">${price(p)}</div></div>
-  <div class="qty" data-key="${id}-${i}"><button class="minus" aria-label="Tirar ${name}">−</button><span>0</span><button class="plus" aria-label="Adicionar ${name}">+</button></div></div>`).join('')}</div></section>`).join('');
+<header class="ritual">
+  <div>
+    <h1 id="h1"><span class="ln"><span data-i18n="h1a">Extração</span></span><span class="ln"><span><em data-i18n="h1b">como ritual.</em></span></span></h1>
+    <p data-i18n="lead">Microlotes da Fazenda Daterra em três níveis e cafés importados, como o El Estoraque Washed da La Cabra. Escolha aqui e o pedido chega pronto no WhatsApp.</p>
+    <div class="end">R. Luminárias, 105, loja 2 · Pinheiros</div>
+  </div>
+  <svg class="coador pinga" id="coador" viewBox="0 0 240 300" aria-hidden="true">
+    <ellipse cx="120" cy="290" rx="86" ry="8" fill="rgba(43,26,16,.12)"/>
+    <!-- jarra -->
+    <defs><clipPath id="cj"><path d="M62 170h116l-8 110a10 10 0 0 1-10 9H80a10 10 0 0 1-10-9z"/></clipPath></defs>
+    <g clip-path="url(#cj)"><rect x="40" y="160" width="160" height="140" fill="#f7f2ea"/><rect class="liq-jarra" id="liq" x="40" y="0" width="160" height="300" fill="#8A5634" style="transform:translateY(272px)"/></g>
+    <path d="M62 170h116l-8 110a10 10 0 0 1-10 9H80a10 10 0 0 1-10-9z" fill="none" stroke="#2B1A10" stroke-width="3"/>
+    <path d="M178 196c22 0 24 46 0 50" fill="none" stroke="#2B1A10" stroke-width="3"/>
+    <!-- gotas -->
+    <ellipse class="gota" id="g1" cx="120" cy="118" rx="3.4" ry="5" fill="#8A5634"/>
+    <ellipse class="gota" cx="120" cy="118" rx="3" ry="4.4" fill="#8A5634"/>
+    <!-- coador cônico -->
+    <path d="M34 30h172l-62 84H96z" fill="#f7f2ea" stroke="#2B1A10" stroke-width="3" stroke-linejoin="round"/>
+    <path class="cafe-cone" id="cone" d="M52 44h136l-50 62h-36z" fill="#8A5634"/>
+    <path d="M70 44l40 62M96 44l20 62M144 44l-20 62M170 44l-40 62" stroke="#f7f2ea" stroke-width="1.5" opacity=".35"/>
+    <path d="M24 30h192" stroke="#2B1A10" stroke-width="4" stroke-linecap="round"/>
+    <path d="M96 114h48v8H96z" fill="#2B1A10"/>
+    <path d="M86 122h68" stroke="#2B1A10" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+</header>
 
-const find = (key) => { const [id, i] = key.split('-'); return MENU[id][1][i]; };
-menu.addEventListener('click', (e) => {
-  const btn = e.target.closest('button'); if (!btn) return;
-  const box = btn.parentElement; const key = box.dataset.key;
-  cart[key] = Math.max(0, (cart[key] || 0) + (btn.classList.contains('plus') ? 1 : -1));
-  box.querySelector('span').textContent = cart[key];
-  if (navigator.vibrate && btn.classList.contains('plus')) navigator.vibrate(8);
-  update();
-});
-function update() {
-  const lines = Object.entries(cart).filter(([, q]) => q > 0);
-  const total = lines.reduce((s, [k, q]) => s + (find(k)[3] ?? 0) * q, 0);
-  const count = lines.reduce((s, [, q]) => s + q, 0);
-  const ask = lines.filter(([k]) => find(k)[3] === null).length;
-  document.getElementById('cart').classList.toggle('show', count > 0);
-  document.getElementById('cart-total').textContent = fmt(total) + (ask ? ' +' : '');
-  document.getElementById('cart-count').textContent = `${count} ${count === 1 ? 'item' : 'itens'}${ask ? ` · ${ask} a consultar` : ''}`;
-  const text = `*Pedido – Sarta Coffee (prévia)*\n\n${lines.map(([k, q]) => `${q}x ${find(k)[1]} – ${find(k)[3] === null ? 'consultar preço' : fmt(find(k)[3] * q)}`).join('\n')}\n\n*Total: ${fmt(total)}*${ask ? ' + itens a consultar' : ''}\n\n(teste da prévia do cardápio digital)`;
-  document.getElementById('cart-send').href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+<section class="niveis">
+  <span class="rot revela" data-i18n="rot1">Fazenda Daterra</span>
+  <h2 class="revela" data-i18n="h2">Os três níveis</h2>
+  <div class="painel revela" id="painel">
+    <div class="vis">
+      <div><div class="nome" id="nome">Collection</div><p class="desc" data-i18n="microlote">Microlote da Fazenda Daterra</p></div>
+      <div class="preco" aria-live="polite"><small>R$</small><span class="rolo" id="rolo"><span>15</span></span></div>
+    </div>
+    <div class="regua" id="regua" role="slider" tabindex="0" aria-label="Nível do café" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" aria-valuetext="Collection">
+      <span class="trilho"></span><span class="feito" id="feito"></span>
+      <span class="tick" style="left:0"></span><span class="tick" style="left:50%"></span><span class="tick" style="left:100%"></span>
+      <button class="marc" data-n="0" style="left:0" aria-current="true" tabindex="-1">Collection</button>
+      <button class="marc" data-n="1" style="left:50%" tabindex="-1">Reserve</button>
+      <button class="marc ult" data-n="2" style="left:100%" tabindex="-1">Masterpiece</button>
+      <span class="puxa" id="puxa" aria-hidden="true"></span>
+    </div>
+    <button class="pede" id="pede"><span data-i18n="pedir">Pedir este café</span><span id="pedeP">R$ 15</span></button>
+  </div>
+</section>
+
+<section class="outros">
+  <div class="cartao revela">
+    <svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" fill="none" stroke="#2B1A10" stroke-width="1.5"/><path d="M30 10c-10 8-10 32 0 40M30 10c10 8 10 32 0 40M10 30h40" fill="none" stroke="#2B1A10" stroke-width="1.5"/></svg>
+    <div><span class="tg" data-i18n="importado">Importado</span><b>El Estoraque Washed</b><small data-i18n="estoraque">Café colombiano torrado pela La Cabra (Dinamarca)</small><span class="consulte" data-i18n="consulte">preço: consulte</span></div>
+    <button class="add" data-add="estoraque" aria-label="Pôr El Estoraque Washed no pedido"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="cartao revela">
+    <svg viewBox="0 0 60 60" aria-hidden="true"><path d="M10 20l20-10 20 10v22L30 52 10 42z" fill="none" stroke="#2B1A10" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 20l20 10 20-10M30 30v22" fill="none" stroke="#2B1A10" stroke-width="1.5"/><ellipse cx="22" cy="38" rx="3" ry="4" fill="#8A5634" transform="rotate(-20 22 38)"/><ellipse cx="40" cy="36" rx="3" ry="4" fill="#8A5634" transform="rotate(20 40 36)"/></svg>
+    <div><span class="tg" data-i18n="levar">Para levar</span><b data-i18n="caixa">Caixa de grãos Daterra</b><small data-i18n="linhas">Linhas Collection, Reserve e Masterpiece</small><span class="consulte" data-i18n="consulte">preço: consulte</span></div>
+    <button class="add" data-add="caixa" aria-label="Pôr a caixa de grãos no pedido"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  </div>
+</section>
+
+<section class="como revela"><div class="bx">
+  <h2 data-i18n="comoT">Como ficaria na bio</h2>
+  <ul>
+    <li><span>i.</span><span data-i18n="c1">O cliente vê os cafés e os preços antes de sair de casa.</span></li>
+    <li><span>ii.</span><span data-i18n="c2">Em português e inglês, com um toque.</span></li>
+    <li><span>iii.</span><span data-i18n="c3">Trocar o grão do mês e o preço leva um minuto.</span></li>
+    <li><span>iv.</span><span data-i18n="c4">Sem aplicativo e sem comissão.</span></li>
+  </ul>
+</div></section>
+<p class="fonte" data-i18n="fonte">Prévia não oficial. Cafés e preços tirados de matérias do Seu Dinheiro (mai/2026) e da Catraca Livre (jan/2026), que podem estar desatualizados. Onde não achamos preço, está "consulte" e fica fora do total. Ilustrações feitas por código, sem fotos da loja. Nenhum pedido feito aqui chega à Sarta.</p>
+
+<div class="barra" id="barra">
+  <button class="abre" id="abre" aria-label="Ver o pedido">
+    <span class="jar"><svg viewBox="0 0 40 46" aria-hidden="true"><defs><clipPath id="cj2"><path d="M6 8h28l-2 32a3 3 0 0 1-3 3H11a3 3 0 0 1-3-3z"/></clipPath></defs><g clip-path="url(#cj2)"><rect x="0" y="0" width="40" height="60" fill="#EDE4D6" opacity=".2"/><rect id="liq2" x="0" y="0" width="40" height="60" fill="#B9875A" style="transform:translateY(40px);transition:transform 700ms cubic-bezier(.77,0,.175,1)"/></g><path d="M6 8h28l-2 32a3 3 0 0 1-3 3H11a3 3 0 0 1-3-3z" fill="none" stroke="#EDE4D6" stroke-width="2"/></svg><span class="n" id="num"><span>0</span></span></span>
+    <span style="min-width:0"><b id="tot">R$ 0</b><small id="resumo"></small></span>
+  </button>
+  <a class="manda" id="manda" target="_blank" rel="noopener" data-i18n="enviar">Enviar</a>
+</div>
+<div class="veu" id="veu"></div>
+<div class="folha" id="folha" role="dialog" aria-modal="true" aria-labelledby="ft"><div id="fc"></div></div>
+
+<script>
+(function(){
+var reduz=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- textos PT / EN ---------- */
+var T={
+  pt:{aviso:'<b>Prévia não oficial</b> feita por Matheus Villanova para a Sarta Coffee com dados públicos',falar:'Falar com ele',h1a:'Extração',h1b:'como ritual.',
+    lead:'Microlotes da Fazenda Daterra em três níveis e cafés importados, como o El Estoraque Washed da La Cabra. Escolha aqui e o pedido chega pronto no WhatsApp.',
+    rot1:'Fazenda Daterra',h2:'Os três níveis',microlote:'Microlote da Fazenda Daterra',pedir:'Pedir este café',importado:'Importado',estoraque:'Café colombiano torrado pela La Cabra (Dinamarca)',
+    consulte:'preço: consulte',levar:'Para levar',caixa:'Caixa de grãos Daterra',linhas:'Linhas Collection, Reserve e Masterpiece',comoT:'Como ficaria na bio',
+    c1:'O cliente vê os cafés e os preços antes de sair de casa.',c2:'Em português e inglês, com um toque.',c3:'Trocar o grão do mês e o preço leva um minuto.',c4:'Sem aplicativo e sem comissão.',
+    fonte:'Prévia não oficial. Cafés e preços tirados de matérias do Seu Dinheiro (mai/2026) e da Catraca Livre (jan/2026), que podem estar desatualizados. Onde não achamos preço, está "consulte" e fica fora do total. Ilustrações feitas por código, sem fotos da loja. Nenhum pedido feito aqui chega à Sarta.',
+    enviar:'Enviar',pedido:'Seu pedido',total:'Total',aConsultar:'a consultar',fora:'item(ns) com preço a consultar, fora do total',enviarW:'Enviar pedido no WhatsApp',cada:'cada',verPedido:'ver o pedido',
+    msgT:'Pedido Sarta Coffee (prévia)',msgC:'consultar preço',msgF:'teste da prévia do cardápio digital',msgA:'itens a consultar'},
+  en:{aviso:'<b>Unofficial preview</b> made by Matheus Villanova for Sarta Coffee with public data',falar:'Contact him',h1a:'Extraction',h1b:'as a ritual.',
+    lead:'Daterra Farm microlots in three tiers and imported coffees, like La Cabra’s El Estoraque Washed. Choose here and your order arrives ready on WhatsApp.',
+    rot1:'Daterra Farm',h2:'The three tiers',microlote:'Daterra Farm microlot',pedir:'Order this coffee',importado:'Imported',estoraque:'Colombian coffee roasted by La Cabra (Denmark)',
+    consulte:'price: ask us',levar:'To take home',caixa:'Daterra bean box',linhas:'Collection, Reserve and Masterpiece lines',comoT:'How it would look in your bio',
+    c1:'Guests see the coffees and prices before leaving home.',c2:'In Portuguese and English, one tap away.',c3:'Changing the bean of the month or a price takes a minute.',c4:'No app and no commission.',
+    fonte:'Unofficial preview. Coffees and prices taken from Seu Dinheiro (May 2026) and Catraca Livre (Jan 2026) articles, which may be outdated. Where no price was found it says "ask us" and stays out of the total. Illustrations drawn in code, no photos of the shop. No order placed here reaches Sarta.',
+    enviar:'Send',pedido:'Your order',total:'Total',aConsultar:'to ask',fora:'item(s) with price to ask, not in the total',enviarW:'Send order on WhatsApp',cada:'each',verPedido:'see the order',
+    msgT:'Sarta Coffee order (preview)',msgC:'ask price',msgF:'preview menu test',msgA:'items to ask'}
+};
+var lg='pt';function t(k){return T[lg][k];}
+function aplica(){document.querySelectorAll('[data-i18n]').forEach(function(el){el.innerHTML=t(el.dataset.i18n);});document.documentElement.lang=lg==='pt'?'pt-BR':'en';}
+var langEl=document.getElementById('lang');
+langEl.addEventListener('click',function(e){var b=e.target.closest('[data-l]');if(!b||b.dataset.l===lg)return;lg=b.dataset.l;
+  langEl.classList.toggle('en',lg==='en');langEl.querySelectorAll('[data-l]').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.l===lg);});
+  if(reduz){aplica();atualiza(true);return;}
+  document.body.classList.add('troca');setTimeout(function(){aplica();atualiza(true);document.body.classList.remove('troca');},220);});
+
+/* ---------- dados ---------- */
+var NIV=[{k:'collection',n:'Collection',p:15,cor:'#B9875A'},{k:'reserve',n:'Collection Reserve',p:22,cor:'#8A5634'},{k:'masterpiece',n:'Masterpiece',p:29,cor:'#4A2716'}];
+var EXTRA={estoraque:{n:'El Estoraque Washed',p:null},caixa:{n:'Caixa de grãos Daterra',nEn:'Daterra bean box',p:null}};
+var TODOS={};NIV.forEach(function(x){TODOS[x.k]=x;});Object.keys(EXTRA).forEach(function(k){TODOS[k]=EXTRA[k];});
+function nm(k){var it=TODOS[k];return lg==='en'&&it.nEn?it.nEn:it.n;}
+function real(v){return 'R$ '+v.toLocaleString('pt-BR');}
+
+/* ---------- entrada do título ---------- */
+if(!reduz){document.querySelectorAll('#h1 .ln>span').forEach(function(s,i){s.animate([{transform:'translateY(105%)'},{transform:'none'}],{duration:900,delay:120+i*110,easing:'cubic-bezier(.23,1,.32,1)',fill:'backwards'});});}
+else document.getElementById('coador').classList.remove('pinga');
+/* revelação na rolagem */
+var rv=document.querySelectorAll('.revela');
+if('IntersectionObserver' in window&&!reduz){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vista');io.unobserve(e.target);}});},{rootMargin:'0px 0px -10% 0px'});rv.forEach(function(r){io.observe(r);});}
+else rv.forEach(function(r){r.classList.add('vista');});
+
+/* ---------- régua com mola ---------- */
+var regua=document.getElementById('regua'),puxa=document.getElementById('puxa'),feito=document.getElementById('feito'),painel=document.getElementById('painel');
+var pos=0,vel=0,alvo=0,nivel=0,arrastando=false,raf=0;/* pos de 0 a 1 */
+function largura(){return regua.clientWidth;}
+function pinta(){
+  var w=largura();puxa.style.transform='translateX('+(pos*w)+'px)'+(arrastando?' scale(1.08)':'');feito.style.transform='scaleX('+pos+')';
+  var n=Math.max(0,Math.min(2,Math.round(pos*2)));
+  if(n!==nivel)mudaNivel(n);
 }
+function mudaNivel(n){
+  var sobe=n>nivel;nivel=n;var it=NIV[n];
+  var nome=document.getElementById('nome');
+  if(!reduz)nome.animate([{opacity:.0,filter:'blur(4px)',transform:'translateY('+(sobe?8:-8)+'px)'},{opacity:1,filter:'blur(0)',transform:'none'}],{duration:260,easing:'cubic-bezier(.23,1,.32,1)'});
+  nome.textContent=it.n;rola(document.getElementById('rolo'),it.p,sobe);
+  document.getElementById('pedeP').textContent=real(it.p);
+  regua.setAttribute('aria-valuenow',n+1);regua.setAttribute('aria-valuetext',it.n);
+  regua.querySelectorAll('.marc').forEach(function(m){m.setAttribute('aria-current',+m.dataset.n===n);});
+  painel.style.setProperty('--tom',it.cor);
+  document.getElementById('cone').style.fill=it.cor;document.querySelectorAll('.gota').forEach(function(g){g.style.fill=it.cor;});
+  if(navigator.vibrate&&arrastando)try{navigator.vibrate(6);}catch(e){}
+}
+var ultT=0;function mola(ts){
+  /* mola criticamente amortecida (resposta ~0.35 s) */
+  var k=320,c=2*Math.sqrt(k),dt=ultT&&ts?Math.min((ts-ultT)/1000,1/30):1/60;ultT=ts||0;
+  vel+=(-(pos-alvo)*k-vel*c)*dt;pos+=vel*dt;
+  if(Math.abs(pos-alvo)<.0005&&Math.abs(vel)<.001){pos=alvo;vel=0;pinta();raf=0;ultT=0;return;}
+  pinta();raf=requestAnimationFrame(mola);
+}
+function vaiPara(a,v){alvo=a;if(typeof v==='number')vel=v;if(reduz){pos=a;vel=0;pinta();return;}if(!raf)raf=requestAnimationFrame(mola);}
+(function(){
+  var id=null,x0=0,p0=0,hist=[];
+  regua.addEventListener('pointerdown',function(e){
+    if(e.target.closest('.marc'))return;
+    id=e.pointerId;regua.setPointerCapture(id);arrastando=true;puxa.classList.add('pega');cancelAnimationFrame(raf);raf=0;
+    var r=regua.getBoundingClientRect();
+    if(e.target===puxa){x0=e.clientX;p0=pos;}else{p0=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));x0=e.clientX;pos=p0;pinta();}
+    hist=[[e.clientX,performance.now()]];
+  });
+  regua.addEventListener('pointermove',function(e){if(e.pointerId!==id)return;
+    var w=largura(),p=p0+(e.clientX-x0)/w;
+    if(p<0)p=-Math.pow(-p*w,.7)/w;if(p>1)p=1+Math.pow((p-1)*w,.7)/w;/* borracha nas pontas */
+    pos=p;pinta();hist.push([e.clientX,performance.now()]);if(hist.length>6)hist.shift();});
+  function solta(e){if(e.pointerId!==id)return;id=null;arrastando=false;puxa.classList.remove('pega');
+    var a=hist[0],b=hist[hist.length-1],v=(b[0]-a[0])/Math.max(1,b[1]-a[1])*1000/largura();/* fração por segundo */
+    var proj=pos+(v/1000)*.99/(1-.99);/* projeção de momento */
+    var n=Math.max(0,Math.min(2,Math.round(proj*2)));vaiPara(n/2,v);}
+  regua.addEventListener('pointerup',solta);regua.addEventListener('pointercancel',solta);
+  regua.addEventListener('click',function(e){var m=e.target.closest('.marc');if(m)vaiPara(+m.dataset.n/2,0);});
+  regua.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='ArrowUp'){e.preventDefault();vaiPara(Math.min(2,nivel+1)/2);}
+    if(e.key==='ArrowLeft'||e.key==='ArrowDown'){e.preventDefault();vaiPara(Math.max(0,nivel-1)/2);}});
+})();
+addEventListener('resize',pinta);
+pinta();
+
+/* ---------- pedido ---------- */
+var ped={},ordem=[],barra=document.getElementById('barra'),num=document.getElementById('num');
+function rola(el,v,sobe){
+  var sp=el.querySelectorAll(':scope>span');for(var z=0;z<sp.length-1;z++)sp[z].remove();var velho=sp[sp.length-1];if(velho&&velho.textContent===String(v))return;
+  var novo=document.createElement('span');novo.textContent=v;
+  if(reduz||!velho){el.innerHTML='';el.appendChild(novo);return;}
+  novo.style.position=velho.style.position='absolute';novo.style.left=velho.style.left='0';novo.style.right=velho.style.right='0';el.appendChild(novo);
+  var d=sobe?1:-1,op={duration:320,easing:'cubic-bezier(.23,1,.32,1)'};
+  velho.animate([{transform:'translateY(0)',opacity:1},{transform:'translateY('+(-100*d)+'%)',opacity:0}],op).onfinish=function(){velho.remove();};
+  novo.animate([{transform:'translateY('+(100*d)+'%)',opacity:0},{transform:'translateY(0)',opacity:1}],op);
+}
+function soma(){var q=0,tt=0,c=0;ordem.forEach(function(k){q+=ped[k];var p=TODOS[k].p;if(p==null)c++;else tt+=p*ped[k];});return {q:q,t:tt,c:c};}
+function texto(){var s=soma();return '*'+t('msgT')+'*\n\n'+ordem.map(function(k){var p=TODOS[k].p;return ped[k]+'x '+nm(k)+' · '+(p==null?t('msgC'):real(p*ped[k]));}).join('\n')+'\n\n*'+t('total')+': '+real(s.t)+'*'+(s.c?' + '+t('msgA'):'')+'\n\n('+t('msgF')+')';}
+function atualiza(sobe){
+  ordem=ordem.filter(function(k){return ped[k]>0;});
+  var s=soma();barra.classList.toggle('on',s.q>0);rola(num,s.q,sobe);
+  document.getElementById('tot').textContent=real(s.t)+(s.c?' +':'');
+  document.getElementById('resumo').textContent=(s.c?s.c+' '+t('aConsultar')+' · ':'')+t('verPedido');
+  var link='https://wa.me/?text='+encodeURIComponent(texto());document.getElementById('manda').href=link;var fm=document.getElementById('fmanda');if(fm)fm.href=link;
+  /* as jarras enchem com o pedido */
+  var nivelJ=Math.min(1,s.q/6);
+  document.getElementById('liq').style.transform='translateY('+(272-nivelJ*92)+'px)';
+  document.getElementById('liq2').style.transform='translateY('+(40-nivelJ*30)+'px)';
+}
+function muda(k,d){var a=ped[k]||0,n=Math.max(0,a+d);if(n&&!a)ordem.push(k);ped[k]=n;atualiza(n>a);}
+function goteja(origem,cor,depois){
+  var mostrar=!barra.classList.contains('on');
+  if(reduz){depois();return;}
+  if(mostrar)barra.classList.add('on');
+  var r=origem.getBoundingClientRect();
+  setTimeout(function(){
+    var a=document.querySelector('.jar').getBoundingClientRect(),feitos=0;
+    for(var i=0;i<3;i++)(function(i){
+      var g=document.createElement('div');g.className='voo';g.style.background=cor;
+      var x0=r.left+r.width*(.35+i*.15),y0=r.top+r.height/2,x1=a.left+a.width/2-6,y1=a.top+a.height*.45;
+      g.style.left=x0+'px';g.style.top=y0+'px';document.body.appendChild(g);
+      g.animate([{transform:'translate(0,0) scale(.6)',opacity:0},{transform:'translate('+((x1-x0)*.4)+'px,-40px) scale(1)',opacity:1,offset:.3},{transform:'translate('+(x1-x0)+'px,'+(y1-y0)+'px) scale(.7)',opacity:.9}],
+        {duration:620+i*60,delay:i*70,easing:'cubic-bezier(.45,0,.55,1)',fill:'forwards'}).onfinish=function(){g.remove();if(++feitos===3){depois();
+          document.querySelector('.jar').animate([{transform:'scale(1)'},{transform:'scale(1.12,.92)',offset:.4},{transform:'scale(1)'}],{duration:380,easing:'cubic-bezier(.23,1,.32,1)'});}};
+    })(i);
+  },mostrar?200:0);
+}
+document.getElementById('pede').addEventListener('click',function(){var it=NIV[nivel];document.getElementById('liq').style.fill=it.cor;document.getElementById('liq2').style.fill=it.cor;goteja(this,it.cor,function(){muda(it.k,1);});});
+document.querySelector('.outros').addEventListener('click',function(e){var b=e.target.closest('[data-add]');if(!b)return;goteja(b,'#4A2716',function(){muda(b.dataset.add,1);});});
+
+/* ---------- folha ---------- */
+var folha=document.getElementById('folha'),veu=document.getElementById('veu'),fc=document.getElementById('fc'),foco=null;
+function pintaFolha(){
+  var s=soma();
+  fc.innerHTML='<button class="alca" id="alca" aria-label="Fechar"></button><h2 id="ft">'+t('pedido')+'</h2><ul>'+ordem.map(function(k){var p=TODOS[k].p;
+    return '<li><span><b>'+nm(k)+'</b><small>'+(p==null?t('consulte'):real(p)+' '+t('cada'))+'</small></span><span class="mm"><button data-l="'+k+'" data-d="-1" aria-label="−1">−</button><span>'+ped[k]+'</span><button data-l="'+k+'" data-d="1" aria-label="+1">+</button></span><span>'+(p==null?'—':real(p*ped[k]))+'</span></li>';}).join('')+
+    '</ul><div class="tot"><span>'+t('total')+'</span><span>'+real(s.t)+'</span></div>'+(s.c?'<p class="ps">+ '+s.c+' '+t('fora')+'</p>':'')+
+    '<a class="manda" id="fmanda" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(texto())+'">'+t('enviarW')+'</a>';
+  var al=document.getElementById('alca'),id=null,y0=0,t0=0,dy=0;
+  al.addEventListener('pointerdown',function(e){id=e.pointerId;al.setPointerCapture(id);y0=e.clientY;t0=performance.now();dy=0;folha.style.transition='none';});
+  al.addEventListener('pointermove',function(e){if(e.pointerId!==id)return;dy=e.clientY-y0;folha.style.transform='translateY('+(dy<0?-Math.pow(-dy,.6):dy)+'px)';});
+  function s2(e){if(e.pointerId!==id)return;id=null;folha.style.transition='';var v=dy/Math.max(1,performance.now()-t0);if(dy>100||v>.5)fecha();else folha.style.transform='';}
+  al.addEventListener('pointerup',s2);al.addEventListener('pointercancel',s2);al.addEventListener('click',function(){if(Math.abs(dy)<4)fecha();});
+}
+function abre(){if(!ordem.length)return;foco=document.activeElement;pintaFolha();veu.classList.add('on');folha.classList.add('on');setTimeout(function(){document.getElementById('alca').focus({preventScroll:true});},60);}
+function fecha(){folha.classList.remove('on');veu.classList.remove('on');folha.style.transform='';if(foco)foco.focus({preventScroll:true});}
+document.getElementById('abre').onclick=abre;veu.onclick=fecha;
+addEventListener('keydown',function(e){if(e.key==='Escape'&&folha.classList.contains('on'))fecha();});
+fc.addEventListener('click',function(e){var l=e.target.closest('[data-l]');if(!l)return;muda(l.dataset.l,+l.dataset.d);if(!ordem.length)fecha();else pintaFolha();});
+atualiza(true);
+})();
 </script>
 </body>
 </html>

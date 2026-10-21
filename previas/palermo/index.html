@@ -3,133 +3,440 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Palermo – prévia de cardápio digital</title>
+<title>Palermo · menu (prévia)</title>
 <meta name="description" content="Prévia não oficial de cardápio digital para o Palermo, feita por Matheus Villanova.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#1f4e79">
+<meta name="theme-color" content="#F2C230">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap">
-<style>/* Shared bar shown on top of every live example */
-.demo-bar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px max(16px,env(safe-area-inset-left));padding-top:max(10px,env(safe-area-inset-top));background:#0a0c18;color:#c9cde6;font:500 13px/1.3 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-.demo-bar b{color:#fff}
-.demo-bar a{color:#0a0c18;background:#b6f36b;padding:7px 12px;border-radius:999px;text-decoration:none;font-weight:700;white-space:nowrap}
-.demo-bar a.back{background:transparent;color:#c9cde6;padding:7px 4px}
-.demo-bar .links{display:flex;gap:6px;align-items:center}
-@media (max-width:520px){.demo-bar .hide-sm{display:none}}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Karla:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#fffaf0;--ink:#1d2a3a;--muted:#6b5d4f;--brown:#1f4e79;--cream:#fbeec4;--accent:#8a3a1c;--wa:#1ea952}
+/* Conceito: toldo listrado e azulejo siciliano. Cada prato é montado no prato, fio por fio, antes de ir para a conta. */
+:root{
+  --giallo:#F2C230;--giallo-2:#d9a614;--blu:#1D2A4D;--blu-2:#2c3d6b;--terra:#C65A3A;--terra-2:#a2432a;--crema:#F6EEDC;--crema-2:#efe3c8;--tinta:#1a1f30;--cinza:#6b6758;
+  --d:'Gloock',Georgia,serif;--c:'Karla',system-ui,sans-serif;
+  --out:cubic-bezier(.23,1,.32,1);--io:cubic-bezier(.77,0,.175,1);--drawer:cubic-bezier(.32,.72,0,1);
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
-h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0;letter-spacing:-.02em}
-.wrap{max-width:1040px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}
-.hero{background:repeating-linear-gradient(90deg,#f8d56b 0 34px,#fdf3d2 34px 58px);color:#1f4e79;padding:72px 0 64px;position:relative;overflow:hidden}
-.hero h1{font-size:clamp(2.6rem,8vw,4.6rem);line-height:1}
-.hero p{max-width:30em;margin-top:16px;color:#5a2a14;font-size:1.1rem}
-.hero .info{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:.92rem;color:#5a2a14}
-.hero .open{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(30,169,82,.18);color:#9ff0bd;font-weight:700;font-size:.82rem}
-.hero .open::before{content:"";width:8px;height:8px;border-radius:50%;background:#3ee07c}
-.hero .reserve{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;background:var(--wa);color:#fff;text-decoration:none;font-weight:700}
-.steam{position:absolute;right:8%;top:24%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#3b1d0e 6px,transparent 7px),radial-gradient(circle at 62% 58%,#3b1d0e 7px,transparent 8px),radial-gradient(circle at 45% 70%,#3b1d0e 5px,transparent 6px),radial-gradient(circle at 50% 50%,#e9b26b,#c98a43 60%,transparent 62%);box-shadow:inset 0 -18px 0 rgba(0,0,0,.25)}
-.steam::before,.steam::after{content:"";position:absolute;left:44%;top:-60px;width:16px;height:70px;border-radius:50%;background:rgba(255,255,255,.18);filter:blur(6px);animation:rise 3s ease-in-out infinite}
-.steam::after{left:58%;animation-delay:1.4s}
-@keyframes rise{0%{transform:translateY(20px) scaleY(.6);opacity:0}40%{opacity:1}100%{transform:translateY(-30px) scaleY(1.2);opacity:0}}
-@media (max-width:760px){.steam{display:none}}
-nav.cats{position:sticky;top:44px;z-index:5;background:var(--bg);border-bottom:1px solid #efe2c0}
-nav.cats .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
-nav.cats a{flex:none;padding:8px 14px;border-radius:999px;background:var(--cream);color:var(--brown);text-decoration:none;font-weight:600;font-size:.92rem}
-section{padding:36px 0}
-section h2{font-size:1.9rem;margin-bottom:16px}
-.items{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-@media (max-width:700px){.items{grid-template-columns:1fr}}
-.item{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:12px;border-radius:16px;background:#fff;border:1px solid #f3e6c4}
-.item .pic{width:64px;height:64px;border-radius:14px;display:grid;place-items:center;font-size:30px;background:var(--cream)}
-.item h3{font:600 1rem/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:0}
-.item p{margin:2px 0 0;color:var(--muted);font-size:.86rem}
-.item .price{font-weight:700;color:var(--accent);margin-top:4px}
-.item .price.ask{font-weight:600;font-style:italic;color:var(--muted)}
-.qty{display:flex;align-items:center;gap:6px}
-.qty button{width:34px;height:34px;border-radius:50%;border:0;background:var(--brown);color:#fff;font-size:20px;line-height:1;cursor:pointer;touch-action:manipulation;transition:transform 100ms ease}
-.qty button:active{transform:scale(.9)}
-.qty button.minus{background:var(--cream);color:var(--brown)}
-.qty span{min-width:18px;text-align:center;font-weight:700}
-.about{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
-@media (max-width:700px){.about{grid-template-columns:1fr}}
-.about .box{padding:24px;border-radius:20px;background:var(--cream)}
-.cart{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));z-index:50;transform:translate(-50%,140%);width:min(560px,calc(100% - 28px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 12px 12px 18px;border-radius:20px;background:#1a2f47;color:#fff;box-shadow:0 20px 50px -15px rgba(0,0,0,.5);transition:transform 450ms cubic-bezier(.22,1,.36,1)}
-.cart.show{transform:translate(-50%,0)}
-.cart b{display:block;font-size:1.05rem}
-.cart small{color:#c6d3e2}
-.cart a{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:999px;background:var(--wa);color:#fff;text-decoration:none;font-weight:700;white-space:nowrap}
-footer{padding:40px 0 120px;color:var(--muted);font-size:.9rem;text-align:center}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-.hero .open{background:#1f4e79;color:#fff}.hero p,.hero .info{font-weight:600}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;background:var(--crema);color:var(--tinta);font:16px/1.5 var(--c);-webkit-tap-highlight-color:transparent;overflow-x:clip}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+:focus-visible{outline:3px solid var(--terra);outline-offset:3px;border-radius:6px}
+svg{display:block}
+
+.aviso{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 16px;padding-top:max(8px,env(safe-area-inset-top));background:var(--blu);color:#d5dcf0;font-size:12px;line-height:1.35}
+.aviso b{color:#fff}
+.aviso a{color:var(--blu);background:var(--giallo);padding:6px 11px;border-radius:999px;text-decoration:none;font-weight:800;white-space:nowrap}
+
+/* toldo */
+.toldo{position:relative;height:86px;overflow:visible;z-index:3;transform-origin:top center}
+.toldo svg{width:100%;height:100%;filter:drop-shadow(0 8px 6px rgba(29,42,77,.18))}
+/* azulejo */
+.azulejo{background-color:var(--crema);background-image:var(--tile);background-size:84px 84px}
+.topo{position:relative;margin-top:-20px;padding:40px 18px 30px;overflow:hidden}
+.topo::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(246,238,220,.7),rgba(246,238,220,.97) 55%,var(--crema))}
+.topo .in{position:relative;max-width:1060px;margin:0 auto}
+.selo{display:inline-flex;gap:8px;align-items:center;font:800 11px var(--c);letter-spacing:.2em;text-transform:uppercase;color:var(--terra);background:var(--crema);border:1.5px solid var(--terra);padding:6px 11px;border-radius:999px}
+.topo h1{margin:16px 0 0;font:400 clamp(76px,22vw,188px)/.86 var(--d);color:var(--blu);letter-spacing:-.02em}
+.topo h1 .l{display:inline-block}
+.topo p{max-width:30ch;margin:16px 0 0;font-size:17px;color:#3c3f4c}
+.topo .bt{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.reserva{display:inline-flex;align-items:center;gap:10px;background:var(--blu);color:var(--crema);text-decoration:none;font-weight:800;padding:15px 20px;border-radius:14px;box-shadow:0 4px 0 #0f1730;transition:transform 140ms var(--out),box-shadow 140ms var(--out)}
+.reserva:active{transform:translateY(3px);box-shadow:0 1px 0 #0f1730}
+.end{display:inline-flex;align-items:center;padding:14px 4px;font-size:14px;color:var(--cinza)}
+.faixa{display:grid;grid-template-columns:repeat(8,1fr);gap:0;max-width:1060px;margin:28px auto 0;perspective:600px;position:relative}
+.faixa i{aspect-ratio:1;background-image:var(--tile);background-size:100% 100%;border:1px solid rgba(29,42,77,.08);transform-origin:left center;backface-visibility:hidden}
+
+/* abas */
+.abas{position:sticky;top:0;z-index:20;background:rgba(246,238,220,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:2px solid var(--blu)}
+.abas .in{max-width:1060px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 14px}
+.abas .in::-webkit-scrollbar{display:none}
+.abas button{flex:none;padding:10px 15px;border-radius:12px;font-weight:800;font-size:14px;color:var(--blu);border:2px solid transparent;transition:background-color 200ms ease,color 200ms ease,border-color 200ms ease,transform 140ms var(--out)}
+.abas button:active{transform:scale(.96)}
+.abas button[aria-selected="true"]{background:var(--blu);color:var(--giallo)}
+@media (hover:hover) and (pointer:fine){.abas button:not([aria-selected="true"]):hover{border-color:var(--blu)}.prato-l:hover .mini{transform:rotate(-8deg) scale(1.04)}}
+
+main{max-width:1060px;margin:0 auto;padding:10px 14px 160px}
+.secao{margin-top:22px}
+.secao h2{display:flex;align-items:center;gap:12px;margin:0 0 12px;font:400 32px/1 var(--d);color:var(--blu)}
+.secao h2 .tl{width:34px;height:34px;flex:none;background-image:var(--tile);background-size:100% 100%;border-radius:4px;transform:rotateY(90deg);transition:transform 700ms var(--out)}
+.secao.vista h2 .tl{transform:rotateY(0)}
+.lista{display:grid;gap:10px}
+.prato-l{display:grid;grid-template-columns:78px 1fr auto;gap:12px;align-items:center;width:100%;padding:12px;background:#fffaf0;border:2px solid var(--blu);border-radius:18px;text-align:left;position:relative;transition:transform 160ms var(--out)}
+.prato-l:active{transform:scale(.985)}
+.prato-l .mini{width:78px;height:78px;transition:transform 400ms var(--out)}
+.prato-l b{display:block;font:400 21px/1.08 var(--d);color:var(--blu)}
+.prato-l small{display:block;color:var(--cinza);font-size:13.5px;line-height:1.35;margin-top:3px}
+.prato-l .tam{display:inline-block;margin-top:6px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--terra)}
+.prato-l .pr{font-weight:800;font-size:15px;white-space:nowrap;color:var(--blu);text-align:right}
+.prato-l .pr.ask{font-weight:500;font-style:italic;color:var(--cinza)}
+.prato-l .q{position:absolute;top:-9px;right:12px;background:var(--terra);color:#fff;font-weight:800;font-size:12px;border-radius:9px;padding:1px 8px}
+.prato-l .q:empty{display:none}
+.entra{animation:entra 420ms var(--out) backwards}
+@keyframes entra{from{opacity:0;transform:translateY(14px)}}
+
+.como{margin-top:40px;background:var(--blu);color:var(--crema);border-radius:22px;padding:24px 22px;position:relative;overflow:hidden}
+.como::after{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;background-image:var(--tile);background-size:70px 70px;opacity:.25;transform:rotate(12deg)}
+.como h2{margin:0;font:400 28px/1.1 var(--d);color:var(--giallo);max-width:18ch;position:relative}
+.como ul{margin:12px 0 0;padding-left:18px;display:grid;gap:6px;color:#d5dcf0;position:relative}
+.fonte{margin-top:18px;font-size:12.5px;color:var(--cinza)}
+
+/* conta */
+.barra{position:fixed;z-index:30;left:50%;bottom:max(12px,env(safe-area-inset-bottom));width:min(560px,calc(100% - 20px));transform:translate(-50%,calc(100% + 30px));transition:transform 480ms var(--drawer);display:flex;gap:8px;align-items:center;background:var(--blu);color:var(--crema);border-radius:20px;padding:8px;box-shadow:0 18px 40px -12px rgba(29,42,77,.7)}
+.barra.on{transform:translate(-50%,0)}
+.abre{flex:1;min-width:0;display:flex;align-items:center;gap:12px;text-align:left;padding:2px 4px}
+.pratinho{position:relative;width:48px;height:48px;flex:none}
+.pratinho svg{width:100%;height:100%}
+.num{position:absolute;right:-6px;top:-6px;min-width:22px;height:22px;border-radius:11px;background:var(--giallo);color:var(--blu);font:800 12px/22px var(--c);text-align:center;overflow:hidden;padding:0 5px;box-shadow:0 0 0 2px var(--blu)}
+.num span{display:block}
+.abre b{display:block;font:400 20px/1.1 var(--d)}
+.abre small{display:block;color:#aeb9d8;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.manda{background:var(--giallo);color:var(--blu);text-decoration:none;font-weight:800;padding:14px 16px;border-radius:14px;white-space:nowrap;transition:transform 140ms var(--out)}
+.manda:active{transform:scale(.97)}
+.voo{position:fixed;z-index:60;pointer-events:none}
+.voo>div,.voo svg{width:100%;height:100%}
+
+/* folha */
+.veu{position:fixed;inset:0;z-index:50;background:rgba(26,31,48,.5);opacity:0;pointer-events:none;transition:opacity 300ms ease}
+.veu.on{opacity:1;pointer-events:auto}
+.folha{position:fixed;z-index:51;left:0;right:0;bottom:0;margin:0 auto;width:min(560px,100%);max-height:90vh;max-height:90dvh;overflow:auto;background:var(--crema);border-radius:26px 26px 0 0;padding:8px 20px calc(22px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform 480ms var(--drawer);overscroll-behavior:contain;border-top:6px solid var(--giallo)}
+.folha.on{transform:translateY(0)}
+.alca{display:block;width:100%;height:24px;position:relative;touch-action:none;cursor:grab}
+.alca::before{content:"";position:absolute;left:50%;top:8px;width:44px;height:5px;margin-left:-22px;border-radius:3px;background:#cdbf9f}
+.fecha{position:absolute;right:14px;top:14px;width:40px;height:40px;border-radius:50%;background:var(--crema-2);display:grid;place-items:center}
+.palco{position:relative;width:min(74vw,300px);aspect-ratio:1;margin:0 auto;border-radius:50%}
+.palco .toalha{position:absolute;inset:-8%;border-radius:50%;background-image:var(--tile);background-size:25% 25%;opacity:.35;-webkit-mask:radial-gradient(closest-side,#000 70%,transparent);mask:radial-gradient(closest-side,#000 70%,transparent)}
+.palco svg{position:absolute;inset:0;width:100%;height:100%;transition:transform 520ms var(--out)}
+.palco.piccola svg{transform:scale(.82)}
+.det{text-align:center}
+.det h3{margin:8px 0 0;font:400 30px/1.05 var(--d);color:var(--blu)}
+.det p{margin:6px auto 0;color:var(--cinza);max-width:32ch}
+.seg{position:relative;display:grid;grid-template-columns:1fr 1fr;margin:16px auto 0;max-width:300px;background:var(--crema-2);border-radius:14px;padding:4px}
+.seg button{position:relative;z-index:1;padding:11px 6px;font-weight:800;font-size:14px;border-radius:10px;transition:color 220ms ease}
+.seg button[aria-pressed="true"]{color:var(--crema)}
+.seg .thumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:var(--blu);border-radius:10px;transition:transform 320ms var(--io)}
+.seg.intera .thumb{transform:translateX(100%)}
+.seg small{display:block;font-weight:500;font-size:11.5px;opacity:.8}
+.valor{display:flex;justify-content:center;align-items:baseline;gap:6px;margin-top:14px;font:400 30px var(--d);color:var(--blu)}
+.valor .rolo{display:inline-block;position:relative;overflow:hidden;height:1.15em;min-width:2.2ch;vertical-align:bottom}
+.valor .rolo span{position:absolute;left:0;right:0}
+.valor.ask{font:italic 400 20px var(--c);color:var(--cinza)}
+.poe{margin-top:14px;width:100%;background:var(--terra);color:#fff;font-weight:800;font-size:17px;padding:16px;border-radius:16px;box-shadow:0 4px 0 var(--terra-2);transition:transform 140ms var(--out),box-shadow 140ms var(--out)}
+.poe:active{transform:translateY(3px);box-shadow:0 1px 0 var(--terra-2)}
+.conta h2{margin:6px 0 0;font:400 30px/1 var(--d);color:var(--blu)}
+.conta ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.conta li{display:grid;grid-template-columns:46px 1fr auto;gap:10px;align-items:center;background:#fffaf0;border-radius:14px;padding:8px 10px;border:1.5px solid var(--crema-2)}
+.conta li svg{width:46px;height:46px}
+.conta li b{display:block;font:400 17px/1.15 var(--d);color:var(--blu)}
+.conta li small{color:var(--cinza)}
+.mm{display:flex;align-items:center;gap:2px}
+.mm button{width:34px;height:34px;border-radius:50%;background:var(--crema-2);font-weight:800}
+.mm span{min-width:22px;text-align:center;font-weight:800}
+.conta .tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;font-weight:800;font-size:18px;color:var(--blu)}
+.conta .ps{color:var(--cinza);font-size:12.5px;margin:4px 0 0}
+.conta .manda{display:block;text-align:center;margin-top:14px;font-size:17px;padding:16px;background:var(--blu);color:var(--giallo)}
+
+@media (min-width:860px){
+  .topo{padding:56px 32px 40px}
+  .faixa{grid-template-columns:repeat(12,1fr)}
+  .lista{grid-template-columns:1fr 1fr}
+  main{padding-left:24px;padding-right:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  .entra{animation:none}
+  .secao h2 .tl{transform:none;transition:none}
+  .palco svg,.seg .thumb{transition:none}
+  .barra,.folha{transition:opacity 200ms ease}
+  .barra:not(.on),.folha:not(.on){opacity:0}
+}
 </style>
 </head>
 <body>
-<div class="demo-bar"><span><b>Prévia não oficial</b> <span class="hide-sm">· feita por Matheus Villanova para o Palermo com dados públicos</span></span><span class="links"><a href="https://wa.me/?text=Oi%2C%20Matheus%21%20Vi%20a%20pr%C3%A9via%20do%20card%C3%A1pio%20do%20Palermo." target="_blank" rel="noopener">Falar com o Matheus</a></span></div>
+<div class="aviso"><span><b>Prévia não oficial</b> feita por Matheus Villanova para o Palermo com dados públicos</span><a href="https://wa.me/?text=Oi%2C%20Matheus!%20Vi%20a%20pr%C3%A9via%20do%20card%C3%A1pio%20do%20Palermo." target="_blank" rel="noopener">Falar com ele</a></div>
 
-<header class="hero">
-  <div class="wrap">
-    <span class="open">Escolha pelo celular · reserve no WhatsApp</span>
-    <h1 style="margin-top:16px">Palermo</h1>
-    <p>Gastronomia e coquetelaria inspiradas no sul da Itália. Veja os pratos aqui, monte o pedido e reserve a mesa pelo WhatsApp.</p>
-    <div class="info"><span>📍 R. Sebastião Gil, 14 · Pinheiros</span></div>
-    <p style="margin-top:22px"><a class="reserve" href="https://wa.me/?text=Oi%21%20Quero%20reservar%20uma%20mesa%20no%20Palermo.%20%28teste%20da%20pr%C3%A9via%20do%20card%C3%A1pio%20digital%29" target="_blank" rel="noopener">Reservar mesa no WhatsApp</a></p>
+<div class="toldo" id="toldo" aria-hidden="true"><svg viewBox="0 0 400 86" preserveAspectRatio="none" id="toldoSvg"></svg></div>
+<header class="topo azulejo">
+  <div class="in">
+    <span class="selo">Pinheiros · cucina siciliana</span>
+    <h1 id="titulo">Palermo</h1>
+    <p>Gastronomia e coquetelaria inspiradas no sul da Itália. Toque num prato para ver como ele chega à mesa.</p>
+    <div class="bt">
+      <a class="reserva" href="https://wa.me/?text=Oi!%20Quero%20reservar%20uma%20mesa%20no%20Palermo.%20(teste%20da%20pr%C3%A9via%20do%20card%C3%A1pio%20digital)" target="_blank" rel="noopener">Reservar mesa no WhatsApp</a>
+      <span class="end">R. Sebastião Gil, 14 · Pinheiros</span>
+    </div>
   </div>
+  <div class="faixa" id="faixa" aria-hidden="true"></div>
 </header>
 
-<nav class="cats" aria-label="Categorias"><div class="wrap"><a href="#antipasti">Antipasti</a><a href="#piatti">Piatti di casa</a><a href="#dolci">Dolci</a><a href="#bere">Per bere</a><a href="#sobre">Sobre</a></div></nav>
+<nav class="abas" aria-label="Seções do menu"><div class="in" role="tablist" id="abas">
+  <button role="tab" data-f="tutto" aria-selected="true">Tutto</button>
+  <button role="tab" data-f="antipasti" aria-selected="false">Antipasti</button>
+  <button role="tab" data-f="piatti" aria-selected="false">Piatti di casa</button>
+  <button role="tab" data-f="dolci" aria-selected="false">Dolci</button>
+  <button role="tab" data-f="bere" aria-selected="false">Per bere</button>
+</div></nav>
 
-<main class="wrap" id="menu"></main>
+<main>
+  <div id="menu"></div>
+  <section class="como">
+    <h2>Como ficaria no Linktree de vocês</h2>
+    <ul>
+      <li>O menu abre na hora, sem baixar arquivo do Google Drive.</li>
+      <li>O cliente vê o prato, escolhe a porção e reserva no mesmo lugar.</li>
+      <li>Prato do dia e preço mudam em um minuto.</li>
+      <li>Dá para ter versão em italiano e inglês.</li>
+    </ul>
+  </section>
+  <p class="fonte">Prévia não oficial. Pratos e drinks dos menus do Linktree. Preços da matéria do Seu Dinheiro (jan/2026) e do menu de bebidas, que podem ter mudado. Onde não achamos preço, está "consulte" e fica fora do total. Ilustrações feitas por código, sem fotos da casa. Nenhum pedido feito aqui chega ao restaurante.</p>
+</main>
 
-<section id="sobre"><div class="wrap about">
-  <div><h2>Como funciona</h2><p style="color:var(--muted)">O cliente abre pelo QR Code da mesa ou pela bio, vê pratos e preços sem zoom e reserva pelo WhatsApp em dois toques. Dá para trocar um prato ou um preço em um minuto, sem refazer o arquivo.</p></div>
-  <div class="box"><h3 style="font-size:1.3rem;margin-bottom:8px">O que mais dá para ter</h3><p>Botão de reserva com dia e horário<br>Fotos de cada prato<br>Versão em italiano e inglês<br>Pratos do dia em destaque</p></div>
-</div></section>
-
-<footer>Prévia não oficial, feita para mostrar ao Palermo como ficaria um cardápio digital próprio.<br>Pratos e drinks dos menus em PDF do Linktree; preços da matéria do Seu Dinheiro (jan/2026) e do menu de bebidas: podem estar desatualizados. Onde não achamos preço, está "consulte". Nenhum pedido é enviado ao restaurante.</footer>
-
-<div class="cart" id="cart" aria-live="polite">
-  <div><b id="cart-total">R$ 0,00</b><small id="cart-count">0 itens</small></div>
-  <a id="cart-send" target="_blank" rel="noopener">Enviar pedido</a>
+<div class="barra" id="barra">
+  <button class="abre" id="abre" aria-label="Ver a conta">
+    <span class="pratinho" id="pratinho"><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="94" fill="#F6EEDC"/><circle cx="100" cy="100" r="70" fill="none" stroke="#F2C230" stroke-width="6"/><circle cx="100" cy="100" r="40" fill="#C65A3A" opacity=".85"/></svg><span class="num" id="num"><span>0</span></span></span>
+    <span style="min-width:0"><b id="tot">R$ 0</b><small id="resumo">a conta</small></span>
+  </button>
+  <a class="manda" id="manda" target="_blank" rel="noopener">Enviar</a>
+</div>
+<div class="veu" id="veu"></div>
+<div class="folha" id="folha" role="dialog" aria-modal="true" aria-labelledby="ft">
+  <button class="alca" id="alca" aria-label="Arraste para fechar"></button>
+  <button class="fecha" id="fecha" aria-label="Fechar"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+  <div id="fc"></div>
 </div>
 
 <script>
-const MENU = {
-  antipasti: ["Antipasti e crudi",[["🍙","Arancini al pesto","Pesto de pistache e muçarela",49],["🐟","Crudo di tonno","Atum cru com molho de tomate fresco",69],["🐙","Polpo bollito","Polvo cozido com azeite e limão siciliano",null],["🦑","Calamari fritti","Lulas fritas com aioli de limão siciliano",null]]],
-  piatti: ["Piatti di casa",[["🍝","Caserecce al pesto trapanese · piccola","Massa com pesto de amêndoas e linguiça picante (meia porção)",48],["🍝","Caserecce al pesto trapanese · intera","Massa com pesto de amêndoas e linguiça picante (porção completa)",80],["🦐","Linguine ai frutti di mare · piccola","Massa com anéis largos e frutos do mar (meia porção)",66],["🦐","Linguine ai frutti di mare · intera","Massa com anéis largos e frutos do mar (porção completa)",110],["🍆","Linguine alla norma","Massa com berinjela, tomate e ricota",null]]],
-  dolci: ["Dolci",[["🥐","Cannolo classico","Recheado com creme",null],["💚","Cannolo al pistacchio","",45]]],
-  bere: ["Per bere",[["🍹","Palermo Spritz","Don Julio Blanco, limoncello, Luxardo Maraschino, espumante",62],["🍊","Costa d'Oro","Lillet Blanc, suco de laranja, hidromel de frutas vermelhas e espumante",55],["🌼","Fiore di Palermo","St. Germain, jerez fino, hortelã, soda limonada",null],["🫧","Soda italiana","Maçã verde, morango ou grenadine (sem álcool)",29]]],
-};
-const cart = {};
-const fmt = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-const price = (p) => (p === null ? 'consulte' : fmt(p));
-const menu = document.getElementById('menu');
-menu.innerHTML = Object.entries(MENU).map(([id, [title, items]]) => `<section id="${id}"><h2>${title}</h2><div class="items">${items.map(([pic, name, desc, p], i) => `
-  <div class="item"><div class="pic" aria-hidden="true">${pic}</div><div><h3>${name}</h3><p>${desc}</p><div class="price${p === null ? ' ask' : ''}">${price(p)}</div></div>
-  <div class="qty" data-key="${id}-${i}"><button class="minus" aria-label="Tirar ${name}">−</button><span>0</span><button class="plus" aria-label="Adicionar ${name}">+</button></div></div>`).join('')}</div></section>`).join('');
+(function(){
+var reduz=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const find = (key) => { const [id, i] = key.split('-'); return MENU[id][1][i]; };
-menu.addEventListener('click', (e) => {
-  const btn = e.target.closest('button'); if (!btn) return;
-  const box = btn.parentElement; const key = box.dataset.key;
-  cart[key] = Math.max(0, (cart[key] || 0) + (btn.classList.contains('plus') ? 1 : -1));
-  box.querySelector('span').textContent = cart[key];
-  if (navigator.vibrate && btn.classList.contains('plus')) navigator.vibrate(8);
-  update();
-});
-function update() {
-  const lines = Object.entries(cart).filter(([, q]) => q > 0);
-  const total = lines.reduce((s, [k, q]) => s + (find(k)[3] ?? 0) * q, 0);
-  const count = lines.reduce((s, [, q]) => s + q, 0);
-  const ask = lines.filter(([k]) => find(k)[3] === null).length;
-  document.getElementById('cart').classList.toggle('show', count > 0);
-  document.getElementById('cart-total').textContent = fmt(total) + (ask ? ' +' : '');
-  document.getElementById('cart-count').textContent = `${count} ${count === 1 ? 'item' : 'itens'}${ask ? ` · ${ask} a consultar` : ''}`;
-  const text = `*Pedido – Palermo (prévia)*\n\n${lines.map(([k, q]) => `${q}x ${find(k)[1]} – ${find(k)[3] === null ? 'consultar preço' : fmt(find(k)[3] * q)}`).join('\n')}\n\n*Total: ${fmt(total)}*${ask ? ' + itens a consultar' : ''}\n\n(teste da prévia do cardápio digital)`;
-  document.getElementById('cart-send').href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+/* ---------- azulejo (SVG gerado) ---------- */
+var tile='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84"><rect width="84" height="84" fill="#F6EEDC"/>'+
+  '<g fill="#1D2A4D"><path d="M0 0h22a22 22 0 0 1-22 22z"/><path d="M84 0v22a22 22 0 0 1-22-22z"/><path d="M0 84v-22a22 22 0 0 1 22 22z"/><path d="M84 84h-22a22 22 0 0 1 22-22z"/></g>'+
+  '<g fill="#F2C230"><path d="M0 0h12a12 12 0 0 1-12 12z"/><path d="M84 0v12a12 12 0 0 1-12-12z"/><path d="M0 84v-12a12 12 0 0 1 12 12z"/><path d="M84 84h-12a12 12 0 0 1 12-12z"/></g>'+
+  '<path d="M42 10c8 12 8 20 0 32-8-12-8-20 0-32zM42 74c8-12 8-20 0-32-8 12-8 20 0 32zM10 42c12-8 20-8 32 0-12 8-20 8-32 0zM74 42c-12-8-20-8-32 0 12 8 20 8 32 0z" fill="#2c3d6b"/>'+
+  '<path d="M42 28l14 14-14 14-14-14z" fill="#F2C230"/><circle cx="42" cy="42" r="5" fill="#C65A3A"/>'+
+  '<g fill="#C65A3A"><circle cx="42" cy="4" r="2.5"/><circle cx="42" cy="80" r="2.5"/><circle cx="4" cy="42" r="2.5"/><circle cx="80" cy="42" r="2.5"/></g></svg>';
+document.documentElement.style.setProperty('--tile','url("data:image/svg+xml,'+encodeURIComponent(tile)+'")');
+
+/* ---------- toldo listrado com borda em gomos ---------- */
+(function(){
+  var n=16,w=400/n,h='';
+  for(var i=0;i<n;i++){var x=i*w;h+='<path d="M'+x+' 0h'+w+'v60a'+(w/2)+' '+(w/2)+' 0 0 1-'+w+' 0z" fill="'+(i%2?'#F6EEDC':'#F2C230')+'"/>';}
+  h+='<rect width="400" height="8" fill="#1D2A4D"/><path d="M0 8h400" stroke="#C65A3A" stroke-width="3"/>';
+  document.getElementById('toldoSvg').innerHTML=h;
+})();
+var toldo=document.getElementById('toldo');
+if(!reduz){
+  /* o toldo balança de leve com a velocidade da rolagem e volta com mola */
+  var ly=scrollY,ang=0,vel=0,loop=false;
+  function passo(){
+    var alvo=0;vel+=(alvo-ang)*.08;vel*=.82;ang+=vel;
+    toldo.style.transform='perspective(400px) rotateX('+ang.toFixed(2)+'deg)';
+    if(Math.abs(ang)>.02||Math.abs(vel)>.02)requestAnimationFrame(passo);else{toldo.style.transform='';loop=false;}
+  }
+  addEventListener('scroll',function(){var d=scrollY-ly;ly=scrollY;if(scrollY>400)return;vel+=Math.max(-3,Math.min(3,d*.08));if(!loop){loop=true;requestAnimationFrame(passo);}},{passive:true});
+  /* letras e azulejos entram */
+  var t=document.getElementById('titulo');t.innerHTML=t.textContent.split('').map(function(c){return '<span class="l">'+c+'</span>';}).join('');t.setAttribute('aria-label','Palermo');
+  t.querySelectorAll('.l').forEach(function(s,i){s.animate([{transform:'translateY(30%) rotate(-6deg)',opacity:0},{transform:'none',opacity:1}],{duration:560,delay:120+i*45,easing:'cubic-bezier(.23,1,.32,1)',fill:'backwards'});});
 }
+var faixa=document.getElementById('faixa');
+for(var fi=0;fi<12;fi++){var i_=document.createElement('i');faixa.appendChild(i_);if(!reduz)i_.animate([{transform:'rotateY(-90deg)',opacity:0},{transform:'rotateY(0)',opacity:1}],{duration:620,delay:300+fi*60,easing:'cubic-bezier(.23,1,.32,1)',fill:'backwards'});}
+
+/* ---------- ilustrações vistas de cima ---------- */
+function rnd(s){var x=Math.sin(s*9301+49297)*233280;return x-Math.floor(x);}
+function fios(cor,n,seed,longo){/* fios de linguine em espiral */
+  var h='';for(var k=0;k<n;k++){var pts=[],voltas=longo?2.6:1.8,a0=rnd(seed+k)*6.28,ox=(rnd(seed+k*3)-.5)*18,oy=(rnd(seed+k*5)-.5)*18;
+    for(var t=0;t<=1.0001;t+=.02){var a=a0+t*voltas*6.28,r=10+t*48+Math.sin(t*20+k)*4;pts.push((100+ox+Math.cos(a)*r).toFixed(1)+' '+(100+oy+Math.sin(a)*r*.92).toFixed(1));}
+    h+='<path class="fio" pathLength="1" d="M'+pts.join(' L')+'" fill="none" stroke="'+cor+'" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>';}
+  return h;
+}
+function pedacos(cor,n,seed){/* caserecce: pedaços curtos torcidos */
+  var h='';for(var k=0;k<n;k++){var a=rnd(seed+k)*6.28,d=rnd(seed+k*7)*52,x=100+Math.cos(a)*d,y=100+Math.sin(a)*d,r=rnd(seed+k*11)*180;
+    h+='<path class="fio" pathLength="1" d="M-10 0q5-6 10 0t10 0" transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+r.toFixed(0)+')" fill="none" stroke="'+cor+'" stroke-width="7" stroke-linecap="round"/>';}
+  return h;
+}
+function bolinhas(cor,n,seed,raio,raioMin,cls){var h='';for(var k=0;k<n;k++){var a=rnd(seed+k*13)*6.28,d=rnd(seed+k*17)*48,x=100+Math.cos(a)*d,y=100+Math.sin(a)*d;h+='<circle class="'+(cls||'cai')+'" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(raioMin+rnd(seed+k)*(raio-raioMin)).toFixed(1)+'" fill="'+cor+'"/>';}return h;}
+var BASE='<circle cx="100" cy="104" r="94" fill="rgba(29,42,77,.12)"/><circle cx="100" cy="100" r="94" fill="#fffdf6" stroke="#1D2A4D" stroke-width="3"/><circle cx="100" cy="100" r="80" fill="none" stroke="#F2C230" stroke-width="4"/><circle cx="100" cy="100" r="74" fill="none" stroke="#1D2A4D" stroke-width="1.2" stroke-dasharray="3 6"/>';
+var ARTE={
+  arancini:function(){return BASE+'<circle cx="100" cy="100" r="58" fill="#7aa35a" opacity=".25"/>'+[[78,86],[122,90],[100,126]].map(function(p,i){return '<g class="cai"><circle cx="'+p[0]+'" cy="'+p[1]+'" r="24" fill="#E39B37"/><circle cx="'+(p[0]-7)+'" cy="'+(p[1]-8)+'" r="7" fill="#F4C16C"/></g>';}).join('')+bolinhas('#5c8a3a',14,4,3,1.6);},
+  tonno:function(){return BASE+[0,1,2,3,4].map(function(i){return '<rect class="cai" x="'+(58+i*16)+'" y="'+(70+(i%2)*10)+'" width="20" height="56" rx="6" fill="#B8323A" transform="rotate(-18 100 100)"/>';}).join('')+bolinhas('#E5533B',12,8,4,2)+bolinhas('#5c8a3a',6,9,2.4,1.4);},
+  polpo:function(){var h=BASE;for(var k=0;k<6;k++){var a=k/6*6.28,x=100+Math.cos(a)*16,y=100+Math.sin(a)*16,x2=100+Math.cos(a+.6)*56,y2=100+Math.sin(a+.6)*56;h+='<path class="fio" pathLength="1" d="M'+x.toFixed(1)+' '+y.toFixed(1)+' Q'+(100+Math.cos(a)*50).toFixed(1)+' '+(100+Math.sin(a)*50).toFixed(1)+' '+x2.toFixed(1)+' '+y2.toFixed(1)+'" stroke="#9A4A6A" stroke-width="13" fill="none" stroke-linecap="round"/>';}return h+bolinhas('#F2C230',5,3,6,4)+bolinhas('#d6c48a',8,6,2,1.2);},
+  calamari:function(){var h=BASE;for(var k=0;k<9;k++){var a=rnd(k*3)*6.28,d=rnd(k*7)*44,x=100+Math.cos(a)*d,y=100+Math.sin(a)*d;h+='<circle class="cai" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="13" fill="none" stroke="#D99A3D" stroke-width="8"/>';}return h+'<circle class="cai" cx="140" cy="132" r="14" fill="#F4EBC8" stroke="#d6c48a" stroke-width="2"/>'+bolinhas('#F2C230',3,1,5,4);},
+  caserecce:function(){return BASE+'<circle cx="100" cy="100" r="56" fill="#D9663E" opacity=".22"/>'+pedacos('#E8A14A',24,2)+bolinhas('#B5462A',7,12,7,5)+bolinhas('#f3e2b8',16,14,2.2,1.2);},
+  mare:function(){return BASE+fios('#EBC174',8,5,true)+'<g class="cai"><path d="M64 70a12 12 0 0 1 24 0z" fill="#2b2b3b"/></g><g class="cai"><path d="M120 130a12 12 0 0 1 24 0z" fill="#2b2b3b"/></g><g class="cai"><path d="M128 66c10 0 16 8 12 16-6-6-12-6-18-4 0-6 2-12 6-12z" fill="#E57A55"/></g>'+bolinhas('#C9463A',10,21,4,2)+bolinhas('#5c8a3a',8,23,2,1.3);},
+  norma:function(){return BASE+fios('#D95A3C',7,9,true)+[[70,80],[126,86],[110,130],[80,124],[100,96]].map(function(p){return '<rect class="cai" x="'+p[0]+'" y="'+p[1]+'" width="14" height="14" rx="3" fill="#5B2F5E"/>';}).join('')+bolinhas('#fffaf0',6,31,7,5)+bolinhas('#5c8a3a',5,33,3,2);},
+  cannolo:function(v){return BASE+'<g class="cai" transform="rotate(-24 100 100)"><rect x="50" y="78" width="100" height="44" rx="22" fill="#C98A47"/><path d="M60 84h80M60 100h80M60 116h80" stroke="#a96d33" stroke-width="2" opacity=".6"/><ellipse cx="50" cy="100" rx="11" ry="22" fill="'+(v?'#9BBB59':'#FFF4D6')+'"/><ellipse cx="150" cy="100" rx="11" ry="22" fill="'+(v?'#9BBB59':'#FFF4D6')+'"/></g>'+(v?bolinhas('#5c8a3a',10,41,3,1.6):bolinhas('#ffffff',14,43,1.8,1));},
+  copo:function(cor,extra){return '<circle cx="100" cy="104" r="88" fill="rgba(29,42,77,.1)"/><circle cx="100" cy="100" r="88" fill="#fffdf6" stroke="#1D2A4D" stroke-width="3"/><circle cx="100" cy="100" r="60" fill="'+cor+'" class="cai"/><circle cx="100" cy="100" r="60" fill="none" stroke="#1D2A4D" stroke-width="3"/><path d="M70 78a40 40 0 0 1 24-14" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>'+(extra||'');}
+};
+var ICON={
+  arancini:ARTE.arancini,tonno:ARTE.tonno,polpo:ARTE.polpo,calamari:ARTE.calamari,caserecce:ARTE.caserecce,mare:ARTE.mare,norma:ARTE.norma,
+  cannolo:function(){return ARTE.cannolo(false);},pistacchio:function(){return ARTE.cannolo(true);},
+  spritz:function(){return ARTE.copo('#E8762E','<circle class="cai" cx="120" cy="84" r="14" fill="#F2C230" stroke="#d9a614" stroke-width="3"/>');},
+  costa:function(){return ARTE.copo('#F2B544','<circle class="cai" cx="84" cy="116" r="7" fill="#B8323A"/><circle class="cai" cx="98" cy="124" r="6" fill="#B8323A"/>');},
+  fiore:function(){return ARTE.copo('#EFE7B8','<g class="cai"><path d="M112 80c8-10 20-6 18 6-10 2-14 0-18-6zM112 80c-10-6-8-20 4-18 2 10 0 14-4 18z" fill="#5c8a3a"/></g>');},
+  soda:function(){return ARTE.copo('#E4637A','<rect class="cai" x="84" y="84" width="20" height="20" rx="4" fill="#fff" opacity=".7" transform="rotate(14 94 94)"/><rect class="cai" x="104" y="102" width="18" height="18" rx="4" fill="#fff" opacity=".7" transform="rotate(-10 113 111)"/>');}
+};
+function svg(art,cls){return '<svg viewBox="0 0 200 200" aria-hidden="true"'+(cls?' class="'+cls+'"':'')+'>'+ICON[art]()+'</svg>';}
+
+/* ---------- menu (Linktree + Seu Dinheiro, jan/2026) ---------- */
+var MENU=[
+  {id:'antipasti',t:'Antipasti e crudi',itens:[
+    {k:'arancini',n:'Arancini al pesto',d:'Pesto de pistache e muçarela',p:49},
+    {k:'tonno',n:'Crudo di tonno',d:'Atum cru com molho de tomate fresco',p:69},
+    {k:'polpo',n:'Polpo bollito',d:'Polvo cozido com azeite e limão siciliano',p:null},
+    {k:'calamari',n:'Calamari fritti',d:'Lulas fritas com aioli de limão siciliano',p:null}]},
+  {id:'piatti',t:'Piatti di casa',itens:[
+    {k:'caserecce',n:'Caserecce al pesto trapanese',d:'Massa com pesto de amêndoas e linguiça picante',tam:{piccola:48,intera:80}},
+    {k:'mare',n:'Linguine ai frutti di mare',d:'Massa com anéis largos e frutos do mar',tam:{piccola:66,intera:110}},
+    {k:'norma',n:'Linguine alla norma',d:'Massa com berinjela, tomate e ricota',p:null}]},
+  {id:'dolci',t:'Dolci',itens:[
+    {k:'cannolo',n:'Cannolo classico',d:'Recheado com creme',p:null},
+    {k:'pistacchio',n:'Cannolo al pistacchio',d:'',p:45}]},
+  {id:'bere',t:'Per bere',itens:[
+    {k:'spritz',n:'Palermo Spritz',d:'Don Julio Blanco, limoncello, Luxardo Maraschino, espumante',p:62},
+    {k:'costa',n:"Costa d'Oro",d:'Lillet Blanc, suco de laranja, hidromel de frutas vermelhas e espumante',p:55},
+    {k:'fiore',n:'Fiore di Palermo',d:'St. Germain, jerez fino, hortelã, soda limonada',p:null},
+    {k:'soda',n:'Soda italiana',d:'Maçã verde, morango ou grenadine (sem álcool)',p:29}]}
+];
+var POR={};MENU.forEach(function(s){s.itens.forEach(function(it){POR[it.k]=it;});});
+var conta={},ordem=[];
+function real(v){return v==null?'consulte':'R$ '+v.toLocaleString('pt-BR');}
+function linhaId(k,t){return t?k+'|'+t:k;}
+function precoDe(id){var p=id.split('|'),it=POR[p[0]];return p[1]?it.tam[p[1]]:it.p;}
+function nomeDe(id){var p=id.split('|'),it=POR[p[0]];return it.n+(p[1]?' · '+p[1]:'');}
+function qtdDoPrato(k){var q=0;ordem.forEach(function(id){if(id.split('|')[0]===k)q+=conta[id];});return q;}
+
+/* ---------- render e filtro ---------- */
+var menuEl=document.getElementById('menu'),filtro='tutto',io=null;
+function precoLista(it){if(it.tam)return 'R$ '+it.tam.piccola+' · '+it.tam.intera;return real(it.p);}
+function render(animar){
+  var secs=MENU.filter(function(s){return filtro==='tutto'||s.id===filtro;}),n=0;
+  menuEl.innerHTML=secs.map(function(s){
+    return '<section class="secao"><h2><span class="tl" aria-hidden="true"></span>'+s.t+'</h2><div class="lista">'+s.itens.map(function(it){
+      var d=animar&&!reduz?' style="animation-delay:'+(n++*45)+'ms"':'';
+      return '<button class="prato-l'+(animar&&!reduz?' entra':'')+'"'+d+' data-k="'+it.k+'"><span class="q" data-q="'+it.k+'"></span>'+svg(it.k,'mini')+
+        '<span><b>'+it.n+'</b>'+(it.d?'<small>'+it.d+'</small>':'')+(it.tam?'<span class="tam">piccola ou intera</span>':'')+'</span>'+
+        '<span class="pr'+(it.p===null&&!it.tam?' ask':'')+'">'+precoLista(it)+'</span></button>';
+    }).join('')+'</div></section>';
+  }).join('');
+  pintaQtd();
+  if(io)io.disconnect();
+  if('IntersectionObserver' in window){io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vista');io.unobserve(e.target);}});},{rootMargin:'0px 0px -12% 0px'});
+    menuEl.querySelectorAll('.secao').forEach(function(s){io.observe(s);});}
+  else menuEl.querySelectorAll('.secao').forEach(function(s){s.classList.add('vista');});
+}
+var abas=document.getElementById('abas');
+abas.addEventListener('click',function(e){
+  var b=e.target.closest('[data-f]');if(!b||b.dataset.f===filtro)return;
+  abas.querySelectorAll('[data-f]').forEach(function(x){x.setAttribute('aria-selected',x===b);});
+  filtro=b.dataset.f;b.scrollIntoView({inline:'center',block:'nearest',behavior:reduz?'auto':'smooth'});
+  var topo=document.querySelector('.abas').offsetTop;
+  if(scrollY>topo)scrollTo({top:topo,behavior:'auto'});
+  if(reduz){render(false);return;}
+  var velhos=menuEl.querySelectorAll('.prato-l');
+  velhos.forEach(function(v){v.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-8px)'}],{duration:140,easing:'ease-out',fill:'forwards'});});
+  setTimeout(function(){render(true);},140);
+});
+menuEl.addEventListener('click',function(e){var b=e.target.closest('[data-k]');if(b)detalhe(b.dataset.k);});
+
+/* ---------- conta ---------- */
+var barra=document.getElementById('barra'),num=document.getElementById('num'),pratinho=document.getElementById('pratinho');
+function rola(el,v,sobe){
+  var sp=el.querySelectorAll(':scope>span');for(var z=0;z<sp.length-1;z++)sp[z].remove();var velho=sp[sp.length-1];if(velho&&velho.textContent===String(v))return;
+  var novo=document.createElement('span');novo.textContent=v;
+  if(reduz||!velho){el.innerHTML='';el.appendChild(novo);return;}
+  novo.style.position=velho.style.position='absolute';novo.style.left=velho.style.left='0';novo.style.right=velho.style.right='0';el.appendChild(novo);
+  var d=sobe?1:-1,op={duration:280,easing:'cubic-bezier(.23,1,.32,1)'};
+  velho.animate([{transform:'translateY(0)',opacity:1},{transform:'translateY('+(-100*d)+'%)',opacity:0}],op).onfinish=function(){velho.remove();};
+  novo.animate([{transform:'translateY('+(100*d)+'%)',opacity:0},{transform:'translateY(0)',opacity:1}],op);
+}
+function soma(){var q=0,t=0,c=0;ordem.forEach(function(id){q+=conta[id];var p=precoDe(id);if(p==null)c++;else t+=p*conta[id];});return {q:q,t:t,c:c};}
+function texto(){var s=soma();
+  return '*Pedido Palermo (prévia)*\n\n'+ordem.map(function(id){var p=precoDe(id);return conta[id]+'x '+nomeDe(id)+' · '+(p==null?'consultar preço':real(p*conta[id]));}).join('\n')+
+    '\n\n*Total: '+real(s.t)+'*'+(s.c?' + itens a consultar':'')+'\n\n(teste da prévia do cardápio digital)';}
+function pintaQtd(){document.querySelectorAll('[data-q]').forEach(function(x){var q=qtdDoPrato(x.dataset.q);x.textContent=q?'×'+q:'';});}
+function atualiza(sobe){
+  ordem=ordem.filter(function(id){return conta[id]>0;});
+  var s=soma();barra.classList.toggle('on',s.q>0);rola(num,s.q,sobe);
+  document.getElementById('tot').textContent=real(s.t)+(s.c?' +':'');
+  document.getElementById('resumo').textContent=s.c?s.c+' a consultar · ver a conta':'ver a conta';
+  var link='https://wa.me/?text='+encodeURIComponent(texto());document.getElementById('manda').href=link;
+  var fm=document.getElementById('fmanda');if(fm)fm.href=link;pintaQtd();
+}
+function muda(id,d){var a=conta[id]||0,n=Math.max(0,a+d);if(n&&!a)ordem.push(id);conta[id]=n;atualiza(n>a);}
+function voa(origem,art,depois){
+  var mostrar=!barra.classList.contains('on');
+  if(reduz){depois();return;}
+  if(mostrar)barra.classList.add('on');
+  var r=origem.getBoundingClientRect();
+  setTimeout(function(){
+    var a=pratinho.getBoundingClientRect(),size=Math.min(r.width,160);
+    var x0=r.left+r.width/2,y0=r.top+r.height/2,x1=a.left+a.width/2,y1=a.top+a.height/2;
+    var ox=document.createElement('div');ox.className='voo';ox.style.cssText='left:'+(x0-size/2)+'px;top:'+(y0-size/2)+'px;width:'+size+'px;height:'+size+'px';
+    var oy=document.createElement('div');oy.innerHTML=svg(art);ox.appendChild(oy);document.body.appendChild(ox);
+    var dur=700;
+    ox.animate([{transform:'translateX(0)'},{transform:'translateX('+(x1-x0)+'px)'}],{duration:dur,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'});
+    oy.animate([{transform:'translateY(0) scale(1)',easing:'cubic-bezier(.2,.7,.35,1)'},{transform:'translateY(-70px) scale(.7)',offset:.3,easing:'cubic-bezier(.55,0,.85,.4)'},{transform:'translateY('+(y1-y0)+'px) scale(.28)'}],{duration:dur,fill:'forwards'}).onfinish=function(){
+      ox.remove();depois();
+      pratinho.animate([{transform:'scale(1)'},{transform:'scale(1.16) rotate(-10deg)',offset:.4},{transform:'scale(1)'}],{duration:420,easing:'cubic-bezier(.23,1,.32,1)'});
+    };
+  },mostrar?200:0);
+}
+
+/* ---------- folha: o prato é montado ---------- */
+var folha=document.getElementById('folha'),veu=document.getElementById('veu'),fc=document.getElementById('fc'),foco=null,tamAtual='intera';
+function abre(html){foco=document.activeElement;fc.innerHTML=html;folha.style.transform='';veu.classList.add('on');folha.classList.add('on');setTimeout(function(){document.getElementById('fecha').focus({preventScroll:true});},60);}
+function fecha(){folha.classList.remove('on');veu.classList.remove('on');folha.style.transform='';if(foco)foco.focus({preventScroll:true});}
+document.getElementById('fecha').onclick=fecha;veu.onclick=fecha;
+addEventListener('keydown',function(e){if(e.key==='Escape'&&folha.classList.contains('on'))fecha();});
+(function(){var al=document.getElementById('alca'),id=null,y0=0,t0=0,dy=0;
+  al.addEventListener('pointerdown',function(e){id=e.pointerId;al.setPointerCapture(id);y0=e.clientY;t0=performance.now();dy=0;folha.style.transition='none';});
+  al.addEventListener('pointermove',function(e){if(e.pointerId!==id)return;dy=e.clientY-y0;folha.style.transform='translateY('+(dy<0?-Math.pow(-dy,.6):dy)+'px)';});
+  function s(e){if(e.pointerId!==id)return;id=null;folha.style.transition='';var v=dy/Math.max(1,performance.now()-t0);if(dy>110||v>.5)fecha();else folha.style.transform='';}
+  al.addEventListener('pointerup',s);al.addEventListener('pointercancel',s);al.addEventListener('click',function(){if(Math.abs(dy)<4)fecha();});})();
+function monta(svgEl){
+  if(reduz)return;
+  var fiosEl=svgEl.querySelectorAll('.fio'),cai=svgEl.querySelectorAll('.cai');
+  fiosEl.forEach(function(f,i){f.style.strokeDasharray='1';f.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:900,delay:120+i*60,easing:'cubic-bezier(.65,0,.35,1)',fill:'backwards'});});
+  var base=120+fiosEl.length*60+(fiosEl.length?500:0);
+  cai.forEach(function(c,i){c.style.transformBox='fill-box';c.style.transformOrigin='center';
+    c.animate([{transform:'translateY(-26px) scale(1.25)',opacity:0},{transform:'none',opacity:1}],{duration:420,delay:base+i*35,easing:'cubic-bezier(.34,1.4,.64,1)',fill:'backwards'});});
+}
+function detalhe(k){
+  var it=POR[k];tamAtual='intera';
+  var temTam=!!it.tam;
+  abre('<div class="det"><div class="palco" id="palco"><span class="toalha"></span>'+svg(k)+'</div><h3 id="ft">'+it.n+'</h3>'+(it.d?'<p>'+it.d+'</p>':'')+
+    (temTam?'<div class="seg intera" id="seg"><span class="thumb"></span><button data-t="piccola" aria-pressed="false">Piccola<small>meia porção</small></button><button data-t="intera" aria-pressed="true">Intera<small>porção completa</small></button></div>':'')+
+    '<div class="valor'+(!temTam&&it.p==null?' ask':'')+'" id="valor">'+(temTam?'R$ <span class="rolo" id="rolo"><span>'+it.tam.intera+'</span></span>':(it.p==null?'preço a consultar na casa':real(it.p)))+'</div>'+
+    '<button class="poe" id="poe" data-k="'+k+'">Pôr na conta</button></div>');
+  requestAnimationFrame(function(){monta(document.querySelector('#palco svg'));});
+}
+function listaConta(){
+  var s=soma();
+  abre('<div class="conta"><h2 id="ft">Il conto</h2><ul>'+ordem.map(function(id){var k=id.split('|')[0],p=precoDe(id);
+    return '<li>'+svg(k)+'<span><b>'+nomeDe(id)+'</b><small>'+(p==null?'consulte':real(p)+' cada')+'</small></span><span class="mm"><button data-l="'+id+'" data-d="-1" aria-label="Tirar um">−</button><span>'+conta[id]+'</span><button data-l="'+id+'" data-d="1" aria-label="Mais um">+</button></span></li>';}).join('')+
+    '</ul><div class="tot"><span>Total</span><span>'+real(s.t)+'</span></div>'+(s.c?'<p class="ps">+ '+s.c+' item(ns) com preço a consultar, fora do total</p>':'')+
+    '<a class="manda" id="fmanda" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(texto())+'">Enviar pedido no WhatsApp</a></div>');
+}
+document.getElementById('abre').onclick=listaConta;
+fc.addEventListener('click',function(e){
+  var l=e.target.closest('[data-l]');
+  if(l){muda(l.dataset.l,+l.dataset.d);if(!ordem.length)fecha();else listaConta();return;}
+  var t=e.target.closest('[data-t]');
+  if(t&&t.dataset.t!==tamAtual){
+    var k=document.getElementById('poe').dataset.k,it=POR[k],antes=it.tam[tamAtual];tamAtual=t.dataset.t;
+    var seg=document.getElementById('seg');seg.classList.toggle('intera',tamAtual==='intera');
+    seg.querySelectorAll('[data-t]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.t===tamAtual);});
+    document.getElementById('palco').classList.toggle('piccola',tamAtual==='piccola');
+    rola(document.getElementById('rolo'),it.tam[tamAtual],it.tam[tamAtual]>antes);
+    return;
+  }
+  var poe=e.target.closest('#poe');
+  if(poe){var k2=poe.dataset.k,it2=POR[k2],id=linhaId(k2,it2.tam?tamAtual:null),palco=document.querySelector('#palco svg');
+    var r=palco.getBoundingClientRect(),f=document.createElement('div');f.style.cssText='position:fixed;left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px;pointer-events:none';document.body.appendChild(f);
+    fecha();voa(f,k2,function(){muda(id,1);f.remove();});}
+});
+
+render(false);atualiza(true);
+})();
 </script>
 </body>
 </html>
