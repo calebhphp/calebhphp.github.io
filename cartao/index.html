@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Matheus Villanova · Cartão de visita digital</title>
 <meta name="description" content="Contato de Matheus Villanova, desenvolvedor de software: sites, sistemas e automações com inteligência artificial para pequenos negócios. Salve o contato em um toque.">
-<link rel="canonical" href="https://calebhphp.github.io/cartao/">
+<link rel="canonical" href="https://matheusvillanova.com/cartao/">
 <meta name="theme-color" content="#0a0c18">
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Matheus Villanova · Sites, sistemas e automações com IA">
 <meta property="og:description" content="Salve meu contato em um toque e veja exemplos do que eu faço.">
-<meta property="og:image" content="https://calebhphp.github.io/assets/og.png">
+<meta property="og:image" content="https://matheusvillanova.com/assets/og.png">
 <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap">
@@ -80,8 +80,8 @@ h1{margin:0;font:800 1.55rem/1.1 "Bricolage Grotesque",ui-sans-serif,system-ui,s
 <div class="toast" id="toast">Link copiado</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-const url = 'https://calebhphp.github.io/cartao/';
-const vcard = ['BEGIN:VCARD', 'VERSION:3.0', 'N:Villanova;Matheus;;;', 'FN:Matheus Villanova', 'ORG:Matheus Villanova – Sites, sistemas e automações', 'TITLE:Desenvolvedor de software sênior', 'TEL;TYPE=CELL:+5511933010415', 'EMAIL;TYPE=WORK:matheusvillanova1@gmail.com', 'URL:https://calebhphp.github.io/', 'X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/matheus-villanova', 'NOTE:Sites, lojas virtuais, cardápio digital, agendamento online e atendimento automático no WhatsApp.', 'END:VCARD'].join('\r\n');
+const url = 'https://matheusvillanova.com/cartao/';
+const vcard = ['BEGIN:VCARD', 'VERSION:3.0', 'N:Villanova;Matheus;;;', 'FN:Matheus Villanova', 'ORG:Matheus Villanova – Sites, sistemas e automações', 'TITLE:Desenvolvedor de software sênior', 'TEL;TYPE=CELL:+5511933010415', 'EMAIL;TYPE=WORK:matheusvillanova1@gmail.com', 'URL:https://matheusvillanova.com/', 'X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/matheus-villanova', 'NOTE:Sites, lojas virtuais, cardápio digital, agendamento online e atendimento automático no WhatsApp.', 'END:VCARD'].join('\r\n');
 document.getElementById('save').addEventListener('click', () => {
   const link = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([vcard], { type: 'text/vcard;charset=utf-8' })), download: 'matheus-villanova.vcf' });
   document.body.appendChild(link); link.click(); link.remove();

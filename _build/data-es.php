@@ -3,7 +3,7 @@
 
 return [
     'site' => [
-        'url' => 'https://calebhphp.github.io',
+        'url' => 'https://matheusvillanova.com',
         'name' => 'Matheus Villanova',
         'tagline' => 'Webs, sistemas y automatizaciones para pequeños negocios',
         'whatsapp' => '5511933010415',
