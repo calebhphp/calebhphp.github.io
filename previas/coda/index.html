@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coda – prévia de cardápio digital</title>
+<meta name="description" content="Prévia não oficial de cardápio digital para o Coda, feita por Matheus Villanova.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#111111">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap">
+<style>/* Shared bar shown on top of every live example */
+.demo-bar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px max(16px,env(safe-area-inset-left));padding-top:max(10px,env(safe-area-inset-top));background:#0a0c18;color:#c9cde6;font:500 13px/1.3 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.demo-bar b{color:#fff}
+.demo-bar a{color:#0a0c18;background:#b6f36b;padding:7px 12px;border-radius:999px;text-decoration:none;font-weight:700;white-space:nowrap}
+.demo-bar a.back{background:transparent;color:#c9cde6;padding:7px 4px}
+.demo-bar .links{display:flex;gap:6px;align-items:center}
+@media (max-width:520px){.demo-bar .hide-sm{display:none}}
+</style>
+<style>
+:root{--bg:#f4f2ee;--ink:#141414;--muted:#66625c;--brown:#141414;--cream:#e7e3dc;--accent:#141414;--wa:#1ea952}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0;letter-spacing:-.02em}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}
+.hero{background:radial-gradient(circle at 85% 10%,#3a3a3a,transparent 50%),linear-gradient(160deg,#0b0b0b,#262626);color:#f4f2ee;padding:72px 0 64px;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(2.6rem,8vw,4.6rem);line-height:1}
+.hero p{max-width:30em;margin-top:16px;color:#cfcac2;font-size:1.1rem}
+.hero .info{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:.92rem;color:#cfcac2}
+.hero .open{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(30,169,82,.18);color:#9ff0bd;font-weight:700;font-size:.82rem}
+.hero .open::before{content:"";width:8px;height:8px;border-radius:50%;background:#3ee07c}
+.hero .reserve{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;background:var(--wa);color:#fff;text-decoration:none;font-weight:700}
+.steam{position:absolute;right:8%;top:24%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#3b1d0e 6px,transparent 7px),radial-gradient(circle at 62% 58%,#3b1d0e 7px,transparent 8px),radial-gradient(circle at 45% 70%,#3b1d0e 5px,transparent 6px),radial-gradient(circle at 50% 50%,#e9b26b,#c98a43 60%,transparent 62%);box-shadow:inset 0 -18px 0 rgba(0,0,0,.25)}
+.steam::before,.steam::after{content:"";position:absolute;left:44%;top:-60px;width:16px;height:70px;border-radius:50%;background:rgba(255,255,255,.18);filter:blur(6px);animation:rise 3s ease-in-out infinite}
+.steam::after{left:58%;animation-delay:1.4s}
+@keyframes rise{0%{transform:translateY(20px) scaleY(.6);opacity:0}40%{opacity:1}100%{transform:translateY(-30px) scaleY(1.2);opacity:0}}
+@media (max-width:760px){.steam{display:none}}
+nav.cats{position:sticky;top:44px;z-index:5;background:var(--bg);border-bottom:1px solid #dcd7cf}
+nav.cats .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
+nav.cats a{flex:none;padding:8px 14px;border-radius:999px;background:var(--cream);color:var(--brown);text-decoration:none;font-weight:600;font-size:.92rem}
+section{padding:36px 0}
+section h2{font-size:1.9rem;margin-bottom:16px}
+.items{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:700px){.items{grid-template-columns:1fr}}
+.item{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:12px;border-radius:16px;background:#fff;border:1px solid #e4dfd7}
+.item .pic{width:64px;height:64px;border-radius:14px;display:grid;place-items:center;font-size:30px;background:var(--cream)}
+.item h3{font:600 1rem/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:0}
+.item p{margin:2px 0 0;color:var(--muted);font-size:.86rem}
+.item .price{font-weight:700;color:var(--accent);margin-top:4px}
+.item .price.ask{font-weight:600;font-style:italic;color:var(--muted)}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:34px;height:34px;border-radius:50%;border:0;background:var(--brown);color:#fff;font-size:20px;line-height:1;cursor:pointer;touch-action:manipulation;transition:transform 100ms ease}
+.qty button:active{transform:scale(.9)}
+.qty button.minus{background:var(--cream);color:var(--brown)}
+.qty span{min-width:18px;text-align:center;font-weight:700}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+@media (max-width:700px){.about{grid-template-columns:1fr}}
+.about .box{padding:24px;border-radius:20px;background:var(--cream)}
+.cart{position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));z-index:50;transform:translate(-50%,140%);width:min(560px,calc(100% - 28px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 12px 12px 18px;border-radius:20px;background:#111;color:#fff;box-shadow:0 20px 50px -15px rgba(0,0,0,.5);transition:transform 450ms cubic-bezier(.22,1,.36,1)}
+.cart.show{transform:translate(-50%,0)}
+.cart b{display:block;font-size:1.05rem}
+.cart small{color:#bdb7ad}
+.cart a{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:999px;background:var(--wa);color:#fff;text-decoration:none;font-weight:700;white-space:nowrap}
+footer{padding:40px 0 120px;color:var(--muted);font-size:.9rem;text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+<div class="demo-bar"><span><b>Prévia não oficial</b> <span class="hide-sm">· feita por Matheus Villanova para o Coda com dados públicos</span></span><span class="links"><a href="https://wa.me/?text=Oi%2C%20Matheus%21%20Vi%20a%20pr%C3%A9via%20do%20card%C3%A1pio%20do%20Coda." target="_blank" rel="noopener">Falar com o Matheus</a></span></div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="open">Escolha pelo celular · mande no WhatsApp</span>
+    <h1 style="margin-top:16px">Coda</h1>
+    <p>Coquetéis autorais, opções sem álcool e a cozinha da chef Laila Radice. Monte a sua lista aqui e ela chega pronta no WhatsApp.</p>
+    <div class="info"><span>📍 R. Barão de Tatuí, 223 · Vila Buarque</span></div>
+  </div>
+</header>
+
+<nav class="cats" aria-label="Categorias"><div class="wrap"><a href="#autorais">Autorais</a><a href="#semalcool">Sem álcool</a><a href="#cozinha">Cozinha</a><a href="#sobre">Sobre</a></div></nav>
+
+<main class="wrap" id="menu"></main>
+
+<section id="sobre"><div class="wrap about">
+  <div><h2>Como funciona</h2><p style="color:var(--muted)">O cliente abre pelo QR Code da mesa ou pela bio, lê a carta sem zoom e vê o preço de cada drink. Dá para trocar um coquetel ou um preço em um minuto, sem refazer arquivo.</p></div>
+  <div class="box"><h3 style="font-size:1.3rem;margin-bottom:8px">O que mais dá para ter</h3><p>Foto de cada drink<br>Filtro de sem álcool e sem glúten<br>Drink da semana em destaque<br>Botão de reserva junto</p></div>
+</div></section>
+
+<footer>Prévia não oficial, feita para mostrar ao Coda como ficaria uma carta digital própria.<br>Drinks, pratos e preços tirados dos cardápios em PDF do Linktree do bar (arquivos de março/2026): podem estar desatualizados. Nenhum pedido é enviado ao bar.</footer>
+
+<div class="cart" id="cart" aria-live="polite">
+  <div><b id="cart-total">R$ 0,00</b><small id="cart-count">0 itens</small></div>
+  <a id="cart-send" target="_blank" rel="noopener">Enviar pedido</a>
+</div>
+
+<script>
+const MENU = {
+  autorais: ["Autorais",[["🍸","Clementhí","Gin, aperitivo de tangerina, vermute bianco, amaro",58],["🍸","Marzini","Gin, jerez oloroso, infusão de amêndoa, bitter",58],["🥃","Hell Yeah","Whisky, extrato de pimenta, baunilha, vermute bianco, água com gás",56],["🥃","Kimchi Old Fashioned","Bourbon, caramelo de kimchi, bitter, espumante",57],["🍋","Sgroppa","Limoncello, limão, sorvete de leite, espumante, grappa, Campari",49]]],
+  semalcool: ["Sem álcool",[["🍏","Apple o Martini","Maçã verde, xarope de baunilha com pimenta, limão e água com gás",28],["🍍","Piña","Abacaxi, xarope de coco, limão",28],["☕","Mimosa de Café","Suco de laranja, cold brew Café por Elas",28]]],
+  cozinha: ["Cozinha",[["🍟","Lipe's Fries","Fritas com duo de aioli, tradicional e de missô",38],["🍤","Croqueta de Camarão","Com molho de pimenta gochujang",59],["🌴","Bolinho de Pupunha","",48],["🥘","Coda Parmentier","Rabada desfiada, purê de batata gratinado",57],["🍔","Kata Melt","Cheeseburger com fritas",69],["🍫","Mousse de Chocolate","Com fio de azeite",43]]],
+};
+const cart = {};
+const fmt = (n) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const price = (p) => (p === null ? 'consulte' : fmt(p));
+const menu = document.getElementById('menu');
+menu.innerHTML = Object.entries(MENU).map(([id, [title, items]]) => `<section id="${id}"><h2>${title}</h2><div class="items">${items.map(([pic, name, desc, p], i) => `
+  <div class="item"><div class="pic" aria-hidden="true">${pic}</div><div><h3>${name}</h3><p>${desc}</p><div class="price${p === null ? ' ask' : ''}">${price(p)}</div></div>
+  <div class="qty" data-key="${id}-${i}"><button class="minus" aria-label="Tirar ${name}">−</button><span>0</span><button class="plus" aria-label="Adicionar ${name}">+</button></div></div>`).join('')}</div></section>`).join('');
+
+const find = (key) => { const [id, i] = key.split('-'); return MENU[id][1][i]; };
+menu.addEventListener('click', (e) => {
+  const btn = e.target.closest('button'); if (!btn) return;
+  const box = btn.parentElement; const key = box.dataset.key;
+  cart[key] = Math.max(0, (cart[key] || 0) + (btn.classList.contains('plus') ? 1 : -1));
+  box.querySelector('span').textContent = cart[key];
+  if (navigator.vibrate && btn.classList.contains('plus')) navigator.vibrate(8);
+  update();
+});
+function update() {
+  const lines = Object.entries(cart).filter(([, q]) => q > 0);
+  const total = lines.reduce((s, [k, q]) => s + (find(k)[3] ?? 0) * q, 0);
+  const count = lines.reduce((s, [, q]) => s + q, 0);
+  const ask = lines.filter(([k]) => find(k)[3] === null).length;
+  document.getElementById('cart').classList.toggle('show', count > 0);
+  document.getElementById('cart-total').textContent = fmt(total) + (ask ? ' +' : '');
+  document.getElementById('cart-count').textContent = `${count} ${count === 1 ? 'item' : 'itens'}${ask ? ` · ${ask} a consultar` : ''}`;
+  const text = `*Pedido – Coda (prévia)*\n\n${lines.map(([k, q]) => `${q}x ${find(k)[1]} – ${find(k)[3] === null ? 'consultar preço' : fmt(find(k)[3] * q)}`).join('\n')}\n\n*Total: ${fmt(total)}*${ask ? ' + itens a consultar' : ''}\n\n(teste da prévia do cardápio digital)`;
+  document.getElementById('cart-send').href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+}
+</script>
+</body>
+</html>
