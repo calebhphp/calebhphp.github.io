@@ -1,6 +1,6 @@
 // Offline: the whole app is cached on install, so it keeps working with the wi-fi off.
 // Data never goes through here; it lives in localStorage. Bump VERSION on every deploy.
-const VERSION = 'prumo-mwcpeqbo';
+const VERSION = 'prumo-mwcq2l7c';
 const SHELL = [
   './',
   'index.html',
@@ -17,6 +17,7 @@ const SHELL = [
   'js/a11y.js',
   'js/actions.js',
   'js/advisor-chart.js',
+  'js/advisor-help.js',
   'js/advisor.js',
   'js/ai.js',
   'js/brands-data.js',

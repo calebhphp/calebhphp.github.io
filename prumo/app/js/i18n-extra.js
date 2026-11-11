@@ -258,7 +258,7 @@ export const esX = {
   'chat.placeholder': 'Pregunta o manda "almuerzo 32, uber 18"', 'chat.found': 'Entendí {n} gastos. Revisa y guarda:', 'chat.save': 'Guardar {n}', 'chat.drop': 'Descartar', 'chat.saved': 'Guardado en los gastos del mes',
   'daily.tip': 'Día {d}: {v}', 'daily.today': 'hoy', 'daily.allow': 'Límite por día: {v}', 'daily.over': '{n} días por encima',
   'tone.title': 'Tono de Prumo', 'tone.label': 'Tono', 'tone.sobrio': 'Sobrio', 'tone.sobrioHint': 'Solo hechos y números.', 'tone.parceiro': 'Compañero', 'tone.parceiroHint': 'Ligero, con un chiste de vez en cuando.',
-  'tone.deboche': 'Burla', 'tone.debocheHint': 'Se burla de tus decisiones. De ti, nunca.', 'tone.semfiltro': 'Sin filtro', 'tone.semfiltroHint': 'Burla con groserías. Solo mayores de 18.',
+  'tone.deboche': 'Irónico', 'tone.debocheHint': 'Ironía seca sobre tus decisiones. Sobre ti, nunca.', 'tone.semfiltro': 'Sin filtro', 'tone.semfiltroHint': 'Ironía con groserías. Solo mayores de 18.',
   'tone.locked': 'Se libera en el nivel {n}', 'tone.set': 'Tono cambiado a {name}', 'tone.easy': 'Más suave',
   'tone.rules': 'En ningún tono Prumo hace chistes sobre deudas, sueldo, salud o mascotas.',
   'card.title': 'Tarjeta y cuotas', 'card.sub': 'Cuánto de la tarjeta ya está comprometido en los próximos meses.', 'card.invoice': 'Tarjeta de {m}',
