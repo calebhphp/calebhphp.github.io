@@ -13,6 +13,8 @@ import { icon, toast } from '../ui.js';
 import { say } from '../tone.js';
 import { retroBanner } from './retro.js';
 import { bfCard } from './bf.js';
+import { welcomeCard } from './welcome.js';
+import { isReal } from '../store.js';
 
 // The headline says where the month stands, not just hello.
 function headline(s, ym) {
@@ -29,9 +31,11 @@ export function render(s, ctx) {
   const hasMei = s.modules.includes('mei') && s.mei.enabled;
   const sp = spending(s, ctx.ym);
   const first = s.profile.name.split(' ')[0];
-  return `${head(headline(s, ctx.ym), say('home.sub', { name: esc(first), v: money(Math.max(0, sp.perDayLeft)) }))}
+  const fresh = isReal() && !sp.budget && !s.incomes.length;
+  return `${head(fresh ? t('home.hNew', { name: esc(first) }) : headline(s, ctx.ym), fresh ? t('home.sNew') : say('home.sub', { name: esc(first), v: money(Math.max(0, sp.perDayLeft)) }))}
   <div class="grid">
-    ${quizBanner(s)}
+    ${welcomeCard(s, isReal())}
+    ${isReal() ? '' : quizBanner(s)}
     ${retroBanner(s, ctx)}
     ${todayHero(s, ctx.ym)}
     ${monthCard(s, ctx.ym, s.modules.includes('conquistas') ? 'span-8' : 'span-12')}

@@ -9,6 +9,7 @@ import { UNLOCK_LEVEL } from './tone.js';
 import { levelInfo } from './game.js';
 import { monthLabel, esc } from './format.js';
 import { bindPanel, loadLibras } from './a11y.js';
+import * as cloud from './cloud.js';
 
 const NAV = [
   { r: 'inicio', i: 'i-home' },
@@ -110,7 +111,7 @@ document.addEventListener('prumo:levelup', e => {
   setTimeout(() => confirmLevelUp(e.detail, reward && reward.text), 700);
   if (e.detail === UNLOCK_LEVEL) setTimeout(() => toast(t('tone.unlocked')), 1600);
 });
-store.subscribe((s, prev, meta) => render());
+store.subscribe((s, prev, meta) => { if (!meta.reset || store.isReal()) queueSave(); render(); });
 onPrefs((p, key) => { translateStatic(); render(); if (key === 'lang') document.documentElement.lang = p.lang; });
 
 bindPanel(document.getElementById('a11y-btn'), document.getElementById('a11y-panel'));
@@ -133,24 +134,96 @@ togglePw.addEventListener('click', () => {
   syncLogin();
 });
 document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => { setPref('lang', b.dataset.lang); syncLogin(); }));
-loginForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const err = document.getElementById('login-error');
+const DEMO = { email: 'john@doe.com', pw: 'password' };
+const loginErr = msg => { const err = document.getElementById('login-error'); err.textContent = msg; err.hidden = false; };
+function accepted() {
   const accept = document.getElementById('accept');
-  if (!accept.checked) { err.textContent = t('login.accept'); err.hidden = false; accept.focus(); return; }
+  if (!accept.checked) { loginErr(t('login.accept')); accept.focus(); return false; }
   // Keep proof of what was accepted and when, on this device.
   if ((getPrefs().terms || {}).v !== '2026-11-11') setPref('terms', { v: '2026-11-11', at: new Date().toISOString() });
-  const email = loginForm.email.value.trim().toLowerCase();
-  if (email !== 'john@doe.com' || pw.value !== 'password') {
-    err.textContent = t('login.error'); err.hidden = false;
-    (email !== 'john@doe.com' ? loginForm.email : pw).focus();
-    return;
-  }
+  return true;
+}
+function enterDemo() {
+  store.useDemo();
   try { sessionStorage.setItem('prumo.session', '1'); } catch (x) { /* ignore */ }
   document.documentElement.classList.add('authed');
+  document.documentElement.classList.remove('real');
   if (!store.get().profile.quiz && !location.hash) location.hash = '#inicio';
   render({ focusHeading: true });
+}
+
+// Beta account: the screen shows a skeleton while the person's data comes from the server.
+let saveTimer = null, saving = false;
+async function enterAccount({ fresh = false } = {}) {
+  const u = cloud.user();
+  if (!u) return;
+  document.documentElement.classList.add('authed', 'real');
+  main.innerHTML = skeleton();
+  let server = null, offline = false;
+  try { server = await cloud.loadState(); } catch (e) { if (e.code === 'auth' || e.status === 401) { await leaveAccount(); loginErr(t('login.expired')); return; } offline = true; }
+  if (!cloud.user()) return;
+  const name = u.email.split('@')[0].replace(/[._-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).slice(0, 40);
+  store.useAccount(u.id, server, name);
+  if (!server && !offline) { store.get().profile.firstLogin = true; queueSave(); }
+  if (offline) toast(t('sync.offline'));
+  if (fresh || !location.hash) location.hash = '#inicio';
+  render({ focusHeading: true });
+}
+function queueSave() {
+  if (!store.isReal()) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flush, 1200);
+}
+async function flush() {
+  if (!store.isReal() || saving || !cloud.user()) return;
+  saving = true;
+  const st = store.get();
+  const { _dirty, _at, ...clean } = st;
+  try { await cloud.saveState(clean); store.markSynced(true); document.documentElement.dataset.sync = 'ok'; }
+  catch (e) { store.markSynced(false); document.documentElement.dataset.sync = 'off'; }
+  saving = false;
+}
+async function leaveAccount() {
+  clearTimeout(saveTimer);
+  if (store.isReal() && store.get()?._dirty) await flush();
+  await cloud.signOut();
+  // Shared phone or computer: the local copy goes with the session.
+  if (store.isReal()) store.forgetAccount();
+  store.useDemo();
+  document.documentElement.classList.remove('authed', 'real');
+}
+addEventListener('online', () => { if (store.isReal() && store.get()?._dirty) flush(); });
+addEventListener('pagehide', () => { if (saveTimer) flush(); });
+const skeleton = () => `<div class="skel" aria-busy="true" aria-label="${esc(t('sync.loading'))}">
+  <i class="skel-h"></i><i class="skel-l"></i>
+  <div class="skel-grid"><i class="skel-card big"></i><i class="skel-card"></i><i class="skel-card"></i><i class="skel-card"></i></div></div>`;
+
+loginForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  document.getElementById('login-error').hidden = true;
+  if (!accepted()) return;
+  const email = loginForm.email.value.trim().toLowerCase();
+  if (email === DEMO.email && pw.value === DEMO.pw) return enterDemo();
+  if (!cloud.enabled()) { loginErr(t('login.error')); loginForm.email.focus(); return; }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { loginErr(t('login.badEmail')); loginForm.email.focus(); return; }
+  if (!pw.value) { loginErr(t('login.noPw')); pw.focus(); return; }
+  const btn = loginForm.querySelector('[type="submit"]');
+  btn.disabled = true; btn.setAttribute('aria-busy', 'true');
+  try {
+    await cloud.signIn(email, pw.value);
+    pw.value = '';
+    await enterAccount({ fresh: true });
+  } catch (x) {
+    loginErr(x.status === 400 ? t('login.bad') : x.status === 429 ? t('login.slow') : t('login.offline'));
+    pw.focus();
+  } finally { btn.disabled = false; btn.removeAttribute('aria-busy'); }
 });
+document.getElementById('demo-btn').addEventListener('click', () => {
+  document.getElementById('login-error').hidden = true;
+  if (accepted()) enterDemo();
+});
+document.addEventListener('prumo:signout', async () => { await leaveAccount(); document.dispatchEvent(new CustomEvent('prumo:logout')); });
+document.addEventListener('prumo:save-now', () => flush());
 document.addEventListener('prumo:logout', () => {
   document.documentElement.classList.remove('authed');
   document.title = 'Prumo Demo';
@@ -198,4 +271,5 @@ store.load();
 translateStatic();
 syncLogin();
 if (getPrefs().libras) loadLibras();
-render();
+// A beta session survives reloads; the demo one ends with the tab.
+if (cloud.enabled() && cloud.user()) enterAccount(); else { document.documentElement.classList.remove('real'); render(); }

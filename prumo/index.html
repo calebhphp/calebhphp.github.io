@@ -107,6 +107,12 @@
   .wait__ok label { font-size: 14px; line-height: 1.45; }
   .wait__ok .field__error { grid-column: 2; }
   .wait__ok a { text-decoration: underline; text-underline-offset: 3px; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .fb-box { margin-top: 28px; max-width: 520px; border-top: 1px solid color-mix(in srgb, var(--p-ink) 18%, transparent); padding-top: 18px; }
+  .fb-box summary { cursor: pointer; font-weight: 600; font-size: 17px; }
+  .fb-box summary:focus-visible { outline: 2px solid var(--p-accent); outline-offset: 4px; border-radius: 4px; }
+  .fb-box .form { margin-top: 16px; grid-template-columns: minmax(0, 1fr); }
+  .fb-box select, .fb-box textarea { width: 100%; }
   /* real screenshots */
   .shot--wide { margin-top: var(--s-7); min-height: 0; }
   .shot--wide img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
@@ -289,7 +295,7 @@
         <div class="faq__item"><h3>Por que não colar o extrato no Claude ou no ChatGPT?</h3><p>Dá, eu fazia. Mas todo mês é exportar, colar e explicar tudo de novo, e chat nenhum avisa antes da fatura fechar.</p></div>
         <div class="faq__item"><h3>Funciona no celular?</h3><p>Sim. No iPhone, abra no Safari, toque em Compartilhar e em Adicionar à Tela de Início. No Android, Chrome, três pontinhos, Instalar app. Depois ele abre e salva gastos até sem internet.</p></div>
         <div class="faq__item"><h3>Quanto custa?</h3><p>A demo é grátis e não pede cadastro. Exportar os seus dados vai ser grátis em qualquer plano.</p></div>
-        <div class="faq__item"><h3>O que ainda não funciona?</h3><p>Não sincroniza entre aparelhos e não conecta em banco, de propósito. A IA do conselheiro só responde de verdade dentro do Claude; fora dele ele usa regras simples. Inglês e espanhol estão pela metade.</p></div>
+        <div class="faq__item"><h3>O que ainda não funciona?</h3><p>Não conecta em banco, de propósito. Sincronizar entre aparelhos só funciona no beta fechado, com convite. A IA do conselheiro só responde de verdade dentro do Claude; fora dele ele usa regras simples. Inglês e espanhol estão pela metade.</p></div>
         <div class="faq__item"><h3>O modo deboche é obrigatório?</h3><p>Não. O padrão é o tom sóbrio. O deboche só aparece se você escolher, e nunca faz piada com dívida, salário, saúde ou pet.</p></div>
       </div>
     </div>
@@ -301,19 +307,35 @@
     <div class="closing__cta close--type">
       <div class="section-head">
         <h2 id="close-h">Entra na lista de espera</h2>
-        <p>A demo já funciona e é sua pra testar. A conta com sincronização entre celular e computador ainda não existe. Quem está na lista fica sabendo antes.</p>
+        <p>O beta fechado já roda com conta, login e sincronização entre celular e computador, por enquanto só com convidados. A demo continua aberta pra quem quiser testar. Quem está na lista entra nas próximas turmas.</p>
       </div>
-      <form class="form wait" action="mailto:matheusvillanova1@gmail.com?subject=Lista%20de%20espera%20do%20Prumo" method="post" enctype="text/plain" data-endpoint="" data-sent="Anotado. Aviso você quando abrir." data-fix="Campos para arrumar: {n}." data-sending="Enviando" data-failed="Não enviou, a conexão falhou. Tenta de novo." novalidate>
+      <form class="form wait" method="post" data-sent="Anotado. Aviso você quando abrir." novalidate>
         <div class="field"><label for="w-email">Seu e-mail</label>
-          <input id="w-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="w-email-err">
-          <p class="field__error" id="w-email-err" hidden>Escreva um e-mail com @, tipo nome@exemplo.com.</p></div>
-        <div class="field wait__ok"><input id="w-ok" name="aceito_emails_do_prumo" type="checkbox" value="sim" required aria-describedby="w-ok-err">
+          <input id="w-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required aria-describedby="w-email-err">
+          <p class="field__error" id="w-email-err" hidden></p></div>
+        <div class="field wait__ok"><input id="w-ok" name="consent" type="checkbox" value="sim" required aria-describedby="w-ok-err">
           <label for="w-ok">Aceito receber e-mails do Prumo sobre o lançamento. Saio quando quiser. <a href="privacidade.html#emails">Como meu e-mail é usado</a></label>
-          <p class="field__error" id="w-ok-err" hidden>Marque a caixa para entrar na lista.</p></div>
+          <p class="field__error" id="w-ok-err" hidden></p></div>
+        <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="btn-row"><button class="btn btn--primary" type="submit">Entrar na lista</button><a class="btn btn--secondary" href="app/index.html">Abrir a demo</a></div>
         <p class="form__status" role="status" data-form-status></p>
-        <p class="t-small muted">Abre o seu app de e-mail com a mensagem pronta. É só enviar.</p>
       </form>
+      <details class="fb-box">
+        <summary>Já testou? Me conta o que achou</summary>
+        <form class="form fb" method="post" data-sent="Recebido. Valeu demais!" novalidate>
+          <div class="field"><label for="fb-kind">Sobre o quê</label>
+            <select id="fb-kind" name="kind"><option value="ideia">Ideia</option><option value="bug">Bug</option><option value="elogio">Curti</option><option value="outro">Outro</option></select></div>
+          <div class="field"><label for="fb-msg">Conta aí</label>
+            <textarea id="fb-msg" name="message" rows="4" maxlength="4000" required aria-describedby="fb-msg-err"></textarea>
+            <p class="field__error" id="fb-msg-err" hidden></p></div>
+          <div class="field"><label for="fb-contact">Seu e-mail, se quiser resposta (opcional)</label>
+            <input id="fb-contact" name="contact" type="email" autocomplete="email" inputmode="email" maxlength="254" aria-describedby="fb-contact-err">
+            <p class="field__error" id="fb-contact-err" hidden></p></div>
+          <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="btn-row"><button class="btn btn--primary" type="submit">Enviar feedback</button></div>
+          <p class="form__status" role="status" data-form-status></p>
+        </form>
+      </details>
     </div>
     <div class="closing__links">
       <div class="grid">
@@ -339,6 +361,7 @@
   <a class="btn btn--primary" href="app/index.html">Abrir a demo</a>
 </nav>
 
+<script type="module" src="js/forms.js"></script>
 <script type="module" src="assets/system.js"></script>
 <script type="module" src="assets/motion/motion.js"></script>
 <script type="module" src="assets/layout/layout.js"></script>

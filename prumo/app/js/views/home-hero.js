@@ -1,3 +1,4 @@
+import { t } from '../i18n.js';
 // The home screen's own shape: the sentence box first (it is the product), the plumb line
 // showing whether spending hangs straight for this point of the month, and the month as a
 // strip of days instead of a bar chart.
@@ -79,13 +80,13 @@ export function todayHero(s, ym) {
         ${mine.length ? mine.slice(-5).reverse().map(x => `<span class="today-chip">${esc(x.desc)} <b>${money(x.amount)}</b></span>`).join('') : `<span class="muted small">${tx('none')}</span>`}
       </div>
     </div>
-    <div class="today-num">
+    ${sp.budget > 0 ? `<div class="today-num">
       ${plumb(sp.pace - sp.elapsed)}
       <div>
         <span class="${left < 0 ? 'neg' : ''}">${moneyHtml(Math.abs(left), 'money-xl')}</span>
         <p class="today-cap"><strong>${tx(left < 0 ? 'over' : 'left')}</strong><br>${tx('of', { v: money(Math.max(0, cap)), d: sp.daysLeft })}</p>
       </div>
-    </div>
+    </div>` : `<div class="today-num today-empty"><p class="today-cap"><strong>${t('home.noCap')}</strong><br>${t('home.noCapHint')}</p><a class="btn btn-sm" href="#gastos">${t('home.noCapGo')}</a></div>`}
   </section>`;
 }
 

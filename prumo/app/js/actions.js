@@ -9,6 +9,8 @@ import { getPrefs } from './prefs.js';
 import { speak } from './ai.js';
 import { say, chooseTone } from './tone.js';
 import { exportIcs } from './export.js';
+import * as cloud from './cloud.js';
+import { startTour } from './tour.js';
 
 export const ctx = { ym: ymOf(new Date()), day: null, tables: new Set() };
 const rerender = () => document.dispatchEvent(new CustomEvent('prumo:render'));
@@ -233,6 +235,18 @@ export const actions = {
     });
   },
   wipe() {
+    if (store.isReal()) {
+      openDialog({
+        title: t('acct.delTitle'), submit: t('acct.delDo'),
+        body: '<p>' + t('acct.delBody') + '</p>',
+        onSubmit: () => {
+          cloud.deleteMe()
+            .then(() => { store.forgetAccount(); document.dispatchEvent(new CustomEvent('prumo:signout')); toast(t('acct.deleted')); })
+            .catch(() => toast(t('acct.delFail')));
+        },
+      });
+      return;
+    }
     openDialog({
       title: t('priv.wipeTitle'), submit: t('priv.wipeDo'),
       body: '<p>' + t('priv.wipeBody') + '</p>',
@@ -276,8 +290,8 @@ export const actions = {
     const w = store.get().wishlist.find(x => x.id === el.dataset.id);
     openDialog({
       title: t('bf.noteTitle', { name: w.name }), submit: t('common.save'),
-      body: `${moneyInput('seen', t('bf.noteSeen'))}
-        ${moneyInput('target', t('bf.noteTarget'), w.target ? String(w.target).replace('.', ',') : '')}
+      body: `${moneyInput('seen', t('bf.noteSeen')).replace(' required', '')}
+        ${moneyInput('target', t('bf.noteTarget'), w.target ? String(w.target).replace('.', ',') : '').replace(' required', '')}
         <p class="muted" style="margin:0;font-size:.86rem">${t('bf.noteHelp')}</p>`,
       onSubmit: d => {
         const v = num(d.seen), tg = num(d.target);
@@ -291,11 +305,68 @@ export const actions = {
       },
     });
   },
+  feedback() {
+    const kinds = ['bug', 'ideia', 'elogio', 'outro'];
+    const screen = (location.hash.replace(/^#\/?/, '') || 'inicio').split('?')[0].slice(0, 40);
+    openDialog({
+      title: t('fb.title'), submit: t('fb.send'),
+      body: `<p class="muted" style="margin:0 0 4px">${t('fb.sub')}</p>
+        <fieldset class="fb-kinds"><legend>${t('fb.kind')}</legend>${kinds.map((k, n) => `<label class="fb-kind"><input type="radio" name="kind" value="${k}" ${n === 0 ? 'checked' : ''}><span>${t('fb.' + k)}</span></label>`).join('')}</fieldset>
+        <div class="field"><label for="f-msg">${t('fb.msg')}</label><textarea id="f-msg" name="message" rows="5" maxlength="4000" required></textarea></div>
+        ${store.isReal() ? '' : `<div class="field"><label for="f-contact">${t('fb.contact')}</label><input id="f-contact" name="contact" type="email" autocomplete="email" maxlength="254"></div>`}
+        <p class="muted" style="margin:0;font-size:.82rem">${t('fb.privacy')}</p>`,
+      onSubmit: d => {
+        const message = (d.message || '').trim();
+        if (message.length < 3) { document.getElementById('f-msg').focus(); return false; }
+        cloud.sendFeedback({ kind: kinds.includes(d.kind) ? d.kind : 'outro', message, screen, contact: (d.contact || '').trim() || null })
+          .then(() => toast(t('fb.thanks')))
+          .catch(() => { toast(t('fb.fail')); try { localStorage.setItem('prumo.fb.draft', message); } catch (e) { /* ignore */ } });
+      },
+    });
+  },
+  addGoal() {
+    openDialog({
+      title: t('goalNew.title'), submit: t('common.save'),
+      body: `<div class="field"><label for="f-name">${t('goalNew.name')}</label><input id="f-name" name="name" required maxlength="60" autocomplete="off" placeholder="${esc(t('goalNew.placeholder'))}"></div>
+        ${moneyInput('target', t('goalNew.target'))}
+        ${moneyInput('monthly', t('goalNew.monthly')).replace(' required', '')}
+        ${moneyInput('saved', t('goalNew.saved')).replace(' required', '')}`,
+      onSubmit: d => {
+        const target = num(d.target), monthly = num(d.monthly) || 0, saved = num(d.saved) || 0;
+        if (!d.name.trim() || !(target > 0)) return false;
+        store.update(s => { s.goals.push({ id: 'g' + store.uid(), name: d.name.trim().slice(0, 60), target, saved: Math.max(0, saved), monthly: Math.max(0, monthly), kind: s.goals.length ? 'outro' : 'reserva' }); });
+        toast(t('add.done', { name: d.name.trim() }));
+      },
+    });
+  },
+  setPw() {
+    openDialog({
+      title: t('pw.title'), submit: t('common.save'),
+      body: `<p class="muted" style="margin:0">${t('pw.sub')}</p>
+        <div class="field"><label for="f-pw">${t('pw.new')}</label><input id="f-pw" name="pw" type="password" autocomplete="new-password" minlength="10" required></div>
+        <div class="field"><label for="f-pw2">${t('pw.again')}</label><input id="f-pw2" name="pw2" type="password" autocomplete="new-password" minlength="10" required></div>
+        <p class="error" id="pw-err" role="alert" hidden></p>`,
+      onSubmit: d => {
+        const err = document.getElementById('pw-err');
+        const bad = d.pw.length < 10 ? t('pw.short') : d.pw !== d.pw2 ? t('pw.diff') : '';
+        if (bad) { err.textContent = bad; err.hidden = false; return false; }
+        cloud.setPassword(d.pw)
+          .then(() => { store.update(s => { s.profile.pwSet = true; }); toast(t('pw.done')); })
+          .catch(e => toast(e.status === 422 ? t('pw.weak') : t('pw.fail')));
+      },
+    });
+  },
+  welcomeSkip() { store.update(s => { s.profile.onboarded = true; }); toast(t('wel.skipped')); },
+  tour() { startTour(); },
+  focusQuick() { location.hash = '#inicio'; setTimeout(() => document.getElementById('hq-in')?.focus(), 300); },
   wishDrop(el) {
     const w = store.get().wishlist.find(x => x.id === el.dataset.id);
     earn(s => { s.wishlist = s.wishlist.filter(x => x.id !== w.id); }, 'xp.skip', 15, say('wish.dropped', { name: w.name, v: money(w.price) }));
   },
   ics() { const n = exportIcs(); toast(t('ics.done', { n })); },
 
-  logout() { try { sessionStorage.removeItem('prumo.session'); } catch (e) { /* ignore */ } document.dispatchEvent(new CustomEvent('prumo:logout')); },
+  logout() {
+    try { sessionStorage.removeItem('prumo.session'); } catch (e) { /* ignore */ }
+    document.dispatchEvent(new CustomEvent(store.isReal() ? 'prumo:signout' : 'prumo:logout'));
+  },
 };

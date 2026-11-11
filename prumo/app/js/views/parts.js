@@ -153,7 +153,7 @@ export function goalsCard(s, span = 'span-4') {
 }
 
 export function goalBlock(g) {
-  const p = Math.min(1, g.saved / g.target);
+  const p = g.target > 0 ? Math.min(1, g.saved / g.target) : 0;
   return `<div class="goal">
     <div class="goal-row"><strong>${esc(g.name)}</strong><span class="muted">${pct(p)}</span></div>
     <div class="meter good" role="progressbar" aria-label="${esc(g.name)}" aria-valuemin="0" aria-valuemax="${g.target}" aria-valuenow="${Math.round(g.saved)}" aria-valuetext="${esc(t('goal.aria', { s: money(g.saved), tgt: money(g.target) }))}"><i style="width:${p * 100}%"></i></div>

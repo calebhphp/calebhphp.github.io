@@ -62,3 +62,9 @@
 .login .accept { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px; font-weight: 400; font-size: .9rem; line-height: 1.45; }
 .login .accept input { width: 20px; height: 20px; flex: none; margin-top: 1px; padding: 0; accent-color: var(--primary); }
 .login .accept a { color: inherit; text-decoration: underline; }
+.login .btn-demo { width: 100%; margin-top: 10px; padding: 13px 16px; border-radius: var(--radius-m, 12px); border: 1.5px solid var(--line); background: transparent; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
+.login .btn-demo:hover { border-color: var(--ink-2); }
+.login .btn-demo:focus-visible { outline: 3px solid var(--focus, var(--primary)); outline-offset: 2px; }
+.login .btn-primary[aria-busy="true"] { opacity: .7; cursor: progress; }
+.login-forgot { margin: 12px 0 0; font-size: .9rem; text-align: center; }
+.login-forgot a { color: var(--ink-2); }

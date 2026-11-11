@@ -2,9 +2,14 @@
 import { ymOf, addMonths, isoDay } from './format.js';
 import { t } from './i18n.js';
 
-const KEY = 'prumo.state.v1';
+const DEMO_KEY = 'prumo.state.v1';
+let KEY = DEMO_KEY;
+let mode = 'demo';
 const listeners = new Set();
 let state = null;
+
+// 'demo' is John Doe with seeded data; 'real' is a beta account that starts empty and syncs.
+export const isReal = () => mode === 'real';
 
 const uid = () => Math.random().toString(36).slice(2, 9);
 
@@ -200,10 +205,45 @@ function seed(template = 'clt-pj') {
 
 export function load() {
   try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
-  if (!state || state.v !== 4) { state = seed(); persist(); }
+  if (!state || state.v !== 4) { state = mode === 'real' ? blank() : seed(); persist(); }
   return state;
 }
+
+// Switch between the demo and a real account. A real account takes the server copy when there is one.
+export function useDemo() {
+  mode = 'demo'; KEY = DEMO_KEY;
+  load();
+  listeners.forEach(fn => fn(state, state, { reset: true }));
+}
+export function useAccount(id, server, name) {
+  mode = 'real'; KEY = 'prumo.state.u.' + id;
+  let local = null;
+  try { local = JSON.parse(localStorage.getItem(KEY)); } catch (e) { local = null; }
+  // The server wins unless this device has newer changes it could not send yet.
+  const localNewer = local && local.v === 4 && local._dirty && (!server || Date.parse(local._at || 0) > Date.parse(server.updated_at));
+  state = localNewer ? local : server && server.state && server.state.v === 4 ? server.state : blank(name);
+  persist();
+  listeners.forEach(fn => fn(state, state, { reset: true }));
+  return state;
+}
+export function forgetAccount() { try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ } }
+export const accountKey = () => KEY;
+
+// An empty account: every category is there with a zero ceiling, so the person fills in their own numbers.
+export function blank(name = '') {
+  return {
+    v: 4, template: 'clt-pj',
+    profile: { name, quiz: null, onboarded: false },
+    modules: MODULES,
+    budgets: { mercado: 0, restaurante: 0, transporte: 0, casa: 0, saude: 0, lazer: 0, pet: 0, compras: 0, trabalho: 0, outros: 0 },
+    tx: [], accounts: [{ id: 'a1', name: t('seed.accMain'), kind: 'pf', balance: 0 }], incomes: [], bills: [], subs: [],
+    goals: [], wishlist: [], debts: [], cards: [], installments: [],
+    mei: { enabled: false, limit: 81000, das: 81.9, dasDay: 20, invoices: [], dasPaid: {} },
+    game: { xp: 0, log: [], missions: {}, rewards: [] },
+  };
+}
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ } }
+export function markSynced(ok) { if (!state) return; state._dirty = !ok; if (!ok) state._at = new Date().toISOString(); persist(); }
 
 export const get = () => state;
 export const subscribe = fn => { listeners.add(fn); return () => listeners.delete(fn); };
@@ -225,7 +265,8 @@ export function replace(next) {
 }
 
 export function reset(template, patch) {
-  state = seed(template || state?.template || 'clt-pj');
+  const tpl = TEMPLATES[template] ? template : state?.template || 'clt-pj';
+  state = mode === 'real' ? { ...structuredClone(state), template: tpl, modules: TEMPLATES[tpl].modules } : seed(tpl);
   if (patch) patch(state);
   persist();
   listeners.forEach(fn => fn(state, state, { reset: true }));

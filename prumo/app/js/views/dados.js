@@ -5,6 +5,7 @@ import { icon } from '../ui.js';
 import { hasAI } from '../ai.js';
 import { exportCsv, exportBackup, readBackup } from '../export.js';
 import { toast } from '../ui.js';
+import { isReal } from '../store.js';
 
 const ITEMS = ['bank', 'local', 'ai', 'import', 'future'];
 
@@ -13,14 +14,14 @@ export function render() {
   <div class="grid">
     <section class="card span-8" aria-labelledby="pv-t">
       <h2 id="pv-t" class="sr-only">${t('priv.title')}</h2>
-      <ul class="priv">${ITEMS.map(k => `<li>${icon(k === 'bank' ? 'i-lock' : k === 'ai' ? 'i-spark' : k === 'import' ? 'i-in' : k === 'future' ? 'i-flag' : 'i-safe')}
+      <ul class="priv">${isReal() ? `<li>${icon('i-lock')}<div><h3>${t('priv.cloud')}</h3><p>${t('priv.cloudBody')}</p></div></li>` : ''}${ITEMS.map(k => `<li>${icon(k === 'bank' ? 'i-lock' : k === 'ai' ? 'i-spark' : k === 'import' ? 'i-in' : k === 'future' ? 'i-flag' : 'i-safe')}
         <div><h3>${t('priv.' + k)}</h3><p>${t('priv.' + k + 'Body')}</p></div></li>`).join('')}</ul>
     </section>
     <section class="card span-4" aria-labelledby="pc-t">
       <div class="card-head"><h2 id="pc-t">${t('priv.control')}</h2></div>
       <p class="card-sub">${t('priv.controlBody')}</p>
       <p class="muted small">${hasAI() ? t('priv.aiOn') : t('priv.aiOff')}</p>
-      <button class="btn" data-action="wipe">${icon('i-x')}${t('priv.wipe')}</button>
+      <button class="btn" data-action="wipe">${icon('i-x')}${t(isReal() ? 'acct.del' : 'priv.wipe')}</button>
     </section>
     <section class="card span-6" aria-labelledby="ex-t">
       <div class="card-head"><h2 id="ex-t">${t('priv.export')}</h2><span class="badge b-good">${t('priv.free')}</span></div>

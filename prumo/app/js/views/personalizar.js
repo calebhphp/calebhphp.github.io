@@ -1,5 +1,5 @@
 import { t } from '../i18n.js';
-import { TEMPLATES, MODULES } from '../store.js';
+import { TEMPLATES, MODULES , isReal } from '../store.js';
 import { head } from './parts.js';
 import { icon } from '../ui.js';
 import { TONES, tone, locked, UNLOCK_LEVEL } from '../tone.js';
@@ -34,7 +34,7 @@ export function render(s) {
     <section class="card span-6" aria-labelledby="nx-t">
       <div class="card-head"><h2 id="nx-t">${t('tpl.nextTitle')}</h2></div>
       <ul class="rows">${['casa', 'tarefas', 'saude', 'pet', 'carreira'].map(k => `<li><span class="grow"><span class="title">${t('soon.' + k)}</span><span class="meta">${t('soon.' + k + 'Hint')}</span></span><span class="badge">${t('soon.badge')}</span></li>`).join('')}</ul>
-      <button class="btn" style="margin-top:14px" data-action="resetDemo">${icon('i-swap')}${t('tpl.resetBtn')}</button>
+      ${isReal() ? '' : `<button class="btn" style="margin-top:14px" data-action="resetDemo">${icon('i-swap')}${t('tpl.resetBtn')}</button>`}
     </section>
   </div>`;
 }

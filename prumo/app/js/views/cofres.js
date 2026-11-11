@@ -12,12 +12,12 @@ const waitLabel = ms => new Intl.DateTimeFormat(document.documentElement.lang, {
 export function render(s) {
   const ws = wishlistStatus(s);
   const n = ws.length;
-  return `${head(t('nav.cofres'), t('goal.pageSub'), `<button class="btn btn-primary" data-action="add">${icon('i-plus')}${t('add.wish')}</button>`)}
+  return `${head(t('nav.cofres'), t('goal.pageSub'), `<span class="btn-row"><button class="btn" data-action="addGoal">${icon('i-plus')}${t('goalNew.title')}</button><button class="btn btn-primary" data-action="add">${icon('i-plus')}${t('add.wish')}</button></span>`)}
   <div class="grid">
     ${bfCard(s, ctx.ym)}
     <section class="card span-5" aria-labelledby="g-t">
       <div class="card-head"><h2 id="g-t">${t('goal.title')}</h2></div>
-      ${s.goals.map(goalBlock).join('')}
+      ${s.goals.length ? s.goals.map(goalBlock).join('') : `<p class="muted empty">${t('goalNew.empty')}</p>`}
     </section>
     <section class="card span-7" aria-labelledby="w-t">
       <div class="card-head"><h2 id="w-t">${t('wish.title')}</h2></div>
