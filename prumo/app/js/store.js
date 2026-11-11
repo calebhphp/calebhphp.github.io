@@ -134,10 +134,11 @@ function seed(template = 'clt-pj') {
     { id: 'g2', name: t('seed.goalHome'), target: 6000, saved: 1850, monthly: 800, kind: 'casa' },
     { id: 'g3', name: t('seed.goalTrip'), target: 4000, saved: 300, monthly: 200, kind: 'outro' },
   ];
+  const dayAgo = n => new Date(now.getTime() - n * 864e5).toISOString().slice(0, 10);
   const wishlist = [
-    { id: uid(), name: t('seed.wSofa'), price: 2400, goal: 'g2', bought: false },
+    { id: uid(), name: t('seed.wSofa'), price: 2400, goal: 'g2', bought: false, target: 2100, seen: [{ d: dayAgo(34), v: 2290 }, { d: dayAgo(15), v: 2590 }, { d: dayAgo(1), v: 2399 }] },
     { id: uid(), name: t('seed.wPaint'), price: 900, goal: 'g2', bought: false },
-    { id: uid(), name: t('seed.wDesk'), price: 1300, goal: 'g2', bought: false },
+    { id: uid(), name: t('seed.wDesk'), price: 1300, goal: 'g2', bought: false, target: 1100, seen: [{ d: dayAgo(28), v: 1300 }, { d: dayAgo(2), v: 1049 }] },
     { id: uid(), name: t('seed.wWallpaper'), price: 650, goal: 'g2', bought: false },
     { id: uid(), name: t('seed.wLamp'), price: 280, goal: 'g3', bought: false, addedAt: new Date(now.getTime() - 20 * 3600 * 1000).toISOString() },
   ];

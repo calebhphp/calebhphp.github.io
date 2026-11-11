@@ -272,6 +272,25 @@ export const actions = {
     toast(t('card.deleted', { name: p.desc }), 0, false, () => store.update(s => { s.installments.splice(at, 0, p); }));
   },
   tone(el) { chooseTone(el.dataset.v); },
+  wishPrice(el) {
+    const w = store.get().wishlist.find(x => x.id === el.dataset.id);
+    openDialog({
+      title: t('bf.noteTitle', { name: w.name }), submit: t('common.save'),
+      body: `${moneyInput('seen', t('bf.noteSeen'))}
+        ${moneyInput('target', t('bf.noteTarget'), w.target ? String(w.target).replace('.', ',') : '')}
+        <p class="muted" style="margin:0;font-size:.86rem">${t('bf.noteHelp')}</p>`,
+      onSubmit: d => {
+        const v = num(d.seen), tg = num(d.target);
+        if (!(v > 0) && !(tg > 0)) return false;
+        store.update(st => {
+          const x = st.wishlist.find(y => y.id === w.id);
+          if (tg > 0) x.target = tg;
+          if (v > 0) { x.seen = [...(x.seen || []), { d: new Date().toISOString().slice(0, 10), v }].slice(-24); }
+        });
+        toast(t('common.saved'));
+      },
+    });
+  },
   wishDrop(el) {
     const w = store.get().wishlist.find(x => x.id === el.dataset.id);
     earn(s => { s.wishlist = s.wishlist.filter(x => x.id !== w.id); }, 'xp.skip', 15, say('wish.dropped', { name: w.name, v: money(w.price) }));

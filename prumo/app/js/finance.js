@@ -93,6 +93,35 @@ export function wishlistStatus(s, now = Date.now()) {
   });
 }
 
+// Black Friday is the Friday after the fourth Thursday of November.
+export function blackFriday(now = new Date()) {
+  const y = now.getFullYear();
+  const first = new Date(y, 10, 1).getDay();
+  const date = new Date(y, 10, 1 + ((4 - first + 7) % 7) + 21 + 1);
+  const days = Math.round((date - new Date(y, now.getMonth(), now.getDate())) / 864e5);
+  // The card shows from November 1st until the Monday after; the event itself runs Friday to Monday.
+  return { date, days, show: now.getMonth() === 10 && days >= -3, on: days <= 0 && days >= -3 };
+}
+
+// What can be spent on the event without touching a pot: the month's forecast surplus, minus any overspend so far.
+export function bfCeiling(s, ym) {
+  const sp = spending(s, ym);
+  return Math.max(0, r2(monthSummary(s, ym).free - Math.max(0, sp.spent - sp.budget)));
+}
+
+// Compares the latest price the person wrote down with the ones they saw before.
+export function priceVerdict(w) {
+  const seen = w.seen || [];
+  if (!seen.length) return { kind: 'none' };
+  const last = seen[seen.length - 1];
+  const before = seen.slice(0, -1);
+  const low = before.length ? Math.min(...before.map(p => p.v)) : null;
+  const hit = w.target > 0 && last.v <= w.target;
+  if (low === null) return { kind: hit ? 'hit' : 'first', last: last.v };
+  if (last.v >= low) return { kind: 'fake', last: last.v, low };
+  return { kind: hit ? 'hit' : 'real', last: last.v, low, pct: Math.round((1 - last.v / low) * 100) };
+}
+
 export const totalBalance = s => sum(s.accounts, a => a.balance);
 
 // Day-to-day spending against the plan, per category, plus the month's pace.

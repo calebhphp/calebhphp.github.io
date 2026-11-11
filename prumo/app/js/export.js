@@ -23,7 +23,7 @@ function validState(st) {
     && named(st.cards) && st.cards.every(c => fin(c.limit) && dom(c.close) && dom(c.due))
     && named(st.accounts) && st.accounts.every(a => fin(a.balance))
     && named(st.goals) && st.goals.every(g => fin(g.target) && fin(g.saved) && fin(g.monthly))
-    && named(st.wishlist) && st.wishlist.every(w => fin(w.price) && ID.test(w.goal))
+    && named(st.wishlist) && st.wishlist.every(w => fin(w.price) && ID.test(w.goal) && (w.target == null || fin(w.target)) && (w.seen == null || (list(w.seen) && w.seen.every(p => p && fin(p.v) && /^\d{4}-\d{2}-\d{2}$/.test(p.d)))))
     && named(st.subs) && st.subs.every(x => fin(x.amount))
     && named(st.debts) && st.debts.every(d => fin(d.amount))
     && st.installments.every(p => ID.test(p.id) && str(p.desc) && fin(p.total) && Number.isInteger(p.n) && p.n > 1 && p.n <= 48 && YM.test(p.start))

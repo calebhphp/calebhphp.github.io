@@ -12,6 +12,7 @@ import { quizBanner } from './comecar.js';
 import { icon, toast } from '../ui.js';
 import { say } from '../tone.js';
 import { retroBanner } from './retro.js';
+import { bfCard } from './bf.js';
 
 // The headline says where the month stands, not just hello.
 function headline(s, ym) {
@@ -35,6 +36,7 @@ export function render(s, ctx) {
     ${todayHero(s, ctx.ym)}
     ${monthCard(s, ctx.ym, s.modules.includes('conquistas') ? 'span-8' : 'span-12')}
     ${s.modules.includes('conquistas') ? levelCard(s) : ''}
+    ${bfCard(s, ctx.ym, true)}
     ${s.modules.includes('conselheiro') ? `<section class="card span-12" aria-labelledby="adv-t">
       <div class="card-head"><h2 id="adv-t">${t('home.advisor')}</h2><a class="link" href="#conselheiro">${t('home.askAdvisor')}</a></div>
       ${insightList(s, ctx.ym, 3)}</section>` : ''}
