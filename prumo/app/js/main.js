@@ -279,7 +279,7 @@ document.addEventListener('prumo:logout', () => {
   document.getElementById('email').focus();
 });
 
-// Installable app that works offline. Skipped inside frames (the claude.ai preview).
+// Installable app that works offline. Skipped inside frames.
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && window.top === window) {
   addEventListener('load', () => navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {}));
   // A new version took over: reload once so every file comes from the same deploy.

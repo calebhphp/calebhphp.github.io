@@ -1,41 +1,26 @@
+// AI and voice. Answers come from the Prumo advisor service (a Supabase function, signed-in users only);
+// without a session, or when the service fails, the app falls back to local rules over the person's own
+// numbers, so it never breaks. Voice uses the browser's speech APIs.
 import { t } from './i18n.js';
 import { getPrefs, setPref } from './prefs.js';
-// AI and voice. Inside a Claude artifact the page borrows the viewer's own
-// Claude (sample), dictation and voice. Anywhere else it falls back to the
-// browser's speech APIs and a local rule engine, so the demo never breaks.
+import * as cloud from './cloud.js';
+import { ADVISOR_ON } from './config.js';
 
-const caps = {};
-const ready = (async () => {
-  const c = window.claude;
-  if (!c || typeof c.use !== 'function') return;
-  const get = name => c.use(name).then(v => { caps[name] = v; }).catch(() => {});
-  await Promise.all(['sample', 'dictation', 'tts'].map(get));
-  document.dispatchEvent(new CustomEvent('prumo:ai-ready'));
-})();
+export const aiReady = () => Promise.resolve();
+export const hasAI = () => ADVISOR_ON && cloud.enabled() && cloud.hasSession();
 
-export const aiReady = () => ready;
-export const hasAI = () => !!caps.sample;
-
-export async function askAI(input, { onText, signal, json = false, quick = false } = {}) {
-  if (!caps.sample) throw { code: 'unavailable' };
-  const opts = { onText, signal, cache: false, modelTier: quick ? 'quick' : 'default' };
-  return json ? caps.sample.json(input, { signal, modelTier: 'quick' }) : caps.sample(input, opts);
+export async function askAI(messages, { system, json = false, signal } = {}) {
+  if (!hasAI()) throw { code: 'unavailable' };
+  try {
+    return await cloud.advise({ system, messages, json }, signal);
+  } catch (e) {
+    throw { code: e && e.status === 429 ? 'slow_down' : 'unavailable' };
+  }
 }
 
 // --- Voice in -------------------------------------------------------------
 // Returns a stop function. onText gets the running transcript.
 export function listen({ lang, onText, onEnd }) {
-  if (caps.dictation) {
-    const d = caps.dictation;
-    let text = '';
-    const offs = [
-      d.onFinal(e => { text += e.text; onText(text.trim(), false); }),
-      d.onPartial(e => { if (e.text) onText((text + ' ' + e.text).trim(), true); }),
-      d.onState(e => { if (e.state === 'idle') { offs.forEach(f => f()); onEnd(e.reason); } }),
-    ];
-    d.start({ language: lang }).catch(e => { offs.forEach(f => f()); onEnd(e.code); });
-    return () => d.stop();
-  }
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { onEnd('unavailable'); return () => {}; }
   if (!getPrefs().micOk) {
@@ -58,13 +43,10 @@ export function listen({ lang, onText, onEnd }) {
   try { r.start(); } catch (e) { onEnd('unavailable'); }
   return () => r.stop();
 }
-export const canListen = () => !!(caps.dictation || window.SpeechRecognition || window.webkitSpeechRecognition);
+export const canListen = () => !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 
 // --- Voice out ------------------------------------------------------------
 export async function speak(text, lang) {
-  if (caps.tts) {
-    try { await caps.tts.speak(text, { language: lang === 'pt-BR' ? 'pt-BR' : lang.slice(0, 2) }); return; } catch (e) { /* fall through */ }
-  }
   if (!('speechSynthesis' in window)) throw new Error('no-speech');
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);

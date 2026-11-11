@@ -31,7 +31,7 @@ export const TEMPLATES = {
 const devTools = (st, uid) => {
   st.subs.push(
     { id: uid(), name: 'GitHub Copilot', amount: 10, cur: 'USD', used: true, cancelled: false },
-    { id: uid(), name: 'Claude Pro', amount: 20, cur: 'USD', used: true, cancelled: false },
+    { id: uid(), name: 'Assistente de IA', amount: 20, cur: 'USD', used: true, cancelled: false },
     { id: uid(), name: t('seed.vps'), amount: 6, cur: 'USD', used: null, cancelled: false },
     { id: uid(), name: t('seed.domain'), amount: 5, used: true, cancelled: false },
   );

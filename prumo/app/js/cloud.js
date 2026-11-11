@@ -107,6 +107,18 @@ export async function saveState(state) {
   });
 }
 
+// Asks the advisor service (Gemini behind a Supabase function). Only the signed-in person can call it.
+export async function advise(body, signal) {
+  const tok = await token();
+  if (!tok) throw Object.assign(new Error('signed out'), { code: 'auth' });
+  const res = await fetch(SUPABASE_URL + '/functions/v1/advisor', {
+    method: 'POST', signal, headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok }, body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data || !data.text) throw Object.assign(new Error('advisor'), { status: res.status });
+  return data;
+}
+
 export async function deleteMe() {
   await call('/rest/v1/rpc/delete_me', { method: 'POST', body: {} });
   keep(null);
