@@ -111,11 +111,14 @@
   .wait__ok .field__error { grid-column: 2; }
   .wait__ok a { text-decoration: underline; text-underline-offset: 3px; }
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-  .fb-box { margin-top: 28px; max-width: 520px; border-top: 1px solid color-mix(in srgb, var(--p-ink) 18%, transparent); padding-top: 18px; }
-  .fb-box summary { cursor: pointer; font-weight: 600; font-size: 17px; }
-  .fb-box summary:focus-visible { outline: 2px solid var(--p-accent); outline-offset: 4px; border-radius: 4px; }
-  .fb-box .form { margin-top: 16px; grid-template-columns: minmax(0, 1fr); }
-  .fb-box select, .fb-box textarea { width: 100%; }
+  .wl-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+  .wl-col .wait { max-width: 520px; margin-top: var(--s-5, 24px); }
+  .fb-card { border: 1px solid color-mix(in srgb, var(--p-ink) 18%, transparent); padding: clamp(20px, 3vw, 32px); background: var(--p-surface); }
+  .fb-card h3 { margin: 0 0 6px; font-size: 22px; font-weight: 500; letter-spacing: -.02em; }
+  .fb-card .t-small { margin: 0 0 18px; }
+  .fb-card .form { grid-template-columns: minmax(0, 1fr); }
+  .fb-card select, .fb-card textarea { width: 100%; }
+  @media (max-width: 900px) { .wl-grid { grid-template-columns: minmax(0, 1fr); } }
   /* real screenshots */
   .shot--wide { margin-top: var(--s-7); min-height: 0; }
   .shot--wide img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
@@ -306,40 +309,45 @@
   </section>
 </main>
 
-<footer class="footer closing footer--statement" id="contact" aria-labelledby="close-h">
+<footer class="footer closing footer--statement g2" id="contact" aria-labelledby="close-h">
   <div class="wrap">
     <div class="closing__cta close--type">
-      <div class="section-head">
-        <h2 id="close-h">Entra na lista de espera</h2>
-        <p>O beta fechado já roda com conta, login e sincronização entre celular e computador, por enquanto só com convidados. A demo continua aberta pra quem quiser testar. Quem está na lista entra nas próximas turmas.</p>
+      <div class="wl-grid">
+        <div class="wl-col">
+          <div class="section-head">
+            <h2 id="close-h">Entra na lista de espera</h2>
+            <p>O beta fechado já roda com conta, login e sincronização entre celular e computador, por enquanto só com convidados. A demo continua aberta pra quem quiser testar. Quem está na lista entra nas próximas turmas.</p>
+          </div>
+          <form class="form wait" method="post" data-sent="Anotado. Aviso você quando abrir." data-fix="Campos para arrumar: {n}." data-sending="Enviando" data-failed="Não enviou, a conexão falhou. Tenta de novo." novalidate>
+            <div class="field"><label for="w-email">Seu e-mail</label>
+              <input id="w-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required aria-describedby="w-email-err">
+              <p class="field__error" id="w-email-err" hidden></p></div>
+            <div class="field wait__ok"><input id="w-ok" name="consent" type="checkbox" value="sim" required aria-describedby="w-ok-err">
+              <label for="w-ok">Aceito receber e-mails do Prumo sobre o lançamento. Saio quando quiser. <a href="privacidade.html#lista-de-espera-e-e-mails">Como meu e-mail é usado</a></label>
+              <p class="field__error" id="w-ok-err" hidden></p></div>
+            <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="btn-row"><button class="btn btn--primary" type="submit">Entrar na lista</button><a class="btn btn--secondary" href="app/index.html">Abrir a demo</a></div>
+            <p class="form__status" role="status" data-form-status></p>
+          </form>
+        </div>
+        <aside class="fb-card" aria-labelledby="fb-h">
+          <h3 id="fb-h">Já testou? Me conta o que achou</h3>
+          <p class="t-small muted">Bug, ideia, o que irritou, o que curtiu. Chega direto em mim.</p>
+          <form class="form fb" method="post" data-sent="Recebido. Valeu demais!" data-fix="Campos para arrumar: {n}." data-sending="Enviando" data-failed="Não enviou, a conexão falhou. Tenta de novo." novalidate>
+            <div class="field"><label for="fb-kind">Sobre o quê</label>
+              <select id="fb-kind" name="kind"><option value="ideia">Ideia</option><option value="bug">Bug</option><option value="elogio">Curti</option><option value="outro">Outro</option></select></div>
+            <div class="field"><label for="fb-msg">Conta aí</label>
+              <textarea id="fb-msg" name="message" rows="4" maxlength="4000" required aria-describedby="fb-msg-err"></textarea>
+              <p class="field__error" id="fb-msg-err" hidden></p></div>
+            <div class="field"><label for="fb-contact">Seu e-mail, se quiser resposta (opcional)</label>
+              <input id="fb-contact" name="contact" type="email" autocomplete="email" inputmode="email" maxlength="254" aria-describedby="fb-contact-err">
+              <p class="field__error" id="fb-contact-err" hidden></p></div>
+            <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="btn-row"><button class="btn btn--primary" type="submit">Enviar feedback</button></div>
+            <p class="form__status" role="status" data-form-status></p>
+          </form>
+        </aside>
       </div>
-      <form class="form wait" method="post" data-sent="Anotado. Aviso você quando abrir." novalidate>
-        <div class="field"><label for="w-email">Seu e-mail</label>
-          <input id="w-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required aria-describedby="w-email-err">
-          <p class="field__error" id="w-email-err" hidden></p></div>
-        <div class="field wait__ok"><input id="w-ok" name="consent" type="checkbox" value="sim" required aria-describedby="w-ok-err">
-          <label for="w-ok">Aceito receber e-mails do Prumo sobre o lançamento. Saio quando quiser. <a href="privacidade.html#emails">Como meu e-mail é usado</a></label>
-          <p class="field__error" id="w-ok-err" hidden></p></div>
-        <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <div class="btn-row"><button class="btn btn--primary" type="submit">Entrar na lista</button><a class="btn btn--secondary" href="app/index.html">Abrir a demo</a></div>
-        <p class="form__status" role="status" data-form-status></p>
-      </form>
-      <details class="fb-box">
-        <summary>Já testou? Me conta o que achou</summary>
-        <form class="form fb" method="post" data-sent="Recebido. Valeu demais!" novalidate>
-          <div class="field"><label for="fb-kind">Sobre o quê</label>
-            <select id="fb-kind" name="kind"><option value="ideia">Ideia</option><option value="bug">Bug</option><option value="elogio">Curti</option><option value="outro">Outro</option></select></div>
-          <div class="field"><label for="fb-msg">Conta aí</label>
-            <textarea id="fb-msg" name="message" rows="4" maxlength="4000" required aria-describedby="fb-msg-err"></textarea>
-            <p class="field__error" id="fb-msg-err" hidden></p></div>
-          <div class="field"><label for="fb-contact">Seu e-mail, se quiser resposta (opcional)</label>
-            <input id="fb-contact" name="contact" type="email" autocomplete="email" inputmode="email" maxlength="254" aria-describedby="fb-contact-err">
-            <p class="field__error" id="fb-contact-err" hidden></p></div>
-          <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="btn-row"><button class="btn btn--primary" type="submit">Enviar feedback</button></div>
-          <p class="form__status" role="status" data-form-status></p>
-        </form>
-      </details>
     </div>
     <div class="closing__links">
       <div class="grid">
