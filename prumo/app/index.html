@@ -11,14 +11,13 @@
 <meta name="apple-mobile-web-app-title" content="Prumo">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="description" content="Demo do Prumo: finanças pessoais para quem é CLT e PJ ao mesmo tempo.">
+<meta name="description" content="Demo do Prumo: escreva os gastos do dia numa frase e veja quanto ainda dá para gastar hoje. Os dados ficam no seu navegador.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%229%22%20fill%3D%22%2317221f%22%2F%3E%3Cpath%20d%3D%22M16%204.5v7%22%20stroke%3D%22%23c9973a%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2212.2%22%20y%3D%2211%22%20width%3D%227.6%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23c9973a%22%2F%3E%3Cpath%20d%3D%22M11.3%2014.6h9.4c.6%200%201%20.6.7%201.2l-4.5%2010.4c-.3.6-1.1.6-1.4%200l-4.5-10.4c-.2-.6.1-1.2.7-1.2z%22%20fill%3D%22%23c9973a%22%2F%3E%3C%2Fsvg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css?v=11">
-<link rel="stylesheet" href="css/app.css?v=11">
-<link rel="stylesheet" href="css/login.css?v=11">
+<link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/tokens.css?v=23">
+<link rel="stylesheet" href="css/app.css?v=24">
+<link rel="stylesheet" href="css/login.css?v=23">
 <link rel="modulepreload" href="js/main.js">
 <script>try{if(sessionStorage.getItem('prumo.session'))document.documentElement.classList.add('authed');var p=JSON.parse(localStorage.getItem('prumo.prefs')||'{}');if(p.theme&&p.theme!=='auto')document.documentElement.dataset.theme=p.theme;if(p.contrast)document.documentElement.dataset.contrast='high';if(p.font)document.documentElement.style.fontSize=p.font+'%';if(p.motion==='off')document.documentElement.dataset.motion='off';if(p.lang)document.documentElement.lang=p.lang;}catch(e){}</script>
 </head>
@@ -69,7 +68,7 @@
       <span class="wordmark">prumo</span>
     </div>
     <h1 id="login-title" data-i18n="login.title">Entre na demo</h1>
-    <p class="muted" data-i18n="login.hint">Os dados abaixo já vêm preenchidos. Nada do que você fizer aqui sai do seu navegador.</p>
+    <p class="muted" data-i18n="login.hint">Os dados abaixo já vêm preenchidos. O que você lançar fica guardado neste navegador.</p>
     <form id="login-form" novalidate>
       <label for="email" data-i18n="login.email">E-mail</label>
       <input id="email" name="email" type="email" autocomplete="username" value="john@doe.com" required>
@@ -79,9 +78,10 @@
         <button type="button" id="toggle-pw" aria-pressed="false" data-i18n="login.show">Mostrar</button>
       </div>
       <p id="login-error" class="error" role="alert" hidden></p>
+      <label class="accept"><input type="checkbox" id="accept" required> <span>Li e aceito os <a href="https://matheusvillanova.com/prumo/termos.html" target="_blank" rel="noopener">termos de uso</a> e a <a href="https://matheusvillanova.com/prumo/privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</span></label>
       <button class="btn-primary" type="submit" data-i18n="login.submit">Entrar na demo</button>
     </form>
-    <p class="login-trust" data-i18n="login.trust">Sem conectar banco. Sem senha do banco. Seus números ficam no seu navegador.</p>
+    <p class="login-trust" data-i18n="login.trust">O Prumo não conecta em banco e não pede a senha de lá. O que você lançar fica neste navegador.</p>
     <div class="lang" role="group" aria-label="Idioma / Language">
       <button type="button" data-lang="pt-BR">Português</button>
       <button type="button" data-lang="en">English</button>
@@ -89,11 +89,11 @@
     </div>
   </section>
   <aside class="login-side" aria-hidden="true">
-    <p class="side-quote" data-i18n="login.pitch">Saiba quanto sobra antes do mês começar.</p>
+    <p class="side-quote" data-i18n="login.pitch">Escreve "almoço 32, uber 18" e o dia está lançado.</p>
     <div class="side-bar"><i style="flex:31"></i><i style="flex:14"></i><i style="flex:18"></i><i style="flex:3"></i><i style="flex:34"></i></div>
     <ul class="side-list">
-      <li data-i18n="login.f1">Salário CLT e notas do PJ no mesmo lugar</li>
-      <li data-i18n="login.f2">Limite do MEI e DAS sem susto</li>
+      <li data-i18n="login.f1">Cada item vira um gasto com categoria, e você vê quanto ainda dá pra gastar hoje</li>
+      <li data-i18n="login.f2">Parcela, fatura e DAS aparecem no mês em que vencem</li>
       <li data-i18n="login.f3">Cofres que só liberam a compra quando o dinheiro já está guardado</li>
     </ul>
   </aside>

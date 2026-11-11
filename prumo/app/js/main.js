@@ -122,6 +122,7 @@ const loginForm = document.getElementById('login-form');
 const pw = document.getElementById('password');
 const togglePw = document.getElementById('toggle-pw');
 function syncLogin() {
+  const ok = document.getElementById('accept'); if (ok && (getPrefs().terms || {}).v === '2026-11-11') ok.checked = true;
   document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === getPrefs().lang)));
   togglePw.textContent = t(pw.type === 'password' ? 'login.show' : 'login.hide');
 }
@@ -135,6 +136,10 @@ document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click'
 loginForm.addEventListener('submit', e => {
   e.preventDefault();
   const err = document.getElementById('login-error');
+  const accept = document.getElementById('accept');
+  if (!accept.checked) { err.textContent = t('login.accept'); err.hidden = false; accept.focus(); return; }
+  // Keep proof of what was accepted and when, on this device.
+  if ((getPrefs().terms || {}).v !== '2026-11-11') setPref('terms', { v: '2026-11-11', at: new Date().toISOString() });
   const email = loginForm.email.value.trim().toLowerCase();
   if (email !== 'john@doe.com' || pw.value !== 'password') {
     err.textContent = t('login.error'); err.hidden = false;

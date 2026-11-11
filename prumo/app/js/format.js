@@ -31,6 +31,12 @@ export function monthLabel(ym, opts = { month: 'long', year: 'numeric' }) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+// Month name inside a sentence: Portuguese and Spanish write it in lower case ("sobra prevista em novembro").
+export function monthIn(ym, opts) {
+  const s = monthLabel(ym, opts);
+  return getPrefs().lang === 'en' ? s : s.toLowerCase();
+}
+
 export function dayLabel(date) {
   return new Intl.DateTimeFormat(getPrefs().lang, { day: '2-digit', month: 'short' }).format(date);
 }

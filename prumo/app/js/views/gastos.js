@@ -27,7 +27,7 @@ function previewHtml() {
       <label class="sr-only" for="q-c-${i}">${t('quick.category')}</label>
       <select class="qin" id="q-c-${i}" data-q="cat" data-i="${i}">${catOpts(r.cat)}</select>
       <label class="sr-only" for="q-a-${i}">${t('common.amount')}</label>
-      <input class="qin qamt" id="q-a-${i}" data-q="amount" data-i="${i}" inputmode="decimal" value="${esc(String(r.amount).replace('.', ','))}">
+      <input class="qin qamt" id="q-a-${i}" data-q="amount" data-i="${i}" inputmode="decimal" value="${esc((typeof r.amount === 'number' && !Number.isInteger(r.amount) ? r.amount.toFixed(2) : String(r.amount)).replace('.', ','))}">
       ${r.n > 1 ? `<span class="badge b-xp">${t('card.inN', { n: r.n })}</span>` : ''}
       <button type="button" class="btn btn-ghost btn-sm icon-btn" data-q="remove" data-i="${i}" aria-label="${esc(t('quick.remove', { name: r.desc }))}">${icon('i-x')}</button>
     </li>`).join('')}</ul>
@@ -100,7 +100,13 @@ function saveRows(rows, ym, source) {
   }, 'xp.log', Math.min(30, 5 + valid.length * 3), (source === 'import' ? t : say)(source === 'import' ? 'quick.imported' : 'quick.saved', { n: valid.length, v: money(total) }));
 }
 
+let live = null;
+
 export function mount(root, s, ctx) {
+  // #main outlives every render: drop the listeners of the previous mount before adding new ones.
+  if (live) live.abort();
+  live = new AbortController();
+  const on = { signal: live.signal };
   const ta = root.querySelector('#quick-text');
   const box = root.querySelector('#q-preview');
   const refresh = () => { box.innerHTML = previewHtml(); };
@@ -124,7 +130,7 @@ export function mount(root, s, ctx) {
     if (!el || el.tagName === 'BUTTON') return;
     const r = draft.rows[+el.dataset.i];
     if (r) r[el.dataset.q] = el.value;
-  });
+  }, on);
 
   root.addEventListener('click', async e => {
     const b = e.target.closest('button[data-q]');
@@ -144,7 +150,8 @@ export function mount(root, s, ctx) {
       saveRows(rows, ctx.ym, src);
     }
     if (q === 'fav') {
-      const f = favorites(store.get())[+b.dataset.i];
+      // n here is how often the entry was used, not a number of installments: leave it out.
+      const { n, ...f } = favorites(store.get())[+b.dataset.i];
       saveRows([{ ...f }], ctx.ym, 'text');
     }
     if (q === 'mic') {
@@ -172,12 +179,12 @@ Texto original digitado ou falado pela pessoa: """${ta.value.slice(0, 2000)}"""
 Leitura automática atual (JSON): ${JSON.stringify(draft.rows.map(({ desc, amount, cat, date }) => ({ desc, amount, cat, date })))}
 Responda só com um array JSON de objetos {"desc": string curta com inicial maiúscula, "amount": número, "cat": uma das categorias, "date": "AAAA-MM-DD" ou null}. Junte itens duplicados só se forem claramente o mesmo gasto. Não invente gastos.`;
         const rows = await askAI(prompt, { json: true });
-        if (Array.isArray(rows) && rows.length) draft.rows = rows.map(r => ({ desc: String(r.desc || ''), amount: Number(r.amount) || 0, cat: CATS.includes(r.cat) ? r.cat : 'outros', date: r.date || null }));
+        if (Array.isArray(rows) && rows.length) draft.rows = rows.map(r => ({ desc: String(r.desc || ''), amount: Number(r.amount) || 0, cat: CATS.includes(r.cat) ? r.cat : 'outros', date: /^\d{4}-\d{2}-\d{2}$/.test(r.date) ? r.date : null }));
         announce(t('quick.aiDone'));
       } catch (err) {
         if (err && err.code !== 'cancelled') toast(t('ai.error'));
       }
       draft.aiBusy = false; refresh();
     }
-  });
+  }, on);
 }

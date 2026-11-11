@@ -8,7 +8,7 @@ import { monthSummary, spending, wishlistStatus, subsReview, meiYear, incomeDrop
 import { say, toneRule, tone, chooseTone, toneOptions } from './tone.js';
 import { onPrefs } from './prefs.js';
 import { pickChart, chartHtml, chartBrief } from './advisor-chart.js';
-import { money, pct, esc, monthLabel, isoDay, ymOf } from './format.js';
+import { money, pct, esc, monthIn, isoDay, ymOf } from './format.js';
 import { icon } from './ui.js';
 import { hasAI, askAI, listen, canListen } from './ai.js';
 import { getPrefs, setPref } from './prefs.js';
@@ -34,6 +34,7 @@ function bubble(turn, i) {
       ${turn.saved ? `<p class="msg-ok">${icon('i-check')}${t('chat.saved')}</p>` : `<div class="msg-act"><button type="button" class="btn btn-sm btn-primary" data-chat="save" data-i="${i}">${t('chat.save', { n: turn.rows.length })}</button><button type="button" class="btn btn-sm" data-chat="drop" data-i="${i}">${t('chat.drop')}</button></div>`}`;
   }
   if (turn.chart) extra += chartHtml(turn.chart, store.get());
+  if (turn.ai) extra += `<p class="msg-ai">${icon('i-spark')}${t('ai.label')}</p>`;
   if (turn.consent) extra += `<div class="msg-act"><button type="button" class="btn btn-sm btn-primary" data-chat="aiYes" data-i="${i}">${t('ai.consentYes')}</button><button type="button" class="btn btn-sm" data-chat="aiNo" data-i="${i}">${t('ai.consentNo')}</button></div>`;
   return `<li class="msg msg-${turn.role}"><span class="sr-only">${who}:</span><div>${esc(turn.content).replace(/\n/g, '<br>')}${extra}</div></li>`;
 }
@@ -151,7 +152,7 @@ function localAnswer(q, s, ym) {
   }
   if (/fevereiro|plano|queda|february|plan|renda|income/.test(lq)) {
     const d = incomeDrop(s, ym);
-    if (d) return t('local.plan', { m: monthLabel(d.ym), gap: money(d.from - d.to), free: money(x.free) });
+    if (d) return t('local.plan', { m: monthIn(d.ym), gap: money(d.from - d.to), free: money(x.free) });
   }
   if (/guardar|save|reserva/.test(lq)) return t('local.save', { v: money(Math.max(0, x.free * 0.5)), free: money(x.free) });
   if (/mei|limite|cap/.test(lq) && s.mei.enabled) { const m = meiYear(s); return t('local.mei', { ytd: money(m.ytd), pace: money(m.pace), limit: money(s.mei.limit) }); }
@@ -189,6 +190,7 @@ Retrato do mês (JSON): ${JSON.stringify(snapshot(st, ctx.ym))}`;
       onText: ({ text: tx }) => { chat.turns[idx].content = tx; paint(); },
     });
     chat.turns[idx].content = text;
+    chat.turns[idx].ai = true;
   } catch (e) {
     chat.turns[idx].content = e && e.code === 'not_granted' ? t('ai.denied') : local();
   }

@@ -1,7 +1,7 @@
 // Advisor screen: findings computed locally on the left, the shared chat on the right.
 import { t } from '../i18n.js';
 import { insights } from '../finance.js';
-import { money, pct, monthLabel } from '../format.js';
+import { money, pct, monthIn } from '../format.js';
 import { head } from './parts.js';
 import { icon } from '../ui.js';
 import { hasAI } from '../ai.js';
@@ -13,11 +13,11 @@ export function insightText(i) {
     // Pets and health never get roasted.
     catHot: () => (['pet', 'saude'].includes(i.cat) ? t : say)('ins.catHot', { cat: t('cat.' + i.cat), p: pct(i.used), d: i.days, left: money(Math.max(0, i.left)) }),
     perDay: () => say(i.v >= 0 ? 'ins.perDay' : 'ins.perDayOver', { v: money(Math.abs(i.v)), d: i.days }),
-    drop: () => t('ins.drop', { m: monthLabel(i.ym), gap: money(i.gap), per: money(i.perMonth) }),
+    drop: () => t('ins.drop', { m: monthIn(i.ym), gap: money(i.gap), per: money(i.perMonth) }),
     subs: () => say('ins.subs', { n: i.n, v: money(i.v) }),
     debt: () => t('ins.debt', { v: money(i.v), w: i.weeks }),
     mei: () => t('ins.mei', { v: money(i.v) }),
-    runway: () => t('ins.runway', { n: String(i.months).replace('.', ','), m: monthLabel(i.ym), gap: money(i.gap) }),
+    runway: () => t('ins.runway', { n: String(i.months).replace('.', ','), m: monthIn(i.ym), gap: money(i.gap) }),
     fx: () => say('ins.fx', { v: money(i.v), up: money(i.up) }),
   };
   return map[i.k] ? map[i.k]() : '';

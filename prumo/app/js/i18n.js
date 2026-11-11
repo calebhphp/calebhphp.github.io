@@ -1,6 +1,6 @@
 // Interface text in pt-BR, English and Spanish. Missing keys fall back to pt-BR.
 import { getPrefs } from './prefs.js';
-import { ptX, enX } from './i18n-extra.js';
+import { ptX, enX, esX } from './i18n-extra.js';
 import { ptT, enT } from './i18n-tone.js';
 
 const pt = {
@@ -10,8 +10,8 @@ const pt = {
 
   'login.title': 'Entre na demo', 'login.hint': 'Os dados abaixo já vêm preenchidos. O que você lançar fica guardado neste navegador.',
   'login.email': 'E-mail', 'login.password': 'Senha', 'login.show': 'Mostrar', 'login.hide': 'Ocultar', 'login.submit': 'Entrar na demo',
-  'login.pitch': 'Saiba quanto sobra antes do mês começar.', 'login.f1': 'Salário CLT e notas do PJ no mesmo lugar',
-  'login.f2': 'Limite do MEI e DAS sem susto', 'login.f3': 'Cofres que só liberam a compra quando o dinheiro já está guardado',
+  'login.pitch': 'Escreve "almoço 32, uber 18" e o dia está lançado.', 'login.f1': 'Cada item vira um gasto com categoria, e você vê quanto ainda dá pra gastar hoje',
+  'login.f2': 'Parcela, fatura e DAS aparecem no mês em que vencem', 'login.f3': 'Cofres que só liberam a compra quando o dinheiro já está guardado',
   'login.error': 'Use o e-mail john@doe.com e a senha password.',
 
   'a11y.skip': 'Pular para o conteúdo', 'a11y.menu': 'Abrir menu', 'a11y.title': 'Acessibilidade e preferências',
@@ -23,7 +23,7 @@ const pt = {
   'top.listen': 'Ouvir resumo', 'top.a11y': 'Acessibilidade', 'top.add': 'Adicionar',
 
   'common.close': 'Fechar', 'common.cancel': 'Cancelar', 'common.continue': 'Continuar', 'common.amount': 'Valor',
-  'common.save': 'Salvar', 'common.saved': 'Salvo', 'common.edit': 'Editar', 'common.done': 'concluída', 'common.pending': 'pendente',
+  'common.save': 'Salvar', 'common.saved': 'Salvo', 'common.undo': 'Desfazer', 'common.undone': 'Desfeito', 'common.edit': 'Editar', 'common.done': 'concluída', 'common.pending': 'pendente',
   'common.seeAll': 'Ver tudo',
 
   'home.hello': 'Olá, {name}', 'home.sub': 'Este é o seu mês em um lugar só. Marque o que pagou e guarde o que der.',
@@ -38,13 +38,13 @@ const pt = {
   'debt.mark': 'Marcar como quitada', 'debt.paid': 'Pendência quitada',
 
   'game.gained': 'Você ganhou {xp} XP', 'game.levelUp': 'Você chegou ao nível {level}', 'game.rewardUnlocked': 'Recompensa liberada: {reward}',
-  'game.keepGoing': 'Continue assim.', 'game.missionDone': 'Missão do dia concluída: {m}',
+  'game.keepGoing': 'Boa. Segue o baile.', 'game.missionDone': 'Missão do dia concluída: {m}',
   'game.levelShort': 'Nível {level} · faltam {xp} XP', 'game.levelAria': 'Nível {level}, faltam {xp} XP para o próximo. Abrir conquistas.',
   'game.level': 'Nível {level}', 'game.toNext': 'Faltam {xp} XP para o nível {level}', 'game.progress': 'Progresso do nível',
   'game.nextReward': 'No nível {level}: {reward}', 'game.streak': 'Sequência de {n} dias', 'game.streakAria': 'Ativo em {n} dos últimos 7 dias',
   'game.missions': 'Missões de hoje', 'game.rewardEdit': 'Recompensa do nível {level}', 'game.rewardLabel': 'O que você vai se dar',
   'game.pageSub': 'XP só vem de ação real. As recompensas são escolhidas por você.', 'game.rewards': 'Suas recompensas',
-  'game.rewardsSub': 'Escolha algo que você quer de verdade. Quando o nível chegar, está liberado.',
+  'game.rewardsSub': 'Põe aqui o que você quer mesmo. Chegou no nível, pode se dar.',
   'game.levelN': 'Nível {level}', 'game.noReward': 'Sem recompensa ainda', 'game.setReward': 'Definir', 'game.badges': 'Medalhas: {n} de {total}',
   'game.history': 'Últimas ações',
   'mission.pay': 'Pagar uma conta', 'mission.save': 'Guardar qualquer valor', 'mission.review': 'Revisar uma assinatura',
@@ -74,7 +74,7 @@ const pt = {
   'bank.transfer': 'Transferir pró-labore', 'bank.total': 'Saldo em todas as contas', 'bank.splitAria': 'Pessoal {pf}, empresa {pj}',
   'bank.pf': 'Pessoal (PF)', 'bank.pj': 'Empresa (PJ)', 'bank.pjBadge': 'PJ', 'bank.pfBadge': 'PF',
   'bank.pjHint': 'Dinheiro da empresa. Passe para a PF como pró-labore.', 'bank.pfHint': 'Dinheiro seu, para as contas do mês.',
-  'bank.ruleTitle': 'Uma regra simples', 'bank.ruleBody': 'Pague a vida pessoal só pela conta PF. Transfira um pró-labore fixo da PJ todo mês. Assim o limite do MEI e o seu orçamento ficam claros.',
+  'bank.ruleTitle': 'Regra da casa', 'bank.ruleBody': 'Pague a vida pessoal só pela conta PF. Transfira um pró-labore fixo da PJ todo mês. Assim o limite do MEI e o seu orçamento ficam claros.',
 
   'goal.depositTitle': 'Guardar em {name}', 'goal.depositDo': 'Guardar', 'goal.from': 'Sai da conta', 'goal.depositDone': '{v} guardados em {name}',
   'goal.title': 'Cofres', 'goal.aria': '{s} de {tgt}', 'goal.depositAria': 'Guardar dinheiro em {name}', 'goal.deposit': 'Guardar',
@@ -134,17 +134,17 @@ const pt = {
   'seed.appCourse': 'Plataforma de cursos', 'seed.subMusic': 'Streaming de música', 'seed.subVideoA': 'Streaming de vídeo A', 'seed.subVideoB': 'Streaming de vídeo B',
   'seed.goalReserve': 'Reserva de emergência', 'seed.goalHome': 'Casa nova', 'seed.goalTrip': 'Viagem',
   'seed.wSofa': 'Sofá', 'seed.wPaint': 'Pintura da sala', 'seed.wDesk': 'Mesa de trabalho', 'seed.wWallpaper': 'Papel de parede do quarto',
-  'seed.debt': 'Protesto em cartório', 'seed.r4': 'Jantar fora sem olhar o preço', 'seed.r6': 'Uma planta grande para a sala', 'seed.r8': 'Fim de semana na praia',
+  'seed.debt': 'Boleto atrasado da faculdade', 'seed.r4': 'Jantar fora sem olhar o preço', 'seed.r6': 'Uma planta grande para a sala', 'seed.r8': 'Fim de semana na praia',
 };
 
 const en = {
   'nav.inicio': 'Overview', 'nav.contas': 'Bills', 'nav.bancos': 'Accounts', 'nav.entradas': 'Income', 'nav.mei': 'Business (MEI)',
   'nav.assinaturas': 'Subscriptions', 'nav.cofres': 'Savings pots', 'nav.conquistas': 'Achievements', 'nav.personalizar': 'Customize',
   'nav.customize': 'Customize', 'nav.logout': 'Leave demo',
-  'login.title': 'Sign in to the demo', 'login.hint': 'The fields are already filled in. Nothing you do here leaves your browser.',
+  'login.title': 'Sign in to the demo', 'login.hint': 'The fields are already filled in. What you log stays in this browser.',
   'login.email': 'Email', 'login.password': 'Password', 'login.show': 'Show', 'login.hide': 'Hide', 'login.submit': 'Open the demo',
-  'login.pitch': 'Know what is left before the month starts.', 'login.f1': 'Salary and freelance invoices in one place',
-  'login.f2': 'Business revenue cap and taxes without surprises', 'login.f3': 'Savings pots that unlock a purchase only when the money is already there',
+  'login.pitch': 'Type "lunch 12, uber 9" and the day is logged.', 'login.f1': 'Each item becomes an expense with a category, and you see what is left to spend today',
+  'login.f2': 'Installments, card bills and taxes show up in the month they are due', 'login.f3': 'Savings pots that unlock a purchase only when the money is already there',
   'login.error': 'Use john@doe.com and the password "password".',
   'a11y.skip': 'Skip to content', 'a11y.menu': 'Open menu', 'a11y.title': 'Accessibility and preferences', 'a11y.theme': 'Theme',
   'a11y.auto': 'System', 'a11y.light': 'Light', 'a11y.dark': 'Dark', 'a11y.text': 'Text size', 'a11y.lang': 'Language', 'a11y.currency': 'Currency',
@@ -152,7 +152,7 @@ const en = {
   'a11y.librasHint': 'Uses VLibras, from the Brazilian government.', 'a11y.updated': 'Preference updated', 'a11y.noSpeech': 'Your browser cannot read text aloud.',
   'month.prev': 'Previous month', 'month.next': 'Next month', 'top.listen': 'Listen to summary', 'top.a11y': 'Accessibility', 'top.add': 'Add',
   'common.close': 'Close', 'common.cancel': 'Cancel', 'common.continue': 'Continue', 'common.amount': 'Amount', 'common.save': 'Save',
-  'common.saved': 'Saved', 'common.edit': 'Edit', 'common.done': 'done', 'common.pending': 'pending', 'common.seeAll': 'See all',
+  'common.saved': 'Saved', 'common.undo': 'Undo', 'common.undone': 'Undone', 'common.edit': 'Edit', 'common.done': 'done', 'common.pending': 'pending', 'common.seeAll': 'See all',
   'home.hello': 'Hi, {name}', 'home.sub': 'Your month in one place. Check off what you paid and save what you can.',
   'flow.title': 'Expected left over in {m}', 'flow.note': 'After bills and savings pots, {p} of your income stays free.',
   'flow.negative': 'This month ends in the red. Review subscriptions or your savings amounts.', 'flow.aria': 'Where this month\'s money goes',
@@ -225,15 +225,15 @@ const en = {
 const es = {
   'nav.inicio': 'Resumen', 'nav.contas': 'Cuentas por pagar', 'nav.bancos': 'Bancos', 'nav.entradas': 'Ingresos', 'nav.mei': 'Empresa (MEI)',
   'nav.assinaturas': 'Suscripciones', 'nav.cofres': 'Alcancías', 'nav.conquistas': 'Logros', 'nav.personalizar': 'Personalizar', 'nav.customize': 'Personalizar', 'nav.logout': 'Salir de la demo',
-  'login.title': 'Entra en la demo', 'login.hint': 'Los datos ya vienen completados. Nada de lo que hagas aquí sale de tu navegador.', 'login.email': 'Correo',
-  'login.password': 'Contraseña', 'login.show': 'Mostrar', 'login.hide': 'Ocultar', 'login.submit': 'Entrar en la demo', 'login.pitch': 'Sabe cuánto sobra antes de que empiece el mes.',
-  'login.f1': 'Sueldo y facturas de freelance en un solo lugar', 'login.f2': 'Límite y cuota de la empresa sin sustos', 'login.f3': 'Alcancías que solo liberan la compra cuando el dinero ya está guardado',
+  'login.title': 'Entra en la demo', 'login.hint': 'Los datos ya vienen completados. Lo que anotes queda guardado en este navegador.', 'login.email': 'Correo',
+  'login.password': 'Contraseña', 'login.show': 'Mostrar', 'login.hide': 'Ocultar', 'login.submit': 'Entrar en la demo', 'login.pitch': 'Escribe "almuerzo 32, uber 18" y el día queda anotado.',
+  'login.f1': 'Cada ítem se vuelve un gasto con categoría, y ves cuánto puedes gastar hoy', 'login.f2': 'Cuotas, tarjeta e impuestos aparecen en el mes en que vencen', 'login.f3': 'Alcancías que solo liberan la compra cuando el dinero ya está guardado',
   'login.error': 'Usa john@doe.com y la contraseña password.',
   'a11y.skip': 'Saltar al contenido', 'a11y.menu': 'Abrir menú', 'a11y.title': 'Accesibilidad y preferencias', 'a11y.theme': 'Tema', 'a11y.auto': 'Sistema', 'a11y.light': 'Claro',
   'a11y.dark': 'Oscuro', 'a11y.text': 'Tamaño del texto', 'a11y.lang': 'Idioma', 'a11y.currency': 'Moneda', 'a11y.contrast': 'Alto contraste', 'a11y.motion': 'Reducir animaciones',
   'a11y.libras': 'Lengua de señas brasileña (Libras)', 'a11y.librasHint': 'Usa VLibras, del gobierno de Brasil.', 'a11y.updated': 'Preferencia actualizada', 'a11y.noSpeech': 'Tu navegador no lee textos en voz alta.',
   'month.prev': 'Mes anterior', 'month.next': 'Mes siguiente', 'top.listen': 'Escuchar resumen', 'top.a11y': 'Accesibilidad', 'top.add': 'Agregar',
-  'common.close': 'Cerrar', 'common.cancel': 'Cancelar', 'common.continue': 'Continuar', 'common.amount': 'Monto', 'common.save': 'Guardar', 'common.saved': 'Guardado',
+  'common.undo': 'Deshacer', 'common.undone': 'Deshecho', 'common.close': 'Cerrar', 'common.cancel': 'Cancelar', 'common.continue': 'Continuar', 'common.amount': 'Monto', 'common.save': 'Guardar', 'common.saved': 'Guardado',
   'common.edit': 'Editar', 'common.done': 'hecha', 'common.pending': 'pendiente', 'common.seeAll': 'Ver todo',
   'home.hello': 'Hola, {name}', 'home.sub': 'Tu mes en un solo lugar. Marca lo que pagaste y ahorra lo que puedas.',
   'flow.title': 'Sobrante previsto en {m}', 'flow.note': 'Después de las cuentas y las alcancías, {p} de lo que entra queda libre.',
@@ -306,6 +306,7 @@ Object.assign(pt, ptX);
 Object.assign(en, enX);
 Object.assign(pt, ptT);
 Object.assign(en, enT);
+Object.assign(es, esX);
 const DICTS = { 'pt-BR': pt, en, es };
 
 export function t(key, vars) {

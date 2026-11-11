@@ -1,7 +1,7 @@
 // Retrospectiva: a closed month as five vertical cards, sized for stories.
 import { t } from '../i18n.js';
 import { say, tone } from '../tone.js';
-import { money, pct, esc, monthLabel, ymOf, addMonths, dayLabel } from '../format.js';
+import { money, pct, esc, monthLabel, monthIn, ymOf, addMonths, dayLabel } from '../format.js';
 import { wishlistStatus } from '../finance.js';
 import { head } from './parts.js';
 import { icon, toast } from '../ui.js';
@@ -37,7 +37,7 @@ export function retroBanner(s, ctx) {
   if (!s.modules.includes('retro') || !s.profile.quiz || ctx.ym !== ymOf(new Date())) return '';
   const ym = retroYm(ctx.ym);
   if (!s.tx.some(x => x.date.startsWith(ym))) return '';
-  return `<div class="banner banner-retro span-12"><div><h2>${t('retro.banner', { m: esc(monthLabel(ym, { month: 'long' })) })}</h2></div>
+  return `<div class="banner banner-retro span-12"><div><h2>${t('retro.banner', { m: esc(monthIn(ym, { month: 'long' })) })}</h2></div>
     <a class="btn btn-primary" href="#retro">${icon('i-star')}${t('retro.bannerCta')}</a></div>`;
 }
 
@@ -46,7 +46,7 @@ function cards(s, ym, r) {
   const catName = ['deboche', 'semfiltro'].includes(tone()) ? t('cat.' + r.topCat).toLowerCase() : t('cat.' + r.topCat);
   const charName = say('retro.c.' + (r.monk ? 'monge' : r.topCat));
   const date = new Date(`${ym}-${String(r.maxD).padStart(2, '0')}T12:00`);
-  const vs = r.prevSpent ? t('retro.vs', { p: pct(Math.abs(r.spent - r.prevSpent) / r.prevSpent), dir: t(r.spent < r.prevSpent ? 'retro.less' : 'retro.more'), m: monthLabel(addMonths(ym, -1), { month: 'long' }) }) : '';
+  const vs = r.prevSpent ? t('retro.vs', { p: pct(Math.abs(r.spent - r.prevSpent) / r.prevSpent), dir: t(r.spent < r.prevSpent ? 'retro.less' : 'retro.more'), m: monthIn(addMonths(ym, -1), { month: 'long' }) }) : '';
   const resPct = r.reserve ? pct(r.reserve.saved / r.reserve.target) : '';
   return [
     { k: 'cover', kicker: esc(m), big: t('retro.cover'), line: say('retro.coverSub', { n: r.list.length }) },
@@ -67,7 +67,7 @@ export function render(s, ctx) {
   const title = `${t('retro.title')}: ${esc(monthLabel(ym))}`;
   if (!r) return `${head(title, t('retro.sub'))}<div class="grid"><section class="card span-12"><p class="empty">${t('retro.empty')}</p></section></div>`;
   const list = cards(s, ym, r);
-  return `${head(title, t('retro.sub'), `<button class="btn btn-primary" type="button" id="retro-share">${icon('i-swap')}${t('retro.share')}</button>`)}
+  return `${head(title, t('retro.sub'), `<div class="btn-row"><button class="btn btn-primary" type="button" id="retro-img">${icon('i-down')}${t('retro.image')}</button><button class="btn" type="button" id="retro-share">${icon('i-swap')}${t('retro.share')}</button></div>`)}
   <div class="retro-wrap">
     <button type="button" class="btn icon-btn retro-nav" data-dir="-1" aria-label="${esc(t('retro.prev'))}">${icon('i-left')}</button>
     <ol class="retro" id="retro" tabindex="0" aria-label="${esc(title)}">
@@ -84,6 +84,55 @@ export function render(s, ctx) {
   </div>`;
 }
 
+// Card colours for the image, same as the .rc-* rules in app.css.
+const SKIN = { cover: ['#17221f', '#f3efe4'], char: ['#e0b25a', '#17221f'], day: ['#2b2620', '#f3efe4'], pace: ['#ede6d3', '#17221f'], end: ['#e0b25a', '#17221f'] };
+// The card text is already escaped HTML; this turns it back into plain lines for the canvas.
+const plain = html => new DOMParser().parseFromString(String(html).replace(/<br>/g, '\n'), 'text/html').body.textContent;
+
+// Draws one card at story size (1080 x 1920) from the same data the screen uses. Nothing leaves the browser.
+async function cardImage(c, i, n) {
+  const W = 1080, H = 1920, P = 96;
+  const cv = Object.assign(document.createElement('canvas'), { width: W, height: H });
+  const g = cv.getContext('2d');
+  const [bg, ink] = SKIN[c.k];
+  const font = getComputedStyle(document.body).fontFamily;
+  try { await document.fonts.load('700 120px ' + font); } catch (e) { /* falls back to the system font */ }
+  const wrap = (text, size, weight, maxW) => {
+    g.font = weight + ' ' + size + 'px ' + font;
+    const out = [];
+    for (const para of text.split('\n')) {
+      let line = '';
+      for (const w of para.split(' ')) {
+        const test = line ? line + ' ' + w : w;
+        if (line && g.measureText(test).width > maxW) { out.push(line); line = w; } else line = test;
+      }
+      out.push(line);
+    }
+    return out;
+  };
+  g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  g.fillStyle = ink; g.textBaseline = 'alphabetic';
+  g.globalAlpha = .75; g.font = '500 40px ' + font;
+  g.fillText('prumo', P, 150);
+  g.textAlign = 'right'; g.fillText(i + 1 + '/' + n, W - P, 150); g.textAlign = 'left';
+  g.globalAlpha = .16; g.fillRect(P, 200, W - P * 2, 3);
+  const big = wrap(plain(c.big), 150, 700, W - P * 2);
+  const sub = c.sub ? wrap(plain(c.sub), 54, 500, W - P * 2) : [];
+  const line = wrap(plain(c.line), 56, 400, W - P * 2);
+  let y = 1000 - (big.length * 156 + sub.length * 70 + line.length * 76) / 2;
+  g.globalAlpha = .8; g.font = '500 40px ' + font;
+  g.fillText(plain(c.kicker).toUpperCase(), P, y - 60);
+  g.globalAlpha = 1; g.font = '700 150px ' + font;
+  for (const l of big) { y += 156; g.fillText(l, P, y); }
+  g.globalAlpha = .85; g.font = '500 54px ' + font; y += 30;
+  for (const l of sub) { y += 70; g.fillText(l, P, y); }
+  g.globalAlpha = 1; g.font = '400 56px ' + font; y += 60;
+  for (const l of line) { y += 76; g.fillText(l, P, y); }
+  g.globalAlpha = .7; g.font = '700 52px ' + font;
+  g.fillText('prumo', P, H - 110);
+  return new Promise(res => cv.toBlob(res, 'image/png'));
+}
+
 export function mount(root, s, ctx) {
   const ym = retroYm(ctx.ym);
   const r = recap(s, ym);
@@ -93,9 +142,30 @@ export function mount(root, s, ctx) {
     const w = strip.querySelector('.rc').getBoundingClientRect().width + 16;
     strip.scrollBy({ left: w * +b.dataset.dir, behavior: document.documentElement.dataset.motion === 'off' ? 'auto' : 'smooth' });
   }));
+  // Saves the card that is in view. On a phone it opens the share sheet; elsewhere it downloads the PNG.
+  root.querySelector('#retro-img').addEventListener('click', async () => {
+    const list = cards(s, ym, r);
+    const els = [...strip.querySelectorAll('.rc')];
+    const mid = strip.getBoundingClientRect().left + strip.clientWidth / 2;
+    const i = els.reduce((best, el, k) => {
+      const b = el.getBoundingClientRect();
+      return Math.abs(b.left + b.width / 2 - mid) < Math.abs(els[best].getBoundingClientRect().left + els[best].getBoundingClientRect().width / 2 - mid) ? k : best;
+    }, 0);
+    const blob = await cardImage(list[i], i, list.length).catch(() => null);
+    if (!blob) { toast(t('retro.imageFail')); return; }
+    const file = new File([blob], 'prumo-' + ym + '-' + (i + 1) + '.png', { type: 'image/png' });
+    if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file] }); } catch (e) { /* closed the share sheet */ }
+      return;
+    }
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: file.name });
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast(t('retro.imageDone', { i: i + 1 }));
+  });
   root.querySelector('#retro-share').addEventListener('click', async () => {
     const c = cards(s, ym, r);
-    const text = t('retro.shareText', { m: monthLabel(ym, { month: 'long' }), char: c[1].big, day: `${c[2].big} (${c[2].sub})`, n: r.inside, d: r.days });
+    const text = t('retro.shareText', { m: monthIn(ym, { month: 'long' }), char: c[1].big, day: `${c[2].big} (${c[2].sub})`, n: r.inside, d: r.days });
     try { await navigator.clipboard.writeText(text); toast(t('retro.copied')); } catch (e) { toast(text); }
   });
 }

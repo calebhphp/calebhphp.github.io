@@ -58,3 +58,7 @@
 }
 @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) .login-side { background: #1c2622; border-left: 1px solid var(--line); } }
 :root[data-theme="dark"] .login-side { background: #1c2622; border-left: 1px solid var(--line); }
+
+.login .accept { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px; font-weight: 400; font-size: .9rem; line-height: 1.45; }
+.login .accept input { width: 20px; height: 20px; flex: none; margin-top: 1px; padding: 0; accent-color: var(--primary); }
+.login .accept a { color: inherit; text-decoration: underline; }

@@ -5,18 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prumo: controle de gastos numa frase só</title>
 <meta name="description" content="App de finanças pessoais que separa os gastos de uma frase, mostra quanto dá para gastar por dia e roda no seu aparelho, sem senha de banco.">
+<link rel="canonical" href="https://matheusvillanova.com/prumo/">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://matheusvillanova.com/prumo/">
+<meta property="og:site_name" content="Prumo">
+<meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="Prumo: controle de gastos numa frase só">
 <meta property="og:description" content="Escreva os gastos do dia numa frase. O Prumo separa, categoriza e diz quanto dá para gastar por dia, sem pedir senha de banco.">
-<meta property="og:image" content="share.jpg">
+<meta property="og:image" content="https://matheusvillanova.com/prumo/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Tela do Prumo com a frase almoço 32, uber 18 virando gastos com categoria">
+<meta name="twitter:title" content="Prumo: controle de gastos numa frase só">
+<meta name="twitter:description" content="Escreva os gastos do dia numa frase. O Prumo separa, categoriza e diz quanto dá para gastar por dia.">
+<meta name="twitter:image" content="https://matheusvillanova.com/prumo/share.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="app/icons/apple-touch-icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Prumo","applicationCategory":"FinanceApplication","operatingSystem":"Web, Android, iOS","inLanguage":"pt-BR","url":"https://matheusvillanova.com/prumo/","description":"App de controle de gastos pessoais: você escreve os gastos do dia numa frase e ele separa, categoriza e mostra quanto ainda dá para gastar por dia.","offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"image":"https://matheusvillanova.com/prumo/share.jpg"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Preciso dar a senha do meu banco?","acceptedAnswer":{"@type":"Answer","text":"Não. Você lança os gastos ou importa o extrato OFX ou CSV que baixou no app do banco."}},{"@type":"Question","name":"Por que não colar o extrato no Claude ou no ChatGPT?","acceptedAnswer":{"@type":"Answer","text":"Dá, eu fazia. Mas todo mês é exportar, colar e explicar tudo de novo, e chat nenhum avisa antes da fatura fechar."}},{"@type":"Question","name":"Funciona no celular?","acceptedAnswer":{"@type":"Answer","text":"Sim. No iPhone, abra no Safari, toque em Compartilhar e em Adicionar à Tela de Início. No Android, Chrome, três pontinhos, Instalar app. Depois ele abre e salva gastos até sem internet."}},{"@type":"Question","name":"Quanto custa?","acceptedAnswer":{"@type":"Answer","text":"A demo é grátis e não pede cadastro. Exportar os seus dados vai ser grátis em qualquer plano."}}]}]}</script>
 <meta name="theme-color" content="#0f1311">
 <meta name="site-kind" content="software">
 <meta name="page-type" content="software">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..700&family=JetBrains+Mono:wght@400..500&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="assets/system.css">
 <link rel="stylesheet" href="assets/ui/cards.css">
 <link rel="stylesheet" href="assets/motion/motion.css">
@@ -24,8 +36,6 @@
 <link rel="stylesheet" href="assets/layout/layout.css">
 <link rel="stylesheet" href="assets/icons/icon.css">
 <link rel="stylesheet" href="assets/ui/base.css">
-<link rel="stylesheet" href="assets/ui/window/fragment.css">
-<link rel="stylesheet" href="assets/ui/chat/fragment.css">
 <link rel="stylesheet" href="assets/diagrams/diagram.css">
 <style>
 :root {
@@ -50,7 +60,7 @@
 <link rel="modulepreload" href="assets/moments/moments.js">
 <link rel="modulepreload" href="assets/moments/lib.js">
 <link rel="modulepreload" href="assets/moments/word-highlight/moment.js">
-<!-- page CSS: only what sits inside a visual (the app's own screens) and the app-frame recipe -->
+<!-- page CSS: only what sits inside a visual (real screenshots of the app) -->
 <style>
   /* hero: a real screenshot of the app, cropped to its top left */
   .shot { overflow: hidden; border-radius: 12px; border: 1px solid rgba(237,230,211,.12); box-shadow: 0 30px 80px -30px rgba(0,0,0,.7); background: #0f1311; }
@@ -61,21 +71,6 @@
   .hero__art .ly-piece--note { background: #171d1a; color: #ede6d3; border: 1px solid rgba(237,230,211,.14); }
   .hero__art .pv-note__q { background: #0f1311; color: #ede6d3; }
   .hero__art .pv-note__row b { color: #ede6d3; }
-  .pv { padding: 22px 64px 26px 24px; display: grid; gap: 16px; }
-  .pv__top { display: grid; justify-items: end; text-align: right; gap: 6px; min-height: 150px; align-content: start; }
-  .pv__label { font-size: 13px; color: var(--u-soft); }
-  .pv__big { font-size: clamp(34px, 4vw, 52px); font-weight: 600; letter-spacing: -0.04em; line-height: 1; color: var(--u-ink); }
-  .pv__big small { font-size: .45em; color: var(--u-soft); font-weight: 500; }
-  .pv__days { display: flex; align-items: flex-end; gap: 4px; height: 92px; position: relative; border-bottom: 1px solid var(--u-line); }
-  .pv__days i { flex: 1; border-radius: 3px 3px 1px 1px; background: #4c8fd6; }
-  .pv__days i.is-over { background: #d0663a; }
-  .pv__days i.is-next { background: var(--u-line); height: 3px !important; }
-  .pv__days::after { content: ""; position: absolute; left: 0; right: 0; bottom: 46%; border-top: 2px dashed var(--u-soft); opacity: .7; }
-  .pv__flow { display: flex; height: 10px; border-radius: 5px; overflow: hidden; gap: 2px; }
-  .pv__flow i { display: block; }
-  .pv__rows { display: grid; gap: 8px; font-size: 13px; color: var(--u-text-2); }
-  .pv__rows div { display: flex; justify-content: space-between; gap: 12px; }
-  .pv__rows b { color: var(--u-ink); font-weight: 600; }
   .pv-note { padding: 14px 16px; display: grid; gap: 9px; font-size: 13px; color: var(--u-text-2); }
   .pv-note__q { font-family: var(--font-mono); font-size: 12px; color: var(--u-ink); background: var(--u-fill); border-radius: 8px; padding: 8px 10px; }
   .pv-note__row { display: flex; justify-content: space-between; gap: 10px; }
@@ -83,39 +78,11 @@
   .pv-chip { font-size: 11px; padding: 2px 8px; border-radius: 99px; background: var(--u-fill-2); color: var(--u-ink); }
   .pv-chip--ok { background: #e0b25a; color: #0f1311; }
 
-  /* app-frame (sections-library.md, app-frame) */
-  .app.ui { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); margin-top: var(--s-7); background: var(--u-bg); border: 1px solid var(--u-border); border-radius: var(--u-r); box-shadow: var(--u-shadow); }
-  .app > .app__pane { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
-  .app > .app__pane + .app__pane { border-left: 1px solid var(--u-line); }
-  .app > .app__pane > .ui-panel { width: 100%; border: 0; border-radius: 0; box-shadow: none; }
-  .app > .app__pane::after { content: ""; position: absolute; inset: auto 0 0 0; height: 64px; background: linear-gradient(transparent, var(--u-bg)); pointer-events: none; }
-  @media (min-width: 1024px) and (max-width: 1279px) { .app.ui { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); } }
-  @media (max-width: 767px) { .app.ui { grid-template-columns: minmax(0, 1fr); } .app > .app__pane--list { display: none; } .app > .app__pane + .app__pane { border-left: 0; } }
-  .ui-win__row .ui-win__sub { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .wk { display: flex !important; align-items: flex-end; gap: 10px; height: 104px; margin-top: 12px; position: relative; max-width: 320px; }
-  .wk > span { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; font-size: 11px; color: var(--u-soft); }
-  .wk > span b { display: block; width: 70%; border-radius: 4px 4px 2px 2px; background: #4c8fd6; opacity: .55; }
-  .wk > span.is-now b { opacity: 1; }
-  .wk > span em { font-style: normal; color: var(--u-ink); font-weight: 600; min-height: 1.2em; white-space: nowrap; }
-  .wk::after { content: ""; position: absolute; left: 0; right: 0; bottom: 72px; border-top: 2px dashed var(--u-soft); opacity: .6; }
 
   /* feature panels: the app's own small screens */
   #recursos .panel { --p-h: 300px; }
   #recursos h3.mono-title { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0; }
-  @media (max-width: 639px) { #recursos .panel { --p-h: 160px; } #recursos .mini { margin-top: 16px; padding: 12px 14px; gap: 8px; } }
-  .mini { width: min(420px, calc(100% - 48px)); margin: 28px auto 0; padding: 16px 18px; display: grid; gap: 12px; font-size: 13px; color: var(--u-text-2); }
-  .mini__head { display: flex; justify-content: space-between; align-items: baseline; color: var(--u-ink); font-weight: 600; font-size: 14px; }
-  .mini__head span { font-weight: 500; color: var(--u-soft); font-size: 12px; }
-  .bars6 { display: flex; align-items: flex-end; gap: 10px; height: 120px; }
-  .bars6 span { flex: 1; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; gap: 4px; height: 100%; font-size: 11px; }
-  .bars6 b { align-self: end; width: 72%; background: #4c8fd6; border-radius: 4px 4px 2px 2px; }
-  .bars6 span:first-child b { background: #e0b25a; }
-  .row-l { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--u-line); }
-  .row-l:first-of-type { border-top: 0; }
-  .row-l b { color: var(--u-ink); font-weight: 600; }
-  .track { height: 10px; border-radius: 5px; background: var(--u-fill-2); position: relative; overflow: hidden; }
-  .track i { position: absolute; inset: 0 auto 0 0; background: #e0b25a; border-radius: 5px; }
-  .track--mark::after { content: ""; position: absolute; top: 0; bottom: 0; left: 80%; width: 2px; background: var(--u-ink); }
+  @media (max-width: 639px) { #recursos .panel { --p-h: 160px; } }
 
   /* voices: the tone picker as the app shows it, one panel */
   .tones { display: flex; flex-direction: column; padding: 8px 0; }
@@ -130,18 +97,25 @@
   .tone q { display: block; margin-top: 6px; color: var(--u-text-2); font-size: 17px; line-height: 1.4; }
   .tone.is-on q { color: var(--u-ink); }
 
-  .hero__art .ui-pause:focus-visible { outline: 3px solid #0f1311 !important; outline-offset: 2px; }
-  @media (min-width: 1024px) { #perguntas .faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; } #perguntas .faq > .faq__item:nth-child(2) { padding-top: 0; } #perguntas .faq > .faq__item { align-content: start; } }
-  /* Retrospectiva: story cards */
-  .stories { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter, 24px); margin-top: var(--s-7); }
-  .story { aspect-ratio: 4 / 5; border-radius: 22px; padding: 22px; display: flex; flex-direction: column; background: #1c2420; color: #f3efe4; }
-  .story--gold { background: #e0b25a; color: #17221f; }
-  .story--sand { background: #ede6d3; color: #17221f; }
-  .story__k { margin-top: auto; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
-  .story__big { font-size: clamp(28px, 3vw, 40px); line-height: 1; font-weight: 600; letter-spacing: -0.035em; margin: 6px 0 0; }
-  .story__line { margin: 14px 0 auto; font-size: 15px; line-height: 1.4; }
-  .story__foot { font-weight: 700; opacity: .7; }
-  @media (max-width: 767px) { .stories { grid-template-columns: minmax(0, 1fr); } .story { aspect-ratio: auto; min-height: 320px; } .story:nth-child(n+2) { display: none; } }
+  .hero__art .ui-pause:focus-visible { outline: 3px solid #e0b25a !important; outline-offset: 3px; }
+  @media (min-width: 1024px) { #perguntas .faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter, 24px); } #perguntas .faq > .faq__item:nth-child(2) { padding-top: 0; } #perguntas .faq > .faq__item { align-content: start; } }
+  .legal-links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  /* waitlist: consent sits beside its checkbox */
+  .wait { max-width: 520px; grid-template-columns: minmax(0, 1fr); }
+  .wait__ok { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: start; }
+  .wait__ok input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--p-accent); }
+  .wait__ok label { font-size: 14px; line-height: 1.45; }
+  .wait__ok .field__error { grid-column: 2; }
+  .wait__ok a { text-decoration: underline; text-underline-offset: 3px; }
+  /* real screenshots */
+  .shot--wide { margin-top: var(--s-7); min-height: 0; }
+  .shot--wide img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+  #recursos .panel--shot { padding: 0; overflow: hidden; background: #171c19; }
+  #recursos .panel--shot img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+  .stories--real { display: flex; justify-content: space-between; gap: 24px; min-height: 0; margin-top: var(--s-7); }
+  .stories--real img { height: min(56vh, 540px); width: auto; min-width: 0; border-radius: 22px; }
+  @media (max-width: 1023px) { .stories--real { gap: 16px; } .stories--real img { height: auto; width: calc((100% - 32px) / 3); } }
+  @media (max-width: 767px) { .stories--real img { height: auto; width: min(100%, 300px); } .stories--real img:nth-child(n+2) { display: none; } }
 </style>
 </head>
 <body>
@@ -197,7 +171,7 @@
         <div class="btn-row"><a class="btn btn--primary" href="app/index.html">Abrir a demo<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#produto">Ver por dentro</a></div>
         <p class="hero__proof">Fiz pra mim, que recebo salário e nota no mesmo mês.</p>
       </div>
-      <div class="hero__art span-6 start-7" role="img" aria-label="Tela inicial do Prumo com a sobra prevista do mês, o gasto de cada dia contra o limite e três gastos lançados de uma frase">
+      <div class="hero__art span-6 start-7" role="img" aria-label="Tela inicial do Prumo: a caixa para escrever os gastos do dia, quanto ainda dá para gastar hoje e o fio de prumo do mês">
         <div class="ly-piece ly-piece--main shot" aria-hidden="true"><img src="img/app-home.png" alt="" width="1440" height="900" fetchpriority="high"></div>
         <div class="ly-piece ly-piece--note ui ui-panel pv-note" aria-hidden="true" data-ly-steps="700">
           <div class="pv-note__q">almoço 32, uber 18, ifood 47,90</div>
@@ -216,66 +190,8 @@
         <h2 id="produto-h" class="span-5">Pergunta pro conselheiro e ele responde com gráfico</h2>
         <p class="span-6 start-7 muted">Tipo "quanto foi de ifood essa semana?". O gráfico sai dos seus lançamentos, a IA só comenta. Se aparecer número que você não lançou, é bug, e eu quero saber.</p>
       </div>
-      <div class="ui app fill" role="img" aria-label="Lista de gastos de novembro ao lado do conselheiro, que responde com o gasto de comer fora por semana" data-ui-pause-host>
-        <div class="app__pane app__pane--list">
-          <div class="ui ui-panel ui-win" data-ui="window" data-open="Dentro" data-work="Lançando" data-done="Pago">
-            <div class="ui-win__bar">
-              <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="ui-win__crumb">Prumo <i>/</i> <b>Gastos de novembro</b></span>
-              <span class="ui-spacer"></span>
-            </div>
-            <div class="ui-win__body">
-              <nav class="ui-win__side" aria-hidden="true">
-                <span class="ui-win__nav is-on">Gastos<em>67</em></span>
-                <span class="ui-win__nav">Cartão<em>4</em></span>
-                <span class="ui-win__nav">Contas<em>8</em></span>
-                <span class="ui-win__nav">Cofres<em>3</em></span>
-                <span class="ui-win__label">Categorias</span>
-                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Comer fora</span>
-                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Mercado</span>
-              </nav>
-              <div class="ui-win__main">
-                <div class="ui-win__cols" aria-hidden="true"><span>Gasto</span><span>Categoria</span><span>Valor</span><span>Dia</span></div>
-                <ul class="ui-win__rows">
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">IF</span><span class="ui-win__who">Ifood</span><span class="ui-win__sub">Comer fora · crédito</span><span class="ui-win__st is-you" data-st>R$ 47,90</span><span class="ui-win__age">11</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">UB</span><span class="ui-win__who">Uber</span><span class="ui-win__sub">Transporte · pix</span><span class="ui-win__st" data-st>R$ 18,00</span><span class="ui-win__age">11</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">AL</span><span class="ui-win__who">Almoço</span><span class="ui-win__sub">Comer fora · pix</span><span class="ui-win__st" data-st>R$ 32,00</span><span class="ui-win__age">11</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">ME</span><span class="ui-win__who">Mercado</span><span class="ui-win__sub">Mercado · débito</span><span class="ui-win__st" data-st>R$ 142,30</span><span class="ui-win__age">10</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">GE</span><span class="ui-win__who">Geladeira</span><span class="ui-win__sub">Parcela 1 de 10 · crédito</span><span class="ui-win__st is-done" data-st>R$ 329,00</span><span class="ui-win__age">10</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="5">FA</span><span class="ui-win__who">Farmácia</span><span class="ui-win__sub">Saúde · crédito</span><span class="ui-win__st" data-st>R$ 46,80</span><span class="ui-win__age">9</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">CA</span><span class="ui-win__who">Café</span><span class="ui-win__sub">Comer fora · pix</span><span class="ui-win__st" data-st>R$ 8,00</span><span class="ui-win__age">9</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">99</span><span class="ui-win__who">99</span><span class="ui-win__sub">Transporte · crédito</span><span class="ui-win__st" data-st>R$ 22,90</span><span class="ui-win__age">8</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">RA</span><span class="ui-win__who">Ração</span><span class="ui-win__sub">Pet · crédito</span><span class="ui-win__st" data-st>R$ 89,90</span><span class="ui-win__age">7</span></li>
-                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">PA</span><span class="ui-win__who">Padaria</span><span class="ui-win__sub">Mercado · pix</span><span class="ui-win__st" data-st>R$ 15,20</span><span class="ui-win__age">7</span></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="app__pane app__pane--open" data-ui-loop>
-          <div class="ui ui-panel ui-chat" data-ui="chat">
-            <div class="ui-head"><span class="ui-agent" aria-hidden="true"></span><div class="ui-title">Conselheiro</div><span class="ui-chat__online">Tom: deboche</span><span class="ui-spacer"></span></div>
-            <div class="ui-chat__body">
-              <div class="ui-chat__day">Hoje, 21:14</div>
-              <div class="ui-msg ui-msg--me" data-chat-q><span class="ui-msg__text">quanto gastei de comer fora por semana?</span></div>
-              <div class="ui-msg ui-msg--bot" data-chat-a>
-                <span class="ui-agent ui-msg__av" aria-hidden="true"></span>
-                <span class="ui-msg__col">
-                  <span class="ui-chat__typing" aria-hidden="true"><i></i><i></i><i></i></span>
-                  <span class="ui-chat__answer">R$ 146 nesta semana, contra R$ 95 na anterior. passou da linha de R$ 105 por semana. <b>o gráfico não mente.</b>
-                    <span class="wk"><span><em>R$ 95</em><b style="height:47px"></b>S1</span><span class="is-now"><em>R$ 146</em><b style="height:72px"></b>S2</span><span><em></em><b style="height:2px"></b>S3</span><span><em></em><b style="height:2px"></b>S4</span><span><em></em><b style="height:2px"></b>S5</span></span>
-                  </span>
-                </span>
-              </div>
-              <div class="ui-msg ui-msg--me"><span class="ui-msg__text">posso comprar o sofá?</span></div>
-              <div class="ui-msg ui-msg--bot">
-                <span class="ui-agent ui-msg__av" aria-hidden="true"></span>
-                <span class="ui-msg__col"><span class="ui-chat__answer">ainda não. faltam R$ 550 no cofre da casa. segura um mês e compra sem dever pra ninguém.</span></span>
-              </div>
-            </div>
-            <div class="ui-chat__input"><span class="ui-chat__ph">Pergunte ou mande "café 9"</span><span class="ui-chat__send" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 13V3.5M3.8 7.5 8 3.3l4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          </div>
-        </div>
+      <div class="shot shot--wide fill" role="img" aria-label="Tela do conselheiro: à esquerda o que ele está vendo no mês, à direita a pergunta sobre comer fora por semana respondida com um gráfico">
+        <img src="img/app-conselheiro.png" alt="" width="1440" height="900" loading="lazy">
       </div>
     </div>
   </section>
@@ -290,24 +206,12 @@
           <article class="card card--row card--open span-6">
             <h3 class="mono-title">almoço 32, uber 18</h3>
             <p>Vira dois gastos com categoria. Dá pra falar em vez de digitar, ou subir o extrato OFX ou CSV do banco.</p>
-            <div class="panel">
-              <div class="ui ui-panel mini" aria-hidden="true">
-                <div class="pv-note__q">almoço 32, uber 18, ifood 47,90</div>
-                <div class="row-l"><span>Almoço · Comer fora</span><b>R$ 32,00</b></div>
-                <div class="row-l"><span>Uber · Transporte</span><b>R$ 18,00</b></div>
-                <div class="row-l"><span>Ifood · Comer fora</span><b>R$ 47,90</b></div>
-              </div>
-            </div>
+            <div class="panel panel--shot"><img class="frame__img" src="img/app-lancar-d.png" alt="A frase almoço 32, uber 18, ifood 47,90 separada em três gastos com categoria, prontos para conferir" width="1316" height="939" loading="lazy"></div>
           </article>
           <article class="card card--row card--open span-6">
             <h3>Parcela não some mais da cabeça</h3>
             <p>Escreveu "geladeira 3290 em 10x", ela aparece em cada fatura até a última.</p>
-            <div class="panel">
-              <div class="ui ui-panel mini" aria-hidden="true">
-                <div class="mini__head">Parcelas já comprometidas <span>limite livre R$ 1.926</span></div>
-                <div class="bars6"><span><em>R$ 1,3 mil</em><b style="height:100%"></b>nov</span><span><em>R$ 1,1 mil</em><b style="height:80%"></b>dez</span><span><em>R$ 1,1 mil</em><b style="height:80%"></b>jan</span><span><em>R$ 1,1 mil</em><b style="height:80%"></b>fev</span><span><em>R$ 526</em><b style="height:39%"></b>mar</span><span><em>R$ 329</em><b style="height:25%"></b>abr</span></div>
-              </div>
-            </div>
+            <div class="panel panel--shot"><img class="frame__img" src="img/app-parcelas-d.png" alt="Lista de parcelas em andamento, com quantas faltam e o valor de cada uma" width="1384" height="514" style="object-fit:contain;object-position:center" loading="lazy"></div>
           </article>
         </div>
       </div>
@@ -315,28 +219,13 @@
         <article class="card card--row card--open span-6">
           <h3>Sofá só quando o dinheiro estiver no cofre</h3>
           <p>Cada coisa da casa espera a vez na fila. E item novo fica 48 horas de molho antes de liberar.</p>
-          <div class="panel">
-            <div class="ui ui-panel mini" aria-hidden="true">
-              <div class="mini__head">Cofre da casa <span>R$ 1.850 de R$ 6.000</span></div>
-              <div class="row-l"><span>Sofá</span><b>Faltam R$ 550</b></div>
-              <div class="row-l"><span>Pintura da sala</span><b>Na fila</b></div>
-              <div class="row-l"><span>Escrivaninha</span><b>Na fila</b></div>
-              <div class="track"><i style="width:31%"></i></div>
-            </div>
-          </div>
-        </article>
+          <div class="panel panel--shot"><img class="frame__img" src="img/app-fila-d.png" alt="Fila de compras da casa: cada item com o que falta no cofre e quantas horas de trabalho custa" width="1384" height="966" loading="lazy"></div>
+          </article>
         <article class="card card--row card--open span-6">
           <h3>DAS e teto do MEI no radar</h3>
           <p>O ritmo do ano contra os R$ 81 mil, e o lembrete do DAS no dia 20.</p>
-          <div class="panel">
-            <div class="ui ui-panel mini" aria-hidden="true">
-              <div class="mini__head">Faturamento do MEI em 2026 <span>ritmo de R$ 62.400</span></div>
-              <div class="track track--mark"><i style="width:64%"></i></div>
-              <div class="row-l"><span>Faturado até outubro</span><b>R$ 52.000</b></div>
-              <div class="row-l"><span>DAS de novembro</span><b>R$ 81,90 dia 20</b></div>
-            </div>
-          </div>
-        </article>
+          <div class="panel panel--shot"><img class="frame__img" src="img/app-mei-d.png" alt="Faturamento do MEI no ano contra o limite, com o ritmo atual e o DAS do mês" width="676" height="1009" loading="lazy"></div>
+          </article>
       </div>
     </div>
   </section>
@@ -344,7 +233,7 @@
   <section class="section statement" id="acompanha" data-moment="word-highlight" aria-label="Por que um app e não só um chat">
     <div class="wrap">
       <p class="t-label">Por que não só um chat</p>
-      <p class="mo-wh__text">Eu jogava o extrato no ChatGPT e funcionava, uma vez. Aí chegava o dia 10, o delivery estourava e ninguém me avisava. O Prumo me cutuca na hora e no dia 1 manda <strong>o resumo do mês</strong>.</p>
+      <p class="mo-wh__text">Todo mês eu colava o extrato no Claude e ele me contava pra onde o dinheiro tinha ido. Só que aí a fatura já estava fechada. O Prumo avisa no dia em que o delivery passa do limite, e no dia 1 chega <strong>o resumo do mês</strong>.</p>
     </div>
   </section>
 
@@ -372,10 +261,10 @@
         <h2 id="retro-h" class="span-5">Todo dia 1, a retrospectiva do mês</h2>
         <p class="span-6 start-7 muted">Cinco cards no tamanho do story. O personagem do mês, o dia em que o cartão chorou e quantos dias você ficou no teto.</p>
       </div>
-      <div class="stories" role="img" aria-label="Três cards da Retrospectiva de outubro: rei do delivery, dia mais caro 8 de outubro, 21 de 31 dias dentro do teto">
-        <div class="story story--gold" aria-hidden="true"><span class="story__k">Personagem do mês</span><p class="story__big">rei do delivery</p><p class="story__line">R$ 612 em comer fora. 38% do mês foi pra isso.</p><span class="story__foot">prumo</span></div>
-        <div class="story" aria-hidden="true"><span class="story__k">Dia mais caro</span><p class="story__big">8 de out.</p><p class="story__line">o dia em que o cartão chorou. o maior foi o mercado, R$ 170,76.</p><span class="story__foot">prumo</span></div>
-        <div class="story story--sand" aria-hidden="true"><span class="story__k">Dias dentro do teto</span><p class="story__big">21 de 31</p><p class="story__line">21 dias na linha. os outros 10 a gente não comenta.</p><span class="story__foot">prumo</span></div>
+      <div class="stories stories--real" role="img" aria-label="Três cards da Retrospectiva de outubro: o personagem do mês, o dia mais caro e quantos dias ficaram dentro do teto">
+        <img src="img/app-retro-char.png" alt="" loading="lazy">
+        <img src="img/app-retro-day.png" alt="" loading="lazy">
+        <img src="img/app-retro-pace.png" alt="" loading="lazy">
       </div>
     </div>
   </section>
@@ -397,7 +286,7 @@
       <div class="section-head"><h2 id="perguntas-h">Perguntas</h2></div>
       <div class="faq">
         <div class="faq__item"><h3>Preciso dar a senha do meu banco?</h3><p>Não. Você lança os gastos ou importa o extrato OFX ou CSV que baixou no app do banco.</p></div>
-        <div class="faq__item"><h3>Por que não jogar o extrato no ChatGPT ou no Claude?</h3><p>Dá, eu fazia isso. Só que todo mês é exportar, colar e explicar de novo, e o chat não te avisa de nada.</p></div>
+        <div class="faq__item"><h3>Por que não colar o extrato no Claude ou no ChatGPT?</h3><p>Dá, eu fazia. Mas todo mês é exportar, colar e explicar tudo de novo, e chat nenhum avisa antes da fatura fechar.</p></div>
         <div class="faq__item"><h3>Funciona no celular?</h3><p>Sim. No iPhone, abra no Safari, toque em Compartilhar e em Adicionar à Tela de Início. No Android, Chrome, três pontinhos, Instalar app. Depois ele abre e salva gastos até sem internet.</p></div>
         <div class="faq__item"><h3>Quanto custa?</h3><p>A demo é grátis e não pede cadastro. Exportar os seus dados vai ser grátis em qualquer plano.</p></div>
         <div class="faq__item"><h3>O que ainda não funciona?</h3><p>Não sincroniza entre aparelhos e não conecta em banco, de propósito. A IA do conselheiro só responde de verdade dentro do Claude; fora dele ele usa regras simples. Inglês e espanhol estão pela metade.</p></div>
@@ -411,10 +300,20 @@
   <div class="wrap">
     <div class="closing__cta close--type">
       <div class="section-head">
-        <h2 id="close-h">Testa com o login de exemplo</h2>
-        <p>Já vem preenchido. Lança um gasto e vê o que acontece.</p>
+        <h2 id="close-h">Entra na lista de espera</h2>
+        <p>A demo já funciona e é sua pra testar. A conta com sincronização entre celular e computador ainda não existe. Quem está na lista fica sabendo antes.</p>
       </div>
-      <a class="btn btn--primary btn--xl btn--wide" href="app/index.html">Abrir a demo<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+      <form class="form wait" action="mailto:matheusvillanova1@gmail.com?subject=Lista%20de%20espera%20do%20Prumo" method="post" enctype="text/plain" data-endpoint="" data-sent="Anotado. Aviso você quando abrir." data-fix="Campos para arrumar: {n}." data-sending="Enviando" data-failed="Não enviou, a conexão falhou. Tenta de novo." novalidate>
+        <div class="field"><label for="w-email">Seu e-mail</label>
+          <input id="w-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="w-email-err">
+          <p class="field__error" id="w-email-err" hidden>Escreva um e-mail com @, tipo nome@exemplo.com.</p></div>
+        <div class="field wait__ok"><input id="w-ok" name="aceito_emails_do_prumo" type="checkbox" value="sim" required aria-describedby="w-ok-err">
+          <label for="w-ok">Aceito receber e-mails do Prumo sobre o lançamento. Saio quando quiser. <a href="privacidade.html#emails">Como meu e-mail é usado</a></label>
+          <p class="field__error" id="w-ok-err" hidden>Marque a caixa para entrar na lista.</p></div>
+        <div class="btn-row"><button class="btn btn--primary" type="submit">Entrar na lista</button><a class="btn btn--secondary" href="app/index.html">Abrir a demo</a></div>
+        <p class="form__status" role="status" data-form-status></p>
+        <p class="t-small muted">Abre o seu app de e-mail com a mensagem pronta. É só enviar.</p>
+      </form>
     </div>
     <div class="closing__links">
       <div class="grid">
@@ -428,7 +327,8 @@
         <div class="span-2 footer__col"><h3>Ajuda</h3><ul><li><a href="#perguntas">Perguntas</a></li></ul></div>
       </div>
       <div class="footer__legal">
-        <span>&copy; 2026 Prumo &nbsp; <a href="privacidade.html">Privacidade</a></span>
+        <span class="legal-links">&copy; 2026 Prumo <a href="privacidade.html">Privacidade</a> <a href="termos.html">Termos</a> <a href="licencas.html">Licenças</a></span>
+        <span class="t-small muted">Sem cookies e sem rastreadores. Seus dados ficam no seu aparelho.</span>
         <div class="socials"></div>
       </div>
     </div>

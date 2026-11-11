@@ -11,16 +11,22 @@ export function announce(msg) {
   requestAnimationFrame(() => { el.textContent = msg; });
 }
 
-export function toast(msg, xp, silent = false) {
+export function toast(msg, xp, silent = false, undo = null) {
   const box = document.getElementById('toasts');
   const el = document.createElement('div');
   el.className = 'toast';
   el.setAttribute('aria-hidden', 'true'); // the live region already speaks it
   const span = document.createElement('span'); span.textContent = msg; el.appendChild(span);
   if (xp) { const chip = document.createElement('span'); chip.className = 'xp-chip'; chip.textContent = '+' + xp + ' XP'; el.appendChild(chip); }
+  if (undo) {
+    el.removeAttribute('aria-hidden');
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'toast-undo'; b.textContent = t('common.undo');
+    b.addEventListener('click', () => { undo(); el.remove(); announce(t('common.undone')); });
+    el.appendChild(b);
+  }
   box.appendChild(el);
   if (!silent) announce(xp ? `${msg}. ${t('game.gained', { xp })}` : msg);
-  setTimeout(() => el.remove(), 3600);
+  setTimeout(() => el.remove(), undo ? 7000 : 3600);
 }
 
 // Native <dialog>: focus trap, Esc and inert background come for free.

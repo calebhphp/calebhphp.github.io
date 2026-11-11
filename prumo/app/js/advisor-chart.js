@@ -3,7 +3,7 @@
 import { t } from './i18n.js';
 import { spending, cardStatus, subsReview, brl } from './finance.js';
 import { WORDS } from './quick.js';
-import { money, moneyShort, esc, monthLabel, addMonths, ymOf } from './format.js';
+import { money, moneyShort, esc, monthLabel, monthIn, addMonths, ymOf } from './format.js';
 import { dailyChart } from './views/parts.js';
 
 const has = (q, re) => re.test(q);
@@ -46,7 +46,7 @@ function weekChart(s, ym, cat) {
   weeks.forEach((w, i) => { w.hl = i === cur; w.future = w.a > today; });
   const catName = cat ? t('cat.' + cat) : t('chart.c.all');
   return {
-    kind: 'bars', title: t('chart.c.week', { cat: catName, m: monthLabel(ym, { month: 'long' }) }), items: weeks, ref: budget * 7 / sp.days,
+    kind: 'bars', title: t('chart.c.week', { cat: catName, m: monthIn(ym, { month: 'long' }) }), items: weeks, ref: budget * 7 / sp.days,
     refLabel: t('chart.c.weekRef', { v: money(budget * 7 / sp.days) }),
     text: { key: 'local.week', vars: { cat: catName.toLowerCase(), v: money(cur >= 0 ? weeks[cur].v : 0), avg: money(done.length ? sum(done, w => w.v) / done.length : 0) } },
   };
@@ -75,7 +75,7 @@ function cardChart(s, ym) {
     ...c.ahead.map(a => ({ label: monthLabel(a.ym, { month: 'short' }), tip: monthLabel(a.ym), v: a.v }))];
   return {
     kind: 'bars', title: t('chart.c.card'), items,
-    text: { key: 'local.card', vars: { m: monthLabel(ym, { month: 'long' }), v: money(c.inv.total), next: money(c.ahead[0].v), free: money(c.free) } },
+    text: { key: 'local.card', vars: { m: monthIn(ym, { month: 'long' }), v: money(c.inv.total), next: money(c.ahead[0].v), free: money(c.free) } },
   };
 }
 

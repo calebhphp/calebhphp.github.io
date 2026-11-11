@@ -1,7 +1,7 @@
 // Pieces shared by more than one view.
 import { t } from '../i18n.js';
 import { icon } from '../ui.js';
-import { money, moneyHtml, monthLabel, pct, esc, moneyIn, ymOf } from '../format.js';
+import { money, moneyHtml, monthIn, pct, esc, moneyIn, ymOf } from '../format.js';
 import { monthSummary, bills, meiYear, wishlistStatus, incomeDrop, subsReview, spending, workHours, runway } from '../finance.js';
 import { levelInfo, missionsToday, streak } from '../game.js';
 
@@ -71,7 +71,7 @@ export function heroFlow(s, ym) {
   ].join('');
   return `<section class="card card-hero span-8" aria-labelledby="hero-t">
     <div class="hero-top">
-      <div><p class="hero-label" id="hero-t">${t('flow.title', { m: esc(monthLabel(ym, { month: 'long' })) })}</p>
+      <div><p class="hero-label" id="hero-t">${t('flow.title', { m: esc(monthIn(ym, { month: 'long' })) })}</p>
         <span class="${x.free < 0 ? 'neg' : ''}">${moneyHtml(x.free, 'money-xl')}</span>
         <p class="hero-note">${x.free < 0 ? t('flow.negative') : t('flow.note', { p: `<strong>${pct(freePct)}</strong>` })}</p></div>
       ${dailyChart(s, ym)}
@@ -135,7 +135,7 @@ export function meiCard(s, ctx, span = 'span-4') {
     <div class="meter-scale"><span>0</span><span>${t('mei.paceShort', { v: money(m.pace) })}</span><span>${money(s.mei.limit)}</span></div>
     <ul class="rows" style="margin-top:14px"><li class="${dasPaid ? 'done' : ''}">
       <button class="check" type="button" data-action="payDas" aria-pressed="${dasPaid}" ${dasPaid ? 'disabled' : ''} aria-label="${esc(t('mei.dasMark'))}">${icon('i-check')}</button>
-      <span class="grow"><span class="title">${t('mei.das', { m: esc(monthLabel(ctx.ym, { month: 'long' })) })}</span><span class="meta">${t('mei.dasDue', { d: s.mei.dasDay })}</span></span>
+      <span class="grow"><span class="title">${t('mei.das', { m: esc(monthIn(ctx.ym, { month: 'long' })) })}</span><span class="meta">${t('mei.dasDue', { d: s.mei.dasDay })}</span></span>
       <span class="amt">${money(s.mei.das)}</span></li></ul></section>`;
 }
 
@@ -170,7 +170,7 @@ export function alerts(s, ctx) {
     <button class="btn btn-sm" data-action="payDebt" data-id="${debt.id}">${t('debt.mark')}</button></div>`);
   const drop = incomeDrop(s, ctx.ym);
   if (drop) out.push(`<div class="alert alert-warn ${debt ? 'span-6' : 'span-12'}" role="region" aria-labelledby="drop-t">${icon('i-alert')}
-    <div><h2 id="drop-t">${t('alert.dropTitle', { m: esc(monthLabel(drop.ym)), p: Math.round(drop.pct * 100) })}</h2>
+    <div><h2 id="drop-t">${t('alert.dropTitle', { m: esc(monthIn(drop.ym)), p: Math.round(drop.pct * 100) })}</h2>
     <p>${t('alert.dropBody', { from: money(drop.from), to: money(drop.to) })} ${runwayText(s, ctx.ym)}</p></div>
     <a class="btn btn-sm" href="#entradas">${t('alert.dropCta')}</a></div>`);
   return out.join('');

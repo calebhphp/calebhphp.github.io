@@ -20,7 +20,7 @@ export function render(s) {
     <section class="card span-7" aria-labelledby="w-t">
       <div class="card-head"><h2 id="w-t">${t('wish.title')}</h2></div>
       <p class="card-sub">${t('wish.rule')} ${t('wish.coolRule')}</p>
-      <ol class="rows">${ws.map((w, i) => {
+      <ol class="rows wish">${ws.map((w, i) => {
         const goal = s.goals.find(g => g.id === w.goal);
         const status = w.state === 'bought' ? `<span class="badge b-good">${icon('i-check')}${t('wish.boughtBadge')}</span>`
           : w.state === 'ready' ? `<span class="badge b-warn">${icon('i-star')}${t('wish.readyBadge')}</span>`

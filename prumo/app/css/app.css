@@ -594,6 +594,46 @@ html:not(.authed) .fab, html:not(.authed) .advisor-panel { display: none; }
 }
 @keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
 
+/* Presses answer on every screen size, not only on the phone. Hover lift only where there is a real pointer. */
+.btn, .chip, .tpl, .days button, .seg button, .fab, .nav a, .check { transition: transform .22s var(--spring), background-color .15s, border-color .15s, color .15s; }
+.btn:active, .chip:active, .tpl:active, .days button:active, .fab:active { transform: scale(.96); }
+.check:active { transform: scale(.86); }
+.switch::after { transition: left .26s var(--spring); }
+.toast { animation: toast-in .36s var(--spring); }
+.backdrop.open { animation: fade-in .2s ease both; }
+@keyframes fade-in { from { opacity: 0; } }
+@media (hover: hover) { .tpl:hover, .chip:hover { transform: translateY(-1px); } .tpl:active, .chip:active { transform: scale(.96); } }
+
+/* Home quick entry: the field is the first thing you use, so it gets a real input, not the browser default */
+.hq { gap: 8px; }
+.hq input { min-width: 0; min-height: 40px; padding: 8px 14px; border: 1.5px solid var(--line); border-radius: var(--radius-m); background: var(--surface-2); }
+.hq input::placeholder, .q-box textarea::placeholder, .ask input::placeholder { color: var(--ink-3); opacity: 1; }
+.hq input:focus-visible { border-color: var(--primary); outline: none; }
+
+/* Empty states say what to do next, inside a quiet dashed box */
+p.empty, .rows > li.empty { display: block; border: 1px dashed var(--line); border-radius: var(--radius-m); padding: 20px 16px; text-wrap: balance; }
+.rows > li.empty { margin-top: 2px; }
+
+/* Numbers line up in lists and tables */
+.amt, table.data td.n, .flow-legend .v, .ac-v, .ah-v { font-variant-numeric: tabular-nums; }
+
+/* Retrospectiva header actions wrap under the title on a phone */
+.view-head .btn-row { flex: none; }
+@media (max-width: 640px) { .view-head .btn-row { width: 100%; } .view-head .btn-row .btn { flex: 1 1 auto; } }
+
+/* Phone: rows that carry a name, a value and actions break in two lines instead of squeezing the name */
+@media (max-width: 640px) {
+  .wish > li { flex-wrap: wrap; row-gap: 6px; }
+  .wish > li .grow { flex: 1 1 100%; }
+  .wish > li .amt { margin-right: auto; }
+  .qrows li { display: grid; grid-template-columns: minmax(0, 1fr) 104px 40px; gap: 8px; align-items: center; }
+  .qrows li > [data-q="desc"] { grid-column: 1 / 3; grid-row: 1; }
+  .qrows li > [data-q="remove"] { grid-column: 3; grid-row: 1; }
+  .qrows li > [data-q="cat"] { grid-column: 1; grid-row: 2; }
+  .qrows li > [data-q="amount"] { grid-column: 2 / 4; grid-row: 2; width: auto; }
+  .qrows li > .badge { grid-column: 1 / 4; justify-self: start; }
+}
+
 /* Moving between screens: a short cross-fade with a small rise, only where the browser supports it */
 @keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }
 @keyframes vt-out { to { opacity: 0; } }
@@ -601,3 +641,104 @@ html:not(.authed) .fab, html:not(.authed) .advisor-panel { display: none; }
 ::view-transition-new(root) { animation: vt-in .26s var(--spring) both; }
 html[data-motion="off"] *, html[data-motion="off"] ::view-transition-old(root), html[data-motion="off"] ::view-transition-new(root) { animation: none !important; transition: none !important; }
 @media (prefers-reduced-motion: reduce) { *, ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; transition: none !important; } }
+
+/* Advisor bar chart: every column keeps the same label height, so bars and the limit line share one scale */
+.ac-col em { height: 1.4em; line-height: 1.4; }
+
+/* Home: sentence box first, plumb line, month as a strip of days */
+.today { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); align-items: center; }
+.today-ask { margin: 0 0 14px; font-size: clamp(1.5rem, 2.6vw, 2.1rem); letter-spacing: -.03em; line-height: 1.1; }
+.today-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.today-form input { font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; font-size: 1.05rem; padding: 16px 18px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--surface-2); color: var(--ink); min-width: 0; }
+.today-form input:focus-visible { border-color: var(--xp); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--xp) 30%, transparent); }
+.today-form .btn { border-radius: 14px; padding-inline: 20px; }
+.today-say > .muted { margin: 10px 0 0; }
+.today-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); }
+.today-tag { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-right: 4px; }
+.today-chip { font-size: .86rem; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); }
+.today-chip b { font-weight: 600; margin-left: 4px; }
+.today-num { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: center; }
+.today-cap { margin: 6px 0 0; color: var(--ink-2); font-size: .92rem; line-height: 1.45; }
+.today-cap strong { color: var(--ink); font-size: 1rem; }
+.plumb { margin: 0; width: 112px; text-align: center; }
+.plumb svg { display: block; width: 100%; height: auto; overflow: visible; }
+.plumb figcaption { margin-top: 4px; font-size: .78rem; font-weight: 600; color: var(--ink-2); }
+.pl-true { stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 3 5; }
+.pl-arc { fill: none; stroke: var(--line); stroke-width: 1.5; }
+.pl-nail { fill: var(--ink-2); }
+.pl-string { stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; }
+.pl-bob { fill: var(--xp); }
+.plumb-bad .pl-bob { fill: var(--bad); }
+.plumb-bad figcaption { color: var(--bad); }
+.pl-swing { transform-box: view-box; animation: pl-settle 1.6s cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes pl-settle { from { transform: rotate(18deg); } }
+.month-card .mc-free { font-size: .9rem; color: var(--ink-2); }
+.month-card .mc-free strong { font-size: 1.05rem; margin-left: 6px; }
+.days { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 4px; margin-top: 6px; }
+.days i { display: block; aspect-ratio: 1 / 2.2; border-radius: 5px; background: var(--track); }
+.days i.is-ok { background: color-mix(in srgb, var(--s1) calc(var(--a) * 100%), var(--track)); }
+.days i.is-over { background: var(--s2); }
+.days i.is-next { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.days i.is-today { outline: 2px solid var(--ink); outline-offset: 2px; }
+.days-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; margin: 12px 0 0; font-size: .78rem; color: var(--ink-2); }
+.days-legend .grow { flex: 1; }
+.days-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--s1); }
+.days-legend i.is-over { background: var(--s2); }
+.days-legend i.is-today { background: transparent; outline: 2px solid var(--ink); }
+.mc-sub { margin: 22px 0 10px; font-size: .95rem; display: flex; justify-content: space-between; gap: 12px; }
+.mc-sub .muted { font-weight: 500; }
+.where { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.where li { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) auto; gap: 12px; align-items: center; font-size: .9rem; }
+.w-bar { height: 8px; border-radius: 4px; background: var(--track); overflow: hidden; }
+.w-bar b { display: block; height: 100%; border-radius: 4px; }
+.w-v { font-weight: 600; white-space: nowrap; }
+.w-v small { font-weight: 400; color: var(--ink-2); margin-left: 4px; }
+.w-rest .w-bar b { background: var(--xp); }
+.w-rest .w-l { font-weight: 600; }
+@media (max-width: 900px) {
+  .today { grid-template-columns: minmax(0, 1fr); }
+  .today-num { order: -1; }
+  .today-form .btn span { display: none; }
+  .plumb { width: 84px; }
+  .days { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 5px; }
+  .days i { aspect-ratio: 1 / 1; }
+  .where li { grid-template-columns: 6em minmax(0, 1fr) auto; gap: 8px; font-size: .84rem; }
+}
+
+.msg-ai { margin: 8px 0 0; font-size: .74rem; color: var(--ink-2); display: flex; align-items: center; gap: 5px; }
+.msg-ai svg { width: 12px; height: 12px; }
+
+/* Undo inside a toast */
+.toast-undo { margin-left: auto; border: 0; background: transparent; color: var(--xp); font: inherit; font-weight: 700; padding: 6px 4px 6px 12px; cursor: pointer; border-left: 1px solid color-mix(in srgb, var(--surface) 25%, transparent); }
+.toast-undo:focus-visible { outline: 2px solid var(--xp); outline-offset: 2px; border-radius: 6px; }
+
+/* Phone menu as floating glass: the page shows through, the active tab is a lens */
+@media (max-width: 900px) {
+  main.content { padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px)); }
+  .tabbar {
+    left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    max-width: 440px; margin-inline: auto; padding: 6px; gap: 2px; border-radius: 30px; border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 62%, transparent), color-mix(in srgb, var(--surface) 44%, transparent));
+    -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 26%, transparent), inset 0 -1px 0 color-mix(in srgb, #000 18%, transparent), 0 12px 32px -8px color-mix(in srgb, #000 55%, transparent);
+  }
+  .tabbar a, .tabbar button { min-height: 50px; border-radius: 24px; position: relative; }
+  .tabbar [aria-current="page"] {
+    background: color-mix(in srgb, var(--ink) 11%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 22%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent);
+  }
+  .tabbar .tab-main, .tabbar .tab-main svg { margin-top: 0; }
+  .tabbar .tab-main svg { width: 30px; height: 30px; padding: 6px; box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 45%, transparent), 0 4px 10px -2px color-mix(in srgb, var(--primary) 60%, transparent); }
+  .toasts { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .tabbar { background: color-mix(in srgb, var(--surface) 96%, transparent); }
+}
+@media (prefers-reduced-transparency: reduce) { .tabbar { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+
+/* Level as a soft bubble: gloss on top, colour pooled at the bottom. Decoration only. */
+.level-top .ring { position: relative; box-shadow: inset 0 -6px 10px color-mix(in srgb, #000 22%, transparent), 0 8px 18px -8px color-mix(in srgb, var(--xp) 70%, transparent); }
+.level-top .ring span { background: radial-gradient(circle at 34% 26%, color-mix(in srgb, #fff 34%, var(--surface)) 0 12%, var(--surface) 46%, color-mix(in srgb, var(--xp) 16%, var(--surface)) 100%); box-shadow: inset 0 -3px 6px color-mix(in srgb, #000 16%, transparent); }
+.level-top .ring::after { content: ""; position: absolute; left: 17%; top: 9%; width: 36%; height: 20%; border-radius: 50%; background: linear-gradient(180deg, color-mix(in srgb, #fff 55%, transparent), transparent); transform: rotate(-24deg); pointer-events: none; }
+.streak i.on { background: radial-gradient(circle at 35% 28%, color-mix(in srgb, #fff 45%, var(--xp)) 0 14%, var(--xp) 55%, color-mix(in srgb, #000 22%, var(--xp)) 100%); box-shadow: 0 3px 6px -3px color-mix(in srgb, var(--xp) 80%, transparent); }

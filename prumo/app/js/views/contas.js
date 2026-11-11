@@ -1,6 +1,6 @@
 import { t } from '../i18n.js';
 import { bills } from '../finance.js';
-import { money, monthLabel, esc } from '../format.js';
+import { money, monthIn, esc } from '../format.js';
 import { head, billRow } from './parts.js';
 import { icon } from '../ui.js';
 
@@ -8,7 +8,7 @@ export function render(s, ctx) {
   const list = bills(s, ctx.ym);
   const open = list.filter(b => !b.isPaid), paid = list.filter(b => b.isPaid);
   const total = list.reduce((a, b) => a + b.amount, 0);
-  return `${head(t('nav.contas'), t('bill.pageSub', { m: esc(monthLabel(ctx.ym)) }),
+  return `${head(t('nav.contas'), t('bill.pageSub', { m: esc(monthIn(ctx.ym)) }),
     `<span class="btn-row"><button class="btn" data-action="ics">${icon('i-cal')}${t('ics.btn')}</button><button class="btn btn-primary" data-action="add">${icon('i-plus')}${t('add.bill')}</button></span>`)}
   <div class="grid">
     <section class="card span-8" aria-labelledby="open-t">

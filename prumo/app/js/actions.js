@@ -3,7 +3,7 @@ import * as store from './store.js';
 import { grant, levelInfo } from './game.js';
 import { openDialog, toast, announce } from './ui.js';
 import { t } from './i18n.js';
-import { money, ymOf, addMonths, monthLabel, esc } from './format.js';
+import { money, ymOf, addMonths, monthIn, esc } from './format.js';
 import { monthSummary, incomeDrop, meiYear } from './finance.js';
 import { getPrefs } from './prefs.js';
 import { speak } from './ai.js';
@@ -58,7 +58,7 @@ export const actions = {
     const pj = monthSummary(s, ctx.ym).incomePj;
     openDialog({
       title: t('mei.invoiceTitle'), submit: t('mei.invoiceSave'),
-      body: moneyInput('amount', t('common.amount'), pj ? String(pj).replace('.', ',') : '') + `<p class="muted">${t('mei.invoiceHint', { m: esc(monthLabel(ctx.ym)) })}</p>`,
+      body: moneyInput('amount', t('common.amount'), pj ? String(pj).replace('.', ',') : '') + `<p class="muted">${t('mei.invoiceHint', { m: esc(monthIn(ctx.ym)) })}</p>`,
       onSubmit: d => {
         const v = num(d.amount); if (!(v > 0)) return false;
         earn(st => {
@@ -212,8 +212,8 @@ export const actions = {
     const drop = incomeDrop(s, ctx.ym);
     const open = s.bills.filter(b => !b.paid[ctx.ym]).length;
     const lv = levelInfo(s.game.xp);
-    let text = t('speak.summary', { m: monthLabel(ctx.ym), free: money(x.free), open, level: lv.level, next: lv.toNext });
-    if (drop) text += ' ' + t('alert.dropTitle', { m: monthLabel(drop.ym), p: Math.round(drop.pct * 100) });
+    let text = t('speak.summary', { m: monthIn(ctx.ym), free: money(x.free), open, level: lv.level, next: lv.toNext });
+    if (drop) text += ' ' + t('alert.dropTitle', { m: monthIn(drop.ym), p: Math.round(drop.pct * 100) });
     if (s.mei.enabled) text += ' ' + t('speak.mei', { p: Math.round(meiYear(s).used * 100) });
     speak(text, getPrefs().lang).catch(() => toast(t('a11y.noSpeech')));
     announce(text);
@@ -246,8 +246,9 @@ export const actions = {
   },
   txDel(el) {
     const x = store.get().tx.find(y => y.id === el.dataset.id);
+    const at = store.get().tx.indexOf(x);
     store.update(s => { s.tx = s.tx.filter(y => y.id !== x.id); });
-    toast(t('tx.deleted', { name: x.desc }));
+    toast(t('tx.deleted', { name: x.desc }), 0, false, () => store.update(s => { s.tx.splice(at, 0, x); }));
   },
 
   addInstallment() {
@@ -266,8 +267,9 @@ export const actions = {
   },
   delInstallment(el) {
     const p = store.get().installments.find(x => x.id === el.dataset.id);
+    const at = store.get().installments.indexOf(p);
     store.update(s => { s.installments = s.installments.filter(x => x.id !== p.id); });
-    toast(t('card.deleted', { name: p.desc }));
+    toast(t('card.deleted', { name: p.desc }), 0, false, () => store.update(s => { s.installments.splice(at, 0, p); }));
   },
   tone(el) { chooseTone(el.dataset.v); },
   wishDrop(el) {

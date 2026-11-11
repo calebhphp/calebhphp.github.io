@@ -1,7 +1,7 @@
 // Credit card: this month's bill, the limit, and installments that are already spoken for.
 import { t } from '../i18n.js';
 import { cardStatus } from '../finance.js';
-import { money, moneyHtml, moneyShort, pct, esc, monthLabel, addMonths } from '../format.js';
+import { money, moneyHtml, moneyShort, pct, esc, monthLabel, monthIn, addMonths } from '../format.js';
 import { head } from './parts.js';
 import { icon } from '../ui.js';
 
@@ -13,7 +13,7 @@ export function render(s, ctx) {
   return `${head(t('card.title'), t('card.sub'), `<button class="btn btn-primary" data-action="addInstallment">${icon('i-plus')}${t('card.add')}</button>`)}
   <div class="grid">
     <section class="card card-hero span-8" aria-labelledby="inv-t">
-      <p class="hero-label" id="inv-t">${t('card.invoice', { m: esc(monthLabel(ctx.ym, { month: 'long' })) })}</p>
+      <p class="hero-label" id="inv-t">${t('card.invoice', { m: esc(monthIn(ctx.ym, { month: 'long' })) })}</p>
       ${moneyHtml(c.inv.total, 'money-xl')}
       <p class="hero-note">${esc(c.card.name)} · ${t('card.closeDue', { c: c.card.close, d: c.card.due })}</p>
       <ul class="rows" style="margin-top:14px">

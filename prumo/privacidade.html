@@ -3,34 +3,71 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Privacidade do Prumo</title>
-<meta name="description" content="Como o Prumo trata os seus dados: tudo fica no seu aparelho, sem conexão com banco.">
+<title>Política de privacidade do Prumo</title>
+<link rel="canonical" href="https://matheusvillanova.com/prumo/privacidade.html">
+<meta name="description" content="O que o Prumo guarda, onde fica, quem recebe e como apagar.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-  body { margin: 0; background: #0f1311; color: #ede6d3; font: 17px/1.6 system-ui, sans-serif; }
-  main { max-width: 680px; margin: 0 auto; padding: 64px 16px; }
-  h1 { font-size: 2rem; line-height: 1.2; } h2 { font-size: 1.2rem; margin-top: 2em; }
-  a { color: #e0b25a; } p, li { color: #d7d0bd; }
+  body { margin: 0; background: #0f1311; color: #ede6d3; font: 17px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 56px 16px 80px; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 24px 0 8px; } h2 { font-size: 1.2rem; margin: 2.2em 0 .4em; }
+  a { color: #e0b25a; } a:focus-visible { outline: 2px solid #e0b25a; outline-offset: 3px; }
+  p, li { color: #d7d0bd; } ul { padding-left: 1.2em; } li { margin: .35em 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .95rem; } th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #2a332f; vertical-align: top; } th { color: #ede6d3; }
+  .meta { color: #a9a493; font-size: .92rem; }
+  nav a { margin-right: 16px; }
 </style>
 </head>
 <body>
 <main>
-  <p><a href="index.html">Voltar para o Prumo</a></p>
-  <h1>Privacidade do Prumo</h1>
-  <p>Versão de 11 de novembro de 2026. Esta é uma versão de demonstração; a política completa, com responsável, canal de contato e direitos do titular, sai junto com a lista de espera.</p>
-  <h2>Onde ficam os seus dados</h2>
-  <p>Gastos, cofres, parcelas e preferências ficam guardados no navegador do aparelho que você usa. Nenhum servidor do Prumo recebe esses dados.</p>
-  <h2>Banco</h2>
-  <p>O Prumo não pede login, senha nem conexão com banco. Extratos OFX e CSV são lidos no próprio navegador e não são enviados.</p>
-  <h2>O que sai do aparelho</h2>
+  <nav aria-label="Páginas"><a href="index.html">Prumo</a><a href="privacidade.html">Privacidade</a><a href="termos.html">Termos</a><a href="licencas.html">Licenças</a></nav>
+
+  <h1>Política de privacidade</h1>
+  <p class="meta">Versão de 11/11/2026. Vale para a demonstração pública do Prumo.</p>
+
+  <h2>Quem responde</h2>
+  <p>O Prumo é operado por uma empresa brasileira inscrita no CNPJ, que usa Prumo como nome fantasia. O número do CNPJ é informado a quem pedir pelo e-mail <a href="mailto:matheusvillanova1@gmail.com">matheusvillanova1@gmail.com</a>. Para qualquer pedido sobre os seus dados, escreva para esse endereço. A resposta sai em até 15 dias.</p>
+
+  <h2>O que o Prumo guarda e onde</h2>
+  <p>Tudo o que você lança (gastos, contas, cofres, parcelas, preferências e o registro de que aceitou estes documentos) fica guardado só no navegador do seu aparelho. Não existe conta, cadastro nem servidor do Prumo recebendo esses dados. O Prumo não tem acesso a eles.</p>
+  <p>O site não usa cookies, não tem ferramenta de análise de acesso e não carrega rastreadores. As fontes são servidas pelo próprio site.</p>
+
+  <h2>O que sai do seu aparelho, e para quem</h2>
+  <table>
+    <thead><tr><th>Quando</th><th>O que vai</th><th>Para quem</th></tr></thead>
+    <tbody>
+      <tr><td>Ao abrir o site</td><td>Endereço IP e dados técnicos do navegador, como em qualquer site</td><td>GitHub Pages (GitHub, Inc., EUA), que hospeda as páginas</td></tr>
+      <tr><td>Ao perguntar ao conselheiro com IA, dentro do Claude</td><td>Sua pergunta e um resumo do mês: valores, categorias, descrições dos últimos gastos e nomes de cofres, pendências e parcelas</td><td>Anthropic (EUA), pela sua própria conta do Claude</td></tr>
+      <tr><td>Ao usar o microfone do navegador</td><td>O áudio, para virar texto</td><td>A empresa do seu navegador (no Chrome, o Google)</td></tr>
+      <tr><td>Ao entrar na lista de espera</td><td>Seu e-mail, na mensagem que você mesmo envia</td><td>Prumo, na caixa de entrada do Gmail (Google, EUA)</td></tr>
+      <tr><td>Ao ligar a tradução em Libras</td><td>O texto da tela</td><td>VLibras, do governo federal</td></tr>
+    </tbody>
+  </table>
+  <p>Os quatro últimos só acontecem se você pedir ou ligar o recurso, e o app avisa antes do primeiro uso. Fora do Claude, o conselheiro responde por regras locais e nada é enviado. Essas empresas ficam fora do Brasil, exceto o VLibras.</p>
+
+  <h2>Para que serve e com que base</h2>
+  <p>Os dados servem só para o app funcionar para você. Os envios acima acontecem a seu pedido. O Prumo não vende, não compartilha e não usa seus dados para publicidade nem para treinar modelos de IA. Como não recebe os dados, também não teria como.</p>
+
+  <h2>Por quanto tempo</h2>
+  <p>Os dados ficam no seu navegador até você apagar. Não existe cópia em outro lugar. Se você limpar os dados do navegador ou desinstalar o app, eles somem.</p>
+
+  <h2>Seus direitos</h2>
   <ul>
-    <li>A fonte do texto vem do Google Fonts.</li>
-    <li>Se você ligar a tradução em Libras, o widget VLibras do governo federal é carregado.</li>
-    <li>Quando você pergunta ao conselheiro com IA, vão junto a pergunta e um resumo do mês: valores, categorias, as descrições dos últimos gastos e os nomes de cofres, pendências e parcelas. Quem processa é a Anthropic, nos Estados Unidos. O app pede sua confirmação antes do primeiro envio.</li>
-    <li>Se você usar o microfone fora do Claude, o ditado do navegador envia o áudio para a empresa do navegador (no Chrome, o Google) para virar texto. O app avisa antes do primeiro uso.</li>
+    <li><strong>Acessar e levar:</strong> em Seus dados, baixe os gastos em CSV ou o backup completo.</li>
+    <li><strong>Corrigir:</strong> edite ou apague qualquer lançamento no próprio app.</li>
+    <li><strong>Apagar:</strong> em Seus dados, "Apagar meus dados" remove tudo deste navegador, inclusive os arquivos do modo offline.</li>
+    <li><strong>Tirar dúvidas ou reclamar:</strong> pelos contatos acima. Você também pode procurar a Autoridade Nacional de Proteção de Dados (ANPD).</li>
   </ul>
-  <h2>Levar ou apagar</h2>
-  <p>Em Seus dados você baixa os gastos em CSV, faz backup completo ou apaga tudo deste navegador.</p>
+
+  <h2>Crianças e adolescentes</h2>
+  <p>O Prumo é feito para adultos e não coleta dados de crianças. O modo de conselheiro com palavrões pede confirmação de maioridade.</p>
+
+  <h2 id="emails">Lista de espera e e-mails</h2>
+  <p>A lista de espera é opcional e separada do uso do app. Para entrar, você marca a caixa de consentimento e envia um e-mail. O Prumo guarda só o seu endereço e usa só para avisar do lançamento e de novidades do produto. Não repassa a ninguém e não cruza com os dados do app, que nem saem do seu aparelho.</p>
+  <p>Para sair, responda qualquer mensagem com "sair" ou escreva para <a href="mailto:matheusvillanova1@gmail.com">matheusvillanova1@gmail.com</a>. O endereço é apagado em até 7 dias. Sem pedido, ele fica guardado até 12 meses depois do lançamento e então é apagado.</p>
+
+  <h2>Mudanças</h2>
+  <p>Se esta política mudar, a data no topo muda e o app pede o aceite de novo.</p>
 </main>
 </body>
 </html>

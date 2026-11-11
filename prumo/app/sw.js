@@ -1,6 +1,6 @@
 // Offline: the whole app is cached on install, so it keeps working with the wi-fi off.
 // Data never goes through here; it lives in localStorage. Bump VERSION on every deploy.
-const VERSION = 'prumo-mwbnu3qc';
+const VERSION = 'prumo-mwc5skyz';
 const SHELL = [
   './',
   'index.html',
@@ -8,6 +8,9 @@ const SHELL = [
   'icons/icon-192.png',
   'icons/icon-512.png',
   'icons/apple-touch-icon.png',
+  'fonts/fonts.css',
+  'fonts/onest-latin-ext.woff2',
+  'fonts/onest-latin.woff2',
   'css/app.css',
   'css/login.css',
   'css/tokens.css',
@@ -41,6 +44,7 @@ const SHELL = [
   'js/views/dados.js',
   'js/views/entradas.js',
   'js/views/gastos.js',
+  'js/views/home-hero.js',
   'js/views/inicio.js',
   'js/views/mei.js',
   'js/views/parts.js',
@@ -61,14 +65,12 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  const sameOrigin = url.origin === self.location.origin;
-  const fonts = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
-  if (!sameOrigin && !fonts) return;
+  if (url.origin !== self.location.origin) return;
   e.respondWith(caches.open(VERSION).then(async cache => {
     const key = req.mode === 'navigate' ? 'index.html' : req;
-    const hit = await cache.match(key, { ignoreSearch: sameOrigin });
+    const hit = await cache.match(key, { ignoreSearch: true });
     const net = fetch(req).then(res => {
-      if (res.ok || res.type === 'opaque') cache.put(req.mode === 'navigate' ? 'index.html' : req, res.clone());
+      if (res.ok) cache.put(req.mode === 'navigate' ? 'index.html' : req, res.clone());
       return res;
     }).catch(() => hit);
     return hit || net;

@@ -7,6 +7,7 @@ import { earn } from '../actions.js';
 import * as store from '../store.js';
 import { head, heroFlow, levelCard, billsCard, meiCard, goalsCard, alerts, subsCard } from './parts.js';
 import { insightList } from './conselheiro.js';
+import { todayHero, monthCard } from './home-hero.js';
 import { quizBanner } from './comecar.js';
 import { icon, toast } from '../ui.js';
 import { say } from '../tone.js';
@@ -31,19 +32,10 @@ export function render(s, ctx) {
   <div class="grid">
     ${quizBanner(s)}
     ${retroBanner(s, ctx)}
-    ${heroFlow(s, ctx.ym)}
+    ${todayHero(s, ctx.ym)}
+    ${monthCard(s, ctx.ym, s.modules.includes('conquistas') ? 'span-8' : 'span-12')}
     ${s.modules.includes('conquistas') ? levelCard(s) : ''}
-    <section class="card span-4 quick-card" aria-labelledby="qc-t">
-      <div class="card-head"><h2 id="qc-t">${t('home.quickTitle')}</h2></div>
-      <p class="card-sub">${t('home.quickSub')}</p>
-      <form class="hq" id="home-quick">
-        <label for="hq-in" class="sr-only">${t('quick.title')}</label>
-        <input id="hq-in" autocomplete="off" placeholder="${esc(t('home.quickPh'))}">
-        <button class="btn btn-primary" type="submit">${icon('i-pen')}${t('home.quickCta')}</button>
-      </form>
-      <p class="muted small" style="margin:10px 0 0">${t('home.quickHint')} <a class="link" href="#gastos">${t('home.quickMore')}</a></p>
-    </section>
-    ${s.modules.includes('conselheiro') ? `<section class="card span-8" aria-labelledby="adv-t">
+    ${s.modules.includes('conselheiro') ? `<section class="card span-12" aria-labelledby="adv-t">
       <div class="card-head"><h2 id="adv-t">${t('home.advisor')}</h2><a class="link" href="#conselheiro">${t('home.askAdvisor')}</a></div>
       ${insightList(s, ctx.ym, 3)}</section>` : ''}
     ${alerts(s, ctx)}
