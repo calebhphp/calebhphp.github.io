@@ -240,6 +240,7 @@ function layout(string $l, string $key, array $o, string $body): string
 <script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
 <style>{$INLINE_CSS}</style>
 {$ldTag}
@@ -704,7 +705,8 @@ $lic = '<header class="page-hero"><div class="wrap"><div class="crumbs"><a href=
     .'<section><div class="wrap page-text">'
     .'<h2>Fontes</h2><ul>'
     .'<li><b>JetBrains Mono</b> (rótulos), de JetBrains. SIL Open Font License 1.1. Arquivo servido por este site.</li>'
-    .'<li><b>Manrope</b> (títulos e texto), de Mikhail Sharanda. SIL Open Font License 1.1. Arquivo servido por este site.</li>'
+    .'<li><b>Space Grotesk</b> (títulos), de Florian Karsten. SIL Open Font License 1.1. Arquivo servido por este site.</li>'
+    .'<li><b>Manrope</b> (texto), de Mikhail Sharanda. SIL Open Font License 1.1. Arquivo servido por este site.</li>'
     .'</ul>'
     .'<h2>Imagens</h2><ul>'
     .'<li>As imagens dos projetos são capturas de tela das próprias páginas deste site (exemplos, produtos e Prumo), feitas por mim.</li>'
