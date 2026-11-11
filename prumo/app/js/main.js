@@ -271,7 +271,10 @@ document.addEventListener('prumo:logout', () => {
 
 // Installable app that works offline. Skipped inside frames (the claude.ai preview).
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && window.top === window) {
-  addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => r.update()).catch(() => {}));
+  // A new version took over: reload once so every file comes from the same deploy.
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (reloaded || !navigator.serviceWorker.controller) return; reloaded = true; if (!document.getElementById('dlg')?.open) location.reload(); });
 }
 let installEvt = null;
 const installBtn = document.getElementById('install-btn');

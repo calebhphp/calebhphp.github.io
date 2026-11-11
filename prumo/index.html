@@ -68,6 +68,7 @@
   .shot img { display: block; width: auto; height: 100%; max-width: none; }
   @media (max-width: 1023px) { .hero__art > .ly-piece--main.shot { bottom: var(--s-6); } }
   @media (max-width: 639px) { .hero__art > .ly-piece--main.shot { bottom: var(--s-4); } }
+  @media (max-width: 639px) { .hero__art > .ly-piece--main.shot { inset: 0; border-radius: 24px; overflow: hidden; } .hero__art > .ly-piece--main.shot img { width: 100%; height: 100%; object-fit: cover; object-position: center top; } .hero__art .ly-piece--note { display: none; } .shot--wide.m-swap img { object-position: center top; } }
   .hero__art .ly-piece--note { background: #171d1a; color: #ede6d3; border: 1px solid rgba(237,230,211,.14); }
   .hero__art .pv-note__q { background: #0f1311; color: #ede6d3; }
   .hero__art .pv-note__row b { color: #ede6d3; }
@@ -178,7 +179,7 @@
         <p class="hero__proof">Fiz pra mim, que recebo salário e nota no mesmo mês.</p>
       </div>
       <div class="hero__art span-6 start-7" role="img" aria-label="Tela inicial do Prumo: a caixa para escrever os gastos do dia, quanto ainda dá para gastar hoje e o fio de prumo do mês">
-        <div class="ly-piece ly-piece--main shot" aria-hidden="true"><img src="img/app-home.png" alt="" width="1440" height="900" fetchpriority="high"></div>
+        <div class="ly-piece ly-piece--main shot" aria-hidden="true"><picture><source media="(max-width: 639px)" srcset="img/app-home-m.png" width="1170" height="2532"><img src="img/app-home.png" alt="" width="1440" height="900" fetchpriority="high"></picture></div>
         <div class="ly-piece ly-piece--note ui ui-panel pv-note" aria-hidden="true" data-ly-steps="700">
           <div class="pv-note__q">almoço 32, uber 18, ifood 47,90</div>
           <div class="pv-note__row" data-step><span>Almoço · Comer fora</span><b>R$ 32,00</b></div>
@@ -196,8 +197,8 @@
         <h2 id="produto-h" class="span-5">Pergunta pro conselheiro e ele responde com gráfico</h2>
         <p class="span-6 start-7 muted">Tipo "quanto foi de ifood essa semana?". O gráfico sai dos seus lançamentos, a IA só comenta. Se aparecer número que você não lançou, é bug, e eu quero saber.</p>
       </div>
-      <div class="shot shot--wide fill" role="img" aria-label="Tela do conselheiro: à esquerda o que ele está vendo no mês, à direita a pergunta sobre comer fora por semana respondida com um gráfico">
-        <img src="img/app-conselheiro.png" alt="" width="1440" height="900" loading="lazy">
+      <div class="shot shot--wide fill m-swap" role="img" aria-label="Tela do conselheiro: à esquerda o que ele está vendo no mês, à direita a pergunta sobre comer fora por semana respondida com um gráfico">
+        <picture><source media="(max-width: 639px)" srcset="img/app-chat-m.png"><img src="img/app-conselheiro.png" alt="" width="1440" height="900" loading="lazy"></picture>
       </div>
     </div>
   </section>

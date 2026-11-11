@@ -1,6 +1,6 @@
 // Offline: the whole app is cached on install, so it keeps working with the wi-fi off.
 // Data never goes through here; it lives in localStorage. Bump VERSION on every deploy.
-const VERSION = 'prumo-mwcggv1a';
+const VERSION = 'prumo-mwch1z9f';
 const SHELL = [
   './',
   'index.html',
@@ -66,19 +66,15 @@ self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 
-// Cache first, refresh in the background. Pages fall back to the cached app.
+// Network first: a new deploy shows up on the next open. The cache is only for offline use.
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
-  e.respondWith(caches.open(VERSION).then(async cache => {
-    const key = req.mode === 'navigate' ? 'index.html' : req;
-    const hit = await cache.match(key, { ignoreSearch: true });
-    const net = fetch(req).then(res => {
-      if (res.ok) cache.put(req.mode === 'navigate' ? 'index.html' : req, res.clone());
-      return res;
-    }).catch(() => hit);
-    return hit || net;
-  }));
+  const key = req.mode === 'navigate' ? 'index.html' : req;
+  e.respondWith(fetch(req, { cache: 'no-cache' }).then(res => {
+    if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(key, copy)); }
+    return res;
+  }).catch(() => caches.match(key, { ignoreSearch: true })));
 });
