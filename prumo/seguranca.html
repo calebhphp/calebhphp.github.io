@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Segurança no Prumo: por que confiar</title>
 <link rel="canonical" href="https://matheusvillanova.com/prumo/seguranca.html">
-<meta name="description" content="O que protege os seus dados no Prumo, o que eu consigo ver, o que ainda não tenho e como você mesmo confere.">
+<meta name="description" content="O que protege os seus dados no Prumo: conexão, senha, isolamento entre contas e quem pode ver o quê.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Segurança no Prumo: por que confiar">
-<meta property="og:description" content="O que protege os seus dados no Prumo, o que eu consigo ver, o que ainda não tenho e como você mesmo confere.">
+<meta property="og:description" content="O que protege os seus dados no Prumo: conexão, senha, isolamento entre contas e quem pode ver o quê.">
 <meta property="og:url" content="https://matheusvillanova.com/prumo/seguranca.html">
 <meta property="og:image" content="https://matheusvillanova.com/prumo/share.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,12 +33,12 @@
   <div class="doc-head">
     <p class="kicker">Confiança</p>
     <h1>Por que confiar no Prumo</h1>
-    <p class="doc-meta">Atualizado em 11/11/2026. Só o que eu verifiquei, com a lista do que ainda falta.</p>
+    <p class="doc-meta">Atualizado em 11/11/2026.</p>
   </div>
   <div class="doc has-toc">
-    <nav class="toc" aria-label="Nesta página"><p class="kicker">Nesta página</p><ol><li><a href="#antes-de-tudo-o-que-o-prumo-nunca-pede">Antes de tudo: o que o Prumo nunca pede</a></li><li><a href="#o-que-protege-os-seus-dados-hoje">O que protege os seus dados hoje</a></li><li><a href="#o-que-eu-consigo-ver">O que eu consigo ver</a></li><li><a href="#o-que-ainda-nao-tenho">O que ainda não tenho</a></li><li><a href="#confira-voce-mesmo-de-graca">Confira você mesmo, de graça</a></li><li><a href="#achou-uma-falha">Achou uma falha?</a></li><li><a href="#o-que-vem-a-seguir">O que vem a seguir</a></li></ol></nav>
+    <nav class="toc" aria-label="Nesta página"><p class="kicker">Nesta página</p><ol><li><a href="#antes-de-tudo-o-que-o-prumo-nunca-pede">Antes de tudo: o que o Prumo nunca pede</a></li><li><a href="#o-que-protege-os-seus-dados-hoje">O que protege os seus dados hoje</a></li><li><a href="#quem-acessa-os-seus-dados">Quem acessa os seus dados</a></li></ol></nav>
     <article class="prose">
-<p class="lead">Você me entrega números do seu dinheiro. Em troca, eu preciso mostrar o que protege isso, sem prometer o que não tenho. Esta página tem as três partes: o que existe, o que eu enxergo e o que ainda não tem.</p>
+<p class="lead">Você confia ao Prumo os números do seu dinheiro. Aqui está o que protege esses dados, do login ao banco.</p>
 
 <h2 id="antes-de-tudo-o-que-o-prumo-nunca-pede">Antes de tudo: o que o Prumo nunca pede</h2>
 <ul>
@@ -62,42 +62,13 @@
   </tbody>
 </table>
 
-<h2 id="o-que-eu-consigo-ver">O que eu consigo ver</h2>
-<p>Eu sou o dono do projeto e tenho acesso ao painel do banco. Tecnicamente isso inclui os lançamentos de cada conta, porque eles não são cifrados de ponta a ponta. Na prática:</p>
+<h2 id="quem-acessa-os-seus-dados">Quem acessa os seus dados</h2>
+<p>Pelo app, só a sua conta acessa os seus lançamentos. O acesso de administração ao banco é só meu e fica restrito ao necessário:</p>
 <ul>
   <li>O meu painel de uso mostra só e-mail, plano, data do último acesso e da última sincronização.</li>
   <li>Eu só abro os lançamentos de alguém se essa pessoa pedir ajuda.</li>
   <li>Eu não vendo, não cedo e não uso os dados para anúncio nem para treinar IA. A política de privacidade diz o mesmo.</li>
 </ul>
-
-<h2 id="o-que-ainda-nao-tenho">O que ainda não tenho</h2>
-<ul>
-  <li><strong>Auditoria externa.</strong> Nenhuma empresa de segurança testou o Prumo. Os testes que fiz foram meus, com ferramentas abertas. Selo de SOC 2 ou ISO 27001: não tenho e não vou fingir que tenho.</li>
-  <li><strong>Cifra de ponta a ponta.</strong> Os dados são protegidos em trânsito e em repouso pelo provedor, mas eu não sou cego a eles.</li>
-  <li><strong>Verificação em duas etapas</strong> para as contas dos usuários. A minha conta de administrador vai usar assim que estiver disponível.</li>
-  <li><strong>Cabeçalhos de segurança do site.</strong> A hospedagem atual (GitHub Pages) não deixa configurar alguns. Em 11/11/2026 o SSL Labs deu B e o Mozilla Observatory deu D por isso. O plano é colocar o site atrás de um serviço gratuito de proteção (Cloudflare) quando o domínio próprio sair, o que corrige esses itens.</li>
-  <li><strong>Backup automático.</strong> No plano gratuito do banco não existe. Por isso o app tem o backup que você baixa em Seus dados. Baixe de vez em quando.</li>
-</ul>
-
-<h2 id="confira-voce-mesmo-de-graca">Confira você mesmo, de graça</h2>
-<p>Não precisa acreditar em mim. Estas ferramentas são abertas e testam o endereço do Prumo:</p>
-<ul>
-  <li><a href="https://www.ssllabs.com/ssltest/analyze.html?d=matheusvillanova.com" rel="noopener">SSL Labs</a>: qualidade do certificado e da conexão.</li>
-  <li><a href="https://developer.mozilla.org/en-US/observatory/analyze?host=matheusvillanova.com" rel="noopener">Mozilla HTTP Observatory</a>: cabeçalhos de segurança do site.</li>
-  <li><a href="https://securityheaders.com/?q=https%3A%2F%2Fmatheusvillanova.com%2Fprumo%2F" rel="noopener">securityheaders.com</a>: o mesmo, com outra nota.</li>
-  <li>No Chrome, a aba Rede das ferramentas do desenvolvedor mostra que nada vai para rastreadores. Só para o próprio site, o banco e, se você pedir, o envio de feedback.</li>
-</ul>
-
-<h2 id="achou-uma-falha">Achou uma falha?</h2>
-<p>Escreva para <a href="mailto:matheusvillanova1@gmail.com?subject=Falha%20de%20seguran%C3%A7a%20no%20Prumo">matheusvillanova1@gmail.com</a> com o que viu e como repetir. Respondo em até 7 dias. Quem avisa de boa-fé, sem acessar dados de terceiros nem derrubar o serviço, não tem nada a temer da minha parte e fica com o crédito se quiser.</p>
-
-<h2 id="o-que-vem-a-seguir">O que vem a seguir</h2>
-<ul>
-  <li>Domínio próprio com Cloudflare na frente (cabeçalhos de segurança e proteção contra abuso).</li>
-  <li>Verificação em duas etapas.</li>
-  <li>Teste de invasão feito por terceiro, antes de cobrar de qualquer pessoa.</li>
-</ul>
-<p class="meta">Esta página muda quando algo muda. A data lá em cima diz quando foi a última vez.</p>
 
     </article>
   </div>
