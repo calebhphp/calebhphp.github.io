@@ -810,3 +810,24 @@ html[data-motion="off"] *, html[data-motion="off"] ::view-transition-old(root), 
 #dlg textarea { width: 100%; font: inherit; padding: 12px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface-2); color: var(--ink); resize: vertical; }
 .empty { margin: 8px 0; }
 .today-empty { display: grid; gap: 12px; justify-items: start; padding: 18px; border-radius: 16px; border: 1px dashed var(--line); }
+
+/* Admin */
+.admin-only { display: none; }
+.is-admin .admin-only { display: list-item; }
+.adm-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+.adm-bar input[type=search] { flex: 1; min-width: 180px; padding: 9px 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface-2); color: var(--ink); font: inherit; }
+.seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: 12px; background: var(--surface-2); }
+.seg [aria-selected="true"] { background: var(--ink); color: var(--surface); }
+.table-wrap { overflow-x: auto; }
+.adm-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.adm-table th { text-align: left; font-weight: 600; color: var(--ink-2); font-size: .78rem; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.adm-table td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.adm-acts { display: flex; flex-wrap: wrap; gap: 6px; min-width: 260px; }
+.btn-danger { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, var(--line)); }
+.adm-fb { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.adm-fb li { padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; }
+.adm-fb-h { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.adm-fb p { margin: 8px 0 0; white-space: pre-wrap; }
+.login-forgot .linkish { background: none; border: 0; padding: 4px; color: var(--ink-2); text-decoration: underline; font: inherit; cursor: pointer; }
+.pw { display: flex; gap: 6px; }
+.pw input { flex: 1; min-width: 0; font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; }

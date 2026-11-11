@@ -57,7 +57,7 @@ async function render({ focusHeading = false } = {}) {
   const name = route();
   const s = store.get();
   if (!document.documentElement.classList.contains('authed')) return;
-  const valid = ['personalizar', 'comecar', 'dados'].includes(name) || s.modules.includes(name);
+  const valid = ['personalizar', 'comecar', 'dados'].includes(name) || s.modules.includes(name) || (name === 'admin' && cloud.user()?.role === 'admin' && store.isReal());
   const target = valid ? name : 'inicio';
   renderChrome();
   // Keep focus on the control the person just used, if it survives the re-render.
@@ -155,6 +155,9 @@ function enterDemo() {
 // Beta account: the screen shows a skeleton while the person's data comes from the server.
 let saveTimer = null, saving = false;
 async function enterAccount({ fresh = false } = {}) {
+  if (cloud.enabled() && cloud.hasSession() && !cloud.user()) {
+    try { await cloud.refreshUser(); } catch (e) { await leaveAccount(); loginErr(t('login.linkExpired')); return; }
+  }
   const u = cloud.user();
   if (!u) return;
   document.documentElement.classList.add('authed', 'real');
@@ -167,7 +170,34 @@ async function enterAccount({ fresh = false } = {}) {
   if (!server && !offline) { store.get().profile.firstLogin = true; queueSave(); }
   if (offline) toast(t('sync.offline'));
   if (fresh || !location.hash) location.hash = '#inicio';
-  render({ focusHeading: true });
+  // Pick up role, plan and the "change your password" flag set by the admin.
+  if (!offline) { try { await cloud.refreshUser(); } catch (e) { /* keep the cached one */ } }
+  document.documentElement.classList.toggle('is-admin', cloud.user()?.role === 'admin');
+  await render({ focusHeading: true });
+  if (cloud.user()?.mustChange || cloud.fromLink().type === 'recovery' || cloud.fromLink().type === 'invite') forcePassword();
+}
+
+// A temporary password or an e-mail link: a new password is required before using the app.
+function forcePassword() {
+  openDialog({
+    title: t('pw.forceTitle'), submit: t('pw.forceSave'), locked: true,
+    body: `<p class="muted" style="margin:0">${t('pw.forceSub')}</p>
+      <input type="email" name="u" autocomplete="username" value="${esc(cloud.user()?.email || '')}" hidden>
+      <div class="field"><label for="f-pw">${t('pw.new')}</label><input id="f-pw" name="pw" type="password" autocomplete="new-password" minlength="10" required></div>
+      <div class="field"><label for="f-pw2">${t('pw.again')}</label><input id="f-pw2" name="pw2" type="password" autocomplete="new-password" minlength="10" required></div>
+      <p class="error" id="pw-err" role="alert" hidden></p>
+      <p style="margin:0"><button type="button" class="btn btn-ghost btn-sm" data-action="logout">${t('pw.forceOut')}</button></p>`,
+    onSubmit: d => {
+      const err = document.getElementById('pw-err');
+      const bad = d.pw.length < 10 ? t('pw.short') : d.pw !== d.pw2 ? t('pw.diff') : '';
+      if (bad) { err.textContent = bad; err.hidden = false; return false; }
+      const dlg = document.getElementById('dlg');
+      cloud.setPassword(d.pw)
+        .then(() => { dlg.close(); store.update(s => { s.profile.pwSet = true; }); toast(t('pw.done')); })
+        .catch(e => { err.textContent = e.status === 422 ? t('pw.weak') : t('pw.fail'); err.hidden = false; });
+      return false;
+    },
+  });
 }
 function queueSave() {
   if (!store.isReal()) return;
@@ -184,6 +214,7 @@ async function flush() {
   saving = false;
 }
 async function leaveAccount() {
+  document.documentElement.classList.remove('is-admin');
   clearTimeout(saveTimer);
   if (store.isReal() && store.get()?._dirty) await flush();
   await cloud.signOut();
@@ -217,6 +248,14 @@ loginForm.addEventListener('submit', async e => {
     loginErr(x.status === 400 ? t('login.bad') : x.status === 429 ? t('login.slow') : t('login.offline'));
     pw.focus();
   } finally { btn.disabled = false; btn.removeAttribute('aria-busy'); }
+});
+document.getElementById('forgot').addEventListener('click', async () => {
+  const email = loginForm.email.value.trim().toLowerCase();
+  if (!cloud.enabled()) { location.href = 'mailto:matheusvillanova1@gmail.com?subject=Prumo%3A%20esqueci%20a%20senha'; return; }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { loginErr(t('login.forgotNeedEmail')); loginForm.email.focus(); return; }
+  try { await cloud.recover(email); } catch (e) { if (e.status === 429) { loginErr(t('login.slow')); return; } }
+  // Same answer whether the e-mail exists or not.
+  const err = document.getElementById('login-error'); err.textContent = t('login.forgotSent'); err.hidden = false;
 });
 document.getElementById('demo-btn').addEventListener('click', () => {
   document.getElementById('login-error').hidden = true;
@@ -272,4 +311,5 @@ translateStatic();
 syncLogin();
 if (getPrefs().libras) loadLibras();
 // A beta session survives reloads; the demo one ends with the tab.
-if (cloud.enabled() && cloud.user()) enterAccount(); else { document.documentElement.classList.remove('real'); render(); }
+if (cloud.fromLink().error) { loginErr(t('login.linkExpired')); }
+if (cloud.enabled() && cloud.hasSession()) enterAccount(); else { document.documentElement.classList.remove('real'); render(); }

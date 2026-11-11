@@ -12,7 +12,29 @@ const keep = s => {
   session = s;
   try { if (s) localStorage.setItem(AUTH_KEY, JSON.stringify(s)); else localStorage.removeItem(AUTH_KEY); } catch (e) { /* ignore */ }
 };
-const toSession = j => ({ access: j.access_token, refresh: j.refresh_token, exp: Date.now() + (j.expires_in || 3600) * 1000, user: { id: j.user.id, email: j.user.email } });
+const who = u => ({ id: u.id, email: u.email, role: (u.app_metadata || {}).role || 'user', plan: (u.app_metadata || {}).plan || 'beta', mustChange: !!(u.user_metadata || {}).must_change_pw });
+const toSession = j => ({ access: j.access_token, refresh: j.refresh_token, exp: Date.now() + (j.expires_in || 3600) * 1000, user: who(j.user) });
+
+// Links from invite and password e-mails land here with the session in the address (#access_token=...).
+// Read it once, then wipe it from the address bar and history.
+let linkType = null, linkError = null;
+(() => {
+  const h = location.hash.replace(/^#/, '');
+  if (!/(^|&)(access_token|error)=/.test(h)) return;
+  const p = new URLSearchParams(h);
+  history.replaceState(null, '', location.pathname + location.search + '#inicio');
+  if (p.get('error')) { linkError = p.get('error_code') || p.get('error'); return; }
+  linkType = p.get('type');
+  session = { access: p.get('access_token'), refresh: p.get('refresh_token'), exp: Date.now() + (+p.get('expires_in') || 3600) * 1000, user: null };
+})();
+export const fromLink = () => ({ type: linkType, error: linkError });
+
+// Fills in who is signed in (after an e-mail link, or to pick up a role or plan change).
+export async function refreshUser() {
+  const u = await call('/auth/v1/user');
+  keep({ ...session, user: who(u) });
+  return session.user;
+}
 
 async function call(path, { method = 'GET', body, auth = true, headers = {} } = {}) {
   const h = { apikey: SUPABASE_KEY, 'Content-Type': 'application/json', ...headers };
@@ -29,6 +51,8 @@ async function call(path, { method = 'GET', body, auth = true, headers = {} } = 
 }
 
 export const user = () => session && session.user;
+// A session exists (the user may still be unknown right after an e-mail link).
+export const hasSession = () => !!(session && session.access);
 
 // A valid access token, refreshed a minute before it expires.
 export async function token() {
@@ -57,7 +81,18 @@ export async function signOut() {
 }
 
 export async function setPassword(password) {
-  await call('/auth/v1/user', { method: 'PUT', body: { password } });
+  const u = await call('/auth/v1/user', { method: 'PUT', body: { password, data: { must_change_pw: false } } });
+  keep({ ...session, user: who(u) });
+}
+
+// Public "forgot my password": Supabase answers the same way whether the e-mail exists or not.
+export async function recover(email) {
+  await call('/auth/v1/recover', { method: 'POST', auth: false, body: { email } });
+}
+
+// Admin actions run on the server (supabase/functions/admin); the browser never holds the service key.
+export async function admin(action, data = {}) {
+  return call('/functions/v1/admin', { method: 'POST', body: { action, ...data } });
 }
 
 export async function loadState() {

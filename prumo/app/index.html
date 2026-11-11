@@ -12,13 +12,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Prumo">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=2">
 <meta name="description" content="Demo do Prumo: escreva os gastos do dia numa frase e veja quanto ainda dá para gastar hoje. Os dados ficam no seu navegador.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%229%22%20fill%3D%22%2317221f%22%2F%3E%3Cpath%20d%3D%22M16%204.5v7%22%20stroke%3D%22%23c9973a%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2212.2%22%20y%3D%2211%22%20width%3D%227.6%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23c9973a%22%2F%3E%3Cpath%20d%3D%22M11.3%2014.6h9.4c.6%200%201%20.6.7%201.2l-4.5%2010.4c-.3.6-1.1.6-1.4%200l-4.5-10.4c-.2-.6.1-1.2.7-1.2z%22%20fill%3D%22%23c9973a%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="css/tokens.css?v=23">
-<link rel="stylesheet" href="css/app.css?v=27">
+<link rel="stylesheet" href="css/app.css?v=28">
 <link rel="stylesheet" href="css/login.css?v=24">
 <link rel="modulepreload" href="js/main.js">
 <script>try{if(sessionStorage.getItem('prumo.session')||localStorage.getItem('prumo.auth'))document.documentElement.classList.add('authed');var p=JSON.parse(localStorage.getItem('prumo.prefs')||'{}');if(p.theme&&p.theme!=='auto')document.documentElement.dataset.theme=p.theme;if(p.contrast)document.documentElement.dataset.contrast='high';if(p.font)document.documentElement.style.fontSize=p.font+'%';if(p.motion==='off')document.documentElement.dataset.motion='off';if(p.lang)document.documentElement.lang=p.lang;}catch(e){}</script>
@@ -84,7 +84,7 @@
       <button class="btn-primary" type="submit" data-i18n="login.submit">Entrar</button>
       <button class="btn-demo" type="button" id="demo-btn" data-i18n="login.demo">Só quero ver a demo</button>
     </form>
-    <p class="login-forgot"><a id="forgot" href="mailto:matheusvillanova1@gmail.com?subject=Prumo%3A%20esqueci%20a%20senha" data-i18n="login.forgot">Esqueci a senha</a></p>
+    <p class="login-forgot"><button type="button" class="linkish" id="forgot" data-i18n="login.forgot">Esqueci a senha</button></p>
     <p class="login-trust" data-i18n="login.trust">O Prumo não conecta em banco e não pede a senha de lá. O que você lançar fica neste navegador.</p>
     <div class="lang" role="group" aria-label="Idioma / Language">
       <button type="button" data-lang="pt-BR">Português</button>
@@ -116,6 +116,7 @@
         <li><button type="button" class="nav-btn" id="install-btn"><svg aria-hidden="true"><use href="#i-in"/></svg><span data-i18n="pwa.install">Instalar app</span></button></li>
         <li><a href="#personalizar" data-route="personalizar"><svg aria-hidden="true"><use href="#i-sliders"/></svg><span data-i18n="nav.customize">Personalizar</span></a></li>
         <li><a href="#dados" data-route="dados"><svg aria-hidden="true"><use href="#i-lock"/></svg><span data-i18n="nav.dados">Seus dados</span></a></li>
+        <li class="admin-only"><a href="#admin" data-route="admin"><svg aria-hidden="true"><use href="#i-lock"/></svg><span data-i18n="adm.nav">Administração</span></a></li>
         <li><button type="button" class="nav-btn" data-action="feedback"><svg aria-hidden="true"><use href="#i-chat"/></svg><span data-i18n="fb.nav">Mandar feedback</span></button></li>
         <li><a href="#inicio" data-action="logout"><svg aria-hidden="true"><use href="#i-logout"/></svg><span data-i18n="nav.logout">Sair da demo</span></a></li>
       </ul>

@@ -30,7 +30,7 @@ export function toast(msg, xp, silent = false, undo = null) {
 }
 
 // Native <dialog>: focus trap, Esc and inert background come for free.
-export function openDialog({ title, body, submit, onSubmit, onOpen }) {
+export function openDialog({ title, body, submit, onSubmit, onOpen, locked = false }) {
   const dlg = document.getElementById('dlg');
   dlg.innerHTML = `
     <form method="dialog" id="dlg-form">
@@ -43,6 +43,8 @@ export function openDialog({ title, body, submit, onSubmit, onOpen }) {
       </div>
     </form>`;
   const opener = document.activeElement;
+  if (locked) dlg.querySelectorAll('[data-close]').forEach(b => b.remove());
+  dlg.oncancel = locked ? e => e.preventDefault() : null;
   dlg.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => dlg.close()));
   dlg.querySelector('form').addEventListener('submit', e => {
     const fd = new FormData(e.target);

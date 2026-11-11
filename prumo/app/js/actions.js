@@ -11,6 +11,7 @@ import { say, chooseTone } from './tone.js';
 import { exportIcs } from './export.js';
 import * as cloud from './cloud.js';
 import { startTour } from './tour.js';
+import { adminActions } from './views/admin.js';
 
 export const ctx = { ym: ymOf(new Date()), day: null, tables: new Set() };
 const rerender = () => document.dispatchEvent(new CustomEvent('prumo:render'));
@@ -370,3 +371,5 @@ export const actions = {
     document.dispatchEvent(new CustomEvent(store.isReal() ? 'prumo:signout' : 'prumo:logout'));
   },
 };
+
+Object.assign(actions, adminActions);
