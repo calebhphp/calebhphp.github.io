@@ -223,7 +223,7 @@ function layout(string $l, string $key, array $o, string $body): string
 <meta name="description" content="{$desc}">
 {$canonicalTag}
 {$alts}
-<meta name="theme-color" content="#f4efe3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#f5f6f5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0f1311" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
@@ -239,7 +239,7 @@ function layout(string $l, string $key, array $o, string $body): string
 {$head}
 <script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
-<link rel="preload" href="/assets/fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
 <style>{$INLINE_CSS}</style>
 {$ldTag}
@@ -703,8 +703,8 @@ $pages['licenses'] = ['pt' => '/licencas/'];
 $lic = '<header class="page-hero"><div class="wrap"><div class="crumbs"><a href="/">Início</a> / Licenças</div><span class="eyebrow">Licenças</span><h1>Fontes, imagens e marcas usadas neste site</h1><p class="lede">Tudo o que entra no site tem origem e licença conferidas. Esta página lista cada item.</p></div></header>'
     .'<section><div class="wrap page-text">'
     .'<h2>Fontes</h2><ul>'
-    .'<li><b>Fraunces</b> (títulos), de Undercase Type. SIL Open Font License 1.1. Arquivo servido por este site, obtido do pacote @fontsource/fraunces.</li>'
-    .'<li><b>Manrope</b> (texto), de Mikhail Sharanda. SIL Open Font License 1.1. Arquivo servido por este site.</li>'
+    .'<li><b>JetBrains Mono</b> (rótulos), de JetBrains. SIL Open Font License 1.1. Arquivo servido por este site.</li>'
+    .'<li><b>Manrope</b> (títulos e texto), de Mikhail Sharanda. SIL Open Font License 1.1. Arquivo servido por este site.</li>'
     .'</ul>'
     .'<h2>Imagens</h2><ul>'
     .'<li>As imagens dos projetos são capturas de tela das próprias páginas deste site (exemplos, produtos e Prumo), feitas por mim.</li>'
@@ -715,7 +715,7 @@ $lic = '<header class="page-hero"><div class="wrap"><div class="crumbs"><a href=
     .'<h2>Marcas de terceiros</h2><p>WhatsApp, Google, Pix e outras marcas citadas pertencem aos seus donos. Elas aparecem só para descrever o serviço, sem logotipo e sem indicar parceria.</p>'
     .'<h2>Prumo</h2><p>O Prumo tem a própria página de licenças, em <a href="/prumo/licencas.html">matheusvillanova.com/prumo/licencas.html</a>.</p>'
     .'</div></section>';
-write('/licencas/', layout('pt', 'licenses', ['title' => 'Licenças de fontes e imagens | Matheus Villanova', 'description' => 'Fontes, imagens e marcas usadas no site de Matheus Villanova, com autor e licença de cada uma. Fraunces e Manrope sob SIL Open Font License.', 'schema' => ['@context' => 'https://schema.org', '@graph' => [crumbs([['Início', '/'], ['Licenças', '/licencas/']])]]], $lic));
+write('/licencas/', layout('pt', 'licenses', ['title' => 'Licenças de fontes e imagens | Matheus Villanova', 'description' => 'Fontes, imagens e marcas usadas no site de Matheus Villanova, com autor e licença de cada uma. Manrope e JetBrains Mono sob SIL Open Font License.', 'schema' => ['@context' => 'https://schema.org', '@graph' => [crumbs([['Início', '/'], ['Licenças', '/licencas/']])]]], $lic));
 
 /* ---------- 404, sitemap, robots ---------- */
 $nf = $UI['pt']['notfound'];
