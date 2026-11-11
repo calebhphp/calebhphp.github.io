@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prumo Demo</title>
+<meta name="theme-color" content="#17221f">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Prumo">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="description" content="Demo do Prumo: finanças pessoais para quem é CLT e PJ ao mesmo tempo.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%229%22%20fill%3D%22%2317221f%22%2F%3E%3Cpath%20d%3D%22M16%204.5v7%22%20stroke%3D%22%23c9973a%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2212.2%22%20y%3D%2211%22%20width%3D%227.6%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23c9973a%22%2F%3E%3Cpath%20d%3D%22M11.3%2014.6h9.4c.6%200%201%20.6.7%201.2l-4.5%2010.4c-.3.6-1.1.6-1.4%200l-4.5-10.4c-.2-.6.1-1.2.7-1.2z%22%20fill%3D%22%23c9973a%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css?v=11">
+<link rel="stylesheet" href="css/app.css?v=11">
+<link rel="stylesheet" href="css/login.css?v=11">
+<link rel="modulepreload" href="js/main.js">
+<script>try{if(sessionStorage.getItem('prumo.session'))document.documentElement.classList.add('authed');var p=JSON.parse(localStorage.getItem('prumo.prefs')||'{}');if(p.theme&&p.theme!=='auto')document.documentElement.dataset.theme=p.theme;if(p.contrast)document.documentElement.dataset.contrast='high';if(p.font)document.documentElement.style.fontSize=p.font+'%';if(p.motion==='off')document.documentElement.dataset.motion='off';if(p.lang)document.documentElement.lang=p.lang;}catch(e){}</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo-mark" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="var(--logo-bg, #17221f)"/><path d="M16 4.5v7" stroke="var(--brass, #b8862b)" stroke-width="1.8" stroke-linecap="round"/><rect x="12.2" y="11" width="7.6" height="2.6" rx="1.3" fill="var(--brass, #b8862b)"/><path d="M11.3 14.6h9.4c.6 0 1 .6.7 1.2l-4.5 10.4c-.3.6-1.1.6-1.4 0l-4.5-10.4c-.2-.6.1-1.2.7-1.2z" fill="var(--brass, #b8862b)"/><path d="M6.5 26.5h5M20.5 26.5h5" stroke="var(--brass, #b8862b)" stroke-width="1.4" stroke-linecap="round" opacity=".55"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 4l9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/></symbol>
+    <symbol id="i-in" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+    <symbol id="i-mei" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+    <symbol id="i-sub" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></symbol>
+    <symbol id="i-safe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="15" rx="3"/><circle cx="12" cy="11.5" r="3.5"/><path d="M12 8v1M12 14v1M7 19v2M17 19v2"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+    <symbol id="i-a11y" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.5" r="1.8"/><path d="M5 8.5l7 1.5 7-1.5M12 10v5M9 21l3-6 3 6"/></symbol>
+    <symbol id="i-speak" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h0"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14l-4-4M20 16H6l4 4"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c4 0 7-2.7 7-6.6 0-3.7-2.6-6-4.3-8.4-.5 2.3-1.6 3.6-3.2 4.4C11.7 7.6 10.6 5 8.6 3 8.5 7 5 9.6 5 14.4 5 18.3 8 21 12 21z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 10h18M7 15h4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-hands" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V5.5a1.5 1.5 0 0 1 3 0V10M10 9.5V4a1.5 1.5 0 0 1 3 0v6M13 9.5V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M16 9a1.5 1.5 0 0 1 3 0v4a8 8 0 0 1-8 8h-1a6 6 0 0 1-5-3l-2.5-4.3a1.5 1.5 0 0 1 2.6-1.5L7 14"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l-5-5 5-5M5 12h11"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l16-8-6 16-2.5-6.5z"/></symbol>
+  </defs>
+</svg>
+
+<main class="login" id="login-screen">
+  <section class="login-card" aria-labelledby="login-title">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><use href="#logo-mark"/></svg>
+      <span class="wordmark">prumo</span>
+    </div>
+    <h1 id="login-title" data-i18n="login.title">Entre na demo</h1>
+    <p class="muted" data-i18n="login.hint">Os dados abaixo já vêm preenchidos. Nada do que você fizer aqui sai do seu navegador.</p>
+    <form id="login-form" novalidate>
+      <label for="email" data-i18n="login.email">E-mail</label>
+      <input id="email" name="email" type="email" autocomplete="username" value="john@doe.com" required>
+      <label for="password" data-i18n="login.password">Senha</label>
+      <div class="pw">
+        <input id="password" name="password" type="password" autocomplete="current-password" value="password" required>
+        <button type="button" id="toggle-pw" aria-pressed="false" data-i18n="login.show">Mostrar</button>
+      </div>
+      <p id="login-error" class="error" role="alert" hidden></p>
+      <button class="btn-primary" type="submit" data-i18n="login.submit">Entrar na demo</button>
+    </form>
+    <p class="login-trust" data-i18n="login.trust">Sem conectar banco. Sem senha do banco. Seus números ficam no seu navegador.</p>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="pt-BR">Português</button>
+      <button type="button" data-lang="en">English</button>
+      <button type="button" data-lang="es">Español</button>
+    </div>
+  </section>
+  <aside class="login-side" aria-hidden="true">
+    <p class="side-quote" data-i18n="login.pitch">Saiba quanto sobra antes do mês começar.</p>
+    <div class="side-bar"><i style="flex:31"></i><i style="flex:14"></i><i style="flex:18"></i><i style="flex:3"></i><i style="flex:34"></i></div>
+    <ul class="side-list">
+      <li data-i18n="login.f1">Salário CLT e notas do PJ no mesmo lugar</li>
+      <li data-i18n="login.f2">Limite do MEI e DAS sem susto</li>
+      <li data-i18n="login.f3">Cofres que só liberam a compra quando o dinheiro já está guardado</li>
+    </ul>
+  </aside>
+</main>
+<a class="skip skip-app" href="#main" data-i18n="a11y.skip">Pular para o conteúdo</a>
+<div class="app">
+  <nav class="side" id="side" aria-label="Menu principal">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><use href="#logo-mark"/></svg>
+      <span class="wordmark">prumo</span>
+    </div>
+    <a class="me" href="#conquistas" id="me-chip"></a>
+    <ul class="nav" id="nav"></ul>
+    <div class="side-foot">
+      <ul class="nav">
+        <li><button type="button" class="nav-btn" id="install-btn"><svg aria-hidden="true"><use href="#i-in"/></svg><span data-i18n="pwa.install">Instalar app</span></button></li>
+        <li><a href="#personalizar" data-route="personalizar"><svg aria-hidden="true"><use href="#i-sliders"/></svg><span data-i18n="nav.customize">Personalizar</span></a></li>
+        <li><a href="#dados" data-route="dados"><svg aria-hidden="true"><use href="#i-lock"/></svg><span data-i18n="nav.dados">Seus dados</span></a></li>
+        <li><a href="#inicio" data-action="logout"><svg aria-hidden="true"><use href="#i-logout"/></svg><span data-i18n="nav.logout">Sair da demo</span></a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="backdrop" id="backdrop"></div>
+  <div class="main-col">
+    <header class="top">
+      <button class="btn btn-ghost icon-btn menu-btn" id="menu-btn" aria-controls="side" aria-expanded="false"><svg aria-hidden="true"><use href="#i-menu"/></svg><span class="sr-only" data-i18n="a11y.menu">Abrir menu</span></button>
+      <div class="month" role="group" aria-labelledby="month-label">
+        <button class="btn btn-ghost icon-btn" data-action="month" data-dir="-1"><svg aria-hidden="true"><use href="#i-left"/></svg><span class="sr-only" data-i18n="month.prev">Mês anterior</span></button>
+        <h2 id="month-label" aria-live="polite"></h2>
+        <button class="btn btn-ghost icon-btn" data-action="month" data-dir="1"><svg aria-hidden="true"><use href="#i-right"/></svg><span class="sr-only" data-i18n="month.next">Próximo mês</span></button>
+      </div>
+      <div class="top-actions">
+        <button class="btn btn-ghost" data-action="speak"><svg aria-hidden="true"><use href="#i-speak"/></svg><span class="label-lg" data-i18n="top.listen">Ouvir resumo</span></button>
+        <div class="rel">
+          <button class="btn btn-ghost" id="a11y-btn" aria-expanded="false" aria-controls="a11y-panel"><svg aria-hidden="true"><use href="#i-a11y"/></svg><span class="label-lg" data-i18n="top.a11y">Acessibilidade</span></button>
+          <div class="panel" id="a11y-panel" hidden></div>
+        </div>
+        <button class="btn btn-primary" data-action="add"><svg aria-hidden="true"><use href="#i-plus"/></svg><span data-i18n="top.add">Adicionar</span></button>
+      </div>
+    </header>
+    <main class="content" id="main" tabindex="-1"></main>
+    <nav class="tabbar" id="tabbar" aria-label="Atalhos">
+      <a href="#inicio" data-tab="inicio"><svg aria-hidden="true"><use href="#i-home"/></svg><span data-i18n="tab.today">Hoje</span></a>
+      <a href="#gastos" data-tab="gastos" class="tab-main"><svg aria-hidden="true"><use href="#i-plus"/></svg><span data-i18n="tab.log">Lançar</span></a>
+      <a href="#conselheiro" data-tab="conselheiro"><svg aria-hidden="true"><use href="#i-chat"/></svg><span data-i18n="tab.advisor">Conselheiro</span></a>
+      <button type="button" data-tab="menu" id="tab-menu"><svg aria-hidden="true"><use href="#i-menu"/></svg><span data-i18n="tab.more">Mais</span></button>
+    </nav>
+  </div>
+</div>
+<button type="button" class="fab" id="fab" aria-expanded="false" aria-controls="advisor-panel"><svg aria-hidden="true"><use href="#i-chat"/></svg><span data-i18n="fab.label">Conselheiro</span></button>
+<aside class="advisor-panel" id="advisor-panel" aria-labelledby="ap-title" hidden></aside>
+<dialog id="dlg" aria-labelledby="dlg-title"></dialog>
+<div class="toasts" id="toasts"></div>
+<div class="sr-only" id="live" aria-live="polite" aria-atomic="true"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

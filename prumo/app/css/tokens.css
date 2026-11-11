@@ -1,0 +1,145 @@
+/* Prumo design tokens. Light is default; dark and high contrast override. */
+:root {
+  color-scheme: light;
+  --bg: #eff0ec;
+  --surface: #ffffff;
+  --surface-2: #f6f6f2;
+  --line: #dfe1da;
+  --ink: #161d1b;
+  --ink-2: #4a5450;
+  --ink-3: #6b7470;
+  --primary: #17221f;
+  --primary-ink: #fdfcf8;
+  --primary-soft: #e7ebe4;
+  --good: #16794a;
+  --good-soft: #e3f4ea;
+  --warn: #a24a07;
+  --warn-soft: #fdebd8;
+  --bad: #b42335;
+  --bad-soft: #fde6e8;
+  --xp: #9a6a12;
+  --xp-soft: #f5ead1;
+  --focus: #b8862b;
+  /* chart series (dataviz reference slots 1-4, validated) */
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --s3: #1baf7a;
+  --s4: #eda100;
+  --track: #e4e6df;
+  --brass: #b8862b;
+  --logo-bg: #17221f;
+  --radius-xl: 22px;
+  --radius-l: 16px;
+  --radius-m: 11px;
+  --radius-s: 8px;
+  --font: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --shadow: 0 1px 2px rgba(24, 32, 58, .05), 0 6px 24px -12px rgba(24, 32, 58, .14);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --bg: #0f1311;
+    --surface: #171c1a;
+    --surface-2: #1e2421;
+    --line: #2b332f;
+    --ink: #ecebe4;
+    --ink-2: #b9bdb5;
+    --ink-3: #8e958e;
+    --primary: #ede6d3;
+    --primary-ink: #141a17;
+    --primary-soft: #2a2f29;
+    --good: #4cc98a;
+    --good-soft: #15322a;
+    --warn: #f1b84a;
+    --warn-soft: #3a2e14;
+    --bad: #ff7a87;
+    --bad-soft: #3d1d24;
+    --xp: #e0b25a;
+    --xp-soft: #3a3018;
+    --focus: #e0b25a;
+    --s1: #3987e5;
+    --s2: #d95926;
+    --s3: #199e70;
+    --s4: #c98500;
+    --track: #262d29;
+    --brass: #e0b25a;
+    --logo-bg: #2a322e;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px -14px rgba(0, 0, 0, .6);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1311;
+  --surface: #171c1a;
+  --surface-2: #1e2421;
+  --line: #2b332f;
+  --ink: #ecebe4;
+  --ink-2: #b9bdb5;
+  --ink-3: #8e958e;
+  --primary: #ede6d3;
+  --primary-ink: #141a17;
+  --primary-soft: #2a2f29;
+  --good: #4cc98a;
+  --good-soft: #15322a;
+  --warn: #f1b84a;
+  --warn-soft: #3a2e14;
+  --bad: #ff7a87;
+  --bad-soft: #3d1d24;
+  --xp: #e0b25a;
+  --xp-soft: #3a3018;
+  --focus: #e0b25a;
+  --s1: #3987e5;
+  --s2: #d95926;
+  --s3: #199e70;
+  --s4: #c98500;
+  --track: #262d29;
+  --brass: #e0b25a;
+  --logo-bg: #2a322e;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px -14px rgba(0, 0, 0, .6);
+}
+
+/* High contrast: for low vision. Wins over both themes. */
+:root[data-contrast="high"] {
+  --line: currentColor;
+  --ink-2: var(--ink);
+  --ink-3: var(--ink);
+  --shadow: none;
+}
+:root[data-contrast="high"]:not([data-theme="dark"]) {
+  --bg: #ffffff; --surface: #ffffff; --surface-2: #ffffff; --ink: #000000;
+  --primary: #0033cc; --good: #005a2b; --bad: #9e0019; --warn: #5c3b00; --xp: #005a60;
+}
+:root[data-contrast="high"][data-theme="dark"] {
+  --bg: #000000; --surface: #000000; --surface-2: #000000; --ink: #ffffff;
+  --primary: #a8baff; --good: #7dffb3; --bad: #ffa3ad; --warn: #ffd27a; --xp: #8ff0f4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+:root[data-motion="off"] *, :root[data-motion="off"] *::before, :root[data-motion="off"] *::after {
+  animation: none !important; transition: none !important;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-feature-settings: "tnum" 1;
+}
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 100;
+  background: var(--primary); color: var(--primary-ink); padding: 10px 14px; border-radius: var(--radius-s);
+  font-weight: 600; text-decoration: none;
+}
+.skip:focus { top: 12px; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.muted { color: var(--ink-2); }
+button, input, select, textarea { font: inherit; color: inherit; }
