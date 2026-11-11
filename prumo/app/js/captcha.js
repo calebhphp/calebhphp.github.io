@@ -1,6 +1,6 @@
 // Cloudflare Turnstile on the real-account login and on "forgot my password".
 // Supabase Attack Protection asks for a token on those calls; the demo login never needs one.
-import { TURNSTILE_KEY } from './config.js';
+import { TURNSTILE_KEY } from './config.js?v=2';
 
 let widget = null, tok = null, loading = null;
 
