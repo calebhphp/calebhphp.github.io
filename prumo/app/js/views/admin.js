@@ -53,10 +53,11 @@ function feedbackList() {
 }
 
 function waitTable() {
+  const known = new Set((data.users || []).map(u => u.email.toLowerCase()));
   if (!data.waitlist) return `<p class="muted">${t('sync.loading')}…</p>`;
   return `<p class="muted">${t('adm.waitCount', { n: data.waitlist.length })}</p><div class="table-wrap"><table class="adm-table">
-    <thead><tr><th>${t('adm.email')}</th><th>${t('adm.when')}</th></tr></thead>
-    <tbody>${data.waitlist.map(w => `<tr><td>${esc(w.email)}</td><td>${when(w.created_at)}</td></tr>`).join('') || `<tr><td colspan="2" class="muted">${t('adm.none')}</td></tr>`}</tbody></table></div>`;
+    <thead><tr><th>${t('adm.email')}</th><th>${t('adm.when')}</th><th><span class="sr-only">${t('tx.actions')}</span></th></tr></thead>
+    <tbody>${data.waitlist.map(w => `<tr><td>${esc(w.email)}</td><td>${when(w.created_at)}</td><td>${known.has(w.email.toLowerCase()) ? `<span class="badge b-good">${t('adm.hasAccount')}</span>` : `<button class="btn btn-sm" data-action="admNew" data-email="${esc(w.email)}">${t('adm.makeAccount')}</button>`}</td></tr>`).join('') || `<tr><td colspan="3" class="muted">${t('adm.none')}</td></tr>`}</tbody></table></div>`;
 }
 
 export function render() {
@@ -88,13 +89,14 @@ const copyBox = pw => `<div class="field"><label for="f-tmp">${t('adm.tempLabel'
 const bindCopy = dlg => dlg.querySelector('[data-copy]')?.addEventListener('click', () => { navigator.clipboard?.writeText(dlg.querySelector('#f-tmp').value); toast(t('adm.copied')); });
 
 export const adminActions = {
-  admTab(el) { tab = el.dataset.v; err = null; if (!data[tab]) load(tab); else document.dispatchEvent(new CustomEvent('prumo:render')); },
+  admTab(el) { tab = el.dataset.v; err = null; if (tab === 'waitlist' && !data.users) load('users'); if (!data[tab]) load(tab); else document.dispatchEvent(new CustomEvent('prumo:render')); },
   admReload() { data[tab] = null; load(tab); },
-  admNew() {
+  admNew(el) {
     const pw = tempPassword();
+    const pre = el && el.dataset && el.dataset.email ? el.dataset.email : '';
     openDialog({
       title: t('adm.new'), submit: t('adm.create'),
-      body: `<div class="field"><label for="f-email">${t('adm.email')}</label><input id="f-email" name="email" type="email" required autocomplete="off" maxlength="254"></div>
+      body: `<div class="field"><label for="f-email">${t('adm.email')}</label><input id="f-email" name="email" type="email" required autocomplete="off" maxlength="254" value="${esc(pre)}"></div>
         <div class="field"><label for="f-plan">${t('adm.plan')}</label><select id="f-plan" name="plan">${PLANS.filter(p => p !== 'master').map(p => `<option>${p}</option>`).join('')}</select></div>
         <fieldset class="fb-kinds"><legend>${t('adm.how')}</legend>
           <label class="fb-kind"><input type="radio" name="mode" value="temp" checked><span>${t('adm.howTemp')}</span></label>

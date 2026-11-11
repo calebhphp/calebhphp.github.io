@@ -38,7 +38,7 @@ export function welcomeCard(s, real) {
     </div>
     <div class="meter xp wel-bar" role="progressbar" aria-label="${esc(t('wel.progress'))}" aria-valuemin="0" aria-valuemax="${list.length}" aria-valuenow="${done}"><i style="width:${done / list.length * 100}%"></i></div>
     <ol class="wel-steps">${list.map((x, i) => `<li class="${x.done ? 'is-done' : ''}">
-      <span class="wel-n" aria-hidden="true">${x.done ? icon('i-check') : ico3d(ICO[x.k], 34)}</span>
+      <span class="wel-n" aria-hidden="true">${x.done ? icon('i-check') : `<span class="i3d-tile">${ico3d(ICO[x.k], 32)}</span>`}</span>
       <span class="grow"><strong>${t('wel.' + x.k)}</strong><small>${t('wel.' + x.k + 'Hint')}</small></span>
       ${x.done ? `<span class="sr-only">${t('common.done')}</span>` : x.act.startsWith('href') ? `<a class="btn btn-sm" ${x.act}>${t('wel.go')}</a>` : `<button class="btn btn-sm" ${x.act}>${t('wel.go')}</button>`}
     </li>`).join('')}</ol>

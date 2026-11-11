@@ -2,6 +2,8 @@
 <html lang="pt-BR" data-type="software" data-radius="sharp" data-buttons="arrow" data-motion>
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-tLacyvDXM7iOBdrKicHZHGDOpIjXw5dTwO25l/lTFaI=' 'sha256-1bYHHe3SE5ji7T/2HhIPPaOd3hoICy83QpaTDL+iRYk='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co https://formsubmit.co; form-action 'self'; base-uri 'none'; manifest-src 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prumo: controle de gastos numa frase só</title>
 <meta name="description" content="App de finanças pessoais que separa os gastos de uma frase, mostra quanto dá para gastar por dia e roda no seu aparelho, sem senha de banco.">
@@ -158,6 +160,7 @@
       </div>
       <div class="nav__item"><a class="nav__link" href="#tom">Tom</a></div>
       <div class="nav__item"><a class="nav__link" href="#dados">Seus dados</a></div>
+      <div class="nav__item"><a class="nav__link" href="seguranca.html">Segurança</a></div>
       <div class="nav__item"><a class="nav__link" href="#perguntas">Perguntas</a></div>
     </nav>
     <div class="nav__actions">
@@ -280,7 +283,7 @@
     <div class="wrap">
       <div class="grid grid--top">
         <h2 id="dados-h" class="span-5">Não pede senha de banco</h2>
-        <p class="span-6 start-7 muted">Você digita, fala ou sobe o extrato que baixou. Fica tudo no seu celular ou navegador, funciona até sem internet, e você leva tudo em CSV quando quiser.</p>
+        <p class="span-6 start-7 muted">Você digita, fala ou sobe o extrato que baixou. Fica tudo no seu celular ou navegador, funciona até sem internet, e você leva tudo em CSV quando quiser. <a href="seguranca.html">Por que confiar, e o que ainda não tenho</a>.</p>
       </div>
       <div class="panel fill" style="margin-top: var(--s-7)">
         <div class="dg" data-dg-still data-diagram><script type="application/json">{"layout":"fanin","ground":"none","alt":"Extratos OFX e CSV, texto e voz entram no Prumo no seu aparelho, que exporta CSV e backup.","sources":[{"label":"Extrato OFX","icon":"ui:file-text","sub":"baixado no banco"},{"label":"Extrato CSV","icon":"ui:file-spreadsheet","sub":"baixado no banco"},{"label":"Texto","icon":"ui:pen-line","sub":"almoço 32"},{"label":"Voz","icon":"ui:mic","sub":"ditado"}],"target":{"label":"Prumo no seu aparelho","icon":"ui:smartphone"},"then":{"label":"CSV e backup","icon":"ui:download","meta":"grátis"}}</script></div>
@@ -346,11 +349,11 @@
         </div>
         <div class="span-2 footer__col"><h3>Produto</h3><ul><li><a href="#produto">Conselheiro</a></li><li><a href="#recursos">Recursos</a></li></ul></div>
         <div class="span-2 footer__col"><h3>Jeito</h3><ul><li><a href="#tom">Tom</a></li><li><a href="#retrospectiva">Retrospectiva</a></li></ul></div>
-        <div class="span-2 footer__col"><h3>Confiança</h3><ul><li><a href="#dados">Seus dados</a></li><li><a href="privacidade.html">Privacidade</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Confiança</h3><ul><li><a href="#dados">Seus dados</a></li><li><a href="seguranca.html">Segurança</a></li><li><a href="privacidade.html">Privacidade</a></li></ul></div>
         <div class="span-2 footer__col"><h3>Ajuda</h3><ul><li><a href="#perguntas">Perguntas</a></li></ul></div>
       </div>
       <div class="footer__legal">
-        <span class="legal-links">&copy; 2026 Prumo <a href="privacidade.html">Privacidade</a> <a href="termos.html">Termos</a> <a href="licencas.html">Licenças</a></span>
+        <span class="legal-links">&copy; 2026 Prumo <a href="seguranca.html">Segurança</a> <a href="privacidade.html">Privacidade</a> <a href="termos.html">Termos</a> <a href="licencas.html">Licenças</a></span>
         <span class="t-small muted">Sem cookies e sem rastreadores. Seus dados ficam no seu aparelho.</span>
         <div class="socials"></div>
       </div>

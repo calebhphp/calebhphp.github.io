@@ -68,3 +68,10 @@
 .login .btn-primary[aria-busy="true"] { opacity: .7; cursor: progress; }
 .login-forgot { margin: 12px 0 0; font-size: .9rem; text-align: center; }
 .login-forgot a { color: var(--ink-2); }
+
+.theme-login { position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); right: calc(14px + env(safe-area-inset-right, 0px)); z-index: 5; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); }
+.theme-login:hover { border-color: var(--ink-2); }
+.theme-login:focus-visible { outline: 3px solid var(--focus, var(--primary)); outline-offset: 2px; }
+.theme-login .ic-sun { display: none; }
+.theme-login[aria-pressed="true"] .ic-sun { display: block; }
+.theme-login[aria-pressed="true"] .ic-moon { display: none; }

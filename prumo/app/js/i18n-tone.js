@@ -3,6 +3,11 @@
 // Rules for every level: roast the choice, never the person. No jokes about debt,
 // salary, health, pets or grief. Bills due and the MEI cap stay plain.
 export const ptT = {
+  'adm.makeAccount': "Criar conta",
+  'adm.hasAccount': "Já tem conta",
+  'ach.of': "Falta pouco",
+  'theme.toLight': "Mudar para o modo claro",
+  'theme.toDark': "Mudar para o modo escuro",
   'nav.admin': 'Administração',
   'adm.nav': "Administração",
   'adm.title': "Administração",

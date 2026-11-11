@@ -1,6 +1,6 @@
 // Offline: the whole app is cached on install, so it keeps working with the wi-fi off.
 // Data never goes through here; it lives in localStorage. Bump VERSION on every deploy.
-const VERSION = 'prumo-mwch9r32';
+const VERSION = 'prumo-mwci0l3w';
 const SHELL = [
   './',
   'index.html',
@@ -58,7 +58,9 @@ const SHELL = [
   'js/views/personalizar.js',
   'js/views/retro.js',
   'js/views/welcome.js',
+  'icons/3d/bag.png',
   'icons/3d/bulb.png',
+  'icons/3d/calculator.png',
   'icons/3d/calender.png',
   'icons/3d/card.png',
   'icons/3d/chart.png',
@@ -72,6 +74,8 @@ const SHELL = [
   'icons/3d/money-bag.png',
   'icons/3d/notebook.png',
   'icons/3d/rocket.png',
+  'icons/3d/scissor.png',
+  'icons/3d/sheild.png',
   'icons/3d/star.png',
   'icons/3d/target.png',
   'icons/3d/tick.png',

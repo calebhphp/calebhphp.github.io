@@ -16,6 +16,10 @@ export function setPref(key, value) {
   listeners.forEach(fn => fn(prefs, key));
 }
 
+// What the screen looks like right now, whether the person chose it or the phone did.
+export const effectiveTheme = () => prefs.theme === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : prefs.theme;
+export const toggleTheme = () => setPref('theme', effectiveTheme() === 'dark' ? 'light' : 'dark');
+
 export const onPrefs = fn => { listeners.add(fn); return () => listeners.delete(fn); };
 
 export function applyPrefs() {
@@ -25,4 +29,11 @@ export function applyPrefs() {
   if (prefs.motion === 'off') root.dataset.motion = 'off'; else delete root.dataset.motion;
   root.style.fontSize = prefs.font === 100 ? '' : prefs.font + '%';
   root.lang = prefs.lang;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = effectiveTheme() === 'dark' ? '#0f1311' : '#eff0ec';
+  document.querySelectorAll('[data-theme-toggle]').forEach(b => {
+    const dark = effectiveTheme() === 'dark';
+    b.setAttribute('aria-pressed', String(dark));
+    b.setAttribute('aria-label', document.documentElement.lang === 'en' ? (dark ? 'Switch to light mode' : 'Switch to dark mode') : document.documentElement.lang === 'es' ? (dark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro') : (dark ? 'Mudar para o modo claro' : 'Mudar para o modo escuro'));
+  });
 }

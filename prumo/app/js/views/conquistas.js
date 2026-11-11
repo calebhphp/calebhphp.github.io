@@ -2,7 +2,8 @@ import { t } from '../i18n.js';
 import { achievements, levelInfo } from '../game.js';
 import { esc, dayLabel } from '../format.js';
 import { head, levelCard } from './parts.js';
-import { icon } from '../ui.js';
+import { icon, ico3d } from '../ui.js';
+const ART = {"first":"tick","streak7":"fire","half":"money-bag","cut":"scissor","clean":"star","buy":"bag","das":"calculator","lvl5":"trophy"};
 
 export function render(s) {
   const lv = levelInfo(s.game.xp);
@@ -18,15 +19,15 @@ export function render(s) {
       <ul class="rows">${levels.map(l => {
         const r = s.game.rewards.find(x => x.level === l);
         const got = lv.level >= l;
-        return `<li class="${got ? '' : ''}"><span class="badge ${got ? 'b-xp' : ''}">${icon(got ? 'i-star' : 'i-lock')}${t('game.levelN', { level: l })}</span>
+        return `<li class="${got ? 'reward-got' : 'reward-lock'}"><span class="i3d-tile ${got ? '' : 'is-locked'}">${ico3d('gift', 36)}</span><span class="badge ${got ? 'b-xp' : ''}">${t('game.levelN', { level: l })}</span>
           <span class="grow"><span class="title">${r ? esc(r.text) : `<span class="muted">${t('game.noReward')}</span>`}</span></span>
           <button class="btn btn-sm" data-action="editReward" data-id="r${l}" data-level="${l}">${r ? t('common.edit') : t('game.setReward')}</button></li>`;
       }).join('')}</ul>
     </section>
     <section class="card span-8" aria-labelledby="ach-t">
       <div class="card-head"><h2 id="ach-t">${t('game.badges', { n: ach.filter(a => a.got).length, total: ach.length })}</h2></div>
-      <ul class="badges-grid" style="list-style:none;padding:0;margin:0">${ach.map(a => `<li class="ach ${a.got ? '' : 'locked'}">${icon(a.got ? a.icon : 'i-lock')}
-        <strong>${t('ach.' + a.id)}</strong><span>${t('ach.' + a.id + 'Hint')}</span><span class="sr-only">${a.got ? t('common.done') : t('common.pending')}</span></li>`).join('')}</ul>
+      <ul class="badges-grid" style="list-style:none;padding:0;margin:0">${ach.map(a => `<li class="ach ${a.got ? 'is-got' : 'locked'}"><span class="i3d-tile ${a.got ? '' : 'is-locked'}">${ico3d(ART[a.id], 40)}</span>
+        <strong>${t('ach.' + a.id)}</strong><span>${t('ach.' + a.id + 'Hint')}</span>${!a.got && a.of ? `<span class="ach-prog" role="progressbar" aria-label="${esc(t('ach.' + a.id))}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(a.p * 100)}"><i style="width:${Math.round(a.p * 100)}%"></i><em>${a.of}</em></span>` : ''}<span class="sr-only">${a.got ? t('common.done') : t('common.pending')}</span></li>`).join('')}</ul>
     </section>
     <section class="card span-4" aria-labelledby="log-t">
       <div class="card-head"><h2 id="log-t">${t('game.history')}</h2></div>

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Ogos47zaII97woeWsU9S0I3xYT14pmcUpZdGIELpPMw=' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; img-src 'self' data: blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; font-src 'self' data: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; connect-src 'self' https://*.supabase.co https://formsubmit.co https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; media-src 'self' blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; frame-src https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' mailto:">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-aMtqZXLu+rwmDaRNUiCERGp4/RgPnBA63NnF3izYRec=' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; img-src 'self' data: blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; font-src 'self' data: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; connect-src 'self' https://*.supabase.co https://formsubmit.co https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; media-src 'self' blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; frame-src https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prumo Demo</title>
@@ -18,15 +18,17 @@
 <link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="css/tokens.css?v=23">
-<link rel="stylesheet" href="css/app.css?v=29">
-<link rel="stylesheet" href="css/login.css?v=24">
+<link rel="stylesheet" href="css/app.css?v=30">
+<link rel="stylesheet" href="css/login.css?v=25">
 <link rel="modulepreload" href="js/main.js">
-<script>try{if(sessionStorage.getItem('prumo.session')||localStorage.getItem('prumo.auth'))document.documentElement.classList.add('authed');var p=JSON.parse(localStorage.getItem('prumo.prefs')||'{}');if(p.theme&&p.theme!=='auto')document.documentElement.dataset.theme=p.theme;if(p.contrast)document.documentElement.dataset.contrast='high';if(p.font)document.documentElement.style.fontSize=p.font+'%';if(p.motion==='off')document.documentElement.dataset.motion='off';if(p.lang)document.documentElement.lang=p.lang;}catch(e){}</script>
+<script>try{if(top!==self&&location.hostname==='matheusvillanova.com')document.documentElement.style.display='none';if(sessionStorage.getItem('prumo.session')||localStorage.getItem('prumo.auth'))document.documentElement.classList.add('authed');var p=JSON.parse(localStorage.getItem('prumo.prefs')||'{}');if(p.theme&&p.theme!=='auto')document.documentElement.dataset.theme=p.theme;if(p.contrast)document.documentElement.dataset.contrast='high';if(p.font)document.documentElement.style.fontSize=p.font+'%';if(p.motion==='off')document.documentElement.dataset.motion='off';if(p.lang)document.documentElement.lang=p.lang;}catch(e){}</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="logo-mark" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="var(--logo-bg, #17221f)"/><path d="M16 4.5v7" stroke="var(--brass, #b8862b)" stroke-width="1.8" stroke-linecap="round"/><rect x="12.2" y="11" width="7.6" height="2.6" rx="1.3" fill="var(--brass, #b8862b)"/><path d="M11.3 14.6h9.4c.6 0 1 .6.7 1.2l-4.5 10.4c-.3.6-1.1.6-1.4 0l-4.5-10.4c-.2-.6.1-1.2.7-1.2z" fill="var(--brass, #b8862b)"/><path d="M6.5 26.5h5M20.5 26.5h5" stroke="var(--brass, #b8862b)" stroke-width="1.4" stroke-linecap="round" opacity=".55"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
     <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
     <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></symbol>
     <symbol id="i-bank" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 4l9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/></symbol>
@@ -64,6 +66,7 @@
 </svg>
 
 <main class="login" id="login-screen">
+  <button type="button" class="theme-btn theme-login" data-theme-toggle><svg class="ic-sun" aria-hidden="true"><use href="#i-sun"/></svg><svg class="ic-moon" aria-hidden="true"><use href="#i-moon"/></svg></button>
   <section class="login-card" aria-labelledby="login-title">
     <div class="brand">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><use href="#logo-mark"/></svg>
@@ -132,6 +135,7 @@
         <button class="btn btn-ghost icon-btn" data-action="month" data-dir="1"><svg aria-hidden="true"><use href="#i-right"/></svg><span class="sr-only" data-i18n="month.next">Próximo mês</span></button>
       </div>
       <div class="top-actions">
+        <button type="button" class="btn btn-ghost icon-btn theme-btn" data-theme-toggle><svg class="ic-sun" aria-hidden="true"><use href="#i-sun"/></svg><svg class="ic-moon" aria-hidden="true"><use href="#i-moon"/></svg></button>
         <button class="btn btn-ghost" data-action="speak"><svg aria-hidden="true"><use href="#i-speak"/></svg><span class="label-lg" data-i18n="top.listen">Ouvir resumo</span></button>
         <div class="rel">
           <button class="btn btn-ghost" id="a11y-btn" aria-expanded="false" aria-controls="a11y-panel"><svg aria-hidden="true"><use href="#i-a11y"/></svg><span class="label-lg" data-i18n="top.a11y">Acessibilidade</span></button>

@@ -1,5 +1,5 @@
 import * as store from './store.js';
-import { applyPrefs, onPrefs, getPrefs, setPref } from './prefs.js';
+import { applyPrefs, onPrefs, getPrefs, setPref, toggleTheme } from './prefs.js';
 import './ai.js';
 import { initOverlay, repaintChat } from './advisor.js';
 import { t, translateStatic } from './i18n.js';
@@ -114,6 +114,8 @@ document.addEventListener('prumo:levelup', e => {
 store.subscribe((s, prev, meta) => { if (!meta.reset || store.isReal()) queueSave(); render(); });
 onPrefs((p, key) => { translateStatic(); render(); if (key === 'lang') document.documentElement.lang = p.lang; });
 
+document.querySelectorAll('[data-theme-toggle]').forEach(b => b.addEventListener('click', toggleTheme));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => applyPrefs());
 bindPanel(document.getElementById('a11y-btn'), document.getElementById('a11y-panel'));
 initOverlay();
 document.addEventListener('prumo:ai-ready', () => { render(); repaintChat(); });

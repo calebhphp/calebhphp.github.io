@@ -56,12 +56,12 @@ export function achievements(s) {
   const reserve = s.goals.find(g => g.kind === 'reserva');
   return [
     { id: 'first', icon: 'i-check', got: keys.has('xp.pay') },
-    { id: 'streak7', icon: 'i-flame', got: streak(s).count >= 7 },
-    { id: 'half', icon: 'i-safe', got: !!reserve && reserve.saved >= reserve.target / 2 },
+    { id: 'streak7', icon: 'i-flame', got: streak(s).count >= 7, p: Math.min(1, streak(s).count / 7), of: `${Math.min(7, streak(s).count)}/7` },
+    { id: 'half', icon: 'i-safe', got: !!reserve && reserve.saved >= reserve.target / 2, p: reserve && reserve.target ? Math.min(1, reserve.saved / (reserve.target / 2)) : 0, of: reserve && reserve.target ? `${Math.min(100, Math.round(reserve.saved / reserve.target * 100))}% / 50%` : '' },
     { id: 'cut', icon: 'i-sub', got: s.subs.some(x => x.cancelled) },
     { id: 'clean', icon: 'i-star', got: s.debts.every(d => d.paid) },
     { id: 'buy', icon: 'i-home', got: s.wishlist.some(w => w.bought) },
     { id: 'das', icon: 'i-mei', got: keys.has('xp.das') },
-    { id: 'lvl5', icon: 'i-trophy', got: levelInfo(s.game.xp).level >= 5 },
+    { id: 'lvl5', icon: 'i-trophy', got: levelInfo(s.game.xp).level >= 5, p: Math.min(1, levelInfo(s.game.xp).level / 5), of: `${Math.min(5, levelInfo(s.game.xp).level)}/5` },
   ];
 }
