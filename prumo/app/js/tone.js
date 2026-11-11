@@ -6,14 +6,14 @@ import * as store from './store.js';
 import { openDialog, toast } from './ui.js';
 
 export const TONES = ['sobrio', 'parceiro', 'deboche', 'semfiltro'];
-export const UNLOCK_LEVEL = 3;
+export const UNLOCK_LEVEL = 1; // the sharp tone is the hook, so it is open from the first day
 
 export const tone = () => {
   const p = getPrefs().tone || 'sobrio';
   return TONES.includes(p) ? p : 'sobrio';
 };
 
-// Deboche opens at level 3; Sem filtro also needs the 18+ confirmation.
+// Deboche (shown as "Ácido") opens at level 1; Sem filtro also needs the 18+ confirmation.
 export function locked(name, s = store.get()) {
   if (!s) return false;
   if (name === 'deboche' || name === 'semfiltro') return levelInfo(s.game.xp).level < UNLOCK_LEVEL;
