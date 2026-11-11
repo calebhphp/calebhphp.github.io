@@ -75,3 +75,6 @@
 .theme-login .ic-sun { display: none; }
 .theme-login[aria-pressed="true"] .ic-sun { display: block; }
 .theme-login[aria-pressed="true"] .ic-moon { display: none; }
+
+.captcha { margin-top: 12px; min-height: 65px; }
+.captcha[hidden] { display: none; }

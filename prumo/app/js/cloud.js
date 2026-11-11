@@ -69,8 +69,8 @@ export async function token() {
   }
 }
 
-export async function signIn(email, password) {
-  const j = await call('/auth/v1/token?grant_type=password', { method: 'POST', auth: false, body: { email, password } });
+export async function signIn(email, password, captchaToken) {
+  const j = await call('/auth/v1/token?grant_type=password', { method: 'POST', auth: false, body: { email, password, gotrue_meta_security: { captcha_token: captchaToken || undefined } } });
   keep(toSession(j));
   return session.user;
 }
@@ -86,8 +86,8 @@ export async function setPassword(password) {
 }
 
 // Public "forgot my password": Supabase answers the same way whether the e-mail exists or not.
-export async function recover(email) {
-  await call('/auth/v1/recover', { method: 'POST', auth: false, body: { email } });
+export async function recover(email, captchaToken) {
+  await call('/auth/v1/recover', { method: 'POST', auth: false, body: { email, gotrue_meta_security: { captcha_token: captchaToken || undefined } } });
 }
 
 // Admin actions run on the server (supabase/functions/admin); the browser never holds the service key.

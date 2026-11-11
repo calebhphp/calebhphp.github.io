@@ -3,6 +3,7 @@
 // Rules for every level: roast the choice, never the person. No jokes about debt,
 // salary, health, pets or grief. Bills due and the MEI cap stay plain.
 export const ptT = {
+  'login.captcha': "Confirma ali na caixinha que você não é robô e toca em Entrar de novo.",
   'adm.makeAccount': "Criar conta",
   'adm.hasAccount': "Já tem conta",
   'ach.of': "Falta pouco",
@@ -330,6 +331,7 @@ export const ptT = {
 };
 
 export const enT = {
+  'login.captcha': "Tick the box to confirm you are not a robot, then sign in again.",
   'nav.admin': 'Admin',
   'adm.nav': "Admin",
   'adm.title': "Admin",

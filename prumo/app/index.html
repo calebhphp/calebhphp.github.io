@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-aMtqZXLu+rwmDaRNUiCERGp4/RgPnBA63NnF3izYRec=' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; img-src 'self' data: blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; font-src 'self' data: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; connect-src 'self' https://*.supabase.co https://formsubmit.co https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; media-src 'self' blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; frame-src https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' mailto:">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-aMtqZXLu+rwmDaRNUiCERGp4/RgPnBA63NnF3izYRec=' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; img-src 'self' data: blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; font-src 'self' data: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; connect-src 'self' https://challenges.cloudflare.com https://*.supabase.co https://formsubmit.co https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; media-src 'self' blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; frame-src https://challenges.cloudflare.com https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prumo Demo</title>
@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="css/tokens.css?v=23">
 <link rel="stylesheet" href="css/app.css?v=30">
-<link rel="stylesheet" href="css/login.css?v=25">
+<link rel="stylesheet" href="css/login.css?v=26">
 <link rel="modulepreload" href="js/main.js">
 <script>try{if(top!==self&&location.hostname==='matheusvillanova.com')document.documentElement.style.display='none';if(sessionStorage.getItem('prumo.session')||localStorage.getItem('prumo.auth'))document.documentElement.classList.add('authed');var p=JSON.parse(localStorage.getItem('prumo.prefs')||'{}');if(p.theme&&p.theme!=='auto')document.documentElement.dataset.theme=p.theme;if(p.contrast)document.documentElement.dataset.contrast='high';if(p.font)document.documentElement.style.fontSize=p.font+'%';if(p.motion==='off')document.documentElement.dataset.motion='off';if(p.lang)document.documentElement.lang=p.lang;}catch(e){}</script>
 </head>
@@ -82,6 +82,7 @@
         <input id="password" name="password" type="password" autocomplete="current-password" required>
         <button type="button" id="toggle-pw" aria-pressed="false" data-i18n="login.show">Mostrar</button>
       </div>
+      <div id="captcha" class="captcha" hidden></div>
       <p id="login-error" class="error" role="alert" hidden></p>
       <label class="accept"><input type="checkbox" id="accept" required> <span>Li e aceito os <a href="https://matheusvillanova.com/prumo/termos.html" target="_blank" rel="noopener">termos de uso</a> e a <a href="https://matheusvillanova.com/prumo/privacidade.html" target="_blank" rel="noopener">política de privacidade</a>.</span></label>
       <button class="btn-primary" type="submit" data-i18n="login.submit">Entrar</button>

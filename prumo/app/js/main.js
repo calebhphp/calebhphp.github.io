@@ -10,6 +10,7 @@ import { levelInfo } from './game.js';
 import { monthLabel, esc } from './format.js';
 import { bindPanel, loadLibras } from './a11y.js';
 import * as cloud from './cloud.js';
+import * as captcha from './captcha.js';
 
 const NAV = [
   { r: 'inicio', i: 'i-home' },
@@ -137,6 +138,10 @@ togglePw.addEventListener('click', () => {
 });
 document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => { setPref('lang', b.dataset.lang); syncLogin(); }));
 const DEMO = { email: 'john@doe.com', pw: 'password' };
+// The human check only shows once the person is signing in to a real account, never for the demo.
+const captchaBox = document.getElementById('captcha');
+function showCaptcha(on) { if (!captcha.enabled() || !captchaBox) return; captchaBox.hidden = !on; if (on) captcha.mount(captchaBox); }
+loginForm.email.addEventListener('input', () => { const v = loginForm.email.value.trim().toLowerCase(); showCaptcha(!!v && v !== DEMO.email && v.includes('@')); });
 const loginErr = msg => { const err = document.getElementById('login-error'); err.textContent = msg; err.hidden = false; };
 function accepted() {
   const accept = document.getElementById('accept');
@@ -240,22 +245,25 @@ loginForm.addEventListener('submit', async e => {
   if (!cloud.enabled()) { loginErr(t('login.error')); loginForm.email.focus(); return; }
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { loginErr(t('login.badEmail')); loginForm.email.focus(); return; }
   if (!pw.value) { loginErr(t('login.noPw')); pw.focus(); return; }
+  if (captcha.enabled() && !captcha.token()) { loginErr(t('login.captcha')); showCaptcha(true); return; }
   const btn = loginForm.querySelector('[type="submit"]');
   btn.disabled = true; btn.setAttribute('aria-busy', 'true');
   try {
-    await cloud.signIn(email, pw.value);
+    await cloud.signIn(email, pw.value, captcha.token());
     pw.value = '';
     await enterAccount({ fresh: true });
   } catch (x) {
-    loginErr(x.status === 400 ? t('login.bad') : x.status === 429 ? t('login.slow') : t('login.offline'));
+    loginErr(x.data && x.data.error_code === 'captcha_failed' ? t('login.captcha') : x.status === 400 ? t('login.bad') : x.status === 429 ? t('login.slow') : t('login.offline'));
     pw.focus();
-  } finally { btn.disabled = false; btn.removeAttribute('aria-busy'); }
+  } finally { btn.disabled = false; btn.removeAttribute('aria-busy'); captcha.reset(); }
 });
 document.getElementById('forgot').addEventListener('click', async () => {
   const email = loginForm.email.value.trim().toLowerCase();
   if (!cloud.enabled()) { location.href = 'mailto:matheusvillanova1@gmail.com?subject=Prumo%3A%20esqueci%20a%20senha'; return; }
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { loginErr(t('login.forgotNeedEmail')); loginForm.email.focus(); return; }
-  try { await cloud.recover(email); } catch (e) { if (e.status === 429) { loginErr(t('login.slow')); return; } }
+  if (captcha.enabled() && !captcha.token()) { loginErr(t('login.captcha')); showCaptcha(true); return; }
+  try { await cloud.recover(email, captcha.token()); } catch (e) { if (e.status === 429) { loginErr(t('login.slow')); return; } if (e.data && e.data.error_code === 'captcha_failed') { loginErr(t('login.captcha')); captcha.reset(); return; } }
+  captcha.reset();
   // Same answer whether the e-mail exists or not.
   const err = document.getElementById('login-error'); err.textContent = t('login.forgotSent'); err.hidden = false;
 });
