@@ -1,5 +1,6 @@
 // Credit card: this month's bill, the limit, and installments that are already spoken for.
 import { t } from '../i18n.js';
+import { logo } from '../brands.js';
 import { cardStatus } from '../finance.js';
 import { money, moneyHtml, moneyShort, pct, esc, monthLabel, monthIn, addMonths } from '../format.js';
 import { head } from './parts.js';
@@ -15,7 +16,7 @@ export function render(s, ctx) {
     <section class="card card-hero span-8" aria-labelledby="inv-t">
       <p class="hero-label" id="inv-t">${t('card.invoice', { m: esc(monthIn(ctx.ym, { month: 'long' })) })}</p>
       ${moneyHtml(c.inv.total, 'money-xl')}
-      <p class="hero-note">${esc(c.card.name)} · ${t('card.closeDue', { c: c.card.close, d: c.card.due })}</p>
+      <p class="hero-note with-logo">${logo(c.card.name, 26)}<span>${esc(c.card.name)} · ${t('card.closeDue', { c: c.card.close, d: c.card.due })}</span></p>
       <ul class="rows" style="margin-top:14px">
         <li><span class="grow"><span class="title">${t('card.credit')}</span></span><span class="amt">${money(c.inv.credit)}</span></li>
         <li><span class="grow"><span class="title">${t('card.parcels')}</span><span class="meta">${c.inv.parcels.length}</span></span><span class="amt">${money(c.inv.parc)}</span></li>

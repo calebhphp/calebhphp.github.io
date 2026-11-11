@@ -1,6 +1,6 @@
 // Pieces shared by more than one view.
 import { t } from '../i18n.js';
-import { icon } from '../ui.js';
+import { icon, ico3d } from '../ui.js';
 import { money, moneyHtml, monthIn, pct, esc, moneyIn, ymOf } from '../format.js';
 import { monthSummary, bills, meiYear, wishlistStatus, incomeDrop, subsReview, spending, workHours, runway } from '../finance.js';
 import { levelInfo, missionsToday, streak } from '../game.js';
@@ -8,13 +8,15 @@ import { levelInfo, missionsToday, streak } from '../game.js';
 export const head = (title, sub, extra = '') =>
   `<div class="view-head"><div><h1 tabindex="-1">${title}</h1>${sub ? `<p>${sub}</p>` : ''}</div>${extra}</div>`;
 
+import { logo, brandOf } from '../brands.js';
+
 export function billRow(b) {
   const status = b.isPaid ? `<span class="badge b-good">${icon('i-check')}${t('bill.paidBadge')}</span>`
     : b.overdue ? `<span class="badge b-bad">${icon('i-alert')}${t('bill.overdue')}</span>`
     : `<span class="badge">${t('bill.dueDay', { d: b.day })}</span>`;
   return `<li class="${b.isPaid ? 'done' : ''}">
     <button class="check" type="button" data-action="pay" data-id="${b.id}" aria-pressed="${b.isPaid}" aria-label="${esc(t(b.isPaid ? 'bill.markUnpaid' : 'bill.markPaid', { name: b.name }))}">${icon('i-check')}</button>
-    <span class="grow"><span class="title">${esc(b.name)}</span><span class="meta">${status}</span></span>
+    ${brandOf(b.name) ? logo(b.name, 32) : ''}<span class="grow"><span class="title">${esc(b.name)}</span><span class="meta">${status}</span></span>
     <span class="amt">${money(b.amount)}</span></li>`;
 }
 
@@ -94,9 +96,9 @@ export function levelCard(s) {
         <span class="muted">${t('game.toNext', { xp: lv.toNext, level: lv.level + 1 })}</span></div>
     </div>
     <div class="meter xp" role="progressbar" aria-label="${esc(t('game.progress'))}" aria-valuemin="0" aria-valuemax="${lv.need}" aria-valuenow="${lv.into}"><i style="width:${lv.pct * 100}%"></i></div>
-    ${next ? `<p style="margin:0;font-size:.9rem">${icon('i-star')} ${t('game.nextReward', { level: next.level, reward: `<strong>${esc(next.text)}</strong>` })}</p>` : ''}
+    ${next ? `<p class="next-reward" style="margin:0;font-size:.9rem">${ico3d('medal', 26)} ${t('game.nextReward', { level: next.level, reward: `<strong>${esc(next.text)}</strong>` })}</p>` : ''}
     <div>
-      <div class="card-head" style="margin-bottom:8px"><h3>${t('game.streak', { n: st.count })}</h3><span class="badge b-xp">${icon('i-flame')}${st.count}</span></div>
+      <div class="card-head" style="margin-bottom:8px"><h3>${t('game.streak', { n: st.count })}</h3><span class="badge b-xp">${ico3d('fire', 18)}${st.count}</span></div>
       <div class="streak" aria-label="${esc(t('game.streakAria', { n: st.last7.filter(Boolean).length }))}" role="img">${st.last7.map(on => `<i class="${on ? 'on' : ''}"></i>`).join('')}</div>
     </div>
     <div>
@@ -187,8 +189,8 @@ export function subsCard(s, span = 'span-4') {
 }
 
 export function subRow(x) {
-  if (x.cancelled) return `<li class="done"><span class="grow"><span class="title">${esc(x.name)}</span><span class="meta"><span class="badge b-good">${t('sub.cancelledBadge')}</span></span></span><span class="amt">${money(x.amount)}</span></li>`;
-  return `<li><span class="grow"><span class="title">${esc(x.name)}</span><span class="meta">${moneyIn(x.amount, x.cur, x.cur ? 5.4 : 0)} ${t('sub.perMonthShort')}</span></span>
+  if (x.cancelled) return `<li class="done">${logo(x.name)}<span class="grow"><span class="title">${esc(x.name)}</span><span class="meta"><span class="badge b-good">${t('sub.cancelledBadge')}</span></span></span><span class="amt">${money(x.amount)}</span></li>`;
+  return `<li>${logo(x.name)}<span class="grow"><span class="title">${esc(x.name)}</span><span class="meta">${moneyIn(x.amount, x.cur, x.cur ? 5.4 : 0)} ${t('sub.perMonthShort')}</span></span>
     <span class="seg" role="group" aria-label="${esc(t('sub.usedQ', { name: x.name }))}">
       <button type="button" data-action="subUsed" data-id="${x.id}" data-v="1" aria-pressed="${x.used === true}">${t('sub.used')}</button>
       <button type="button" data-action="subUsed" data-id="${x.id}" data-v="0" aria-pressed="${x.used === false}">${t('sub.notUsed')}</button></span>

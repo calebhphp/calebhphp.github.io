@@ -2,7 +2,7 @@
 import { t } from '../i18n.js';
 import { blackFriday, bfCeiling, priceVerdict, wishlistStatus } from '../finance.js';
 import { money } from '../format.js';
-import { icon } from '../ui.js';
+import { icon, ico3d } from '../ui.js';
 
 export function bfCard(s, ym, link = false) {
   const bf = blackFriday();
@@ -12,6 +12,7 @@ export function bfCard(s, ym, link = false) {
   const cap = bfCeiling(s, ym);
   const when = bf.days > 1 ? t('bf.inDays', { n: bf.days }) : bf.days === 1 ? t('bf.tomorrow') : bf.days === 0 ? t('bf.today') : t('bf.weekend');
   return `<section class="card span-12 bf" aria-labelledby="bf-t">
+    ${ico3d('gift', 64, 'bf-art')}
     <div class="bf-main">
       <p class="bf-when">${when}</p>
       <h2 id="bf-t">${t('bf.title')}</h2>

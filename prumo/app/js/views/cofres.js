@@ -3,7 +3,7 @@ import { wishlistStatus, workHours } from '../finance.js';
 import { ctx } from '../actions.js';
 import { money, esc } from '../format.js';
 import { head, goalBlock } from './parts.js';
-import { icon } from '../ui.js';
+import { icon, ico3d } from '../ui.js';
 import { bfCard, priceLine, impulse } from './bf.js';
 
 const hours = (s, v) => { const h = workHours(s, v, ctx.ym); return h < 10 ? h.toFixed(1).replace('.', ',') : Math.round(h); };
@@ -17,7 +17,7 @@ export function render(s) {
     ${bfCard(s, ctx.ym)}
     <section class="card span-5" aria-labelledby="g-t">
       <div class="card-head"><h2 id="g-t">${t('goal.title')}</h2></div>
-      ${s.goals.length ? s.goals.map(goalBlock).join('') : `<p class="muted empty">${t('goalNew.empty')}</p>`}
+      ${s.goals.length ? s.goals.map(goalBlock).join('') : `<div class="empty-art">${ico3d('money-bag', 72)}<p class="muted empty">${t('goalNew.empty')}</p></div>`}
     </section>
     <section class="card span-7" aria-labelledby="w-t">
       <div class="card-head"><h2 id="w-t">${t('wish.title')}</h2></div>

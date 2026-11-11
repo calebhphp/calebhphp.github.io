@@ -236,7 +236,7 @@ export function blank(name = '') {
     profile: { name, quiz: null, onboarded: false },
     modules: MODULES,
     budgets: { mercado: 0, restaurante: 0, transporte: 0, casa: 0, saude: 0, lazer: 0, pet: 0, compras: 0, trabalho: 0, outros: 0 },
-    tx: [], accounts: [{ id: 'a1', name: t('seed.accMain'), kind: 'pf', balance: 0 }], incomes: [], bills: [], subs: [],
+    tx: [], accounts: [{ id: 'a1', name: t('blank.account'), kind: 'pf', balance: 0 }], incomes: [], bills: [], subs: [],
     goals: [], wishlist: [], debts: [], cards: [], installments: [],
     mei: { enabled: false, limit: 81000, das: 81.9, dasDay: 20, invoices: [], dasPaid: {} },
     game: { xp: 0, log: [], missions: {}, rewards: [] },

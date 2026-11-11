@@ -11,6 +11,9 @@ export function announce(msg) {
   requestAnimationFrame(() => { el.textContent = msg; });
 }
 
+// 3D illustration (3dicons, CC0). Purely decorative, so no alt text.
+export const ico3d = (name, size = 40, cls = '') => `<img class="i3d ${cls}" src="icons/3d/${name}.png" width="${size}" height="${size}" alt="" loading="lazy" decoding="async">`;
+
 export function toast(msg, xp, silent = false, undo = null) {
   const box = document.getElementById('toasts');
   const el = document.createElement('div');

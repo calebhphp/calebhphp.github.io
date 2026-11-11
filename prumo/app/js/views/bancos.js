@@ -3,6 +3,7 @@ import { totalBalance } from '../finance.js';
 import { money, moneyHtml, esc, pct } from '../format.js';
 import { head } from './parts.js';
 import { icon } from '../ui.js';
+import { logo } from '../brands.js';
 
 export function render(s) {
   const total = totalBalance(s);
@@ -21,7 +22,7 @@ export function render(s) {
         <li><span class="k"><i class="sw" style="background:var(--s3)"></i>${t('bank.pj')}</span><span class="v">${money(pj)}<span class="pct">${pct(pj / total)}</span></span></li></ul></div>` : ''}
     </section>
     ${s.accounts.map(a => `<section class="card span-4" aria-labelledby="acc-${a.id}">
-      <div class="card-head"><h2 id="acc-${a.id}">${esc(a.name)}</h2><span class="badge ${a.kind === 'pj' ? 'b-pj' : ''}">${a.kind === 'pj' ? t('bank.pjBadge') : t('bank.pfBadge')}</span></div>
+      <div class="card-head"><h2 id="acc-${a.id}" class="with-logo">${logo(a.name, 34)}<span>${esc(a.name)}</span></h2><span class="badge ${a.kind === 'pj' ? 'b-pj' : ''}">${a.kind === 'pj' ? t('bank.pjBadge') : t('bank.pfBadge')}</span></div>
       ${moneyHtml(a.balance, 'money-l')}
       <p class="card-sub" style="margin:10px 0 0">${a.kind === 'pj' ? t('bank.pjHint') : t('bank.pfHint')}</p></section>`).join('')}
     ${hasPj ? `<div class="alert alert-warn span-12">${icon('i-swap')}<div><h2>${t('bank.ruleTitle')}</h2><p>${t('bank.ruleBody')}</p></div></div>` : ''}

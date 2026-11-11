@@ -289,7 +289,7 @@ export const ptT = {
   'card.inN': '{n}x', 'card.none': 'Nenhuma parcela em andamento.', 'card.ends': 'última em {m}',
   'card.del': 'Remover {name}', 'card.deleted': '{name} removida',
   'card.added@deboche': '{name} em {n}x de {v}. o você de daqui a {n} meses mandou um abraço.',
-  'seed.cardName': 'Cartão principal', 'seed.wLamp': 'Mala de viagem', 'seed.iFridge': 'Geladeira', 'seed.iPhone': 'Celular novo', 'seed.iTrip': 'Passagens de fim de ano',
+  'seed.cardName': 'Nubank Mastercard', 'seed.wLamp': 'Mala de viagem', 'seed.iFridge': 'Geladeira', 'seed.iPhone': 'Celular novo', 'seed.iTrip': 'Passagens de fim de ano',
 
   'retro.title': 'Retrospectiva', 'retro.sub': 'O mês em cinco cards, prontos para o story.',
   'retro.of': '{m}', 'retro.cover': 'Seu mês no Prumo', 'retro.coverSub': '{n} gastos anotados. Bora ver no que deu.',
@@ -494,7 +494,7 @@ export const enT = {
   'card.aheadSub': 'What hits each month before you buy anything.', 'card.add': 'New installment purchase', 'card.addName': 'What you bought',
   'card.addTotal': 'Total price', 'card.addN': 'Number of installments', 'card.added': '{name} in {n}x of {v}', 'card.tip': 'Tip: in quick entry, type "fridge 3290 in 10x".',
   'card.inN': '{n}x', 'card.none': 'No running installments.', 'card.ends': 'last one in {m}', 'card.del': 'Remove {name}', 'card.deleted': '{name} removed',
-  'seed.cardName': 'Main card', 'seed.wLamp': 'Suitcase', 'seed.iFridge': 'Fridge', 'seed.iPhone': 'New phone', 'seed.iTrip': 'Holiday flights',
+  'seed.cardName': 'Nubank Mastercard', 'seed.wLamp': 'Suitcase', 'seed.iFridge': 'Fridge', 'seed.iPhone': 'New phone', 'seed.iTrip': 'Holiday flights',
   'retro.title': 'Recap', 'retro.sub': 'The month in five cards, ready to share.', 'retro.cover': 'Your month in Prumo', 'retro.coverSub': '{n} expenses logged. Let us see.',
   'retro.char': 'Character of the month', 'retro.c.restaurante': 'Eats out a lot', 'retro.c.mercado': 'Home chef', 'retro.c.transporte': 'Always on the move',
   'retro.c.casa': 'Nesting', 'retro.c.lazer': 'Busy calendar', 'retro.c.compras': 'Full cart', 'retro.c.pet': 'Well-loved pet', 'retro.c.saude': 'Taking care',

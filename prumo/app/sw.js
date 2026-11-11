@@ -1,6 +1,6 @@
 // Offline: the whole app is cached on install, so it keeps working with the wi-fi off.
 // Data never goes through here; it lives in localStorage. Bump VERSION on every deploy.
-const VERSION = 'prumo-mwch1z9f';
+const VERSION = 'prumo-mwch9r32';
 const SHELL = [
   './',
   'index.html',
@@ -19,6 +19,8 @@ const SHELL = [
   'js/advisor-chart.js',
   'js/advisor.js',
   'js/ai.js',
+  'js/brands-data.js',
+  'js/brands.js',
   'js/chart.js',
   'js/cloud.js',
   'js/config.js',
@@ -56,6 +58,26 @@ const SHELL = [
   'js/views/personalizar.js',
   'js/views/retro.js',
   'js/views/welcome.js',
+  'icons/3d/bulb.png',
+  'icons/3d/calender.png',
+  'icons/3d/card.png',
+  'icons/3d/chart.png',
+  'icons/3d/chat-bubble.png',
+  'icons/3d/computer.png',
+  'icons/3d/dollar.png',
+  'icons/3d/fire.png',
+  'icons/3d/gift.png',
+  'icons/3d/lock.png',
+  'icons/3d/medal.png',
+  'icons/3d/money-bag.png',
+  'icons/3d/notebook.png',
+  'icons/3d/rocket.png',
+  'icons/3d/star.png',
+  'icons/3d/target.png',
+  'icons/3d/tick.png',
+  'icons/3d/travel.png',
+  'icons/3d/trophy.png',
+  'icons/3d/wallet.png',
 ];
 
 self.addEventListener('install', e => {

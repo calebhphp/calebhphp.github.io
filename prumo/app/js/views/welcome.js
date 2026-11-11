@@ -1,7 +1,8 @@
 // First access of a beta account: what to set up, in order, each step ticking itself off. Always skippable.
 import { t } from '../i18n.js';
 import { esc } from '../format.js';
-import { icon } from '../ui.js';
+import { icon, ico3d } from '../ui.js';
+const ICO = {"pw":"lock","income":"wallet","bills":"calender","budget":"target","first":"chat-bubble","goal":"money-bag"};
 
 export function steps(s) {
   const list = [];
@@ -24,7 +25,8 @@ export function welcomeCard(s, real) {
   const first = (s.profile.name || '').split(' ')[0];
   return `<section class="card span-12 welcome" aria-labelledby="wel-t">
     <div class="wel-head">
-      <div>
+      ${ico3d(all ? 'trophy' : 'rocket', 72, 'wel-art')}
+      <div class="grow">
         <p class="wel-kicker">${t('wel.kicker', { n: done, total: list.length })}</p>
         <h2 id="wel-t">${all ? t('wel.allDone') : t('wel.title', { name: esc(first) })}</h2>
         <p class="muted">${all ? t('wel.allSub') : t('wel.sub')}</p>
@@ -36,7 +38,7 @@ export function welcomeCard(s, real) {
     </div>
     <div class="meter xp wel-bar" role="progressbar" aria-label="${esc(t('wel.progress'))}" aria-valuemin="0" aria-valuemax="${list.length}" aria-valuenow="${done}"><i style="width:${done / list.length * 100}%"></i></div>
     <ol class="wel-steps">${list.map((x, i) => `<li class="${x.done ? 'is-done' : ''}">
-      <span class="wel-n" aria-hidden="true">${x.done ? icon('i-check') : i + 1}</span>
+      <span class="wel-n" aria-hidden="true">${x.done ? icon('i-check') : ico3d(ICO[x.k], 34)}</span>
       <span class="grow"><strong>${t('wel.' + x.k)}</strong><small>${t('wel.' + x.k + 'Hint')}</small></span>
       ${x.done ? `<span class="sr-only">${t('common.done')}</span>` : x.act.startsWith('href') ? `<a class="btn btn-sm" ${x.act}>${t('wel.go')}</a>` : `<button class="btn btn-sm" ${x.act}>${t('wel.go')}</button>`}
     </li>`).join('')}</ol>
