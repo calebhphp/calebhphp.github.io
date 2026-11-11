@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Prumo",
   "short_name": "Prumo",
-  "description": "Controle de gastos numa frase só. Roda no seu aparelho, sem conectar banco.",
+  "description": "Quanto ainda dá pra gastar hoje?. Roda no seu aparelho, sem conectar banco.",
   "lang": "pt-BR",
   "start_url": "./#inicio",
   "scope": "./",
