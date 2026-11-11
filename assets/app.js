@@ -1,7 +1,6 @@
 (() => {
   const SITE = window.SITE || {};
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const waLink = (text) => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(text)}`;
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -29,84 +28,23 @@
     sysDark.addEventListener('change', sync);
   });
 
-  // Launch promotion: top bar (dismissible) and a one-time card on the first visit
+  // Launch promotion: one static bar the visitor can close
   const P = SITE.promo;
   const store = { get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
   const promoLive = P && new Date() <= new Date(P.end + "T23:59:59");
   document.querySelectorAll("[data-promo-bar]").forEach((bar) => {
     if (!promoLive || store.get("promo-bar-closed") === P.end) { bar.hidden = true; return; }
-    const days = Math.max(0, Math.ceil((new Date(P.end + "T23:59:59") - new Date()) / 86400000));
-    const left = bar.querySelector("[data-days-left]"); if (left) left.textContent = P.left.replace("{d}", days);
     bar.querySelector("[data-promo-close]")?.addEventListener("click", () => { bar.hidden = true; store.set("promo-bar-closed", P.end); });
   });
-  const card = document.querySelector("[data-promo-card]");
-  if (card && promoLive && !store.get("promo-card-seen")) {
-    setTimeout(() => { card.hidden = false; store.set("promo-card-seen", "1"); }, 7000);
-    card.querySelectorAll("[data-promo-card-close]").forEach((b) => b.addEventListener("click", () => (card.hidden = true)));
-  }
-
-  // Translucent nav after leaving the top
+  // Hairline under the top bar after leaving the top
   const nav = document.querySelector('.nav');
-  if (nav) {
-    const onScroll = () => nav.classList.toggle('scrolled', scrollY > 12);
-    onScroll();
-    addEventListener('scroll', onScroll, { passive: true });
-  }
-
-  // Typewriter word in the hero (reflows naturally, the line stays the same height)
-  document.querySelectorAll('[data-typer]').forEach((el) => {
-    const words = el.dataset.typer.split('|');
-    if (reduce || words.length < 2) return;
-    let w = 0;
-    let len = words[0].length;
-    let deleting = true;
-    const tick = () => {
-      if (deleting) {
-        len--;
-        el.textContent = words[w].slice(0, len) || '​';
-        if (len <= 0) { deleting = false; w = (w + 1) % words.length; }
-        setTimeout(tick, 45);
-      } else {
-        const next = words[w];
-        len++;
-        el.textContent = next.slice(0, len);
-        if (len >= next.length) { deleting = true; setTimeout(tick, 1900); } else { setTimeout(tick, 85); }
-      }
-    };
-    setTimeout(tick, 1900);
-  });
-
-  // Live WhatsApp conversation in the phone
-  const chat = document.querySelector('[data-chat]');
-  if (chat && !reduce) {
-    const msgs = [...chat.querySelectorAll('.msg')];
-    chat.classList.add('animate');
-    const play = () => {
-      msgs.forEach((m) => m.classList.remove('show'));
-      msgs.forEach((m, n) => setTimeout(() => m.classList.add('show'), 500 + n * 1100));
-    };
-    play();
-    setInterval(play, 500 + msgs.length * 1100 + 4500);
-  }
-
-  // Spotlight on cards and magnetic buttons (mouse only)
-  if (finePointer) {
-    document.querySelectorAll('.card').forEach((card) => {
-      card.addEventListener('pointermove', (e) => {
-        const r = card.getBoundingClientRect();
-        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
-        card.style.setProperty('--my', `${e.clientY - r.top}px`);
-      });
-    });
-    if (!reduce) {
-      document.querySelectorAll('[data-magnetic]').forEach((btn) => {
-        btn.addEventListener('pointermove', (e) => {
-          const r = btn.getBoundingClientRect();
-          btn.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.18}px, ${(e.clientY - r.top - r.height / 2) * 0.25}px)`;
-        });
-        btn.addEventListener('pointerleave', () => (btn.style.transform = ''));
-      });
-    }
+  // (an observer on a 1px marker, so nothing forces a layout while the page loads)
+  if (nav && 'IntersectionObserver' in window) {
+    const mark = document.createElement('div');
+    mark.style.cssText = 'position:absolute;top:12px;left:0;width:1px;height:1px;pointer-events:none';
+    mark.setAttribute('aria-hidden', 'true');
+    document.body.prepend(mark);
+    new IntersectionObserver(([e]) => nav.classList.toggle('scrolled', !e.isIntersecting)).observe(mark);
   }
 
   // Google Analytics conversion: WhatsApp clicks
@@ -144,7 +82,7 @@
 
     const fill = (text, b) => String(text).replace(/\{clientes\}/g, b.clientes || '').replace(/\{cliente\}/g, b.cliente || '');
 
-    const render = () => {
+    const render = (animate) => {
       const biz = form.querySelector('input[name="negocio"]:checked')?.value;
       const probs = [...form.querySelectorAll('input[name="problema"]:checked')].map((i) => i.value);
       if (!biz || !probs.length) {
@@ -197,9 +135,9 @@
       onInput = update;
       out.addEventListener('input', update);
       update();
-      if (!reduce) { out.classList.remove('diag-anim'); void out.offsetWidth; out.classList.add('diag-anim'); }
+      if (!reduce && animate) out.animate([{ opacity: 0.4 }, { opacity: 1 }], { duration: 280, easing: 'ease-out' });
     };
-    form.addEventListener('change', render);
-    render();
+    form.addEventListener('change', () => render(true));
+    if (window.requestIdleCallback) requestIdleCallback(() => render(false), { timeout: 300 }); else setTimeout(() => render(false), 0);
   }
 })();

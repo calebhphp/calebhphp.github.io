@@ -3,3 +3,4 @@ Allow: /
 Disallow: /_build/
 
 Sitemap: https://matheusvillanova.com/sitemap.xml
+Sitemap: https://matheusvillanova.com/prumo/sitemap.xml

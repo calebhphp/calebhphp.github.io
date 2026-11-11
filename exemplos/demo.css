@@ -1,7 +1,8 @@
-/* Shared bar shown on top of every live example */
-.demo-bar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px max(16px,env(safe-area-inset-left));padding-top:max(10px,env(safe-area-inset-top));background:#0a0c18;color:#c9cde6;font:500 13px/1.3 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-.demo-bar b{color:#fff}
-.demo-bar a{color:#0a0c18;background:#b6f36b;padding:7px 12px;border-radius:999px;text-decoration:none;font-weight:700;white-space:nowrap}
-.demo-bar a.back{background:transparent;color:#c9cde6;padding:7px 4px}
+/* Shared bar shown on top of every live example (same graphite, sand and brass as the main site) */
+.demo-bar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px max(16px,env(safe-area-inset-left));padding-top:max(6px,env(safe-area-inset-top));background:#0f1311;color:#b3ae9c;font:500 13px/1.3 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.demo-bar b{color:#ede6d3}
+.demo-bar a{display:inline-flex;align-items:center;min-height:44px;color:#161a17;background:#e0b25a;padding:0 14px;border-radius:10px;text-decoration:none;font-weight:700;white-space:nowrap}
+.demo-bar a.back{background:transparent;color:#ede6d3;padding:0 8px}
+.demo-bar a:focus-visible{outline:2px solid #e0b25a;outline-offset:2px}
 .demo-bar .links{display:flex;gap:6px;align-items:center}
 @media (max-width:520px){.demo-bar .hide-sm{display:none}}

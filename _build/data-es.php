@@ -20,7 +20,6 @@ return [
         'landing-page' => [
             'name' => 'Landing page que vende',
             'short' => 'Una página pensada para convertir visitas en contactos, ideal para anuncios y campañas.',
-            'icon' => 'target',
             'price' => '490 €',
             'price_note' => 'pago único',
             'deadline' => '5 días',
@@ -29,7 +28,7 @@ return [
             'h1' => 'Una landing page que convierte visitas en clientes',
             'intro' => 'Pagas un anuncio, alguien hace clic y llega a una página lenta o confusa. La cierra y se va con la competencia. Una landing page bien hecha muestra lo que ofreces en segundos y lleva a la persona directa a tu WhatsApp.',
             'benefits' => [
-                ['Carga rápido en el móvil', 'La mayoría de las visitas llegan desde el móvil. La página carga en menos de 2 segundos.'],
+                ['Carga rápido en el móvil', 'La mayoría de las visitas llegan desde el móvil. La página está hecha para abrir rápido incluso con datos móviles.'],
                 ['Textos que convencen', 'Escribo los textos contigo, centrados en lo que hace decidir a tu cliente.'],
                 ['Contacto en un toque', 'Botón de WhatsApp con mensaje listo y un formulario sencillo.'],
                 ['Lista para anuncios', 'Etiquetas de Google y Meta instaladas para medir quién se convierte en cliente.'],
@@ -44,7 +43,6 @@ return [
         'site-profissional' => [
             'name' => 'Página web profesional',
             'short' => 'La dirección de tu negocio en internet: bonita, rápida y fácil de encontrar en Google.',
-            'icon' => 'globe',
             'price' => '790 €',
             'price_note' => 'pago único',
             'deadline' => '7 a 10 días',
@@ -68,7 +66,6 @@ return [
         'loja-virtual' => [
             'name' => 'Tienda online',
             'short' => 'Vende online las 24 horas, con tarjeta, Bizum y gastos de envío calculados solos.',
-            'icon' => 'bag',
             'price' => '1.290 €',
             'price_note' => 'pago único',
             'deadline' => '2 a 3 semanas',
@@ -92,7 +89,6 @@ return [
         'cardapio-digital' => [
             'name' => 'Carta y catálogo digital',
             'short' => 'Tu carta o catálogo en el móvil del cliente, con pedido directo por WhatsApp.',
-            'icon' => 'menu',
             'price' => '249 €',
             'price_note' => 'pago único',
             'deadline' => '3 días',
@@ -116,7 +112,6 @@ return [
         'agendamento-online' => [
             'name' => 'Sistema de reservas online',
             'short' => 'El cliente reserva solo, recibe un recordatorio y dejas de perder citas.',
-            'icon' => 'calendar',
             'price' => '390 €',
             'price_note' => '+ desde 29 €/mes',
             'deadline' => '5 a 7 días',
@@ -140,7 +135,6 @@ return [
         'atendimento-whatsapp' => [
             'name' => 'Chatbot y atención por WhatsApp',
             'short' => 'Responde, resuelve dudas y da citas al momento, incluso fuera de horario.',
-            'icon' => 'chat',
             'price' => '590 €',
             'price_note' => '+ desde 99 €/mes',
             'deadline' => '1 a 2 semanas',
@@ -164,7 +158,6 @@ return [
         'google-meu-negocio' => [
             'name' => 'Aparecer en Google y Maps',
             'short' => 'Tu negocio más fácil de encontrar en las búsquedas y en Maps de tu zona, con reseñas y fotos.',
-            'icon' => 'pin',
             'price' => '149 €',
             'price_note' => 'pago único',
             'deadline' => '3 días',
@@ -188,7 +181,6 @@ return [
         'cartao-digital' => [
             'name' => 'Tarjeta de visita digital y NFC',
             'short' => 'Tus datos, redes y WhatsApp en un enlace y en una tarjeta que se acerca al móvil.',
-            'icon' => 'card',
             'price' => '79 €',
             'price_note' => 'pago único · tarjeta NFC física opcional',
             'deadline' => '2 días',
@@ -212,7 +204,6 @@ return [
         'painel-estoque' => [
             'name' => 'Panel de stock y ventas',
             'short' => 'Ve al momento qué se vende, qué se está acabando y cuánto entró este mes.',
-            'icon' => 'chart',
             'price' => '790 €',
             'price_note' => 'pago único · alojamiento mensual aparte, presupuestado antes',
             'deadline' => '7 a 10 días',
@@ -236,7 +227,6 @@ return [
         'ferramentas-ia' => [
             'name' => 'Herramientas con inteligencia artificial',
             'short' => 'IA trabajando por ti: lee documentos, redacta presupuestos, ordena pedidos y responde emails.',
-            'icon' => 'spark',
             'price' => '690 €',
             'price_note' => 'desde, según la tarea',
             'deadline' => '1 a 3 semanas',
@@ -260,7 +250,6 @@ return [
         'analise-seguranca' => [
             'name' => 'Análisis de seguridad web',
             'short' => 'Descubre los fallos de tu web o sistema antes de que lo haga alguien con malas intenciones.',
-            'icon' => 'lock',
             'price' => '290 €',
             'price_note' => 'por web · informe en lenguaje sencillo',
             'deadline' => '3 a 5 días',
@@ -284,7 +273,6 @@ return [
         'sistema-sob-medida' => [
             'name' => 'Software a medida',
             'short' => 'Clientes, agenda, stock, finanzas y panel, según cómo funciona tu negocio.',
-            'icon' => 'grid',
             'price' => '2.490 €',
             'price_note' => 'desde · presupuesto cerrado en 2 días',
             'deadline' => 'según el proyecto',
@@ -308,7 +296,6 @@ return [
         'manutencao-e-suporte' => [
             'name' => 'Mantenimiento y soporte',
             'short' => 'Tu web siempre en línea, segura y al día, con alguien a quien llamar.',
-            'icon' => 'shield',
             'price' => '49 €',
             'price_note' => 'al mes',
             'deadline' => 'empieza ya',

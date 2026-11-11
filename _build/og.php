@@ -1,10 +1,12 @@
 <?php
 // Generates the 1200x630 share images (WhatsApp, LinkedIn, Facebook previews). Run: php _build/og.php
-// Needs the GD extension and the Segoe UI fonts that ship with Windows.
+// Needs the GD extension and the Segoe UI fonts that ship with Windows (or FONT_DIR pointing to a copy of them).
+// Same palette as the site: graphite background, sand text, one brass accent. No glow.
 
 $out = dirname(__DIR__).'/assets';
-$bold = 'C:/Windows/Fonts/segoeuib.ttf';
-$reg = 'C:/Windows/Fonts/segoeui.ttf';
+$fontDir = getenv('FONT_DIR') ?: 'C:/Windows/Fonts';
+$bold = "$fontDir/segoeuib.ttf";
+$reg = "$fontDir/segoeui.ttf";
 
 $cards = [
     'og.png' => ['SITES · LOJAS · AGENDA ONLINE · WHATSAPP', "Mais clientes para\no seu negócio.\nMenos trabalho para você.", 'Diagnóstico grátis em matheusvillanova.com'],
@@ -18,21 +20,14 @@ Menos trabajo para ti.", 'matheusvillanova.com/es'],
 foreach ($cards as $file => [$eyebrow, $title, $foot]) {
     $im = imagecreatetruecolor(1200, 630);
     imagealphablending($im, true);
-    imagefill($im, 0, 0, imagecolorallocate($im, 10, 12, 24));
+    imagefill($im, 0, 0, imagecolorallocate($im, 15, 19, 17));
 
-    // Soft aurora glows
-    foreach ([[180, 120, [109, 92, 255]], [1050, 160, [34, 211, 238]], [1150, 640, [182, 243, 107]]] as [$cx, $cy, $c]) {
-        for ($r = 420; $r > 0; $r -= 14) {
-            $alpha = (int) max(0, min(127, 127 - (420 - $r) * 0.07));
-            imagefilledellipse($im, $cx, $cy, $r * 2, $r * 2, imagecolorallocatealpha($im, $c[0], $c[1], $c[2], max($alpha, 123)));
-        }
-    }
+    $white = imagecolorallocate($im, 237, 230, 211);
+    $muted = imagecolorallocate($im, 179, 174, 156);
+    $brass = imagecolorallocate($im, 224, 178, 90);
 
-    $white = imagecolorallocate($im, 244, 245, 255);
-    $muted = imagecolorallocate($im, 165, 171, 200);
-    $lime = imagecolorallocate($im, 182, 243, 107);
-
-    imagettftext($im, 20, 0, 80, 110, $lime, $bold, $eyebrow);
+    imagefilledrectangle($im, 80, 96, 104, 99, $brass);
+    imagettftext($im, 20, 0, 118, 106, $brass, $bold, $eyebrow);
     $y = 210;
     foreach (explode("\n", $title) as $line) {
         imagettftext($im, 60, 0, 76, $y, $white, $bold, $line);

@@ -20,7 +20,6 @@ return [
         'landing-page' => [
             'name' => 'Landing page that sells',
             'short' => 'One page built to turn visitors into leads. Perfect for ads and campaigns.',
-            'icon' => 'target',
             'price' => 'US$ 490',
             'price_note' => 'one-time payment',
             'deadline' => '5 days',
@@ -29,7 +28,7 @@ return [
             'h1' => 'A landing page that turns visitors into customers',
             'intro' => 'You pay for an ad, someone clicks, and they land on a slow or confusing page. They leave and go to a competitor. A well-built landing page shows what you offer in seconds and takes people straight to a call, a message or a booking.',
             'benefits' => [
-                ['Loads fast on phones', 'Most visits come from a phone. The page is built to load in under 2 seconds.'],
+                ['Loads fast on phones', 'Most visits come from a phone. The page is built to open fast even on mobile data.'],
                 ['Copy that persuades', 'I write the text with you, focused on what makes your customer decide.'],
                 ['Contact in one tap', 'Call, text, WhatsApp or a short form, whatever your customers prefer.'],
                 ['Ready for ads', 'Google and Meta tracking installed so you can see which clicks become customers.'],
@@ -44,7 +43,6 @@ return [
         'site-profissional' => [
             'name' => 'Business website',
             'short' => 'Your business online: good-looking, fast and easy to find on Google.',
-            'icon' => 'globe',
             'price' => 'US$ 790',
             'price_note' => 'one-time payment',
             'deadline' => '7 to 10 days',
@@ -68,7 +66,6 @@ return [
         'loja-virtual' => [
             'name' => 'Online store',
             'short' => 'Sell online 24/7, with card, Apple Pay, Google Pay and automatic shipping rates.',
-            'icon' => 'bag',
             'price' => 'US$ 1,290',
             'price_note' => 'one-time payment',
             'deadline' => '2 to 3 weeks',
@@ -92,7 +89,6 @@ return [
         'cardapio-digital' => [
             'name' => 'Digital menu and catalog',
             'short' => 'Your menu or catalog on your customer\'s phone, with orders sent straight to you.',
-            'icon' => 'menu',
             'price' => 'US$ 249',
             'price_note' => 'one-time payment',
             'deadline' => '3 days',
@@ -116,7 +112,6 @@ return [
         'agendamento-online' => [
             'name' => 'Online booking',
             'short' => 'Clients book on their own, get reminders, and you stop losing appointments.',
-            'icon' => 'calendar',
             'price' => 'US$ 390',
             'price_note' => '+ from US$ 29/month',
             'deadline' => '5 to 7 days',
@@ -140,7 +135,6 @@ return [
         'atendimento-whatsapp' => [
             'name' => 'AI chatbot for WhatsApp and website',
             'short' => 'Answers questions and books appointments instantly, even after hours.',
-            'icon' => 'chat',
             'price' => 'US$ 590',
             'price_note' => '+ from US$ 99/month',
             'deadline' => '1 to 2 weeks',
@@ -164,7 +158,6 @@ return [
         'google-meu-negocio' => [
             'name' => 'Show up on Google and Maps',
             'short' => 'Your business easier to find in local searches and on Maps, with reviews and photos.',
-            'icon' => 'pin',
             'price' => 'US$ 149',
             'price_note' => 'one-time payment',
             'deadline' => '3 days',
@@ -188,7 +181,6 @@ return [
         'cartao-digital' => [
             'name' => 'Digital and NFC business card',
             'short' => 'Your contacts, socials and links in one link and a card you tap on a phone.',
-            'icon' => 'card',
             'price' => 'US$ 79',
             'price_note' => 'one-time payment · physical NFC card optional',
             'deadline' => '2 days',
@@ -212,7 +204,6 @@ return [
         'painel-estoque' => [
             'name' => 'Inventory and sales dashboard',
             'short' => 'See at a glance what sells, what is running low and how much came in this month.',
-            'icon' => 'chart',
             'price' => 'US$ 790',
             'price_note' => 'one-time payment · hosting billed monthly, quoted upfront',
             'deadline' => '7 to 10 days',
@@ -236,7 +227,6 @@ return [
         'ferramentas-ia' => [
             'name' => 'AI tools for your business',
             'short' => 'AI doing the busywork: reads documents, drafts quotes, sorts orders and answers emails.',
-            'icon' => 'spark',
             'price' => 'US$ 690',
             'price_note' => 'starting price, depends on the task',
             'deadline' => '1 to 3 weeks',
@@ -260,7 +250,6 @@ return [
         'analise-seguranca' => [
             'name' => 'Website security check',
             'short' => 'Find the weak spots in your website or system before someone with bad intentions does.',
-            'icon' => 'lock',
             'price' => 'US$ 290',
             'price_note' => 'per website · plain-English report',
             'deadline' => '3 to 5 days',
@@ -284,7 +273,6 @@ return [
         'sistema-sob-medida' => [
             'name' => 'Custom business software',
             'short' => 'Customers, scheduling, inventory, finances and dashboards, built around how you work.',
-            'icon' => 'grid',
             'price' => 'US$ 2,490',
             'price_note' => 'starting price · fixed quote within 2 days',
             'deadline' => 'depends on the project',
@@ -308,7 +296,6 @@ return [
         'manutencao-e-suporte' => [
             'name' => 'Maintenance and support',
             'short' => 'Your website always up, secure and current, with someone to call.',
-            'icon' => 'shield',
             'price' => 'US$ 49',
             'price_note' => 'per month',
             'deadline' => 'starts right away',
