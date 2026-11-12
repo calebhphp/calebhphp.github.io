@@ -407,3 +407,21 @@ main>section .eyebrow::before{content:counter(sec,decimal-leading-zero) " /";wid
 .soon li{display:grid;gap:8px;padding:22px;border:1px dashed var(--control);border-radius:var(--radius-sm)}
 .soon .tag{color:var(--accent);font-family:var(--mono)}
 .soon p{color:var(--muted);font-size:.95rem}
+
+/* ---------- Projects: filters + carousel (reference: scrolltide library) ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px}
+.fchip{min-height:44px;padding:8px 18px;border-radius:999px;border:1.5px solid var(--control);background:transparent;color:var(--text);font:600 .92rem var(--body);cursor:pointer;touch-action:manipulation;transition:background-color 150ms ease,color 150ms ease,border-color 150ms ease}
+.fchip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#0b0e0d}
+@media (hover:hover) and (pointer:fine){.fchip:hover{border-color:var(--accent)}}
+.carousel{position:relative}
+.demos{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;list-style:none;margin:0;padding:4px 2px 18px;scrollbar-width:thin;scrollbar-color:var(--control) transparent;-webkit-overflow-scrolling:touch}
+.demos:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.demo-item{flex:0 0 min(300px,74vw);scroll-snap-align:start;display:grid}
+.demo-item[hidden]{display:none}
+.demo-shot{aspect-ratio:3/4}
+.car-ctl{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:6px}
+.car-btn{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;border:1.5px solid var(--control);background:transparent;color:var(--text);font:600 1.3rem var(--body);cursor:pointer;touch-action:manipulation}
+.car-btn:disabled{opacity:.35;cursor:default}
+@media (hover:hover) and (pointer:fine){.car-btn:not(:disabled):hover{border-color:var(--accent);color:var(--accent)}}
+.car-count{min-width:5ch;text-align:center;font:500 .9rem var(--mono);color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.demos{scroll-behavior:smooth}}

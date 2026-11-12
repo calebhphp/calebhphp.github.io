@@ -140,4 +140,37 @@
     form.addEventListener('change', () => render(true));
     if (window.requestIdleCallback) requestIdleCallback(() => render(false), { timeout: 300 }); else setTimeout(() => render(false), 0);
   }
+
+  // Projects: filter chips and arrow buttons on the carousel
+  const car = document.querySelector('[data-carousel]');
+  if (car) {
+    const track = car.querySelector('[data-track]');
+    const prev = car.querySelector('[data-prev]');
+    const next = car.querySelector('[data-next]');
+    const count = car.querySelector('[data-count]');
+    const items = () => [...track.querySelectorAll('.demo-item')].filter((li) => !li.hidden);
+    const step = () => { const it = items()[0]; return it ? it.getBoundingClientRect().width + 20 : 300; };
+    const update = () => {
+      const list = items();
+      const i = Math.min(list.length, Math.max(1, Math.round(track.scrollLeft / step()) + 1));
+      if (count) count.textContent = list.length ? i + ' / ' + list.length : '';
+      if (prev) prev.disabled = track.scrollLeft < 4;
+      if (next) next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    };
+    prev && prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }));
+    next && next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }));
+    track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); next && next.click(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prev && prev.click(); }
+    });
+    document.querySelectorAll('[data-filters] .fchip').forEach((b) => b.addEventListener('click', () => {
+      document.querySelectorAll('[data-filters] .fchip').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      track.querySelectorAll('.demo-item').forEach((li) => { li.hidden = b.dataset.f !== 'all' && !li.dataset.cat.split(' ').includes(b.dataset.f); });
+      track.scrollLeft = 0;
+      update();
+    }));
+    update();
+    addEventListener('resize', update, { passive: true });
+  }
 })();

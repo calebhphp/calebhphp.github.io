@@ -174,9 +174,9 @@ function layout(string $l, string $key, array $o, string $body): string
     $home = url($l, 'home');
     $wa = e($o['wa'] ?? $n['wa_msg']);
     $aboutCur = $key === 'about' ? ' aria-current="page"' : '';
-    $nav = '<li class="hide-md hide-lg"><a href="'.$home.'#diagnostico">'.e($n['diag']).'</a></li>'
-        .'<li class="hide-md"><a href="'.$home.'#servicos">'.e($n['services']).'</a></li>'
+    $nav = '<li class="hide-md"><a href="'.$home.'#servicos">'.e($n['services']).'</a></li>'
         .'<li class="hide-md"><a href="'.$home.'#exemplos">'.e($n['examples']).'</a></li>'
+        .'<li class="hide-md hide-lg"><a href="'.$home.'#diagnostico">'.e($n['diag']).'</a></li>'
         .'<li class="hide-md"><a href="/prumo/">'.e($n['prumo']).'</a></li>'
         .'<li class="hide-md"><a href="'.url($l, 'about').'"'.$aboutCur.'>'.e($n['about']).'</a></li>'
         .'<li><nav class="langs" aria-label="'.e($n['lang']).'">'.$switch.'</nav></li>'
@@ -386,18 +386,23 @@ foreach (array_keys($LANGS) as $l) {
         $packs .= '<article class="pack'.($p['featured'] ? ' featured' : '').' reveal"><h3>'.e($p['name']).'</h3><p class="for">'.e($p['for']).'</p><div class="price"><b>'.e($p['price']).'</b><span>'.e($p['note']).'</span></div>'.($p['save'] ? '<span class="save">'.e($p['save']).'</span>' : '').'<ul>'.$items.'</ul><a class="btn '.($p['featured'] ? 'btn-wa' : 'btn-ghost').'" data-wa="'.e($s['pack_msg'].' '.$p['name'].'.').'">'.e($s['pack_cta'].' '.$p['name']).'</a></article>';
     }
     // Work: real products first, then live examples with fictional businesses. Each card shows a real screen of the page it opens.
-    $demoCard = fn (string $href, string $img, string $tag, bool $real, string $title, string $desc) => '<a class="demo" href="'.$href.'"><figure class="demo-shot"><img src="/assets/img/'.$img.'.webp" alt="" width="600" height="800" loading="lazy" decoding="async"></figure><div class="demo-body"><span class="tag'.($real ? ' real' : '').'">'.e($tag).'</span><h3>'.e($title).'</h3><p>'.e($desc).'</p><span class="go">'.e($real && ! str_starts_with($href, '/exemplos/') ? $u['work_go'] : $u['demo_go']).'</span></div></a>';
+    $demoCard = fn (string $href, string $img, string $tag, bool $real, string $title, string $desc, string $cat = '') => '<li class="demo-item" data-cat="'.$cat.'"><a class="demo" href="'.$href.'"><figure class="demo-shot"><img src="/assets/img/'.$img.'.webp" alt="" width="600" height="800" loading="lazy" decoding="async"></figure><div class="demo-body"><span class="tag'.($real ? ' real' : '').'">'.e($tag).'</span><h3>'.e($title).'</h3><p>'.e($desc).'</p><span class="go">'.e($real && ! str_starts_with($href, '/exemplos/') ? $u['work_go'] : $u['demo_go']).'</span></div></a></li>';
     $demoHtml = '';
     foreach ($u['work'] as [$href, $img, $tag, $title, $desc]) {
-        $demoHtml .= $demoCard($href, $img, $tag, true, $title, $desc);
+        $demoHtml .= $demoCard($href, $img, $tag, true, $title, $desc, 'produto');
     }
     $demoList = $u['demos'];
     usort($demoList, fn ($a, $b) => ($b[0] === 'loja-accra') <=> ($a[0] === 'loja-accra')); // the real brand right after my products
     foreach ($demoList as [$slug, $tag, $title, $desc]) {
         $real = $slug === 'loja-accra';
-        $demoHtml .= $demoCard('/exemplos/'.$slug.'/', 'ex-'.$slug, $real ? $tag : $tag.' · '.$u['demo_fict'], $real, $title, $desc);
+        $cats = ['cafeteria' => 'alimentacao', 'agenda' => 'beleza', 'fidelidade' => 'beleza', 'assistente' => 'saude', 'cartao' => 'saude', 'estoque' => 'loja', 'loja-accra' => 'loja', 'orcamento' => 'servicos'];
+        $demoHtml .= $demoCard('/exemplos/'.$slug.'/', 'ex-'.$slug, $real ? $tag : $tag.' · '.$u['demo_fict'], $real, $title, $desc, $cats[$slug] ?? 'servicos');
     }
     $soonHtml = implode('', array_map(fn ($x) => '<li><span class="tag">'.e($u['soon_label']).'</span><h3>'.e($x[0]).'</h3><p>'.e($x[1]).'</p></li>', $u['soon']));
+    $filterBtns = '<button type="button" class="fchip" data-f="all" aria-pressed="true">'.e($u['filters']['all']).'</button>';
+    foreach (['produto', 'alimentacao', 'beleza', 'saude', 'loja', 'servicos'] as $fk) {
+        $filterBtns .= '<button type="button" class="fchip" data-f="'.$fk.'" aria-pressed="false">'.e($u['filters'][$fk]).'</button>';
+    }
     $builds = implode('', array_map(fn ($b) => '<div class="build reveal"><b>'.e($b[0]).'</b><span>'.e($b[1]).'</span></div>', $u['builds']));
     $steps = implode('', array_map(fn ($st) => '<div class="step reveal"><h3>'.e($st[0]).'</h3><p>'.e($st[1]).'</p></div>', $s['steps']));
     $trust = implode('', array_map(fn ($t) => '<li>'.e($t).'</li>', $h['trust']));
@@ -436,21 +441,29 @@ foreach (array_keys($LANGS) as $l) {
   </div>
 </header>
 
-<section class="band launch" id="prumo" aria-labelledby="prumo-h">
+<section id="servicos" style="padding-top:0">
   <div class="wrap">
-    <div class="launch-top">
-      <div>
-        <span class="eyebrow">{$lz['eyebrow']}</span>
-        <h2 id="prumo-h">Prumo<small>{$lz['sub']}</small></h2>
-        <p>{$lz['p']}</p>
-      </div>
-      <div>
-        <ul>{$lzItems}</ul>
-        <div class="ctas"><a class="btn btn-primary" href="/prumo/app/">{$lz['cta']}</a><a class="btn btn-ghost" href="/prumo/#contact">{$lz['cta2']}</a></div>
-        <p class="note muted">{$lz['note']}</p>
-      </div>
+    <div class="section-head reveal"><span class="eyebrow">{$s['services_eyebrow']}</span><h2>{$s['services_h2']}</h2><p>{$s['services_p']}</p></div>
+    <div class="services">{$cards}</div>
+  </div>
+</section>
+
+<section id="exemplos" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal"><span class="eyebrow">{$s['examples_eyebrow']}</span><h2>{$s['examples_h2']}</h2><p>{$s['examples_p']}</p></div>
+    <div class="filters" role="group" aria-label="{$u['filters']['label']}" data-filters>{$filterBtns}</div>
+    <div class="carousel" data-carousel>
+      <ul class="demos" tabindex="0" aria-label="{$u['nav']['examples']}" data-track>{$demoHtml}</ul>
+      <div class="car-ctl"><button type="button" class="car-btn" data-prev aria-label="{$u['filters']['prev']}">←</button><span class="car-count" data-count aria-live="polite"></span><button type="button" class="car-btn" data-next aria-label="{$u['filters']['next']}">→</button></div>
     </div>
-    <ul class="shots" tabindex="0" aria-label="{$lz['sub']}">{$lzShots}</ul>
+    <ul class="soon" aria-label="{$u['soon_label']}">{$soonHtml}</ul>
+  </div>
+</section>
+
+<section class="dark" id="como-funciona">
+  <div class="wrap">
+    <div class="section-head reveal"><span class="eyebrow">{$s['how_eyebrow']}</span><h2>{$s['how_h2']}</h2><p>{$s['how_p']}</p></div>
+    <div class="steps">{$steps}</div>
   </div>
 </section>
 
@@ -475,25 +488,28 @@ foreach (array_keys($LANGS) as $l) {
   </div>
 </section>
 
-<section id="servicos" style="padding-top:0">
-  <div class="wrap">
-    <div class="section-head reveal"><span class="eyebrow">{$s['services_eyebrow']}</span><h2>{$s['services_h2']}</h2><p>{$s['services_p']}</p></div>
-    <div class="services">{$cards}</div>
-  </div>
-</section>
-
-<section id="exemplos" style="padding-top:0">
-  <div class="wrap">
-    <div class="section-head reveal"><span class="eyebrow">{$s['examples_eyebrow']}</span><h2>{$s['examples_h2']}</h2><p>{$s['examples_p']}</p></div>
-    <div class="demos">{$demoHtml}</div>
-    <ul class="soon" aria-label="{$u['soon_label']}">{$soonHtml}</ul>
-  </div>
-</section>
-
 <section id="pacotes" class="dark">
   <div class="wrap">
     <div class="section-head reveal"><span class="eyebrow">{$s['packages_eyebrow']}</span><h2>{$s['packages_h2']}</h2><p>{$s['packages_p']}</p></div>
     <div class="packages">{$packs}</div>
+  </div>
+</section>
+
+<section class="band launch" id="prumo" aria-labelledby="prumo-h">
+  <div class="wrap">
+    <div class="launch-top">
+      <div>
+        <span class="eyebrow">{$lz['eyebrow']}</span>
+        <h2 id="prumo-h">Prumo<small>{$lz['sub']}</small></h2>
+        <p>{$lz['p']}</p>
+      </div>
+      <div>
+        <ul>{$lzItems}</ul>
+        <div class="ctas"><a class="btn btn-primary" href="/prumo/app/">{$lz['cta']}</a><a class="btn btn-ghost" href="/prumo/#contact">{$lz['cta2']}</a></div>
+        <p class="note muted">{$lz['note']}</p>
+      </div>
+    </div>
+    <ul class="shots" tabindex="0" aria-label="{$lz['sub']}">{$lzShots}</ul>
   </div>
 </section>
 
@@ -510,13 +526,6 @@ foreach (array_keys($LANGS) as $l) {
         <p style="margin-top:14px"><a href="{$GLOBALS['aboutLinks'][$l]}" style="font-weight:700">{$s['about_link']}</a></p>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="dark" id="como-funciona">
-  <div class="wrap">
-    <div class="section-head reveal"><span class="eyebrow">{$s['how_eyebrow']}</span><h2>{$s['how_h2']}</h2><p>{$s['how_p']}</p></div>
-    <div class="steps">{$steps}</div>
   </div>
 </section>
 

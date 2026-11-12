@@ -29,7 +29,7 @@ return [
         'code' => 'pt', 'hreflang' => 'pt-BR', 'og_locale' => 'pt_BR', 'prefix' => '', 'label' => 'PT', 'name' => 'Português',
         'currency' => 'BRL', 'locale' => 'pt-BR', 'og' => 'og.png',
         'dir' => ['services' => 'servicos', 'niches' => 'para', 'about' => 'sobre', 'sst' => 'clinicas'],
-        'nav' => ['prumo' => 'Prumo', 'menu' => 'Menu', 'skip' => 'Pular para o conteúdo', 'diag' => 'Diagnóstico grátis', 'services' => 'Serviços', 'packages' => 'Pacotes', 'examples' => 'Exemplos', 'about' => 'Sobre mim', 'wa' => 'Falar no WhatsApp', 'wa_msg' => 'Olá, Matheus! Vi seu site e quero conversar.', 'theme' => 'Alternar tema claro e escuro', 'main' => 'Principal', 'lang' => 'Idioma'],
+        'nav' => ['prumo' => 'Prumo', 'menu' => 'Menu', 'skip' => 'Pular para o conteúdo', 'diag' => 'Diagnóstico grátis', 'services' => 'Serviços', 'packages' => 'Pacotes', 'examples' => 'Projetos', 'about' => 'Sobre mim', 'wa' => 'Falar no WhatsApp', 'wa_msg' => 'Olá, Matheus! Vi seu site e quero conversar.', 'theme' => 'Alternar tema claro e escuro', 'main' => 'Principal', 'lang' => 'Idioma'],
         'home' => [
             'eyebrow' => 'Sites, agenda online e WhatsApp para pequenos negócios',
             'title' => 'Criação de sites e automação de WhatsApp | Matheus Villanova',
@@ -68,6 +68,7 @@ return [
             ['/produtos/agenda/', 'ex-prod-agenda', 'Produto meu · à venda', 'Agenda Online pronta', 'Modelo para salão, barbearia e estética: o cliente escolhe o horário e o pedido chega no WhatsApp. R$ 47.'],
         ],
         'soon_label' => 'Em breve', 'soon' => [['Herança', 'Diagnóstico de sistema PHP antigo: mapa de risco, testes que travam o comportamento atual e prova de que a migração não quebrou nada.'], ['Raio-X de app feito com IA', 'Auditoria em português para quem montou o app com IA: mostra a falha, explica o risco e entrega a correção pronta.']],
+        'filters' => ['all' => 'Todos', 'produto' => 'Meus produtos', 'alimentacao' => 'Alimentação', 'beleza' => 'Beleza e bem-estar', 'saude' => 'Saúde', 'loja' => 'Lojas', 'servicos' => 'Serviços', 'prev' => 'Projeto anterior', 'next' => 'Próximo projeto', 'of' => 'de', 'label' => 'Filtrar projetos'],
         'demo_fict' => 'negócio fictício', 'work_go' => 'Abrir →', 'demo_alt' => 'Tela de celular: {name}',
         'demos' => [
             ['cafeteria', 'Site + cardápio digital', 'Cafeteria com pedido no WhatsApp', 'O cliente monta o pedido e ele chega pronto no WhatsApp, sem comissão.'],
@@ -115,7 +116,7 @@ return [
         'currency' => 'USD', 'locale' => 'en-US', 'og' => 'og-en.png',
         'dir' => ['services' => 'services', 'niches' => 'for', 'about' => 'about', 'sst' => 'occupational-health'],
         'slugs' => ['landing-page' => 'landing-page', 'site-profissional' => 'small-business-website', 'loja-virtual' => 'online-store', 'cardapio-digital' => 'digital-menu', 'agendamento-online' => 'online-booking', 'atendimento-whatsapp' => 'ai-chatbot', 'google-meu-negocio' => 'google-business-profile', 'cartao-digital' => 'digital-business-card', 'painel-estoque' => 'inventory-dashboard', 'ferramentas-ia' => 'ai-tools', 'analise-seguranca' => 'website-security-check', 'sistema-sob-medida' => 'custom-software', 'manutencao-e-suporte' => 'website-care-plan', 'clinicas-e-consultorios' => 'clinics', 'restaurantes-e-delivery' => 'restaurants', 'saloes-e-barbearias' => 'salons-and-barbershops', 'pet-shops' => 'pet-businesses', 'lojas-e-comercio' => 'retail-stores', 'prestadores-de-servico' => 'service-businesses', 'cafeterias-e-padarias' => 'cafes-and-bakeries', 'dentistas' => 'dentists', 'estudios-e-academias' => 'fitness-studios', 'escolas-e-professores' => 'schools-and-teachers'],
-        'nav' => ['prumo' => 'Prumo', 'menu' => 'Menu', 'skip' => 'Skip to content', 'diag' => 'Free plan', 'services' => 'Services', 'packages' => 'Packages', 'examples' => 'Examples', 'about' => 'About', 'wa' => 'Message me', 'wa_msg' => 'Hi Matheus! I found your website and would like to talk.', 'theme' => 'Toggle light and dark theme', 'main' => 'Main', 'lang' => 'Language'],
+        'nav' => ['prumo' => 'Prumo', 'menu' => 'Menu', 'skip' => 'Skip to content', 'diag' => 'Free plan', 'services' => 'Services', 'packages' => 'Packages', 'examples' => 'Projects', 'about' => 'About', 'wa' => 'Message me', 'wa_msg' => 'Hi Matheus! I found your website and would like to talk.', 'theme' => 'Toggle light and dark theme', 'main' => 'Main', 'lang' => 'Language'],
         'home' => [
             'eyebrow' => 'Websites, online booking and WhatsApp for small businesses',
             'title' => 'Small Business Websites & AI Chatbots | Matheus Villanova',
@@ -152,6 +153,7 @@ return [
             ['/prumo/', 'prumo-lancar', 'My product · in demo', 'Prumo, expense tracker', 'Personal finance app: type your expenses in one sentence and see how much you can spend per day (in Portuguese).'],
         ],
         'soon_label' => 'Coming soon', 'soon' => [['Herança', 'Health check for old PHP systems: a risk map, tests that lock in today\'s behavior and proof that the migration broke nothing.'], ['AI-built app X-ray', 'An audit for apps built with AI: it shows the flaw, explains the risk and hands over the fix.']],
+        'filters' => ['all' => 'All', 'produto' => 'My products', 'alimentacao' => 'Food', 'beleza' => 'Beauty and wellness', 'saude' => 'Health', 'loja' => 'Retail', 'servicos' => 'Services', 'prev' => 'Previous project', 'next' => 'Next project', 'of' => 'of', 'label' => 'Filter projects'],
         'demo_fict' => 'fictional business', 'work_go' => 'Open →', 'demo_alt' => 'Phone screen: {name}',
         'demos' => [
             ['cafeteria', 'Website + digital menu', 'Café with WhatsApp ordering', 'Customers build their order and it arrives ready in your WhatsApp, with no commission.'],
@@ -199,7 +201,7 @@ return [
         'currency' => 'EUR', 'locale' => 'es-ES', 'og' => 'og-es.png',
         'dir' => ['services' => 'servicios', 'niches' => 'para', 'about' => 'sobre-mi', 'sst' => 'salud-laboral'],
         'slugs' => ['landing-page' => 'landing-page', 'site-profissional' => 'diseno-web-pymes', 'loja-virtual' => 'tienda-online', 'cardapio-digital' => 'carta-digital-qr', 'agendamento-online' => 'reservas-online', 'atendimento-whatsapp' => 'chatbot-whatsapp', 'google-meu-negocio' => 'perfil-de-empresa-google', 'cartao-digital' => 'tarjeta-de-visita-digital', 'painel-estoque' => 'panel-de-inventario', 'ferramentas-ia' => 'herramientas-ia', 'analise-seguranca' => 'auditoria-seguridad-web', 'sistema-sob-medida' => 'software-a-medida', 'manutencao-e-suporte' => 'mantenimiento-web', 'clinicas-e-consultorios' => 'clinicas', 'restaurantes-e-delivery' => 'restaurantes', 'saloes-e-barbearias' => 'peluquerias-y-barberias', 'pet-shops' => 'tiendas-de-mascotas', 'lojas-e-comercio' => 'comercios', 'prestadores-de-servico' => 'profesionales', 'cafeterias-e-padarias' => 'cafeterias-y-panaderias', 'dentistas' => 'dentistas', 'estudios-e-academias' => 'estudios-y-gimnasios', 'escolas-e-professores' => 'escuelas-y-profesores'],
-        'nav' => ['prumo' => 'Prumo', 'menu' => 'Menú', 'skip' => 'Saltar al contenido', 'diag' => 'Plan gratis', 'services' => 'Servicios', 'packages' => 'Paquetes', 'examples' => 'Ejemplos', 'about' => 'Sobre mí', 'wa' => 'Escríbeme', 'wa_msg' => '¡Hola, Matheus! Vi tu web y me gustaría hablar.', 'theme' => 'Cambiar tema claro y oscuro', 'main' => 'Principal', 'lang' => 'Idioma'],
+        'nav' => ['prumo' => 'Prumo', 'menu' => 'Menú', 'skip' => 'Saltar al contenido', 'diag' => 'Plan gratis', 'services' => 'Servicios', 'packages' => 'Paquetes', 'examples' => 'Proyectos', 'about' => 'Sobre mí', 'wa' => 'Escríbeme', 'wa_msg' => '¡Hola, Matheus! Vi tu web y me gustaría hablar.', 'theme' => 'Cambiar tema claro y oscuro', 'main' => 'Principal', 'lang' => 'Idioma'],
         'home' => [
             'eyebrow' => 'Webs, reservas online y WhatsApp para pequeñas empresas',
             'title' => 'Diseño web y chatbots para pymes | Matheus Villanova',
@@ -236,6 +238,7 @@ return [
             ['/prumo/', 'prumo-lancar', 'Producto mío · en demo', 'Prumo, control de gastos', 'App de finanzas personales: escribe tus gastos en una frase y mira cuánto puedes gastar al día (en portugués).'],
         ],
         'soon_label' => 'Próximamente', 'soon' => [['Herança', 'Diagnóstico de sistemas PHP antiguos: mapa de riesgo, pruebas que fijan el comportamiento actual y prueba de que la migración no rompió nada.'], ['Rayos X de app hecha con IA', 'Auditoría para apps creadas con IA: muestra la falla, explica el riesgo y entrega la corrección.']],
+        'filters' => ['all' => 'Todos', 'produto' => 'Mis productos', 'alimentacao' => 'Comida', 'beleza' => 'Belleza y bienestar', 'saude' => 'Salud', 'loja' => 'Tiendas', 'servicos' => 'Servicios', 'prev' => 'Proyecto anterior', 'next' => 'Proyecto siguiente', 'of' => 'de', 'label' => 'Filtrar proyectos'],
         'demo_fict' => 'negocio ficticio', 'work_go' => 'Abrir →', 'demo_alt' => 'Pantalla de móvil: {name}',
         'demos' => [
             ['cafeteria', 'Web + carta digital', 'Cafetería con pedidos por WhatsApp', 'El cliente arma su pedido y llega listo a tu WhatsApp, sin comisiones.'],
