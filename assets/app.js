@@ -234,12 +234,12 @@
         ctx.fillStyle = f > 0.15 ? ac : tc;
         ctx.beginPath(); ctx.arc(ox, oy, 1 + 1.8 * f, 0, 6.283); ctx.fill();
       }
-      raf = on ? requestAnimationFrame(draw) : 0;
+      raf = on && tx > -999 ? requestAnimationFrame(draw) : 0;
     };
     size();
     new IntersectionObserver(([e]) => { on = e.isIntersecting; if (on && !raf) raf = requestAnimationFrame(draw); }).observe(hero);
-    hero.addEventListener('pointermove', (e) => { const r = hero.getBoundingClientRect(); tx = e.clientX - r.left; ty = e.clientY - r.top; if (px < -999) { px = tx; py = ty; } }, { passive: true });
-    hero.addEventListener('pointerleave', () => { tx = ty = -9999; px = py = -9999; });
+    hero.addEventListener('pointermove', (e) => { const r = hero.getBoundingClientRect(); tx = e.clientX - r.left; ty = e.clientY - r.top; if (px < -999) { px = tx; py = ty; } if (!raf && on) raf = requestAnimationFrame(draw); }, { passive: true });
+    hero.addEventListener('pointerleave', () => { tx = ty = -9999; px = py = -9999; if (!raf) raf = requestAnimationFrame(draw); });
     addEventListener('resize', size, { passive: true });
   }
 
