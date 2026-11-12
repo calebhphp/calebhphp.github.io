@@ -4,7 +4,7 @@ import { t } from '../i18n.js';
 // strip of days instead of a bar chart.
 import { spending, monthSummary } from '../finance.js';
 import { money, moneyHtml, pct, esc, isoDay, ymOf, monthLabel } from '../format.js';
-import { icon } from '../ui.js';
+import { icon, ico3d } from '../ui.js';
 import { getPrefs } from '../prefs.js';
 
 const TXT = {
@@ -57,7 +57,7 @@ function plumb(dev) {
   </figure>`;
 }
 
-export function todayHero(s, ym) {
+export function todayHero(s, ym, compact = false) {
   const sp = spending(s, ym);
   const now = new Date();
   const current = ymOf(now) === ym;
@@ -80,7 +80,7 @@ export function todayHero(s, ym) {
         ${mine.length ? mine.slice(-5).reverse().map(x => `<span class="today-chip">${esc(x.desc)} <b>${money(x.amount)}</b></span>`).join('') : `<span class="muted small">${tx('none')}</span>`}
       </div>
     </div>
-    ${sp.budget > 0 ? `<div class="today-num">
+    ${compact && sp.budget > 0 ? '' : sp.budget > 0 ? `<div class="today-num">
       ${plumb(sp.pace - sp.elapsed)}
       <div>
         <span class="${left < 0 ? 'neg' : ''}">${moneyHtml(Math.abs(left), 'money-xl')}</span>
@@ -121,8 +121,8 @@ export function monthCard(s, ym, span = 'span-8') {
 // Cards in the spirit of the best finance apps: two money tiles, a category ring, a status card and a small
 // spending-vs-plan line. Same data as everything else on the screen, shown at a glance.
 const TXT2 = {
-  pt: { in: 'Entrou este mês', out: 'Gastou este mês', of: 'de {v} previstos', ring: 'Pra onde foi', total: 'gasto', others: 'Outros', okT: 'Você está no ritmo', okS: '{v} abaixo do ritmo do mês.', fastT: 'Gasto à frente do mês', fastS: '{v} acima do ritmo do mês.', lineA: 'Seu gasto no mês', lineB: 'Ritmo ideal' },
-  en: { in: 'Income this month', out: 'Spent this month', of: 'of {v} planned', ring: 'Where it went', total: 'spent', others: 'Other', okT: 'You are on pace', okS: '{v} under the month\'s pace.', fastT: 'Spending ahead of the month', fastS: '{v} over the month\'s pace.', lineA: 'Your spending', lineB: 'Ideal pace' },
+  pt: { today: 'Pode gastar hoje', todayOk: 'ainda dentro do teto', todayOver: 'acima do teto de hoje', fc: 'Fechamento previsto', fcSub: 'sobra prevista no fim do mês', fcOk: 'No ritmo de hoje você usa {p} do teto de gastos do mês. Tá tranquilo.', fcWarn: 'No ritmo de hoje você passa {v} do teto de gastos. Dá pra corrigir.', fcBad: 'Você já passou do teto de gastos do mês em {v}.', fcBar: 'do teto usado', in: 'Entrou este mês', out: 'Gastou este mês', of: 'de {v} previstos', ring: 'Pra onde foi', total: 'gasto', others: 'Outros', okT: 'Você está no ritmo', okS: '{v} abaixo do ritmo do mês.', fastT: 'Gasto à frente do mês', fastS: '{v} acima do ritmo do mês.', lineA: 'Seu gasto no mês', lineB: 'Ritmo ideal' },
+  en: { today: 'Free to spend today', todayOk: 'still under the cap', todayOver: 'over today\'s cap', fc: 'Expected month end', fcSub: 'expected left over at month end', fcOk: 'At today\'s pace you use {p} of the month\'s spending cap. All good.', fcWarn: 'At today\'s pace you go {v} over the spending cap. Fixable.', fcBad: 'You are already {v} over the month\'s spending cap.', fcBar: 'of the cap used', in: 'Income this month', out: 'Spent this month', of: 'of {v} planned', ring: 'Where it went', total: 'spent', others: 'Other', okT: 'You are on pace', okS: '{v} under the month\'s pace.', fastT: 'Spending ahead of the month', fastS: '{v} over the month\'s pace.', lineA: 'Your spending', lineB: 'Ideal pace' },
 };
 const t2 = (k, vars = {}) => (TXT2[getPrefs().lang === 'en' ? 'en' : 'pt'][k] || k).replace(/\{(\w+)\}/g, (_, n) => vars[n]);
 const RING = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--brass)'];
@@ -130,9 +130,15 @@ const RING = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--brass)'
 export function statTiles(s, ym) {
   const x = monthSummary(s, ym);
   const sp = spending(s, ym);
+  const now = new Date();
+  const today = isoDay(now);
+  const spentToday = ymOf(now) === ym ? s.tx.filter(g => g.date === today).reduce((a, g) => a + g.amount, 0) : 0;
+  const cap = sp.daysLeft ? (sp.budget - sp.spent + spentToday) / sp.daysLeft : 0;
+  const left = cap - spentToday;
   return `<div class="tiles span-12">
-    <div class="tile"><span class="tile-ic is-in">${icon('i-down')}</span><div><small>${t2('in')}</small><b>${money(x.income)}</b></div></div>
-    <div class="tile"><span class="tile-ic is-out">${icon('i-up')}</span><div><small>${t2('out')}</small><b>${money(sp.spent)}</b><em>${t2('of', { v: money(sp.budget) })}</em></div></div>
+    <div class="tile t-in">${ico3d('money-bag', 52)}<div><small>${t2('in')}</small><b>${money(x.income)}</b></div></div>
+    <div class="tile t-out">${ico3d('card', 52)}<div><small>${t2('out')}</small><b>${money(sp.spent)}</b><em>${t2('of', { v: money(sp.budget) })}</em></div></div>
+    <div class="tile t-today">${ico3d('dollar', 52)}<div><small>${t2('today')}</small><b class="${left < 0 ? 'neg' : ''}">${money(Math.abs(left))}</b><em>${t2(left < 0 ? 'todayOver' : 'todayOk')}</em></div></div>
   </div>`;
 }
 
@@ -185,4 +191,31 @@ export function trackCard(s, ym, span = 'span-4') {
     <svg class="spark" viewBox="0 0 220 60" role="img" aria-label="${esc(t2('lineA'))}"><line x1="0" y1="56" x2="220" y2="${Y(sp.budget).toFixed(1)}" class="sp-ideal"/><path d="${area}" class="sp-area"/><path d="${line}" class="sp-line"/></svg>
     <p class="spark-key"><span><i class="k-line"></i>${t2('lineA')}</span><span><i class="k-ideal"></i>${t2('lineB')}</span></p>
   </section>`;
+}
+
+// The radar: the plumb bob, big and centered, shows at a glance whether the month hangs straight.
+export function radarCard(s, ym) {
+  const sp = spending(s, ym);
+  const x = monthSummary(s, ym);
+  if (!sp.budget) return '';
+  const dev = sp.pace - sp.elapsed;
+  const proj = sp.elapsed > 0.04 ? sp.spent / sp.elapsed : sp.spent;
+  const over = proj - sp.budget;
+  const state = sp.pace > 1 ? 'bad' : over > sp.budget * 0.03 ? 'warn' : 'ok';
+  const end = x.free + (sp.budget - proj);
+  const msg = state === 'bad' ? t2('fcBad', { v: money(sp.spent - sp.budget) }) : state === 'warn' ? t2('fcWarn', { v: money(over) }) : t2('fcOk', { p: pct(Math.min(1, proj / sp.budget)) });
+  return `<section class="card span-12 radar is-${state}" aria-label="${esc(t2('fc'))}">
+    <div class="radar-art">${plumb(dev)}</div>
+  </section>
+  <section class="card span-12 forecast is-${state}" aria-labelledby="fc-t">
+    <div class="fc-top"><div><h2 id="fc-t">${t2('fc')}</h2><p class="fc-sub">${t2('fcSub')}</p></div>${ico3d(state === 'ok' ? 'trophy' : state === 'warn' ? 'bulb' : 'fire', 56)}</div>
+    <p class="fc-val ${end < 0 ? 'neg' : ''}">${money(end)}</p>
+    <div class="fc-bar" role="img" aria-label="${esc(pct(Math.min(1, sp.pace)))} ${esc(t2('fcBar'))}"><b style="width:${Math.min(100, sp.pace * 100).toFixed(1)}%"></b><i style="left:${Math.min(100, sp.elapsed * 100).toFixed(1)}%"></i></div>
+    <p class="fc-msg">${msg}</p>
+  </section>`;
+}
+
+export function homeTop(s) {
+  const name = (s.profile.name || '').trim();
+  return `<div class="home-top"><a class="home-brand" href="#inicio" aria-label="Prumo"><img src="logo.svg" width="34" height="34" alt=""><span>prumo</span></a><span class="home-avatar" aria-hidden="true">${esc((name[0] || 'P').toUpperCase())}</span></div>`;
 }

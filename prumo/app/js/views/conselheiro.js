@@ -3,7 +3,7 @@ import { t } from '../i18n.js';
 import { insights } from '../finance.js';
 import { money, pct, monthIn } from '../format.js';
 import { head } from './parts.js';
-import { icon } from '../ui.js';
+import { icon, ico3d } from '../ui.js';
 import { hasAI } from '../ai.js';
 import { chatHtml, mountChat } from '../advisor.js';
 import { say } from '../tone.js';
@@ -22,11 +22,12 @@ export function insightText(i) {
   };
   return map[i.k] ? map[i.k]() : '';
 }
+const insightArt = { catHot: 'fire', perDay: 'calculator', drop: 'chart', subs: 'card', debt: 'lock', mei: 'notebook', runway: 'rocket', fx: 'dollar' };
 const insightLink = { catHot: '#gastos', perDay: '#gastos', drop: '#entradas', subs: '#assinaturas', debt: '#inicio', mei: '#mei', fx: '#assinaturas', runway: '#entradas' };
 
 export function insightList(s, ym, n = 6) {
   return `<ul class="insights">${insights(s, ym).slice(0, n).map(i => `<li class="ins ins-${i.level}">
-    <span class="ins-dot" aria-hidden="true"></span><p>${insightText(i)}</p>
+    <span class="ins-art" aria-hidden="true">${ico3d(insightArt[i.k] || 'bulb', 38)}</span><p>${insightText(i)}</p>
     <a class="link" href="${insightLink[i.k]}">${t('ins.open')}</a></li>`).join('')}</ul>`;
 }
 
@@ -35,15 +36,15 @@ let detach = null;
 export function render(s, ctx) {
   return `${head(t('nav.conselheiro'), t('ai.sub'))}
   <div class="grid">
-    <section class="card span-5" aria-labelledby="see-t">
-      <div class="card-head"><h2 id="see-t">${t('ai.seeing')}</h2></div>
-      ${insightList(s, ctx.ym)}
-    </section>
     <section class="card span-7 chat" id="page-chat" aria-labelledby="chat-t">
-      <div class="card-head"><h2 id="chat-t">${t('ai.chatTitle')}</h2>
+      <div class="card-head ai-head"><span class="ai-art">${ico3d('chat-bubble', 46)}</span><h2 id="chat-t">${t('ai.chatTitle')}</h2>
         <span class="badge ai-state ${hasAI() ? 'b-xp' : ''}">${icon(hasAI() ? 'i-spark' : 'i-chat')}${t(hasAI() ? 'ai.live' : 'ai.offline')}</span></div>
       ${chatHtml('pc')}
       ${hasAI() ? '' : `<p class="muted small">${t('ai.offlineHint')}</p>`}
+    </section>
+    <section class="card span-5" aria-labelledby="see-t">
+      <div class="card-head"><h2 id="see-t">${t('ai.seeing')}</h2></div>
+      ${insightList(s, ctx.ym)}
     </section>
   </div>`;
 }

@@ -7,7 +7,7 @@ import { earn } from '../actions.js';
 import * as store from '../store.js';
 import { head, heroFlow, levelCard, billsCard, meiCard, goalsCard, alerts, subsCard } from './parts.js';
 import { insightList } from './conselheiro.js';
-import { todayHero, monthCard, statTiles, ringCard, trackCard } from './home-hero.js';
+import { todayHero, monthCard, statTiles, ringCard, trackCard, radarCard, homeTop } from './home-hero.js';
 import { quizBanner } from './comecar.js';
 import { icon, toast } from '../ui.js';
 import { say } from '../tone.js';
@@ -32,12 +32,13 @@ export function render(s, ctx) {
   const sp = spending(s, ctx.ym);
   const first = s.profile.name.split(' ')[0];
   const fresh = isReal() && !sp.budget && !s.incomes.length;
-  return `${head(fresh ? t('home.hNew', { name: esc(first) }) : headline(s, ctx.ym), fresh ? t('home.sNew') : say('home.sub', { name: esc(first), v: money(Math.max(0, sp.perDayLeft)) }))}
+  return `${homeTop(s)}${head(fresh ? t('home.hNew', { name: esc(first) }) : headline(s, ctx.ym), fresh ? t('home.sNew') : say('home.sub', { name: esc(first), v: money(Math.max(0, sp.perDayLeft)) }))}
   <div class="grid">
+    ${radarCard(s, ctx.ym)}
     ${welcomeCard(s, isReal())}
     ${isReal() ? '' : quizBanner(s)}
     ${retroBanner(s, ctx)}
-    ${todayHero(s, ctx.ym)}
+    ${todayHero(s, ctx.ym, true)}
     ${statTiles(s, ctx.ym)}
     ${ringCard(s, ctx.ym, "span-8")}
     ${trackCard(s, ctx.ym, "span-4")}
