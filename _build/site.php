@@ -223,8 +223,7 @@ function layout(string $l, string $key, array $o, string $body): string
 <meta name="description" content="{$desc}">
 {$canonicalTag}
 {$alts}
-<meta name="theme-color" content="#f5f6f5" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0f1311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0b0e0d">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="{$u['og_locale']}">
@@ -404,6 +403,11 @@ foreach (array_keys($LANGS) as $l) {
     $chat = implode('', array_map(fn ($m) => '<div class="msg '.$m[0].'">'.e($m[1]).'<time>'.e($m[2]).'</time></div>', $h['chat']));
     $lz = $u['launch'];
     $lzItems = implode('', array_map(fn ($i) => '<li>'.e($i).'</li>', $lz['items']));
+    $shotFiles = ['home-m', 'lancar', 'chat-m', 'fila', 'tom', 'retro-char'];
+    $lzShots = '';
+    foreach ($lz['shots'] as $k => $cap) {
+        $lzShots .= '<li><img src="/assets/img/prumo-'.$shotFiles[$k].'.webp" alt="" width="520" height="925" loading="lazy" decoding="async"><span>'.e($cap).'</span></li>';
+    }
     $dgu = $u['diag'];
 
     $body = <<<HTML
@@ -433,15 +437,19 @@ foreach (array_keys($LANGS) as $l) {
 
 <section class="band launch" id="prumo" aria-labelledby="prumo-h">
   <div class="wrap">
-    <div>
-      <span class="eyebrow">{$lz['eyebrow']}</span>
-      <h2 id="prumo-h">Prumo<small>{$lz['sub']}</small></h2>
-      <p>{$lz['p']}</p>
-      <ul>{$lzItems}</ul>
-      <div class="ctas"><a class="btn btn-primary" href="/prumo/app/">{$lz['cta']}</a><a class="btn btn-ghost" href="/prumo/">{$lz['cta2']}</a></div>
-      <p class="note muted">{$lz['note']}</p>
+    <div class="launch-top">
+      <div>
+        <span class="eyebrow">{$lz['eyebrow']}</span>
+        <h2 id="prumo-h">Prumo<small>{$lz['sub']}</small></h2>
+        <p>{$lz['p']}</p>
+      </div>
+      <div>
+        <ul>{$lzItems}</ul>
+        <div class="ctas"><a class="btn btn-primary" href="/prumo/app/">{$lz['cta']}</a><a class="btn btn-ghost" href="/prumo/#contact">{$lz['cta2']}</a></div>
+        <p class="note muted">{$lz['note']}</p>
+      </div>
     </div>
-    <figure class="shot"><img src="/assets/img/prumo-app.webp" alt="{$lz['alt']}" width="600" height="800" loading="lazy" decoding="async"></figure>
+    <ul class="shots" tabindex="0" aria-label="{$lz['sub']}">{$lzShots}</ul>
   </div>
 </section>
 

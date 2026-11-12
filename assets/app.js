@@ -15,7 +15,7 @@
   // Light / dark theme: follows the system until the visitor picks one
   const root = document.documentElement;
   const sysDark = matchMedia('(prefers-color-scheme: dark)');
-  const current = () => root.dataset.theme || (sysDark.matches ? 'dark' : 'light');
+  const current = () => root.dataset.theme || 'dark';
   document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
     const sync = () => btn.setAttribute('aria-pressed', current() === 'dark');
     sync();
