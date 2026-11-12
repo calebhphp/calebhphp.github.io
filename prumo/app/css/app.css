@@ -1006,3 +1006,6 @@ html[data-motion="off"] *, html[data-motion="off"] ::view-transition-old(root), 
 .g-streak { background: linear-gradient(160deg, var(--warn-soft), var(--surface) 80%); }
 .g-missions { background: linear-gradient(160deg, var(--good-soft), var(--surface) 80%); }
 .g-streak .i3d, .g-missions .i3d { filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .22)); }
+.radar .plumb { width: min(44vw, 160px); }
+.radar .plumb svg { max-height: 176px; }
+@media (min-width: 981px) { .radar .plumb { width: 190px; } }

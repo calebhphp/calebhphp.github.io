@@ -1,6 +1,6 @@
 // Offline: the whole app is cached on install, so it keeps working with the wi-fi off.
 // Data never goes through here; it lives in localStorage. Bump VERSION on every deploy.
-const VERSION = 'prumo-mwe184lq';
+const VERSION = 'prumo-mwe1pasy';
 const SHELL = [
   './',
   'index.html',
