@@ -894,8 +894,8 @@ html[data-motion="off"] *, html[data-motion="off"] ::view-transition-old(root), 
 .tile em { display: block; font-style: normal; color: var(--ink-3); font-size: .78rem; }
 .ring-card { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 10px 28px; }
 .ring-card .card-head { grid-column: 1 / -1; }
-.ring { position: relative; width: 176px; height: 176px; }
-.ring svg { width: 100%; height: 100%; display: block; }
+.cat-ring { position: relative; width: 176px; height: 176px; }
+.cat-ring svg { width: 100%; height: 100%; display: block; }
 .ring-mid { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
 .ring-mid b { font-size: 1.15rem; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .ring-mid small { color: var(--ink-3); font-size: .78rem; }
@@ -1009,3 +1009,17 @@ html[data-motion="off"] *, html[data-motion="off"] ::view-transition-old(root), 
 .radar .plumb { width: min(44vw, 160px); }
 .radar .plumb svg { max-height: 176px; }
 @media (min-width: 981px) { .radar .plumb { width: 190px; } }
+
+/* Home hero row: the plumb beside the headline and the forecast on wide screens */
+.home-hero { display: grid; gap: 4px; margin-bottom: 14px; }
+.home-hero-text .view-head { text-align: center; }
+.home-hero-text .forecast { margin-top: 6px; }
+@media (min-width: 981px) {
+  .home-hero { grid-template-columns: minmax(300px, .8fr) 1.2fr; gap: 36px; align-items: center; }
+  .home-hero-text .view-head { text-align: left; }
+  .home-hero-text .view-head h1 { font-size: clamp(1.7rem, 2.4vw, 2.3rem); }
+  .radar .plumb { width: 250px; }
+  .radar .plumb svg { max-height: 280px; }
+  .forecast { padding: 26px 30px; }
+  .fc-val { font-size: clamp(2.6rem, 4vw, 3.6rem); }
+}

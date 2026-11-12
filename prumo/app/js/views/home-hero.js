@@ -163,7 +163,7 @@ export function ringCard(s, ym, span = 'span-8') {
   const legend = top.map(([c, v], i) => `<li><i style="background:${RING[i]}"></i><span>${esc(c === '__o' ? t2('others') : t('cat.' + c))}</span><b>${pct(v / total)}</b></li>`).join('');
   return `<section class="card ${span} ring-card" aria-labelledby="rg-t">
     <div class="card-head"><h2 id="rg-t">${t2('ring')}</h2></div>
-    <div class="ring"><svg viewBox="0 0 120 120" role="img" aria-label="${esc(t2('ring'))}"><circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--track)" stroke-width="16"/>${arcs}</svg>
+    <div class="cat-ring"><svg viewBox="0 0 120 120" role="img" aria-label="${esc(t2('ring'))}"><circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--track)" stroke-width="16"/>${arcs}</svg>
       <div class="ring-mid"><b>${money(total)}</b><small>${t2('total')}</small></div></div>
     <ul class="ring-legend">${legend}</ul>
   </section>`;

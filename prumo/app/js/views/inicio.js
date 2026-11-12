@@ -32,9 +32,8 @@ export function render(s, ctx) {
   const sp = spending(s, ctx.ym);
   const first = s.profile.name.split(' ')[0];
   const fresh = isReal() && !sp.budget && !s.incomes.length;
-  return `${homeTop(s)}<div class="grid home-radar">${radarCard(s, ctx.ym)}</div>${head(fresh ? t('home.hNew', { name: esc(first) }) : headline(s, ctx.ym), fresh ? t('home.sNew') : say('home.sub', { name: esc(first), v: money(Math.max(0, sp.perDayLeft)) }))}
+  return `${homeTop(s)}<div class="home-hero"><div class="home-radar">${radarCard(s, ctx.ym)}</div><div class="home-hero-text">${head(fresh ? t('home.hNew', { name: esc(first) }) : headline(s, ctx.ym), fresh ? t('home.sNew') : say('home.sub', { name: esc(first), v: money(Math.max(0, sp.perDayLeft)) }))}${forecastCard(s, ctx.ym)}</div></div>
   <div class="grid">
-    ${forecastCard(s, ctx.ym)}
     ${welcomeCard(s, isReal())}
     ${isReal() ? '' : quizBanner(s)}
     ${retroBanner(s, ctx)}
