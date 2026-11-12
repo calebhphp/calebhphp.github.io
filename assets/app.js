@@ -211,38 +211,6 @@
   // Motion layer: all of it is optional and off for reduced motion
   const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
 
-  // Hero: dot grid that bends toward the pointer (canvas 2D)
-  const hero = document.querySelector('.hero');
-  if (hero && !reduce && fine && 'IntersectionObserver' in window) {
-    const cv = document.createElement('canvas');
-    cv.className = 'mesh'; cv.setAttribute('aria-hidden', 'true');
-    hero.prepend(cv); hero.classList.add('has-mesh');
-    const ctx = cv.getContext('2d');
-    const GAP = 30, SIG = 150;
-    let W = 0, H = 0, dpr = 1, px = -9999, py = -9999, tx = -9999, ty = -9999, on = false, raf = 0;
-    const size = () => { const r = hero.getBoundingClientRect(); dpr = Math.min(devicePixelRatio || 1, 2); W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
-    const accent = () => getComputedStyle(root).getPropertyValue('--accent').trim() || '#e0b25a';
-    const text = () => getComputedStyle(root).getPropertyValue('--text').trim() || '#ecebe4';
-    const draw = () => {
-      px += (tx - px) * 0.14; py += (ty - py) * 0.14;
-      ctx.clearRect(0, 0, W, H);
-      const ac = accent(), tc = text();
-      for (let y = GAP / 2; y < H; y += GAP) for (let x = GAP / 2; x < W; x += GAP) {
-        const dx = px - x, dy = py - y, f = Math.exp(-(dx * dx + dy * dy) / (2 * SIG * SIG));
-        const ox = x + dx * 0.32 * f, oy = y + dy * 0.32 * f;
-        ctx.globalAlpha = 0.14 + 0.7 * f;
-        ctx.fillStyle = f > 0.15 ? ac : tc;
-        ctx.beginPath(); ctx.arc(ox, oy, 1 + 1.8 * f, 0, 6.283); ctx.fill();
-      }
-      raf = on && tx > -999 ? requestAnimationFrame(draw) : 0;
-    };
-    size();
-    new IntersectionObserver(([e]) => { on = e.isIntersecting; if (on && !raf) raf = requestAnimationFrame(draw); }).observe(hero);
-    hero.addEventListener('pointermove', (e) => { const r = hero.getBoundingClientRect(); tx = e.clientX - r.left; ty = e.clientY - r.top; if (px < -999) { px = tx; py = ty; } if (!raf && on) raf = requestAnimationFrame(draw); }, { passive: true });
-    hero.addEventListener('pointerleave', () => { tx = ty = -9999; px = py = -9999; if (!raf) raf = requestAnimationFrame(draw); });
-    addEventListener('resize', size, { passive: true });
-  }
-
   // How it works: dashed path draws itself, steps rise in turn
   document.querySelectorAll('.steps').forEach((st) => {
     if (reduce || !('IntersectionObserver' in window)) return;
@@ -305,4 +273,68 @@
       wrap.addEventListener('pointerleave', () => { el.style.transform = ''; });
     }
   });
+
+  // Liquid glass: the highlight follows the pointer on every glass surface
+  const GL = '.card, .pack, .pain, .demo, .proof-list li, .faq details, .lead-form, .fchip, .btn-ghost, .btn-outline, .car-btn';
+  if (fine && !reduce) {
+    let gl = null;
+    document.addEventListener('pointermove', (e) => {
+      const t = e.target.closest && e.target.closest(GL);
+      if (!t) return;
+      const r = t.getBoundingClientRect();
+      t.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      t.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      if (t.classList.contains('demo')) {
+        const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        t.style.transform = 'perspective(900px) rotateX(' + (-y * 6).toFixed(2) + 'deg) rotateY(' + (x * 6).toFixed(2) + 'deg) translateZ(0)';
+        gl = t;
+      }
+    }, { passive: true });
+    document.addEventListener('pointerout', (e) => { const t = e.target.closest && e.target.closest('.demo'); if (t) t.style.transform = ''; }, { passive: true });
+
+    // Magnetic buttons
+    document.addEventListener('pointermove', (e) => {
+      const t = e.target.closest && e.target.closest('.btn');
+      if (!t) return;
+      const r = t.getBoundingClientRect();
+      t.style.setProperty('--tx', (((e.clientX - r.left) / r.width - 0.5) * 8).toFixed(1) + 'px');
+      t.style.setProperty('--ty', (((e.clientY - r.top) / r.height - 0.5) * 6).toFixed(1) + 'px');
+    }, { passive: true });
+    document.addEventListener('pointerout', (e) => { const t = e.target.closest && e.target.closest('.btn'); if (t) { t.style.removeProperty('--tx'); t.style.removeProperty('--ty'); } }, { passive: true });
+
+    // Hero orbs drift with the pointer
+    const hh = document.querySelector('.hero');
+    if (hh) hh.addEventListener('pointermove', (e) => {
+      const r = hh.getBoundingClientRect();
+      hh.style.setProperty('--px', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+      hh.style.setProperty('--py', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+    }, { passive: true });
+  }
+
+  // Headline: words rise in, one after the other (text is visible from the first paint)
+  const h1 = document.querySelector('.hero h1');
+  if (h1 && !reduce) {
+    let n = 0;
+    const wrap = (node) => {
+      [...node.childNodes].forEach((c) => {
+        if (c.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach((p) => {
+            if (!p) return;
+            if (/^\s+$/.test(p)) { frag.append(p); return; }
+            const s = document.createElement('span'); s.className = 'w'; s.style.setProperty('--i', n++); s.textContent = p; frag.append(s);
+          });
+          c.replaceWith(frag);
+        } else if (c.nodeType === 1 && c.tagName !== 'BR') wrap(c);
+      });
+    };
+    wrap(h1);
+  }
+
+  // Scroll progress line
+  const bar = document.createElement('div');
+  bar.className = 'progress'; bar.setAttribute('aria-hidden', 'true');
+  document.body.append(bar);
+  let pr = 0;
+  addEventListener('scroll', () => { if (pr) return; pr = requestAnimationFrame(() => { pr = 0; const h = document.documentElement.scrollHeight - innerHeight; bar.style.setProperty('--p', h > 0 ? (scrollY / h).toFixed(4) : 0); }); }, { passive: true });
 })();

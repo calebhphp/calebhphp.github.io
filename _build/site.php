@@ -78,6 +78,7 @@ function promoOn(): bool
 $css = file_get_contents("$root/assets/style.css");
 $css = preg_replace('!/\*.*?\*/!s', '', $css);
 $INLINE_CSS = trim(preg_replace('/\s*\n\s*/', '', $css));
+$APP_V = substr(md5_file("$root/assets/app.js"), 0, 8);
 $WA = icon('chat');
 
 function serviceCard(string $l, string $slug, array $s): string
@@ -132,7 +133,7 @@ function business(string $l): array
 
 function layout(string $l, string $key, array $o, string $body): string
 {
-    global $site, $UI, $DATA, $INLINE_CSS, $WA, $pages, $niches_pt;
+    global $site, $UI, $DATA, $INLINE_CSS, $APP_V, $WA, $pages, $niches_pt;
     $u = $UI[$l];
     $path = $pages[$key][$l];
     $canonical = $site['url'].$path;
@@ -280,7 +281,7 @@ function layout(string $l, string $key, array $o, string $body): string
   </div>
 </footer>
 <script>window.SITE={$siteJs};{$extra}</script>
-<script src="/assets/app.js" defer></script>
+<script src="/assets/app.js?v={$APP_V}" defer></script>
 </body>
 </html>
 HTML;
@@ -447,6 +448,7 @@ foreach (array_keys($LANGS) as $l) {
 
     $body = <<<HTML
 <header class="hero">
+  <div class="orbs" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="wrap grid">
     <div>
       <span class="eyebrow">{$h['eyebrow']}</span>
