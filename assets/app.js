@@ -271,4 +271,38 @@
       requestAnimationFrame(tick);
     }, { threshold: 0.6 }).observe(b);
   });
+
+  // Hero mock site: assembles a tiny business website step by step; on the home it cycles through professions
+  const MK = window.MOCK;
+  if (MK) document.querySelectorAll('[data-mock]').forEach((el) => {
+    const items = MK.items, cycle = el.hasAttribute('data-cycle');
+    const cap = document.querySelector('[data-mock-cap]');
+    const WA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>';
+    let i = Math.max(0, items.findIndex((x) => x.k === el.dataset.mock)), timers = [], visible = true;
+    const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+    const draw = (it) => {
+      el.dataset.k = it.k;
+      el.className = 'mock';
+      el.innerHTML = '<div class="mk-bar"><i></i><i></i><i></i><span>' + esc(it.url) + '</span></div><div class="mk-body"><div class="mk-nav" data-s="1"><b>' + esc(it.name) + '</b><span></span><span></span><span></span></div><h3 class="mk-h" data-s="2">' + esc(it.tag) + '</h3><ul class="mk-sv" data-s="3">' + it.s.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul><div class="mk-cta" data-s="4"><span>' + WA + esc(it.cta) + '</span><small>' + esc(it.hours) + '</small></div></div><div class="mk-toast" data-s="5">' + esc(it.toast) + '</div>';
+      if (cap) cap.innerHTML = esc(MK.cap) + ' &middot; ' + esc(MK.see) + ' <b>' + esc(it.label) + '</b>';
+    };
+    const play = () => {
+      draw(items[i]);
+      if (reduce) { el.classList.add('s1', 's2', 's3', 's4', 's5'); return; }
+      [1, 2, 3, 4, 5].forEach((n, k) => later(() => el.classList.add('s' + n), [150, 650, 1100, 1600, 2500][k]));
+      if (cycle) later(next, 6200);
+    };
+    const next = () => {
+      if (!visible) { later(next, 1500); return; }
+      el.classList.add('out');
+      later(() => { i = (i + 1) % items.length; el.classList.remove('out'); play(); }, 450);
+    };
+    play();
+    if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(el);
+    if (fine && !reduce) {
+      const wrap = el.parentElement;
+      wrap.addEventListener('pointermove', (e) => { const r = el.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5; el.style.transform = 'rotateY(' + (x * 7).toFixed(2) + 'deg) rotateX(' + (-y * 7).toFixed(2) + 'deg)'; }, { passive: true });
+      wrap.addEventListener('pointerleave', () => { el.style.transform = ''; });
+    }
+  });
 })();

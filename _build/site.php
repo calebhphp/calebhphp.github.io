@@ -422,6 +422,8 @@ foreach (array_keys($LANGS) as $l) {
     }
     $dgu = $u['diag'];
     $cv = $u['conv'];
+    $mockItems = array_map(fn ($r) => array_combine(['k', 'label', 'url', 'name', 'tag', 's', 'cta', 'hours', 'toast'], $r), $u['mock']['items']);
+    $mockJs = 'window.MOCK='.json_encode(['cap' => $u['mock']['cap'], 'see' => $u['mock']['see'], 'items' => $mockItems], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP).';';
     $chipList = ['clinicas-e-consultorios', 'advogados-e-escritorios', 'restaurantes-e-delivery', 'saloes-e-barbearias', 'lojas-e-comercio', 'escolas-e-professores', 'pet-shops', 'oficinas-e-estetica-automotiva'];
     $chips = '';
     foreach ($chipList as $cs) {
@@ -457,15 +459,7 @@ foreach (array_keys($LANGS) as $l) {
       <ul class="trust">{$trust}</ul>
       {$chips}
     </div>
-    <figure class="phone-fig">
-      <div class="phone">
-        <div class="screen">
-          <div class="bar"><i></i><div><b>{$h['chat_name']}</b><small>{$h['chat_online']}</small></div></div>
-          <div class="chat">{$chat}</div>
-        </div>
-      </div>
-      <figcaption>{$h['chat_aria']}</figcaption>
-    </figure>
+    <div class="mock-wrap"><div class="mock" data-mock="saude" data-cycle></div><p class="mock-cap" data-mock-cap></p></div>
   </div>
 </header>
 
@@ -580,7 +574,7 @@ HTML;
     write($pages['home'][$l], layout($l, 'home', [
         'title' => $h['title'], 'description' => $h['description'],
         'schema' => ['@context' => 'https://schema.org', '@graph' => [business($l), ['@type' => 'WebSite', 'url' => $site['url'].$pages['home'][$l], 'name' => $site['name'], 'inLanguage' => $u['hreflang']], faqSchema($u['faq'])]],
-        'extra_js' => $diagJs,
+        'extra_js' => $diagJs.$mockJs,
     ], $body));
 
     /* ---------- Service pages ---------- */
@@ -663,7 +657,8 @@ HTML;
         $cv = $u['conv'];
         $prevImg = $l === 'pt' ? ($prevMap[$slug] ?? null) : null;
         $prevMsg = str_replace('{who}', $who, $cv['prev_wa']);
-        $prevFig = $prevImg ? '<figure class="ph-prev"><img src="/assets/img/previa-'.$prevImg.'.webp" alt="'.e($cv['prev_alt']).'" width="540" height="675" decoding="async" fetchpriority="high"><figcaption>'.e($cv['prev_label']).'</figcaption></figure>' : '';
+        $prevFig = $prevImg ? '<div class="mock-wrap"><div class="mock" data-mock="'.$prevImg.'"></div><p class="mock-cap">'.e($cv['prev_label']).'</p></div>' : '';
+        $mockJs = 'window.MOCK='.json_encode(['cap' => $u['mock']['cap'], 'see' => $u['mock']['see'], 'items' => array_map(fn ($r) => array_combine(['k', 'label', 'url', 'name', 'tag', 's', 'cta', 'hours', 'toast'], $r), $u['mock']['items'])], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP).';';
         $body = '<header class="page-hero"><div class="wrap'.($prevImg ? ' ph-grid' : '').'"><div><div class="crumbs"><a href="'.url($l, 'home').'">'.e($sv['home']).'</a> / '.e($n['name']).'</div>'
             .'<span class="eyebrow">'.e($nc['for'].' '.$lower).'</span><h1>'.e($n['h1']).'</h1><p class="lede">'.e($n['intro']).'</p>'
             .'<div class="ctas"><a class="btn btn-wa" data-wa="'.e($prevMsg).'">'.$WA.e($cv['prev_cta']).'</a><a class="btn btn-ghost" href="'.url($l, 'home').'#diagnostico">'.e($nc['cta2']).'</a></div><ul class="trust"><li>'.e($u['home']['trust'][0]).'</li><li>'.e($u['home']['trust'][1]).'</li></ul></div>'.$prevFig.'</div></header>'
@@ -673,7 +668,7 @@ HTML;
             .$nicheExtra
             .'<section class="dark final"><div class="wrap"><h2>'.e($nc['final_h2']).'</h2><p class="muted" style="font-size:1.1rem">'.e($nc['final_p']).'</p><div class="ctas"><a class="btn btn-wa" data-wa="'.e($msg).'">'.$WA.e($nc['final_cta']).'</a></div></div></section>';
         write($pages[$key][$l], layout($l, $key, [
-            'title' => $n['title'].' | '.$site['name'], 'description' => $n['description'], 'wa' => $msg, 'og' => $slug === '__sst' && $l === 'pt' ? 'og-clinicas.png' : null,
+            'title' => $n['title'].' | '.$site['name'], 'description' => $n['description'], 'wa' => $msg, 'extra_js' => $prevImg ? $mockJs : '', 'og' => $slug === '__sst' && $l === 'pt' ? 'og-clinicas.png' : null,
             'schema' => ['@context' => 'https://schema.org', '@graph' => [
                 ['@type' => 'Service', 'name' => $n['title'], 'description' => $n['description'], 'url' => $site['url'].$pages[$key][$l], 'provider' => ['@id' => $site['url'].'/#negocio'], 'areaServed' => $l === 'pt' ? [['@type' => 'City', 'name' => 'São Paulo'], ['@type' => 'Country', 'name' => 'Brasil']] : 'Worldwide', 'audience' => ['@type' => 'BusinessAudience', 'audienceType' => $n['name']]],
                 crumbs([[$sv['home'], url($l, 'home')], [$n['name'], $pages[$key][$l]]]), business($l),

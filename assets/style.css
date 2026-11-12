@@ -473,3 +473,43 @@ main>section .eyebrow::before{content:counter(sec,decimal-leading-zero) " /";wid
 .card::after,.pack::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s ease;background:radial-gradient(260px circle at var(--mx) var(--my),color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
 @media (hover:hover) and (pointer:fine){.card:hover::after,.pack:hover::after{opacity:1}.card .go{transition:transform .25s ease}.card:hover .go{transform:translateX(6px)}}
 @media (prefers-reduced-motion:reduce){.steps.anim .step,.steps.anim::after{transition:none}}
+
+/* ---------- Hero mock site: a live mini website assembled step by step ---------- */
+.mock-wrap{display:grid;gap:12px;justify-items:center;perspective:1200px}
+.mock{--mb:#f1f6f3;--mi:#12312a;--ma:#1f7a63;position:relative;width:min(520px,100%);border-radius:16px;background:var(--mb);color:var(--mi);overflow:hidden;border:1px solid var(--line);box-shadow:0 50px 90px -50px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.04);transition:transform .25s ease,opacity .4s ease,background-color .5s ease;transform-style:preserve-3d;will-change:transform}
+.mock.out{opacity:0}
+.mock[data-k="saude"]{--mb:#f1f6f3;--mi:#12312a;--ma:#1f7a63}
+.mock[data-k="juridico"]{--mb:#f4f2ee;--mi:#1d2433;--ma:#7a5c2e}
+.mock[data-k="gastro"]{--mb:#fbf3e6;--mi:#3a1f14;--ma:#c2461e}
+.mock[data-k="beleza"]{--mb:#faf1ee;--mi:#35201c;--ma:#b9654b}
+.mock[data-k="loja"]{--mb:#f8f1f4;--mi:#33182a;--ma:#b0386d}
+.mock[data-k="escola"]{--mb:#f2f4fb;--mi:#17234d;--ma:#2f55d4}
+.mock[data-k="pet"]{--mb:#eff7f6;--mi:#10343b;--ma:#e07a2f}
+.mock[data-k="auto"]{--mb:#f0f1f3;--mi:#14181f;--ma:#d97a00}
+.mk-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#0b0e0d}
+.mk-bar i{width:9px;height:9px;border-radius:50%;background:#3a403d}
+.mk-bar span{margin-left:10px;padding:3px 12px;border-radius:999px;background:#171c1a;color:#9aa39e;font:500 .72rem var(--mono)}
+.mk-body{display:grid;gap:18px;padding:22px 24px 26px;min-height:318px;align-content:start}
+.mk-nav{display:flex;align-items:center;gap:14px}
+.mk-nav b{font:700 1rem var(--display);margin-right:auto}
+.mk-nav span{width:34px;height:7px;border-radius:4px;background:color-mix(in srgb,var(--mi) 18%,transparent)}
+.mk-h{font:600 clamp(1.5rem,2.6vw,2rem)/1.12 var(--display);letter-spacing:-.02em;max-width:15em;margin:6px 0 0}
+.mk-sv{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.mk-sv li{padding:7px 13px;border-radius:999px;border:1.5px solid color-mix(in srgb,var(--mi) 22%,transparent);font:600 .84rem var(--body)}
+.mk-cta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:4px}
+.mk-cta span{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;background:var(--ma);color:#fff;font:700 .95rem var(--body)}
+.mk-cta svg{width:18px;height:18px;fill:currentColor}
+.mk-cta small{font:500 .78rem var(--mono);color:color-mix(in srgb,var(--mi) 70%,transparent)}
+.mock [data-s]{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.mock.s1 [data-s="1"],.mock.s2 [data-s="2"],.mock.s3 [data-s="3"],.mock.s4 [data-s="4"],.mock.s5 [data-s="5"]{opacity:1;transform:none}
+.mk-toast{position:absolute;right:14px;top:52px;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:#0b0e0d;color:#ecebe4;font:600 .82rem var(--body);box-shadow:0 18px 40px -18px rgba(0,0,0,.6)}
+.mk-toast::before{content:"";width:9px;height:9px;border-radius:50%;background:#34c27a;box-shadow:0 0 0 4px rgba(52,194,122,.25)}
+.mock-cap{margin:0;font:500 .78rem var(--mono);color:var(--muted);text-align:center}
+.mock-cap b{color:var(--accent);font-weight:600}
+@media (prefers-reduced-motion:reduce){.mock [data-s]{transition:none}}
+@media (max-width:600px){.hero .mock-wrap{display:grid}.mk-body{min-height:290px;padding:18px}}
+/* alignment fixes: sections that were glued to the previous section's border, and row padding */
+main>section[style*="padding-top:0"]{padding-top:clamp(64px,9vw,112px)!important}
+.card{padding-inline:0}
+@media (min-width:861px){.hero .grid,.ph-grid{grid-template-columns:1.1fr .9fr}}
+@media (max-width:860px){.hero .grid,.ph-grid{grid-template-columns:1fr}.hero .mock-wrap{display:grid}}
