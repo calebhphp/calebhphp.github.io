@@ -34,7 +34,7 @@ const pt = {
 
   'alert.dropTitle': 'Sua renda cai {p}% em {m}', 'alert.dropBody': 'Hoje entram {from}. A partir desse mês, {to}. Dá tempo de se preparar.',
   'alert.dropCta': 'Ver entradas',
-  'debt.title': '{name}: {v}', 'debt.body': 'É a única pendência no seu nome. Quitar primeiro libera crédito e tira o peso.',
+  'debt.title': '{name}: {v}', 'debt.body': 'É a única pendência no seu nome. Quitar primeiro libera crédito.',
   'debt.mark': 'Marcar como quitada', 'debt.paid': 'Pendência quitada',
 
   'game.gained': 'Você ganhou {xp} XP', 'game.levelUp': 'Você chegou ao nível {level}', 'game.rewardUnlocked': 'Recompensa liberada: {reward}',

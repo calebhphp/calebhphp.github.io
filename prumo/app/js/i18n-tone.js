@@ -144,7 +144,7 @@ export const ptT = {
   'fb.contact': "Seu e-mail, se quiser resposta (opcional)",
   'fb.privacy': "Vai junto o nome da tela em que você está. Seus gastos não vão.",
   'fb.send': "Enviar",
-  'fb.thanks': "Recebido. Valeu demais!",
+  'fb.thanks': "Recebido. Valeu!",
   'fb.fail': "Não enviou, parece sem internet. Guardei o texto, tenta de novo daqui a pouco.",
   'goalNew.title': "Novo cofre",
   'goalNew.name': "Nome do cofre",
