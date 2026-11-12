@@ -16,7 +16,7 @@ return [
         // CNPJ (ex.: 12.345.678/0001-90). When filled it shows in the footer and in Google data.
         'cnpj' => '',
         // Google Analytics 4 measurement ID (ex.: G-XXXXXXX). When filled, visits and WhatsApp clicks are measured.
-        'ga4' => '',
+        'ga4' => 'G-3F9Z07XSRL',
         // Google Tag Manager container (GTM-XXXXXXX). Add the GA4 tag inside GTM.
         'gtm' => 'GTM-5JPKV6G7',
         // Launch / Black Friday promotion. Set promo_off to 0 to turn it off. It also disappears by itself after promo_end.

@@ -51,7 +51,7 @@
   window.dataLayer = window.dataLayer || [];
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="https://wa.me"]');
-    if (a) window.dataLayer.push({ event: 'whatsapp_click', page_path: location.pathname, link_text: a.textContent.trim().slice(0, 60) });
+    if (a) { const d = { page_path: location.pathname, link_text: a.textContent.trim().slice(0, 60) }; window.dataLayer.push({ event: 'whatsapp_click', ...d }); if (typeof window.gtag === 'function') window.gtag('event', 'whatsapp_click', d); }
   });
 
   // Lead form: sends by e-mail (FormSubmit); falls back to WhatsApp if it fails
@@ -73,7 +73,7 @@
         const j = await r.json().catch(() => ({}));
         if (!r.ok || j.success === 'false' || j.success === false) throw new Error('send');
         status.textContent = lead.dataset.ok;
-        window.dataLayer.push({ event: 'generate_lead', page_path: location.pathname });
+        window.dataLayer.push({ event: 'generate_lead', page_path: location.pathname }); if (typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { page_path: location.pathname });
         lead.reset();
       } catch (err) {
         const text = lead.dataset.wamsg.replace('{nome}', nome).replace('{biz}', negocio);
