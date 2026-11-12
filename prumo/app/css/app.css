@@ -991,3 +991,18 @@ html[data-motion="off"] *, html[data-motion="off"] ::view-transition-old(root), 
 .home-radar + .head, .home-radar + header, .home-radar + h1 { text-align: center; }
 .home-radar + .view-head { text-align: center; }
 .home-radar + .view-head h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
+
+/* Conquistas, same language as the home: trophy on the page, colored XP card */
+.game-hero { display: grid; place-items: center; padding: 6px 0 0; position: relative; }
+.gh-art { position: relative; display: grid; place-items: center; width: 220px; height: 190px; }
+.gh-art::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--xp) 32%, transparent), transparent 68%); }
+.gh-art .i3d { position: relative; width: 150px; height: 150px; filter: drop-shadow(0 18px 18px rgba(0, 0, 0, .28)); animation: i3d-float 4.5s ease-in-out infinite; }
+.gh-lvl { position: absolute; right: 38px; bottom: 14px; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--primary); color: var(--primary-ink); font-weight: 700; font-size: 1.2rem; box-shadow: 0 8px 16px -6px rgba(0, 0, 0, .5); border: 3px solid var(--bg); }
+.home-radar + .view-head h1, .game-hero ~ .view-head h1 { text-align: center; }
+.xp-card { color: #fff; border: 0; display: grid; gap: 10px; background: linear-gradient(135deg, #7a4f0a, #c58a1f); box-shadow: 0 20px 40px -24px rgba(122, 79, 10, .8); }
+.xp-card h2 { color: #fff; font-size: 1.05rem; margin: 0; }
+.xp-card .fc-bar b { background: #fff; }
+.xp-card .fc-msg { display: flex; align-items: center; gap: 8px; }
+.g-streak { background: linear-gradient(160deg, var(--warn-soft), var(--surface) 80%); }
+.g-missions { background: linear-gradient(160deg, var(--good-soft), var(--surface) 80%); }
+.g-streak .i3d, .g-missions .i3d { filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .22)); }
