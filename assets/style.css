@@ -452,3 +452,24 @@ main>section .eyebrow::before{content:counter(sec,decimal-leading-zero) " /";wid
 .page-hero .trust{margin-top:22px}
 @media (max-width:860px){.proof-list{grid-template-columns:1fr 1fr}.lead-grid,.ph-grid{grid-template-columns:1fr}.ph-prev{order:-1}.ph-prev img{max-width:260px}}
 .hero h1{font-size:clamp(2.4rem,5vw,4.5rem)}
+
+/* ---------- Round 3: margins, language switch, motion (refs: scrolltide Mesh Flow, Step Path, Hover List) ---------- */
+.wrap{width:min(1320px,100% - clamp(40px,10vw,208px))}
+.langs{padding:3px;gap:2px}
+.langs a{min-width:42px;min-height:42px!important}
+.hero{overflow:hidden}
+.mesh{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.hero.has-mesh::before{display:none}
+.steps{position:relative}
+.steps.anim .step{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;transition-delay:calc(var(--i,0)*.28s + .2s)}
+.steps.anim.in .step{opacity:1;transform:none}
+.step{position:relative;border-top:0;padding-top:30px}
+.step::after{content:"";position:absolute;top:-5px;left:0;width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 22%,transparent)}
+.steps::before{content:"";position:absolute;left:0;right:0;top:0;border-top:1.5px dashed var(--line-band)}
+.steps::after{content:"";position:absolute;left:0;top:-1px;height:2px;width:100%;background:var(--accent);transform-origin:left;transform:scaleX(1)}
+.steps.anim::after{transform:scaleX(0);transition:transform 1.4s cubic-bezier(.4,0,.2,1) .15s}
+.steps.anim.in::after{transform:scaleX(1)}
+.card,.pack,.pain{position:relative;--mx:50%;--my:50%}
+.card::after,.pack::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s ease;background:radial-gradient(260px circle at var(--mx) var(--my),color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
+@media (hover:hover) and (pointer:fine){.card:hover::after,.pack:hover::after{opacity:1}.card .go{transition:transform .25s ease}.card:hover .go{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.steps.anim .step,.steps.anim::after{transition:none}}

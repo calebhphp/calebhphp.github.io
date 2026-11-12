@@ -207,4 +207,68 @@
     update();
     addEventListener('resize', update, { passive: true });
   }
+
+  // Motion layer: all of it is optional and off for reduced motion
+  const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  // Hero: dot grid that bends toward the pointer (canvas 2D)
+  const hero = document.querySelector('.hero');
+  if (hero && !reduce && fine && 'IntersectionObserver' in window) {
+    const cv = document.createElement('canvas');
+    cv.className = 'mesh'; cv.setAttribute('aria-hidden', 'true');
+    hero.prepend(cv); hero.classList.add('has-mesh');
+    const ctx = cv.getContext('2d');
+    const GAP = 30, SIG = 150;
+    let W = 0, H = 0, dpr = 1, px = -9999, py = -9999, tx = -9999, ty = -9999, on = false, raf = 0;
+    const size = () => { const r = hero.getBoundingClientRect(); dpr = Math.min(devicePixelRatio || 1, 2); W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
+    const accent = () => getComputedStyle(root).getPropertyValue('--accent').trim() || '#e0b25a';
+    const text = () => getComputedStyle(root).getPropertyValue('--text').trim() || '#ecebe4';
+    const draw = () => {
+      px += (tx - px) * 0.14; py += (ty - py) * 0.14;
+      ctx.clearRect(0, 0, W, H);
+      const ac = accent(), tc = text();
+      for (let y = GAP / 2; y < H; y += GAP) for (let x = GAP / 2; x < W; x += GAP) {
+        const dx = px - x, dy = py - y, f = Math.exp(-(dx * dx + dy * dy) / (2 * SIG * SIG));
+        const ox = x + dx * 0.32 * f, oy = y + dy * 0.32 * f;
+        ctx.globalAlpha = 0.14 + 0.7 * f;
+        ctx.fillStyle = f > 0.15 ? ac : tc;
+        ctx.beginPath(); ctx.arc(ox, oy, 1 + 1.8 * f, 0, 6.283); ctx.fill();
+      }
+      raf = on ? requestAnimationFrame(draw) : 0;
+    };
+    size();
+    new IntersectionObserver(([e]) => { on = e.isIntersecting; if (on && !raf) raf = requestAnimationFrame(draw); }).observe(hero);
+    hero.addEventListener('pointermove', (e) => { const r = hero.getBoundingClientRect(); tx = e.clientX - r.left; ty = e.clientY - r.top; if (px < -999) { px = tx; py = ty; } }, { passive: true });
+    hero.addEventListener('pointerleave', () => { tx = ty = -9999; px = py = -9999; });
+    addEventListener('resize', size, { passive: true });
+  }
+
+  // How it works: dashed path draws itself, steps rise in turn
+  document.querySelectorAll('.steps').forEach((st) => {
+    if (reduce || !('IntersectionObserver' in window)) return;
+    [...st.children].forEach((c, i) => c.style.setProperty('--i', i));
+    st.classList.add('anim');
+    new IntersectionObserver((es, ob) => { if (es[0].isIntersecting) { st.classList.add('in'); ob.disconnect(); } }, { threshold: 0.25 }).observe(st);
+  });
+
+  // Spotlight that follows the pointer on cards and packages
+  if (fine && !reduce) document.addEventListener('pointermove', (e) => {
+    const c = e.target.closest && e.target.closest('.card, .pack');
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }, { passive: true });
+
+  // Proof numbers count up once
+  document.querySelectorAll('.proof-list b').forEach((b) => {
+    const m = b.textContent.match(/^(\D*)(\d+)(.*)$/);
+    if (!m || reduce || !('IntersectionObserver' in window)) return;
+    const end = +m[2];
+    new IntersectionObserver((es, ob) => {
+      if (!es[0].isIntersecting) return; ob.disconnect();
+      const t0 = performance.now();
+      const tick = (t) => { const k = Math.min(1, (t - t0) / 900); b.textContent = m[1] + Math.round(end * (1 - Math.pow(1 - k, 3))) + m[3]; if (k < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.6 }).observe(b);
+  });
 })();
