@@ -1,5 +1,5 @@
 // ===================================================================
-// ACCRÁ — gerador das espirais orgânicas (porta do estudo aprovado)
+// ACCRÁ · gerador das espirais orgânicas (porta do estudo aprovado)
 // Quatro traços feitos "à mão": entalhe, pincel, quitanda, tinta falhada
 // ===================================================================
 (function () {

@@ -11,9 +11,11 @@
 <link rel="icon" href="img/sol-accra-pincel-brasa.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Karla:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../demo.css">
 <link rel="stylesheet" href="loja.css">
 </head>
 <body>
+<div class="demo-bar"><span><b>Exemplo de loja online</b> <span class="hide-sm">· Accrá é marca real, loja refeita por Matheus Villanova. Pedidos vão para um WhatsApp de teste</span></span><span class="links"><a class="back" href="/#exemplos">← Voltar</a><a href="https://wa.me/5511933010415?text=Ol%C3%A1%2C%20Matheus!%20Vi%20o%20exemplo%20da%20loja%20Accr%C3%A1%20e%20quero%20uma%20loja%20assim." target="_blank" rel="noopener">Quero uma loja assim</a></span></div>
 <div class="topbar mono">feito à mão entre juiz de fora e são paulo · lotes pequenos · cura de 28 dias</div>
 <nav class="nav">
   <a class="marca" href="index.html" aria-label="Accrá, início"><span class="sol" data-cor="#9C4124" style="width:30px;height:30px" aria-hidden="true"></span><span class="nome">accrá</span></a>
@@ -80,19 +82,33 @@
   <div class="wrap rodape-base mono"><span>cosmética natural artesanal</span><span>juiz de fora · são paulo · 2026</span></div>
 </footer>
 <div class="veu" data-fechar-sacola></div>
-<aside class="sacola" aria-label="Sacola" aria-hidden="true">
-  <div class="sacola-topo"><h2>Sacola</h2><button class="fechar" data-fechar-sacola>fechar</button></div>
+<aside class="sacola" role="dialog" aria-modal="true" aria-labelledby="sacola-titulo" aria-hidden="true">
+  <div class="sacola-topo"><h2 id="sacola-titulo">Sacola</h2><button type="button" class="fechar" data-fechar-sacola>fechar</button></div>
   <div class="sacola-itens" data-itens></div>
-  <form class="sacola-fim" data-form="pedido">
-    <div class="total"><span class="mono">subtotal · frete pelo cep</span><strong data-total>R$ 0</strong></div>
+  <form class="sacola-fim" data-form="pedido" hidden>
+    <fieldset class="entrega"><legend class="mono">como você quer receber</legend>
+      <label class="radio"><input type="radio" name="entrega" value="cep" checked><span>Entrega pelo CEP</span></label>
+      <label class="radio"><input type="radio" name="entrega" value="retirada"><span>Retirar com a gente</span></label>
+    </fieldset>
+    <label class="campo" data-bloco-cep><span class="mono">cep de entrega</span><input name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9"></label>
+    <p class="frete-info" data-frete-info aria-live="polite"></p>
+    <div class="cupom"><label class="campo"><span class="mono">cupom (opcional)</span><input name="cupom" autocomplete="off" placeholder="PRIMEIRAFORNADA"></label><button type="button" class="btn-linha" data-cupom-btn>Aplicar</button></div>
+    <p class="frete-info" data-cupom-msg aria-live="polite"></p>
+    <dl class="resumo">
+      <div><dt>Subtotal</dt><dd data-r-sub>R$ 0</dd></div>
+      <div data-r-linha-desc hidden><dt>Desconto</dt><dd data-r-desc>R$ 0</dd></div>
+      <div><dt>Frete</dt><dd data-r-frete>a calcular</dd></div>
+      <div class="resumo-total"><dt>Total</dt><dd data-total>R$ 0</dd></div>
+    </dl>
     <label class="campo"><span class="mono">seu nome</span><input name="nome" required autocomplete="name"></label>
-    <label class="campo"><span class="mono">cep de entrega</span><input name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000"></label>
-    <button class="btn">Fechar pedido no WhatsApp</button>
+    <label class="campo"><span class="mono">observação (opcional)</span><input name="obs" autocomplete="off" placeholder="presente, horário de entrega..."></label>
+    <button class="btn" type="submit">Fechar pedido no WhatsApp</button>
     <span class="aviso mono">pagamento por pix · a chave vai na conversa</span>
+    <span class="aviso mono" data-aviso-envio role="status"></span>
   </form>
 </aside>
 <div class="toast" role="status" aria-live="polite"></div>
-<script>window.LOJA = {"produtos":{"dengo":[38,"Dengo","sabonete massageador · 110 g"],"omi":[64,"Omi","hidratante corporal · 200 g"],"serenar":[52,"Serenar","óleo calmante · 60 ml"]},"whatsapp":"","cupom":"PRIMEIRAFORNADA","cupom_desc":"10% na primeira compra"};</script>
+<script>window.LOJA = {"produtos":{"dengo":[38,"Dengo","sabonete massageador · 110 g"],"omi":[64,"Omi","hidratante corporal · 200 g"],"serenar":[52,"Serenar","óleo calmante · 60 ml"]},"whatsapp":"5511933010415","cupom":"PRIMEIRAFORNADA","cupom_desc":"10% na primeira compra"};</script>
 <script src="accra-sol.js"></script>
 <script src="loja.js"></script>
 </body>

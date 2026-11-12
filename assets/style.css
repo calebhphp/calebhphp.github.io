@@ -402,3 +402,8 @@ main>section .eyebrow::before{content:counter(sec,decimal-leading-zero) " /";wid
 .launch .shots li::before{content:none}
 .launch .shots{display:flex;gap:18px;margin:44px 0 0;padding:6px 2px 20px}
 .launch .shots li{flex:0 0 min(250px,66vw)}
+
+.soon{list-style:none;margin:36px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.soon li{display:grid;gap:8px;padding:22px;border:1px dashed var(--control);border-radius:var(--radius-sm)}
+.soon .tag{color:var(--accent);font-family:var(--mono)}
+.soon p{color:var(--muted);font-size:.95rem}

@@ -3,83 +3,431 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<title>Clínica Sorriso Leve – exemplo de assistente virtual | Matheus Villanova</title>
-<meta name="description" content="Exemplo fictício de chatbot que tira dúvidas e marca consulta sozinho.">
+<title>Clínica Ipê: exemplo de assistente virtual no WhatsApp | Matheus Villanova</title>
+<meta name="description" content="Exemplo fictício de assistente virtual de clínica: responde perguntas frequentes, marca, remarca e cancela consulta e passa a conversa para a recepção quando precisa. Simulação por regras, sem IA.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0b141a">
+<meta name="theme-color" content="#1f4d3a">
 <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../demo.css">
 <style>
+:root{--bg:#f1ead9;--paper:#fffdf6;--ink:#1d2a22;--muted:#56625a;--line:#d8cfb8;--verde:#1f4d3a;--verde2:#2f6b50;--ipe:#e6b422;--ipe-d:#6b4f00;--chat:#e9e1cf;--me:#dcefc6;--staff:#ffe9a8;--err:#a1281c;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 *{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;display:flex;flex-direction:column;background:#0b141a;color:#e9edef;font:15px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
-.app{flex:1;display:flex;flex-direction:column;width:min(720px,100%);margin:0 auto;min-height:0}
-.head{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#1f2c34}
-.head i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:20px;background:linear-gradient(135deg,#22d3ee,#6d5cff)}
-.head b{display:block}
-.head small{color:#8696a0}
-.log{flex:1;overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
-.msg{max-width:82%;padding:9px 12px 6px;border-radius:12px;white-space:pre-line;animation:pop 320ms cubic-bezier(.22,1,.36,1)}
-.msg time{display:block;text-align:right;font-size:.68rem;color:#8696a0;margin-top:2px}
-.msg.bot{align-self:flex-start;background:#202c33;border-top-left-radius:4px}
-.msg.me{align-self:flex-end;background:#005c4b;border-top-right-radius:4px;transform-origin:bottom right}
-.typing{align-self:flex-start;display:flex;gap:4px;padding:12px 14px;border-radius:12px;background:#202c33}
-.typing span{width:6px;height:6px;border-radius:50%;background:#8696a0;animation:dot 1s infinite}
-.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
-@keyframes dot{40%{opacity:1;transform:translateY(-3px)}0%,80%,100%{opacity:.35}}
-@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}}
-.quick{display:flex;flex-wrap:wrap;gap:8px;padding:0 12px 10px}
-.quick button{border:1px solid #2a3942;background:#111b21;color:#53bdeb;padding:9px 14px;border-radius:999px;font:600 14px ui-sans-serif,system-ui,sans-serif;cursor:pointer;touch-action:manipulation}
-.quick button:active{transform:scale(.96)}
-form{display:flex;gap:8px;padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom));background:#1f2c34}
-input{flex:1;min-width:0;font:16px ui-sans-serif,system-ui,sans-serif;padding:12px 14px;border-radius:999px;border:0;background:#2a3942;color:#e9edef}
-input:focus{outline:2px solid #00a884}
-form button{width:48px;height:48px;border-radius:50%;border:0;background:#00a884;color:#fff;cursor:pointer;flex:none}
-.hint{text-align:center;font-size:.78rem;color:#8696a0;padding:8px 16px 0}
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--sans);-webkit-tap-highlight-color:transparent}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--verde2);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.page{max-width:1160px;margin:0 auto;padding:16px max(16px,env(safe-area-inset-left)) 40px;display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+.intro h1{margin:0;font:700 clamp(1.25rem,4vw,2.2rem)/1.1 var(--serif);letter-spacing:-.01em}
+.intro h1 em{color:var(--verde2)}
+.intro p{margin:6px 0 0;color:var(--muted);max-width:52ch}
+.try{display:none}
+.tabs{display:flex;gap:6px}
+.tabs button{flex:1;min-height:44px;border-radius:6px;border:1.5px solid var(--verde);background:transparent;font-weight:700;color:var(--verde);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--verde);color:#fff}
+.tabs .n{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:6px;padding:0 5px;border-radius:10px;background:var(--ipe);color:#2b2000;font-size:.75rem}
+.tabs .n:empty{display:none}
+.chat{display:flex;flex-direction:column;height:calc(100dvh - 210px);min-height:480px;max-height:780px;background:var(--chat);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.head{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--verde);color:#fff}
+.head svg{flex:none}
+.head .who{flex:1;min-width:0}
+.head strong{display:block;line-height:1.2}
+.head small{display:block;color:#cfe3d6;line-height:1.2}
+.head button{min-height:44px;padding:0 12px;border-radius:6px;border:1px solid #6f9a82;background:transparent;color:#fff;cursor:pointer}
+.log{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:6px;overscroll-behavior:contain}
+.sys{align-self:center;text-align:center;max-width:90%;padding:6px 12px;border-radius:8px;background:#f7efd0;color:#5a4a10;font-size:.8rem}
+.msg{max-width:84%;padding:8px 11px 5px;border-radius:10px;white-space:pre-line;overflow-wrap:anywhere;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.msg.me{align-self:flex-end;background:var(--me);border-bottom-right-radius:3px}
+.msg.bot{align-self:flex-start;border-top-left-radius:3px}
+.msg.staff{align-self:flex-start;background:var(--staff);border-top-left-radius:3px}
+.msg .lb{display:block;font-weight:700;font-size:.78rem;color:var(--ipe-d)}
+.msg time{display:block;text-align:right;font-size:.7rem;color:var(--muted);margin-top:2px}
+.msg a{display:inline-block;margin-top:8px;padding:10px 14px;border-radius:6px;background:var(--verde);color:#fff;font-weight:700;text-decoration:none;white-space:normal}
+.typing{align-self:flex-start;display:flex;gap:4px;padding:12px 14px;border-radius:10px;background:var(--paper)}
+.typing span{width:6px;height:6px;border-radius:50%;background:#6b756e}
+@media (prefers-reduced-motion:no-preference){.typing span{animation:dot 1s infinite}.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}.msg{animation:pop 220ms ease-out}@keyframes dot{40%{transform:translateY(-3px)}}@keyframes pop{from{opacity:0;transform:translateY(6px)}}}
+.quick{display:flex;flex-wrap:wrap;gap:8px;padding:0 12px 10px;max-height:34%;overflow-y:auto}
+.quick:empty{display:none}
+.quick button,.chip{min-height:44px;padding:0 14px;border-radius:22px;border:1.5px solid var(--verde2);background:var(--paper);color:var(--verde);font-weight:600;cursor:pointer;touch-action:manipulation}
+.quick button:hover,.chip:hover{background:var(--verde);color:#fff}
+form.send{display:flex;gap:8px;padding:8px 10px;padding-bottom:max(8px,env(safe-area-inset-bottom));background:#ddd3bb}
+form.send input{flex:1;min-width:0;min-height:48px;padding:0 16px;border-radius:24px;border:1.5px solid #8b8368;background:#fff}
+form.send button{flex:none;width:48px;height:48px;border-radius:50%;border:0;background:var(--verde);color:#fff;cursor:pointer;display:grid;place-items:center}
+.rec{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:14px;align-content:start}
+.rec h2{margin:0;font:700 1.25rem var(--serif)}
+.rec h3{margin:6px 0 0;font:700 .95rem var(--sans)}
+.rec p{margin:0;color:var(--muted);font-size:.9rem}
+.empty{padding:14px;border:1px dashed var(--line);border-radius:8px}
+.tk{border:1.5px solid var(--verde2);border-radius:8px;padding:12px;display:grid;gap:8px}
+.tk.alta{border-color:var(--err)}
+.tk header{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.tk .pill{padding:1px 10px;border-radius:12px;background:var(--ipe);color:#2b2000;font-size:.78rem;font-weight:700}
+.tk.alta .pill{background:var(--err);color:#fff}
+.tk dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:.88rem}
+.tk dt{color:var(--muted)}
+.tk dd{margin:0}
+.tk ol{margin:0;padding:8px 10px;list-style:none;display:grid;gap:4px;background:#f3edda;border-radius:6px;font-size:.88rem;max-height:160px;overflow-y:auto}
+.tk ol b{color:var(--verde)}
+.tk form{display:grid;gap:8px}
+.tk label{font-weight:700;font-size:.88rem}
+.tk .r{display:flex;gap:8px}
+.tk input{flex:1;min-width:0;min-height:44px;padding:0 12px;border-radius:6px;border:1.5px solid #8b8368;background:#fff}
+.btn{min-height:44px;padding:0 16px;border-radius:6px;border:1.5px solid var(--verde);background:var(--verde);color:#fff;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--verde)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips .chip{min-height:44px;border-radius:6px;font-size:.85rem;text-align:left;font-weight:500}
+.ag{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.ag li{padding:8px 0;border-bottom:1px solid var(--line);font-size:.88rem}
+.ag small{display:block;color:var(--muted)}
+.how{font-size:.85rem;color:var(--muted)}
+.how b{color:var(--ink)}
+@media (max-width:959px){.page[data-tab="chat"] .rec{display:none}.page[data-tab="rec"] .chat{display:none}}
+@media (min-width:960px){
+  .page{grid-template-columns:440px minmax(0,1fr);gap:24px 40px;padding-top:28px}
+  .tabs{display:none}
+  .intro{grid-column:2;grid-row:1;align-self:end}
+  .chat{grid-column:1;grid-row:1 / span 3;height:min(780px,calc(100dvh - 110px));}
+  .rec{grid-column:2;grid-row:3}
+  .try{display:block;grid-column:2;grid-row:2}
+  .try h2{margin:0 0 8px;font:700 .8rem var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .try .chips{gap:8px}
+  .try .chip{min-height:44px;border-radius:22px;font-weight:600}
+}
 </style>
 </head>
 <body>
-<div class="demo-bar"><span><b>Exemplo fictício</b> <span class="hide-sm">· assistente virtual criado por Matheus Villanova</span></span><span class="links"><a class="back" href="/#exemplos">← Voltar</a><a href="https://wa.me/5511933010415?text=Ol%C3%A1%2C%20Matheus!%20Testei%20o%20assistente%20virtual%20de%20exemplo%20e%20quero%20um%20para%20o%20meu%20neg%C3%B3cio." target="_blank" rel="noopener">Quero um assim</a></span></div>
-<div class="app">
-  <div class="head"><i aria-hidden="true">🦷</i><div><b>Clínica Sorriso Leve</b><small id="status">online</small></div></div>
-  <p class="hint">Simulação: no projeto real, o assistente usa inteligência artificial treinada com as informações do seu negócio e fica ligado à sua agenda.</p>
-  <div class="log" id="log" aria-live="polite"></div>
-  <div class="quick" id="quick"></div>
-  <form id="form"><label for="text" style="position:absolute;left:-9999px">Mensagem</label><input id="text" placeholder="Escreva uma mensagem" autocomplete="off"><button aria-label="Enviar"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></form>
+<div class="demo-bar"><span><b>Exemplo fictício</b> <span class="hide-sm">· assistente virtual criado por Matheus Villanova</span></span><span class="links"><a class="back" href="/#exemplos">← Voltar</a><a href="https://wa.me/5511933010415?text=Ol%C3%A1%2C%20Matheus!%20Testei%20o%20exemplo%20de%20assistente%20virtual%20no%20WhatsApp%20e%20quero%20um%20para%20o%20meu%20neg%C3%B3cio." target="_blank" rel="noopener">Quero um assim</a></span></div>
+
+<div class="page" id="page" data-tab="chat">
+  <header class="intro">
+    <h1>Atendimento da Clínica <em>Ipê</em> no WhatsApp</h1>
+    <p>Teste como paciente. Pergunte, marque, remarque e peça uma pessoa: a conversa aparece para a recepção ao lado.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Visão">
+    <button type="button" role="tab" id="t-chat" aria-selected="true" data-tab="chat">Conversa</button>
+    <button type="button" role="tab" id="t-rec" aria-selected="false" data-tab="rec">Recepção<span class="n" id="badge"></span></button>
+  </div>
+
+  <section class="chat" aria-label="Conversa com o assistente">
+    <div class="head">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#e6b422"/><g fill="#1f4d3a"><circle cx="20" cy="11" r="4.6"/><circle cx="29" cy="18" r="4.6"/><circle cx="25.5" cy="28.5" r="4.6"/><circle cx="14.5" cy="28.5" r="4.6"/><circle cx="11" cy="18" r="4.6"/></g><circle cx="20" cy="21" r="3.4" fill="#fffdf6"/></svg>
+      <div class="who"><strong>Clínica Ipê</strong><small id="sub">assistente virtual</small></div>
+      <button type="button" id="reset">Reiniciar</button>
+    </div>
+    <div class="log" id="log" role="log" aria-live="polite" aria-label="Mensagens"></div>
+    <div class="quick" id="quick" aria-label="Respostas rápidas"></div>
+    <form class="send" id="form"><label class="sr" for="text">Mensagem</label><input id="text" placeholder="Escreva uma mensagem" autocomplete="off"><button type="submit" aria-label="Enviar mensagem"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></form>
+  </section>
+
+  <section class="try" aria-labelledby="try-h">
+    <h2 id="try-h">Experimente escrever</h2>
+    <div class="chips" id="try"></div>
+  </section>
+
+  <aside class="rec" aria-label="Painel da recepção">
+    <h2>Painel da recepção</h2>
+    <p>É o que a sua equipe vê. Quando o assistente passa a conversa, ela chega aqui com o resumo e você responde direto para o paciente.</p>
+    <div id="ticket"></div>
+    <h3>Consultas marcadas pelo assistente</h3>
+    <ul class="ag" id="ag"></ul>
+    <p class="how">Demonstração por regras, sem IA. O assistente entende palavras-chave, guia a marcação passo a passo e transfere quando o assunto é saúde, cobrança, reclamação ou quando não entende duas vezes seguidas.</p>
+  </aside>
 </div>
+
 <script>
-const log = document.getElementById('log'), quick = document.getElementById('quick'), status = document.getElementById('status');
-const now = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-const PRICES = { 'Avaliação': 'grátis', 'Limpeza': 'R$ 180', 'Clareamento': 'R$ 790', 'Restauração': 'a partir de R$ 220' };
-const state = { step: null, service: null, day: null };
-function add(text, who) { const m = document.createElement('div'); m.className = `msg ${who}`; const safe = text.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/\*(.+?)\*/g, '<b>$1</b>');
-  m.innerHTML = `${safe}<time>${now()}</time>`; log.appendChild(m); log.scrollTop = log.scrollHeight; }
-function options(list) { quick.innerHTML = list.map((o) => `<button type="button">${o}</button>`).join(''); }
-function bot(text, opts = []) {
-  quick.innerHTML = ''; status.textContent = 'digitando…';
-  const t = document.createElement('div'); t.className = 'typing'; t.innerHTML = '<span></span><span></span><span></span>'; log.appendChild(t); log.scrollTop = log.scrollHeight;
-  setTimeout(() => { t.remove(); status.textContent = 'online'; add(text, 'bot'); options(opts); }, 650 + Math.min(text.length * 8, 900));
+(function () {
+'use strict';
+var $ = function (id) { return document.getElementById(id); };
+var log = $('log'), quick = $('quick'), sub = $('sub'), input = $('text'), page = $('page');
+var RM = false; try { RM = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+var LS = 'clinicaipe_assistente_v1';
+var SPEC = [
+  { id:'cg', n:'Clínica geral', p:260, doc:'Dra. Helena Prado', k:/clinic|geral|check/ },
+  { id:'pe', n:'Pediatria', p:280, doc:'Dr. Caio Menezes', k:/pediatr|crianca|filho|bebe/ },
+  { id:'de', n:'Dermatologia', p:320, doc:'Dra. Isabel Tanaka', k:/dermat|pele/ },
+  { id:'nu', n:'Nutrição', p:200, doc:'Marina Duarte', k:/nutri|dieta/ }
+];
+var CONV = ['Saúde Alfa', 'Vida Plena', 'MedNorte'];
+var WK = ['dom','seg','ter','qua','qui','sex','sáb'], WKL = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+var STEPS = ['spec','pay','day','time','name','phone','confirm'];
+var MAIN = ['Marcar consulta','Valores','Horário e endereço','Convênios','Remarcar ou cancelar','Falar com uma pessoa'];
+var S;
+function fresh() { return { mode:'bot', flow:null, fails:0, ticket:null }; }
+S = fresh();
+
+/* util */
+function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]; }); }
+function fmt(s) { return esc(s).replace(/\*(.+?)\*/g, '<b>$1</b>'); }
+function now() { return new Date().toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' }); }
+function money(n) { return 'R$ ' + n; }
+function hm(m) { return String(Math.floor(m / 60)).padStart(2,'0') + ':' + String(m % 60).padStart(2,'0'); }
+function key(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function fromKey(k) { var p = k.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+function dm(d) { return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth() + 1).padStart(2,'0'); }
+function longDay(k) { var d = fromKey(k); return WKL[d.getDay()] + ', ' + dm(d); }
+function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function specOf(id) { return SPEC.filter(function (s) { return s.id === id; })[0]; }
+function load() { try { var o = JSON.parse(localStorage.getItem(LS) || '{}'); return { bk:o.bk || [] }; } catch (e) { return { bk:[] }; } }
+function save(m) { try { localStorage.setItem(LS, JSON.stringify(m)); } catch (e) {} }
+function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+/* horário de funcionamento (relógio real) */
+function hoursOf(w) { return w === 0 ? null : w === 6 ? [480, 720] : [420, 1140]; }
+function openNow() { var d = new Date(), h = hoursOf(d.getDay()), m = d.getHours() * 60 + d.getMinutes(); return !!h && m >= h[0] && m < h[1]; }
+function nextOpen() {
+  var d = new Date(), m = d.getHours() * 60 + d.getMinutes(), h = hoursOf(d.getDay());
+  if (h && m < h[0]) return 'hoje às ' + hm(h[0]).replace(':00', 'h').replace(':', 'h');
+  for (var i = 1; i < 8; i++) { var n = new Date(d.getFullYear(), d.getMonth(), d.getDate() + i), hh = hoursOf(n.getDay()); if (hh) return (i === 1 ? 'amanhã' : WKL[n.getDay()]) + ' às ' + hm(hh[0]).replace(':00', 'h').replace(':', 'h'); }
+  return 'no próximo dia útil';
 }
-const MAIN = ['Marcar consulta', 'Preços', 'Horários e endereço', 'Aceitam convênio?', 'Falar com uma pessoa'];
+
+/* mensagens */
+var chain = Promise.resolve();
+function add(text, who, o) {
+  o = o || {}; var m = document.createElement('div'); m.className = 'msg ' + who;
+  m.innerHTML = (o.label ? '<span class="lb">' + esc(o.label) + '</span>' : '') + fmt(text) + (o.extra || '') + '<time>' + now() + '</time>';
+  log.appendChild(m); log.scrollTop = log.scrollHeight; return m;
+}
+function sys(text) { var m = document.createElement('div'); m.className = 'sys'; m.textContent = text; log.appendChild(m); log.scrollTop = log.scrollHeight; }
+function chips(list) { quick.innerHTML = list.map(function (o) { return '<button type="button">' + esc(o) + '</button>'; }).join(''); }
+function bot(text, opts, extra, who, label) {
+  var parts = Array.isArray(text) ? text : [text];
+  parts.forEach(function (t, i) {
+    var last = i === parts.length - 1;
+    chain = chain.then(function () {
+      quick.innerHTML = ''; sub.textContent = 'digitando…';
+      var ty = document.createElement('div'); ty.className = 'typing'; ty.setAttribute('aria-hidden', 'true'); ty.innerHTML = '<span></span><span></span><span></span>'; log.appendChild(ty); log.scrollTop = log.scrollHeight;
+      return sleep(RM ? 200 : 450 + Math.min(t.length * 9, 800)).then(function () {
+        ty.remove(); sub.textContent = S.mode === 'human' ? 'recepção' : 'assistente virtual';
+        add(t, who || 'bot', { extra: last ? extra : '', label: label }); if (last) chips(opts || []);
+      });
+    });
+  });
+}
+function reset() {
+  log.innerHTML = ''; quick.innerHTML = ''; chain = Promise.resolve(); S = fresh(); sub.textContent = 'assistente virtual'; renderRec();
+  sys('Mensagens de demonstração. Nada aqui é enviado a ninguém.');
+  var h = new Date().getHours(), g = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+  bot([g + '! Aqui é a assistente virtual da Clínica Ipê. Eu marco, remarco e cancelo consulta e respondo sobre valores, horários e convênios.', 'Não vejo exames nem prontuário por aqui. Se preferir falar com uma pessoa, é só pedir.'], MAIN);
+}
+
+/* recepção */
+function renderRec() {
+  var t = S.ticket, el = $('ticket');
+  var open = t && !t.closed;
+  $('badge').textContent = open && !t.answered ? '1' : '';
+  if (!open) { el.innerHTML = '<p class="empty">Nenhuma conversa transferida. Escreva "quero falar com uma pessoa" no chat para ver o recado chegar aqui.</p>'; }
+  else {
+    el.innerHTML = '<div class="tk ' + t.prio + '"><header><b>Conversa transferida</b><span class="pill">' + (t.prio === 'alta' ? 'prioridade alta' : 'prioridade normal') + '</span></header>' +
+      '<dl><dt>Paciente</dt><dd>' + esc(t.nome || 'ainda sem nome') + '</dd><dt>Motivo</dt><dd>' + esc(t.motivo) + '</dd><dt>Recebido</dt><dd>' + t.hora + (t.fora ? ' (clínica fechada)' : '') + '</dd></dl>' +
+      '<ol aria-label="Mensagens da conversa">' + t.log.map(function (l) { return '<li><b>' + (l.w === 'p' ? 'Paciente' : 'Marta') + ':</b> ' + esc(l.t) + '</li>'; }).join('') + '</ol>' +
+      '<form id="rf"><label for="rt">Responder como Marta, da recepção</label><div class="r"><input id="rt" autocomplete="off"><button class="btn" type="submit">Enviar</button></div>' +
+      '<div class="chips">' + ['Oi! Aqui é a Marta, da recepção. Já li a conversa.', 'Tenho um encaixe amanhã às 9h30. Pode ser?', 'Vou verificar e te respondo em instantes.'].map(function (q) { return '<button type="button" class="chip" data-q="' + esc(q) + '">' + esc(q) + '</button>'; }).join('') + '</div>' +
+      '<button type="button" class="btn ghost" id="giveback">Encerrar e devolver ao assistente</button></form></div>';
+  }
+  var bk = load().bk.slice().sort(function (a, b) { return (a.date + a.time).localeCompare(b.date + b.time); });
+  $('ag').innerHTML = bk.length ? bk.map(function (b) { var s = specOf(b.spec); return '<li><b>' + esc(b.nome) + '</b>, ' + s.n + ' com ' + s.doc + '<small>' + longDay(b.date) + ', ' + hm(b.time) + ' · ' + esc(b.pay) + ' · ' + b.id + '</small></li>'; }).join('') : '<li><small>Nenhuma ainda. Marque uma consulta no chat e ela aparece aqui.</small></li>';
+}
+function handoff(motivo, prio, msgs) {
+  var fora = !openNow();
+  if (!S.ticket || S.ticket.closed) {
+    S.ticket = { motivo:motivo, prio:prio || 'normal', hora:now(), fora:fora, nome:(S.flow && S.flow.nome) || '', log:(S.recent || []).map(function (t) { return { w:'p', t:t }; }), answered:false, closed:false };
+  }
+  S.mode = 'human'; S.flow = null; renderRec();
+  bot(msgs || (fora
+    ? ['Entendi. A recepção está fechada agora e volta ' + nextOpen() + '. Deixei o recado com o resumo da nossa conversa, então você não precisa repetir nada.', 'Pode continuar escrevendo aqui o que for útil. A Marta lê tudo quando abrir.']
+    : ['Entendi. Chamei a Marta, da recepção. Ela costuma responder em poucos minutos e já recebe o resumo da nossa conversa.', 'Pode continuar escrevendo aqui que ela lê tudo.']), ['Voltar ao assistente']);
+}
+function giveBack(text) {
+  if (S.ticket) S.ticket.closed = true; S.mode = 'bot'; S.fails = 0; renderRec();
+  bot(text || 'Tudo certo, voltei. Posso ajudar em mais alguma coisa?', MAIN);
+}
+
+/* marcação */
+function slotsOf(specId, k) {
+  var d = fromKey(k), w = d.getDay(), base = w === 6 ? [480, 540, 600, 660] : [450, 510, 570, 630, 810, 870, 930, 990, 1050];
+  var n = new Date(), mine = load().bk;
+  return base.filter(function (m) {
+    if (k === key(n) && m < n.getHours() * 60 + n.getMinutes() + 60) return false;
+    if (hash(specId + k + m) % 100 < 38) return false;
+    return !mine.some(function (b) { return b.spec === specId && b.date === k && b.time === m; });
+  });
+}
+function nextDays(specId) {
+  var out = [], d = new Date();
+  for (var i = 0; i < 14 && out.length < 5; i++) { var x = new Date(d.getFullYear(), d.getMonth(), d.getDate() + i); if (hoursOf(x.getDay()) && slotsOf(specId, key(x)).length) out.push(key(x)); }
+  return out;
+}
+function dayLabel(k) { var d = fromKey(k), t = new Date(), ti = key(t); var tm = key(new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1)); return (k === ti ? 'Hoje' : k === tm ? 'Amanhã' : WK[d.getDay()].replace(/^./, function (c) { return c.toUpperCase(); })) + ' ' + dm(d); }
+function nav(f) { return f.i > 0 && !f.fixed ? ['Voltar', 'Desistir'] : ['Desistir']; }
+function ask() {
+  var f = S.flow; if (!f) return;
+  if (STEPS[f.i] === 'name' && f.nome) f.i++;
+  if (STEPS[f.i] === 'phone' && f.tel) f.i++;
+  var s = STEPS[f.i], sp = f.spec && specOf(f.spec);
+  if (s === 'spec') return bot('Claro. Qual atendimento você procura?', SPEC.map(function (x) { return x.n; }).concat(nav(f)));
+  if (s === 'pay') return bot('Vai ser particular ou por convênio?', ['Particular'].concat(CONV, ['Outro convênio'], nav(f)));
+  if (s === 'day') { f.days = nextDays(f.spec); return bot('Estes são os próximos dias com vaga em ' + sp.n.toLowerCase() + ':', f.days.map(dayLabel).concat(nav(f))); }
+  if (s === 'time') { f.times = slotsOf(f.spec, f.date); return bot('Para ' + longDay(f.date) + ' tenho estes horários com ' + sp.doc + ':', f.times.map(hm).concat(nav(f))); }
+  if (s === 'name') return bot('Qual é o nome completo do paciente?', nav(f));
+  if (s === 'phone') return bot('E um telefone com DDD para o lembrete? Exemplo: 11 91234-5678', nav(f));
+  if (s === 'confirm') return bot('Confira antes de eu confirmar:\n\n*' + sp.n + '* com ' + sp.doc + '\n' + longDay(f.date) + ', às ' + hm(f.time) + '\nPaciente: ' + f.nome + '\nForma: ' + f.pay + (f.pay === 'Particular' ? ' (' + money(sp.p) + ')' : '') + '\n\nEstá certo?', ['Confirmar', 'Mudar horário', 'Desistir']);
+}
+function startBook(extra) { S.flow = Object.assign({ type:'book', i:0 }, extra || {}); ask(); }
+function flowInput(text) {
+  var f = S.flow, t = norm(text), s;
+  if (/^(desistir|sair|cancelar marcacao)$/.test(t)) { S.flow = null; return bot('Tudo bem, não marquei nada. Se mudar de ideia, é só chamar.', MAIN); }
+  if (f.type === 'pick') return pickInput(text);
+  if (f.type === 'sure') {
+    if (/^(sim|sim, cancelar|cancelar consulta)/.test(t)) {
+      var m = load(); m.bk = m.bk.filter(function (b) { return b.id !== f.bk.id; }); save(m); S.flow = null; renderRec();
+      return bot('Consulta cancelada. Se foi sem querer, me diga "marcar consulta" e eu refaço com você.', ['Marcar consulta', 'Menu']);
+    }
+    S.flow = null; return bot('Certo, mantive a consulta.', MAIN);
+  }
+  if (t === 'voltar' && f.i > 0 && !f.fixed) { f.i--; if (STEPS[f.i] === 'phone' && f.tel) f.i--; if (STEPS[f.i] === 'name' && f.nome) f.i--; return ask(); }
+  s = STEPS[f.i];
+  if (s === 'spec') {
+    var sp = SPEC.filter(function (x) { return norm(x.n) === t || x.k.test(t); })[0];
+    if (!sp) return bot('Não achei esse atendimento. Escolha uma das opções:', SPEC.map(function (x) { return x.n; }).concat(nav(f)));
+    f.spec = sp.id; f.i++; return ask();
+  }
+  if (s === 'pay') {
+    var spc = specOf(f.spec);
+    if (/particular/.test(t)) { f.pay = 'Particular'; f.i++; return afterPay('Particular: ' + money(spc.p) + ', no cartão em até 3 vezes ou no Pix.'); }
+    var cv = CONV.filter(function (c) { return t.indexOf(norm(c)) >= 0; })[0];
+    if (cv) { if (f.spec === 'nu') { f.pay = 'Particular'; f.i++; return afterPay('Nutrição não tem cobertura de ' + cv + '. Fica particular, ' + money(spc.p) + '.'); } f.pay = cv; f.i++; return afterPay('Atendemos ' + cv + '. Leve a carteirinha e um documento com foto.'); }
+    if (/outro|nao tenho|nenhum/.test(t)) { f.pay = 'Particular'; f.i++; return afterPay('Esse convênio não atendemos. Fica particular, ' + money(spc.p) + '. Damos o recibo para você pedir reembolso ao plano.'); }
+    return bot('Escolha uma das formas de atendimento:', ['Particular'].concat(CONV, ['Outro convênio'], nav(f)));
+  }
+  if (s === 'day') {
+    var d = (f.days || []).filter(function (k) { var x = fromKey(k), lab = norm(dayLabel(k)); return t === lab || t.indexOf(norm(WKL[x.getDay()])) >= 0 || t.indexOf(dm(x)) >= 0 || (/hoje/.test(t) && lab.indexOf('hoje') === 0) || (/amanha/.test(t) && lab.indexOf('amanha') === 0); })[0];
+    if (!d) return bot('Não achei vaga nesse dia. Escolha um dos dias abaixo:', f.days.map(dayLabel).concat(nav(f)));
+    f.date = d; f.i++; return ask();
+  }
+  if (s === 'time') {
+    var mm = t.match(/(\d{1,2})\s*(?:[:h]\s*(\d{2})?)?/), tm = mm ? +mm[1] * 60 + (mm[2] ? +mm[2] : 0) : -1;
+    if ((f.times || []).indexOf(tm) < 0) return bot('Esse horário não está livre. Escolha um destes:', f.times.map(hm).concat(nav(f)));
+    f.time = tm; f.i++; return ask();
+  }
+  if (s === 'name') {
+    if (!/[a-z]{3,}/.test(t) || t.length < 4) return bot('Preciso do nome completo do paciente para o cadastro. Pode escrever de novo?', nav(f));
+    f.nome = text.replace(/\s+/g, ' ').trim(); f.i++; return ask();
+  }
+  if (s === 'phone') {
+    var dg = text.replace(/\D/g, ''); if (dg.length < 10 || dg.length > 11) return bot('Esse telefone parece incompleto. Escreva com DDD, por exemplo 11 91234-5678.', nav(f));
+    f.tel = dg; f.i++; return ask();
+  }
+  if (s === 'confirm') {
+    if (/^confirm|^sim|^ok$/.test(t)) return finish();
+    if (/mudar|outro/.test(t)) { f.i = 2; return ask(); }
+    return bot('Responda "Confirmar" para fechar ou "Mudar horário" para escolher outro.', ['Confirmar', 'Mudar horário', 'Desistir']);
+  }
+}
+function afterPay(msg) { var f = S.flow; bot(msg); ask(); }
+function finish() {
+  var f = S.flow, sp = specOf(f.spec), m = load();
+  if (slotsOf(f.spec, f.date).indexOf(f.time) < 0) { f.i = 2; return bot('Esse horário acabou de ser ocupado. Vamos escolher outro:', null), ask(); }
+  if (f.replace) m.bk = m.bk.filter(function (b) { return b.id !== f.replace; });
+  var id = 'CI-' + hash(f.spec + f.date + f.time + f.nome + Date.now()).toString(36).toUpperCase().slice(0, 5);
+  m.bk.push({ id:id, spec:f.spec, date:f.date, time:f.time, nome:f.nome, tel:f.tel, pay:f.pay }); save(m);
+  var first = f.nome.split(' ')[0], txt = 'Olá! Marquei pelo assistente da Clínica Ipê: ' + sp.n + ' com ' + sp.doc + ', ' + longDay(f.date) + ', às ' + hm(f.time) + '. Paciente: ' + f.nome + '. ' + f.pay + '. Protocolo ' + id + '.';
+  var link = '<a href="https://wa.me/5511933010415?text=' + encodeURIComponent(txt) + '" target="_blank" rel="noopener">Receber esta confirmação no meu WhatsApp</a>';
+  S.flow = null; renderRec();
+  bot(['Pronto, ' + first + '. Consulta marcada.\n\n*' + sp.n + '* com ' + sp.doc + '\n' + longDay(f.date) + ', às ' + hm(f.time) + '\nRua Exemplo, 230, Pinheiros\nProtocolo ' + id + '\n\nChegue 10 minutos antes' + (f.pay === 'Particular' ? '.' : ' e leve a carteirinha do ' + f.pay + ' e um documento com foto.'), 'Mando um lembrete na véspera. Para remarcar ou cancelar, é só me chamar.'], ['Remarcar ou cancelar', 'Menu'], link);
+}
+
+/* remarcar e cancelar */
+function upcoming() { var t = key(new Date()); return load().bk.filter(function (b) { return b.date >= t; }).sort(function (a, b) { return (a.date + a.time).localeCompare(b.date + b.time); }); }
+function bkLabel(b) { return specOf(b.spec).n + ', ' + dm(fromKey(b.date)) + ' ' + hm(b.time); }
+function startManage(kind) {
+  var list = upcoming();
+  if (!list.length) return bot('Não achei consulta marcada por aqui neste aparelho. Se você marcou por telefone ou na recepção, posso chamar alguém para ajudar.', ['Marcar consulta', 'Falar com uma pessoa']);
+  S.flow = { type:'pick', kind:kind, list:list };
+  bot(kind === 'cancel' ? 'Qual consulta você quer cancelar?' : 'Qual consulta você quer remarcar?', list.map(bkLabel).concat(['Desistir']));
+}
+function pickInput(text) {
+  var f = S.flow, b = f.list.filter(function (x) { return norm(bkLabel(x)) === norm(text); })[0];
+  if (!b) return bot('Escolha uma das consultas abaixo:', f.list.map(bkLabel).concat(['Desistir']));
+  if (f.kind === 'cancel') {
+    var hrs = (fromKey(b.date).getTime() + b.time * 60000 - Date.now()) / 3600000;
+    S.flow = { type:'sure', bk:b };
+    return bot('Vou cancelar *' + specOf(b.spec).n + '*, ' + longDay(b.date) + ' às ' + hm(b.time) + '.' + (hrs < 24 ? '\n\nFaltam menos de 24 horas. O cancelamento é permitido, mas a recepção pode avaliar a cobrança.' : '\n\nSem custo, porque falta mais de 24 horas.') + ' Confirma?', ['Sim, cancelar', 'Manter consulta']);
+  }
+  S.flow = { type:'book', i:1, spec:b.spec, nome:b.nome, tel:b.tel, replace:b.id }; bot('Vamos escolher um novo horário. A consulta antiga só sai da agenda quando você confirmar a nova.'); ask();
+}
+
+/* intenções */
 function handle(raw) {
-  const text = raw.trim(); if (!text) return; add(text, 'me');
-  const t = text.toLowerCase();
-  if (state.step === 'service' && PRICES[text]) { state.service = text; state.step = 'day'; return bot(`Ótimo, ${text.toLowerCase()}! Para qual dia?`, ['Amanhã', 'Quinta-feira', 'Sexta-feira', 'Sábado']); }
-  if (state.step === 'day') { state.day = text; state.step = 'time'; return bot(`Para ${text.toLowerCase()} tenho estes horários livres:`, ['9h00', '10h30', '14h00', '16h30']); }
-  if (state.step === 'time' && /\d+h/.test(t)) { state.time = text; state.step = 'name'; return bot('Perfeito! Qual o seu nome completo?'); }
-  if (state.step === 'name') { state.step = null; return bot(`Prontinho, ${text.split(' ')[0]}! ✅\n\n*${state.service}*\n${state.day}, às ${state.time}\nClínica Sorriso Leve – Rua Exemplo, 45\n\nVou te mandar um lembrete um dia antes. Se precisar remarcar, é só me chamar por aqui.`, ['Preços', 'Horários e endereço', 'Recomeçar']); }
-  if (/marc|agend|consulta|horário livre/.test(t)) { state.step = 'service'; return bot('Claro! Qual atendimento você precisa?', Object.keys(PRICES)); }
-  if (/preç|valor|quanto|custa/.test(t)) return bot(`Nossos valores:\n${Object.entries(PRICES).map(([k, v]) => `• ${k}: ${v}`).join('\n')}\n\nParcelamos em até 6x sem juros.`, ['Marcar consulta', 'Aceitam convênio?']);
-  if (/hor|endere|onde|fica|abre|fecha/.test(t)) return bot('Atendemos de segunda a sexta, das 8h às 19h, e sábado das 8h às 13h.\n📍 Rua Exemplo, 45 – Vila Mariana, São Paulo.', ['Marcar consulta', 'Preços']);
-  if (/conv|plano|unimed|amil|sulam/.test(t)) return bot('Atendemos os principais convênios odontológicos. Me diga qual é o seu que eu confirmo a cobertura antes da consulta.', ['Marcar consulta', 'Falar com uma pessoa']);
-  if (/pessoa|humano|atendente|falar com/.test(t)) return bot('Sem problema! Vou chamar a nossa recepção, que responde em alguns minutos no horário de atendimento. 😊', ['Recomeçar']);
-  if (/recome|oi|olá|ola|bom dia|boa tarde|boa noite/.test(t)) { state.step = null; return bot('Olá! Sou o assistente virtual da Clínica Sorriso Leve. Como posso te ajudar?', MAIN); }
-  return bot('Não entendi muito bem, mas posso te ajudar com estas opções:', MAIN);
+  var text = raw.trim(); if (!text) return;
+  add(text, 'me'); quick.innerHTML = '';
+  (S.recent = S.recent || []).push(text); S.recent = S.recent.slice(-4);
+  var t = norm(text);
+  if (/dor no peito|falta de ar|nao consigo respirar|desmai|convuls|sangramento forte|infarto|\bavc\b|engasgou/.test(t)) {
+    S.flow = null;
+    bot('Isso pode ser uma urgência. Ligue agora para o *192* (SAMU) ou vá ao pronto-socorro mais próximo. Não espere resposta por aqui.', ['Falar com uma pessoa']);
+    handoff('Possível urgência relatada pelo paciente', 'alta', ['Também avisei a recepção, mas o atendimento de urgência não acontece por mensagem. Priorize o 192.']);
+    return;
+  }
+  if (S.mode === 'human') {
+    if (/^voltar ao assistente$/.test(t)) return giveBack('Sem problema, voltei. Posso ajudar em mais alguma coisa?');
+    S.ticket.log.push({ w:'p', t:text }); renderRec(); chips(['Voltar ao assistente']); return;
+  }
+  if (/atendente|humano|pessoa|recepcao|alguem de verdade|gente de verdade/.test(t) && !/pessoa fisica/.test(t)) return handoff('Paciente pediu para falar com uma pessoa');
+  if (/reclam|pessimo|absurdo|horrivel|insatisf|desrespeit|me cobraram|cobranca errada/.test(t)) return handoff('Reclamação ou cobrança contestada', 'alta', ['Sinto muito por isso. Esse assunto precisa de uma pessoa, então vou passar agora para a recepção, com o resumo do que você escreveu.']);
+  if (S.flow) return flowInput(text);
+  S.fails = S.fails || 0;
+  if (/posso tomar|dose|remedio|medicamento|receita|sintoma|febre|tosse|enjoo|vomit|diagnostic|estou com dor|dor de |alergia/.test(t)) return bot('Não oriento sintomas nem remédios por mensagem, porque isso pede avaliação de quem examina. Posso marcar uma consulta ou passar seu recado para a enfermagem.', ['Marcar consulta', 'Falar com a enfermagem']);
+  if (/enfermagem/.test(t)) return handoff('Dúvida clínica encaminhada à enfermagem');
+  if (/remarcar ou cancelar/.test(t)) { S.fails = 0; return bot('Quer remarcar ou cancelar?', ['Remarcar', 'Cancelar consulta']); }
+  if (/remarc|trocar (o )?(dia|horario)|mudar (o )?(dia|horario)/.test(t)) { S.fails = 0; return startManage('resched'); }
+  if (/cancel|desmarc/.test(t)) { S.fails = 0; return startManage('cancel'); }
+  if (/reembolso|nota fiscal|recibo|segunda via|boleto|estorno/.test(t)) { S.fails = 0; return bot('O recibo para reembolso sai na hora da consulta, com CID só se você pedir. Segunda via e nota fiscal são emitidas pela recepção.', ['Falar com uma pessoa', 'Menu']); }
+  if (/que horas|funciona|abre|fecha|horario de|aberto|aberta|atendem hoje|endereco|onde|fica|como chego|estaciona|metro|localiz/.test(t)) {
+    S.fails = 0; var aberto = openNow();
+    return bot('Atendemos de segunda a sexta, das 7h às 19h, e aos sábados, das 8h às 12h. Domingo fechado.\n' + (aberto ? 'Estamos abertos agora.' : 'Agora estamos fechados. Abrimos ' + nextOpen() + '.') + '\n\nRua Exemplo, 230, Pinheiros, São Paulo. Há estacionamento conveniado ao lado e fica a 4 minutos a pé do metrô.', ['Marcar consulta', 'Valores']);
+  }
+  if (/convenio|plano|carteirinha|saude alfa|vida plena|mednorte|unimed|amil|bradesco|sulamerica/.test(t)) {
+    S.fails = 0; var cv = CONV.filter(function (c) { return t.indexOf(norm(c)) >= 0; })[0];
+    if (cv) return bot('Sim, atendemos ' + cv + ' em clínica geral, pediatria e dermatologia. Nutrição é só particular. Leve a carteirinha e um documento com foto.', ['Marcar consulta', 'Valores']);
+    if (/unimed|amil|bradesco|sulamerica/.test(t)) return bot('Esse convênio não atendemos. A consulta fica particular e damos o recibo para você pedir reembolso ao plano.', ['Valores', 'Marcar consulta']);
+    return bot('Atendemos ' + CONV.join(', ') + '. Nutrição é só particular. Me diga o seu convênio que eu confirmo.', ['Marcar consulta', 'Valores']);
+  }
+  if (/valor|preco|quanto|custa|particular/.test(t)) { S.fails = 0; return bot('Consulta particular:\n' + SPEC.map(function (s) { return '• ' + s.n + ': ' + money(s.p); }).join('\n') + '\n\nCartão em até 3 vezes ou Pix. Com convênio, vale a cobertura do plano.', ['Marcar consulta', 'Convênios']); }
+  if (/exame|resultado|laudo|jejum/.test(t)) { S.fails = 0; return bot('Resultados de exames feitos aqui saem no portal em até 3 dias úteis. Para retirar impresso, venha com documento com foto. Jejum, quando precisa, vem escrito na solicitação do médico. Eu não consigo abrir nem explicar resultado, isso é com o seu médico.', ['Falar com uma pessoa', 'Menu']); }
+  if (/levar|documento|primeira consulta|preciso de que|o que levo/.test(t)) { S.fails = 0; return bot('Na primeira consulta traga documento com foto, carteirinha do convênio (se tiver) e exames antigos que tiver. Chegue 10 minutos antes para o cadastro.', ['Marcar consulta', 'Menu']); }
+  if (/marc|agend|consulta|vaga|disponib|quero ser atendid/.test(t)) { S.fails = 0; return startBook(); }
+  if (/obrigad|valeu|brigad/.test(t)) return bot('Por nada. Se precisar de mais alguma coisa, estou por aqui.', MAIN);
+  if (/^(oi|ola|bom dia|boa tarde|boa noite|e ai|menu|inicio|comecar|recomecar|opa)\b/.test(t)) { S.fails = 0; return bot('Olá! Como posso ajudar?', MAIN); }
+  S.fails++;
+  if (S.fails >= 2) return handoff('Assistente não entendeu duas mensagens seguidas', 'normal', ['Acho que não estou conseguindo te ajudar do jeito certo. Vou chamar a recepção e passar o que você escreveu.']);
+  bot('Não entendi bem. Posso ajudar com marcação, valores, horário, convênios e remarcação. Qual deles?', MAIN);
 }
-quick.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) handle(b.textContent); });
-document.getElementById('form').addEventListener('submit', (e) => { e.preventDefault(); const i = document.getElementById('text'); handle(i.value); i.value = ''; });
-bot('Olá! 👋 Sou o assistente virtual da Clínica Sorriso Leve. Posso marcar sua consulta, passar preços e tirar dúvidas, a qualquer hora.', MAIN);
+
+/* eventos */
+quick.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) handle(b.textContent); });
+$('try').innerHTML = ['Vocês atendem Vida Plena?', 'Estão abertos agora?', 'Quero marcar uma consulta', 'Estou com febre, posso tomar dipirona?', 'Quero falar com uma pessoa'].map(function (q) { return '<button type="button" class="chip">' + esc(q) + '</button>'; }).join('');
+$('try').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { handle(b.textContent); input.focus(); } });
+$('form').addEventListener('submit', function (e) { e.preventDefault(); handle(input.value); input.value = ''; input.focus(); });
+$('reset').addEventListener('click', function () { reset(); input.focus(); });
+document.querySelector('.tabs').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return; page.dataset.tab = b.dataset.tab;
+  document.querySelectorAll('.tabs button').forEach(function (x) { x.setAttribute('aria-selected', String(x === b)); });
+});
+$('ticket').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.q) { var r = $('rt'); r.value = b.dataset.q; r.focus(); }
+  if (b.id === 'giveback') giveBack('A Marta encerrou o atendimento e eu voltei. Posso ajudar em mais alguma coisa?');
+});
+$('ticket').addEventListener('submit', function (e) {
+  e.preventDefault(); var r = $('rt'), v = r.value.trim(); if (!v) { r.focus(); return; }
+  S.ticket.log.push({ w:'r', t:v }); S.ticket.answered = true; chain = chain.then(function () { add(v, 'staff', { label:'Marta, recepção' }); sub.textContent = 'recepção'; chips(['Voltar ao assistente']); });
+  renderRec(); var n = $('rt'); if (n) n.focus();
+});
+
+reset();
+})();
 </script>
 </body>
 </html>

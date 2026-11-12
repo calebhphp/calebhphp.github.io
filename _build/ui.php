@@ -67,6 +67,7 @@ return [
             ['/produtos/cardapio/', 'ex-prod-cardapio', 'Produto meu · à venda', 'Cardápio Digital pronto', 'Modelo para você configurar sozinho: o pedido chega pronto no WhatsApp. R$ 47, sem mensalidade.'],
             ['/produtos/agenda/', 'ex-prod-agenda', 'Produto meu · à venda', 'Agenda Online pronta', 'Modelo para salão, barbearia e estética: o cliente escolhe o horário e o pedido chega no WhatsApp. R$ 47.'],
         ],
+        'soon_label' => 'Em breve', 'soon' => [['Herança', 'Diagnóstico de sistema PHP antigo: mapa de risco, testes que travam o comportamento atual e prova de que a migração não quebrou nada.'], ['Raio-X de app feito com IA', 'Auditoria em português para quem montou o app com IA: mostra a falha, explica o risco e entrega a correção pronta.']],
         'demo_fict' => 'negócio fictício', 'work_go' => 'Abrir →', 'demo_alt' => 'Tela de celular: {name}',
         'demos' => [
             ['cafeteria', 'Site + cardápio digital', 'Cafeteria com pedido no WhatsApp', 'O cliente monta o pedido e ele chega pronto no WhatsApp, sem comissão.'],
@@ -150,6 +151,7 @@ return [
         'work' => [
             ['/prumo/', 'prumo-lancar', 'My product · in demo', 'Prumo, expense tracker', 'Personal finance app: type your expenses in one sentence and see how much you can spend per day (in Portuguese).'],
         ],
+        'soon_label' => 'Coming soon', 'soon' => [['Herança', 'Health check for old PHP systems: a risk map, tests that lock in today\'s behavior and proof that the migration broke nothing.'], ['AI-built app X-ray', 'An audit for apps built with AI: it shows the flaw, explains the risk and hands over the fix.']],
         'demo_fict' => 'fictional business', 'work_go' => 'Open →', 'demo_alt' => 'Phone screen: {name}',
         'demos' => [
             ['cafeteria', 'Website + digital menu', 'Café with WhatsApp ordering', 'Customers build their order and it arrives ready in your WhatsApp, with no commission.'],
@@ -233,6 +235,7 @@ return [
         'work' => [
             ['/prumo/', 'prumo-lancar', 'Producto mío · en demo', 'Prumo, control de gastos', 'App de finanzas personales: escribe tus gastos en una frase y mira cuánto puedes gastar al día (en portugués).'],
         ],
+        'soon_label' => 'Próximamente', 'soon' => [['Herança', 'Diagnóstico de sistemas PHP antiguos: mapa de riesgo, pruebas que fijan el comportamiento actual y prueba de que la migración no rompió nada.'], ['Rayos X de app hecha con IA', 'Auditoría para apps creadas con IA: muestra la falla, explica el riesgo y entrega la corrección.']],
         'demo_fict' => 'negocio ficticio', 'work_go' => 'Abrir →', 'demo_alt' => 'Pantalla de móvil: {name}',
         'demos' => [
             ['cafeteria', 'Web + carta digital', 'Cafetería con pedidos por WhatsApp', 'El cliente arma su pedido y llega listo a tu WhatsApp, sin comisiones.'],

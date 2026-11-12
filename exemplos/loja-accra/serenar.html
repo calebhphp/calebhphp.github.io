@@ -11,9 +11,11 @@
 <link rel="icon" href="img/sol-accra-pincel-brasa.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Karla:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../demo.css">
 <link rel="stylesheet" href="loja.css">
 </head>
 <body>
+<div class="demo-bar"><span><b>Exemplo de loja online</b> <span class="hide-sm">· Accrá é marca real, loja refeita por Matheus Villanova. Pedidos vão para um WhatsApp de teste</span></span><span class="links"><a class="back" href="/#exemplos">← Voltar</a><a href="https://wa.me/5511933010415?text=Ol%C3%A1%2C%20Matheus!%20Vi%20o%20exemplo%20da%20loja%20Accr%C3%A1%20e%20quero%20uma%20loja%20assim." target="_blank" rel="noopener">Quero uma loja assim</a></span></div>
 <div class="topbar mono">feito à mão entre juiz de fora e são paulo · lotes pequenos · cura de 28 dias</div>
 <nav class="nav">
   <a class="marca" href="index.html" aria-label="Accrá, início"><span class="sol" data-cor="#9C4124" style="width:30px;height:30px" aria-hidden="true"></span><span class="nome">accrá</span></a>
@@ -28,18 +30,18 @@
 <div class="produto" data-produto="serenar">
   <div class="trilha mono"><a href="index.html">início</a> / serenar / <span data-aroma-trilha>Capim-santo</span></div>
   <div class="produto-grid">
-    <div class="galeria"><img class="foto principal" src="img/cena-03.webp" alt="Serenar · óleo calmante · 60 ml" width="1004" height="548"><div class="mini"><img class="foto" src="img/cena-08.webp" alt="" loading="lazy" width="1004" height="548"><img class="foto" src="img/cena-07.webp" alt="" loading="lazy" width="1004" height="548"></div></div>
+    <div class="galeria"><img class="foto principal" src="img/cena-03.webp" alt="Serenar · óleo calmante · 60 ml" width="1004" height="548"><div class="mini"><img class="foto" src="img/cena-08.webp" alt="Vela acesa num pote de cerâmica ao lado de uma xícara preta sobre mesa de madeira" loading="lazy" width="1004" height="548"><img class="foto" src="img/cena-07.webp" alt="Argila vermelha rachada ao lado de um frasco âmbar com rolha de cortiça sobre uma pedra" loading="lazy" width="1004" height="548"></div></div>
     <div class="info">
       <span class="mono kicker">Serenar · óleo calmante · 60 ml</span>
       <h1 data-aroma-titulo>Capim-santo</h1>
       <span class="mono preco">R$ 52</span>
       <p class="desc" data-aroma-texto>Pra quando a cólica aperta no meio do expediente. Aqueça nas mãos, comece pelo ventre.</p>
       <div class="aromas"><span class="mono">aroma</span><div class="aromas-op"><button class="aroma" aria-pressed="true" data-aroma-op="Capim-santo" data-texto="Pra quando a cólica aperta no meio do expediente. Aqueça nas mãos, comece pelo ventre.">Capim-santo</button></div></div>
-      <button class="btn comprar" data-add="serenar" data-aroma="Capim-santo">Levar pra casa</button>
+      <div class="comprar-linha"><div class="qtd-prod" role="group" aria-label="Quantidade"><button type="button" data-qp-menos aria-label="Menos um">−</button><input type="number" data-q-prod value="1" min="1" max="20" inputmode="numeric" aria-label="Quantidade"><button type="button" data-qp-mais aria-label="Mais um">+</button></div><button type="button" class="btn comprar" data-add="serenar" data-aroma="Capim-santo">Levar pra casa</button></div>
       <span class="mono lote">lote pequeno · feito à mão</span>
       <details open><summary>O que tem dentro</summary><div class="corpo">A lista completa de ingredientes (INCI) vai no rótulo e entra aqui antes do lançamento.</div></details>
       <details><summary>Como usar</summary><div class="corpo">Aqueça nas mãos, respire fundo três vezes, comece pelo ventre.</div></details>
-      <details><summary>Entrega</summary><div class="corpo">Seu pedido sai cheirando a casa de avó, em caixa kraft com maravalha, um raminho de erva e o nome de quem fez. Frete e prazo a gente combina pelo WhatsApp, conforme o seu CEP.</div></details>
+      <details><summary>Entrega</summary><div class="corpo">Seu pedido sai cheirando a casa de avó, em caixa kraft com maravalha, um raminho de erva e o nome de quem fez. O frete aparece na sacola assim que você digita o CEP. Se preferir, é só escolher retirar com a gente.</div></details>
     </div>
   </div>
 </div>
@@ -67,19 +69,33 @@
   <div class="wrap rodape-base mono"><span>cosmética natural artesanal</span><span>juiz de fora · são paulo · 2026</span></div>
 </footer>
 <div class="veu" data-fechar-sacola></div>
-<aside class="sacola" aria-label="Sacola" aria-hidden="true">
-  <div class="sacola-topo"><h2>Sacola</h2><button class="fechar" data-fechar-sacola>fechar</button></div>
+<aside class="sacola" role="dialog" aria-modal="true" aria-labelledby="sacola-titulo" aria-hidden="true">
+  <div class="sacola-topo"><h2 id="sacola-titulo">Sacola</h2><button type="button" class="fechar" data-fechar-sacola>fechar</button></div>
   <div class="sacola-itens" data-itens></div>
-  <form class="sacola-fim" data-form="pedido">
-    <div class="total"><span class="mono">subtotal · frete pelo cep</span><strong data-total>R$ 0</strong></div>
+  <form class="sacola-fim" data-form="pedido" hidden>
+    <fieldset class="entrega"><legend class="mono">como você quer receber</legend>
+      <label class="radio"><input type="radio" name="entrega" value="cep" checked><span>Entrega pelo CEP</span></label>
+      <label class="radio"><input type="radio" name="entrega" value="retirada"><span>Retirar com a gente</span></label>
+    </fieldset>
+    <label class="campo" data-bloco-cep><span class="mono">cep de entrega</span><input name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9"></label>
+    <p class="frete-info" data-frete-info aria-live="polite"></p>
+    <div class="cupom"><label class="campo"><span class="mono">cupom (opcional)</span><input name="cupom" autocomplete="off" placeholder="PRIMEIRAFORNADA"></label><button type="button" class="btn-linha" data-cupom-btn>Aplicar</button></div>
+    <p class="frete-info" data-cupom-msg aria-live="polite"></p>
+    <dl class="resumo">
+      <div><dt>Subtotal</dt><dd data-r-sub>R$ 0</dd></div>
+      <div data-r-linha-desc hidden><dt>Desconto</dt><dd data-r-desc>R$ 0</dd></div>
+      <div><dt>Frete</dt><dd data-r-frete>a calcular</dd></div>
+      <div class="resumo-total"><dt>Total</dt><dd data-total>R$ 0</dd></div>
+    </dl>
     <label class="campo"><span class="mono">seu nome</span><input name="nome" required autocomplete="name"></label>
-    <label class="campo"><span class="mono">cep de entrega</span><input name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000"></label>
-    <button class="btn">Fechar pedido no WhatsApp</button>
+    <label class="campo"><span class="mono">observação (opcional)</span><input name="obs" autocomplete="off" placeholder="presente, horário de entrega..."></label>
+    <button class="btn" type="submit">Fechar pedido no WhatsApp</button>
     <span class="aviso mono">pagamento por pix · a chave vai na conversa</span>
+    <span class="aviso mono" data-aviso-envio role="status"></span>
   </form>
 </aside>
 <div class="toast" role="status" aria-live="polite"></div>
-<script>window.LOJA = {"produtos":{"dengo":[38,"Dengo","sabonete massageador · 110 g"],"omi":[64,"Omi","hidratante corporal · 200 g"],"serenar":[52,"Serenar","óleo calmante · 60 ml"]},"whatsapp":"","cupom":"PRIMEIRAFORNADA","cupom_desc":"10% na primeira compra"};</script>
+<script>window.LOJA = {"produtos":{"dengo":[38,"Dengo","sabonete massageador · 110 g"],"omi":[64,"Omi","hidratante corporal · 200 g"],"serenar":[52,"Serenar","óleo calmante · 60 ml"]},"whatsapp":"5511933010415","cupom":"PRIMEIRAFORNADA","cupom_desc":"10% na primeira compra"};</script>
 <script src="accra-sol.js"></script>
 <script src="loja.js"></script>
 </body>

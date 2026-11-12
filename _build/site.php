@@ -397,6 +397,7 @@ foreach (array_keys($LANGS) as $l) {
         $real = $slug === 'loja-accra';
         $demoHtml .= $demoCard('/exemplos/'.$slug.'/', 'ex-'.$slug, $real ? $tag : $tag.' · '.$u['demo_fict'], $real, $title, $desc);
     }
+    $soonHtml = implode('', array_map(fn ($x) => '<li><span class="tag">'.e($u['soon_label']).'</span><h3>'.e($x[0]).'</h3><p>'.e($x[1]).'</p></li>', $u['soon']));
     $builds = implode('', array_map(fn ($b) => '<div class="build reveal"><b>'.e($b[0]).'</b><span>'.e($b[1]).'</span></div>', $u['builds']));
     $steps = implode('', array_map(fn ($st) => '<div class="step reveal"><h3>'.e($st[0]).'</h3><p>'.e($st[1]).'</p></div>', $s['steps']));
     $trust = implode('', array_map(fn ($t) => '<li>'.e($t).'</li>', $h['trust']));
@@ -485,6 +486,7 @@ foreach (array_keys($LANGS) as $l) {
   <div class="wrap">
     <div class="section-head reveal"><span class="eyebrow">{$s['examples_eyebrow']}</span><h2>{$s['examples_h2']}</h2><p>{$s['examples_p']}</p></div>
     <div class="demos">{$demoHtml}</div>
+    <ul class="soon" aria-label="{$u['soon_label']}">{$soonHtml}</ul>
   </div>
 </section>
 
