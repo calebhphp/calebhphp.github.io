@@ -424,4 +424,3 @@ main>section .eyebrow::before{content:counter(sec,decimal-leading-zero) " /";wid
 .car-btn:disabled{opacity:.35;cursor:default}
 @media (hover:hover) and (pointer:fine){.car-btn:not(:disabled):hover{border-color:var(--accent);color:var(--accent)}}
 .car-count{min-width:5ch;text-align:center;font:500 .9rem var(--mono);color:var(--muted)}
-@media (prefers-reduced-motion:no-preference){.demos{scroll-behavior:smooth}}
