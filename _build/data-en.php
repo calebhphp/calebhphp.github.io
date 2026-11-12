@@ -6,7 +6,7 @@ return [
         'url' => 'https://matheusvillanova.com',
         'name' => 'Matheus Villanova',
         'tagline' => 'Websites, booking systems and automation for small businesses',
-        'whatsapp' => '5511933010415',
+        'whatsapp' => '5511915281100',
         'email' => 'matheusvillanova1@gmail.com',
         'linkedin' => 'https://www.linkedin.com/in/matheus-villanova',
         'github' => 'https://github.com/calebhphp',

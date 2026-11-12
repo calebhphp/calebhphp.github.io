@@ -95,7 +95,7 @@ form.send button{flex:none;width:48px;height:48px;border-radius:50%;border:0;bac
 </style>
 </head>
 <body>
-<div class="demo-bar"><span><b>Exemplo fictício</b> <span class="hide-sm">· assistente virtual criado por Matheus Villanova</span></span><span class="links"><a class="back" href="/#exemplos">← Voltar</a><a href="https://wa.me/5511933010415?text=Ol%C3%A1%2C%20Matheus!%20Testei%20o%20exemplo%20de%20assistente%20virtual%20no%20WhatsApp%20e%20quero%20um%20para%20o%20meu%20neg%C3%B3cio." target="_blank" rel="noopener">Quero um assim</a></span></div>
+<div class="demo-bar"><span><b>Exemplo fictício</b> <span class="hide-sm">· assistente virtual criado por Matheus Villanova</span></span><span class="links"><a class="back" href="/#exemplos">← Voltar</a><a href="https://wa.me/5511915281100?text=Ol%C3%A1%2C%20Matheus!%20Testei%20o%20exemplo%20de%20assistente%20virtual%20no%20WhatsApp%20e%20quero%20um%20para%20o%20meu%20neg%C3%B3cio." target="_blank" rel="noopener">Quero um assim</a></span></div>
 
 <div class="page" id="page" data-tab="chat">
   <header class="intro">
@@ -333,7 +333,7 @@ function finish() {
   var id = 'CI-' + hash(f.spec + f.date + f.time + f.nome + Date.now()).toString(36).toUpperCase().slice(0, 5);
   m.bk.push({ id:id, spec:f.spec, date:f.date, time:f.time, nome:f.nome, tel:f.tel, pay:f.pay }); save(m);
   var first = f.nome.split(' ')[0], txt = 'Olá! Marquei pelo assistente da Clínica Ipê: ' + sp.n + ' com ' + sp.doc + ', ' + longDay(f.date) + ', às ' + hm(f.time) + '. Paciente: ' + f.nome + '. ' + f.pay + '. Protocolo ' + id + '.';
-  var link = '<a href="https://wa.me/5511933010415?text=' + encodeURIComponent(txt) + '" target="_blank" rel="noopener">Receber esta confirmação no meu WhatsApp</a>';
+  var link = '<a href="https://wa.me/5511915281100?text=' + encodeURIComponent(txt) + '" target="_blank" rel="noopener">Receber esta confirmação no meu WhatsApp</a>';
   S.flow = null; renderRec();
   bot(['Pronto, ' + first + '. Consulta marcada.\n\n*' + sp.n + '* com ' + sp.doc + '\n' + longDay(f.date) + ', às ' + hm(f.time) + '\nRua Exemplo, 230, Pinheiros\nProtocolo ' + id + '\n\nChegue 10 minutos antes' + (f.pay === 'Particular' ? '.' : ' e leve a carteirinha do ' + f.pay + ' e um documento com foto.'), 'Mando um lembrete na véspera. Para remarcar ou cancelar, é só me chamar.'], ['Remarcar ou cancelar', 'Menu'], link);
 }
