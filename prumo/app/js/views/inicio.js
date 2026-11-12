@@ -1,7 +1,7 @@
 import { t } from '../i18n.js';
 import { projection, spending, monthSummary } from '../finance.js';
 import { projectionChart, bindChart, tableFor } from '../chart.js';
-import { esc, ymOf, money, isoDay } from '../format.js';
+import { esc, ymOf, money, isoDay, displayName } from '../format.js';
 import { parseQuick } from '../quick.js';
 import { earn } from '../actions.js';
 import * as store from '../store.js';
@@ -30,7 +30,7 @@ export function render(s, ctx) {
   const showTable = ctx.tables.has('proj');
   const hasMei = s.modules.includes('mei') && s.mei.enabled;
   const sp = spending(s, ctx.ym);
-  const first = s.profile.name.split(' ')[0];
+  const first = displayName(s);
   const fresh = isReal() && !sp.budget && !s.incomes.length;
   return `${homeTop(s)}<div class="home-hero"><div class="home-radar">${radarCard(s, ctx.ym)}</div><div class="home-hero-text">${head(fresh ? t('home.hNew', { name: esc(first) }) : headline(s, ctx.ym), fresh ? t('home.sNew') : say('home.sub', { name: esc(first), v: money(Math.max(0, sp.perDayLeft)) }))}${forecastCard(s, ctx.ym)}</div></div>
   <div class="grid">

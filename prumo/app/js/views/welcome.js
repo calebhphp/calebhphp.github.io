@@ -1,3 +1,4 @@
+import { displayName } from '../format.js';
 // First access of a beta account: what to set up, in order, each step ticking itself off. Always skippable.
 import { t } from '../i18n.js';
 import { esc } from '../format.js';
@@ -22,7 +23,7 @@ export function welcomeCard(s, real) {
   const list = steps(s);
   const done = list.filter(x => x.done).length;
   const all = done === list.length;
-  const first = (s.profile.name || '').split(' ')[0];
+  const first = displayName(s);
   return `<section class="card span-12 welcome" aria-labelledby="wel-t">
     <div class="wel-head">
       ${ico3d(all ? 'trophy' : 'rocket', 72, 'wel-art')}

@@ -57,3 +57,6 @@ export function moneyIn(amount, cur, rate) {
   const own = new Intl.NumberFormat(lang, { style: 'currency', currency: cur }).format(amount);
   return rate ? `${own} ≈ ${money(amount * rate)}` : own;
 }
+
+// What the app calls the person: the nickname they chose, or the first name.
+export const displayName = s => ((s && s.profile && (s.profile.nick || s.profile.name)) || '').trim().split(' ')[0];

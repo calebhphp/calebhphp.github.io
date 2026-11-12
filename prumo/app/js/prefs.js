@@ -1,6 +1,6 @@
 // Viewer preferences: kept per browser, never needed for the app to work.
 const KEY = 'prumo.prefs';
-const DEFAULTS = { theme: 'auto', contrast: false, font: 100, motion: 'auto', lang: 'pt-BR', currency: 'BRL', libras: false, tone: 'sobrio', adult: false };
+const DEFAULTS = { theme: 'auto', contrast: false, font: 100, motion: 'auto', lang: 'pt-BR', currency: 'BRL', libras: false, tone: 'sobrio', adult: false, accent: 'latao', hide: false };
 
 let prefs = { ...DEFAULTS };
 try { prefs = { ...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY) || '{}') }; } catch (e) { /* private mode */ }
@@ -27,6 +27,8 @@ export function applyPrefs() {
   if (prefs.theme === 'auto') delete root.dataset.theme; else root.dataset.theme = prefs.theme;
   if (prefs.contrast) root.dataset.contrast = 'high'; else delete root.dataset.contrast;
   if (prefs.motion === 'off') root.dataset.motion = 'off'; else delete root.dataset.motion;
+  if (prefs.accent && prefs.accent !== 'latao') root.dataset.accent = prefs.accent; else delete root.dataset.accent;
+  if (prefs.hide) root.dataset.hide = '1'; else delete root.dataset.hide;
   root.style.fontSize = prefs.font === 100 ? '' : prefs.font + '%';
   root.lang = prefs.lang;
   const meta = document.querySelector('meta[name="theme-color"]');

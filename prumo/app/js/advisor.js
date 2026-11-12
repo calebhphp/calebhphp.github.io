@@ -146,24 +146,24 @@ function localAnswer(q, s, ym) {
   if (va) return va;
   if (/compr|sofá|sofa|afford|buy|posso/.test(lq)) {
     const next = wishlistStatus(s).find(w => w.state !== 'bought');
-    const h = next ? ' ' + t('wish.hoursLine', { h: Math.round(workHours(s, next.price, ym)) }) : '';
-    if (next && next.state === 'cooling') return t('wish.coolingAnswer', { item: next.name }) + h;
+    const h = next ? ' ' + say('wish.hoursLine', { h: Math.round(workHours(s, next.price, ym)) }) : '';
+    if (next && next.state === 'cooling') return say('wish.coolingAnswer', { item: next.name }) + h;
     if (next && next.state === 'ready') return say('local.buyYes', { item: next.name, v: money(next.price) }) + h;
     if (next) { const m = Math.max(1, Math.ceil(next.missing / Math.max(1, s.goals.find(g => g.id === next.goal).monthly))); return say(m === 1 ? 'local.buyNo1' : 'local.buyNo', { item: next.name, v: money(next.missing), m }) + h; }
   }
   if (/ritmo|pace|track/.test(lq)) return say(sp.pace > sp.elapsed + 0.1 ? 'local.paceFast' : 'local.paceOk', { p: pct(sp.pace), m: pct(sp.elapsed), d: money(sp.perDayLeft) });
   if (/demais|exagerando|too much|where|onde/.test(lq)) {
     const top = sp.cats.filter(c => c.spent > 0).slice(0, 2);
-    if (top.length) return say('local.where', { a: t('cat.' + top[0].cat), ap: pct(top[0].used), b: top[1] ? t('cat.' + top[1].cat) : '', bp: top[1] ? pct(top[1].used) : '', d: money(sp.perDayLeft) });
+    if (top.length) return (top.some(c => ['pet', 'saude'].includes(c.cat)) ? t : say)('local.where', { a: t('cat.' + top[0].cat), ap: pct(top[0].used), b: top[1] ? t('cat.' + top[1].cat) : '', bp: top[1] ? pct(top[1].used) : '', d: money(sp.perDayLeft) });
   }
   if (/fevereiro|plano|queda|february|plan|renda|income/.test(lq)) {
     const d = incomeDrop(s, ym);
-    if (d) return t('local.plan', { m: monthIn(d.ym), gap: money(d.from - d.to), free: money(x.free) });
+    if (d) return say('local.plan', { m: monthIn(d.ym), gap: money(d.from - d.to), free: money(x.free) });
   }
-  if (/guardar|save|reserva/.test(lq)) return t('local.save', { v: money(Math.max(0, x.free * 0.5)), free: money(x.free) });
-  if (/mei|limite|cap/.test(lq) && s.mei.enabled) { const m = meiYear(s); return t('local.mei', { ytd: money(m.ytd), pace: money(m.pace), limit: money(s.mei.limit) }); }
-  if (/conta|vence|bill/.test(lq)) { const open = bills(s, ym).filter(b => !b.isPaid); return t('local.bills', { n: open.length, v: money(open.reduce((a, b) => a + b.amount, 0)) }); }
-  if (/assinatura|subscription|cortar|cut/.test(lq)) { const r = subsReview(s); return t('local.subs', { v: money(r.total), y: money(r.total * 12) }); }
+  if (/guardar|save|reserva/.test(lq)) return say('local.save', { v: money(Math.max(0, x.free * 0.5)), free: money(x.free) });
+  if (/mei|limite|cap/.test(lq) && s.mei.enabled) { const m = meiYear(s); return say('local.mei', { ytd: money(m.ytd), pace: money(m.pace), limit: money(s.mei.limit) }); }
+  if (/conta|vence|bill/.test(lq)) { const open = bills(s, ym).filter(b => !b.isPaid); return say('local.bills', { n: open.length, v: money(open.reduce((a, b) => a + b.amount, 0)) }); }
+  if (/assinatura|subscription|cortar|cut/.test(lq)) { const r = subsReview(s); return say('local.subs', { v: money(r.total), y: money(r.total * 12) }); }
   if (/^pt/.test(getPrefs().lang)) return fallback(s, ym);
   return say('local.default', { free: money(x.free), d: sp.daysLeft, per: money(sp.perDayLeft) });
 }
@@ -180,7 +180,7 @@ async function send(q) {
     return;
   }
   // "How do I..." questions about the app are answered here, with no AI and nothing sent anywhere.
-  const help = helpAnswer(q, getPrefs().lang);
+  const help = /^pt/.test(getPrefs().lang) && /sal[aá]rio|renda|d[ií]vida|devo\b|pend[eê]ncia/i.test(q) && !/como (faço|cadastr|lanç|coloc|adicion|funciona)/i.test(q) ? '' : helpAnswer(q, getPrefs().lang);
   if (help) { chat.turns.push({ role: 'assistant', content: help }); paint(); return; }
   const st = store.get();
   const spec = pickChart(q, st, ctx.ym);

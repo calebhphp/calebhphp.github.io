@@ -226,6 +226,7 @@ export function forecastCard(s, ym) {
 }
 
 export function homeTop(s) {
-  const name = (s.profile.name || '').trim();
-  return `<div class="home-top"><a class="home-brand" href="#inicio" aria-label="Prumo"><img src="logo.svg" width="34" height="34" alt=""><span>prumo</span></a><span class="home-avatar" aria-hidden="true">${esc((name[0] || 'P').toUpperCase())}</span></div>`;
+  const name = (s.profile.nick || s.profile.name || '').trim();
+  const av = s.profile.avatar ? `<img class="home-avatar is-photo" src="${s.profile.avatar}" alt="" width="38" height="38">` : null;
+  return `<div class="home-top"><a class="home-brand" href="#inicio" aria-label="Prumo"><img src="logo.svg" width="34" height="34" alt=""><span>prumo</span></a>${av || `<span class="home-avatar" aria-hidden="true">${esc((name[0] || 'P').toUpperCase())}</span>`}</div>`;
 }

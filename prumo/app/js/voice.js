@@ -3,7 +3,7 @@
 // Serious situations (debt, salary, health, pet, grief) never get a joke: see SERIOUS in answers below.
 import { tone } from './tone.js';
 import { getPrefs } from './prefs.js';
-import { money, pct, addMonths, isoDay } from './format.js';
+import { money, pct, addMonths, isoDay, displayName } from './format.js';
 import { spending, monthSummary, subsReview, wishlistStatus } from './finance.js';
 import { streak } from './game.js';
 import { t } from './i18n.js';
@@ -59,7 +59,7 @@ export function facts(s, ym) {
   const spentToday = s.tx.filter(g => g.date === today).reduce((a, g) => a + g.amount, 0);
   const cap = sp.daysLeft ? (sp.budget - sp.spent + spentToday) / sp.daysLeft : 0;
   return {
-    name: (s.profile.name || '').split(' ')[0] || '',
+    name: displayName(s),
     tod: h < 12 ? 'bom dia' : h < 18 ? 'boa tarde' : 'boa noite',
     free: money(x.free), freeN: x.free, freeHalf: money(Math.max(0, x.free * 0.5)), d: sp.daysLeft, per: money(Math.max(0, sp.perDayLeft)), perN: sp.perDayLeft,
     pace: pct(sp.pace), elapsed: pct(sp.elapsed), paceN: sp.pace, elapsedN: sp.elapsed,
@@ -73,6 +73,9 @@ export function facts(s, ym) {
     last: lastTx ? lastTx.desc : '', lastV: lastTx ? money(lastTx.amount) : '',
     streak: streak(s).count || 0,
     subsN: s.subs.filter(a => !a.cancelled).length, subsV: money(sr.total), subsY: money(sr.total * 12),
+    debtsN: s.debts.filter(d => !d.paid).length, debtsV: money(s.debts.filter(d => !d.paid).reduce((a, d) => a + d.amount, 0)), debtsN_: s.debts.filter(d => !d.paid).reduce((a, d) => a + d.amount, 0),
+    inc: money(x.income), incN: x.income, outP: x.income ? pct((x.fixed + sp.spent) / x.income) : '', outN: x.income ? (x.fixed + sp.spent) / x.income : 0, fixedV: money(x.fixed),
+    petV: money((sp.cats.find(c => c.cat === 'pet') || { spent: 0 }).spent), petUsed: pct((sp.cats.find(c => c.cat === 'pet') || { used: 0 }).used),
     total: money(sp.spent), budget: money(sp.budget), spentN: sp.spent, budgetN: sp.budget,
   };
 }
@@ -94,7 +97,7 @@ export function kicker(f) {
 
 // ---------- the answers
 // SERIOUS words: if the question is about debt, salary, health, pet or grief, answer straight in any tone.
-const SERIOUS = /divida|dívida|protesto|negativad|falec|luto|doenc|doença|cirurgia|remedio|remédio|veterin|salario|salário|demissao|demissão|desempreg|pet|saude|saúde|hospital|plano de saude/;
+const SERIOUS = /falec|luto|doenc|doença|cirurgia|remedio|remédio|veterin|pet\b|saude|saúde|hospital|plano de saude|demissao|demissão|desempreg|depress|ansied|terapia|enterro/;
 
 function amountIn(q) {
   const m = q.replace(/\./g, '').match(/(\d+(?:,\d{1,2})?)/g);
@@ -135,6 +138,9 @@ export function voiceAnswer(q, s, ym) {
   if (/cortar|corte|reduzir|economiz/.test(n)) return line('cut', f);
   if (/fecha|fechar|sobra|sobrar|fim do mes|no fim do mes/.test(n)) return withKick(line(f.freeN >= 0 ? 'close_ok' : 'close_red', f));
   if (/streak|sequencia|dias seguidos|nivel|xp|conquista/.test(n)) return line('game', f);
+  if (/(^|[^a-z])pet([^a-z]|$)|cachorro|gato|racao|veterin/.test(n)) return line('pet_info', f);
+  if (/divida|devo|pendencia|nome sujo|negativad|protesto|spc|serasa/.test(n)) return line(f.debtsN ? 'debt' : 'debt_none', f);
+  if (/salario|quanto (eu )?ganho|minha renda|quanto entra|holerite|contracheque/.test(n)) return line(f.incN ? 'salary' : 'salary_none', f);
   if (/(quem e voce|o que voce faz|voce e uma ia|vc e uma ia|voce e real)/.test(n)) return line('who', f);
   return '';
 }
@@ -383,3 +389,142 @@ const BANK = {
   },
 };
 
+
+// ---------- the sharp end. Ácido gets warm barbs (a friend who loves you and still says it). Sem filtro swears and goes all in on
+// the spending, the debts and the paycheck. Never on health, pets, grief or job loss, never on the person's body or identity.
+const MORE = {
+  pet_info: {
+    sobrio: ['Pet: {petV} no mês, {petUsed} do limite da categoria.'],
+    parceiro: ['Com pet eu não brinco, {name}: {petV} no mês, {petUsed} do limite. Cuidar custa e vale.'],
+    deboche: ['com pet eu não zoo: {petV} no mês, {petUsed} do limite. quem cuida de bicho tem meu respeito.'],
+    semfiltro: ['pet é sagrado, sem piada: {petV} no mês, {petUsed} do limite. o resto do seu extrato eu detono, esse não.'],
+  },
+  debt: {
+    sobrio: ['Há {debtsN} pendência(s) em aberto, somando {debtsV}. Quitar primeiro libera crédito.'],
+    parceiro: ['Tem {debtsV} em aberto, {name}. Dá pra sair dessa um passo por vez, e a gente faz junto.'],
+    deboche: ['{debtsV} no seu nome, {name}. falo porque te quero bem: quita isso antes do próximo delivery.', 'tem {debtsV} em aberto. você chama de pendência, o banco chama de oportunidade.', 'dívida de {debtsV} e o app de comida ainda tá com saudade de você. fica a dica de quem te quer bem.'],
+    semfiltro: ['{debtsV} de dívida e você pedindo ifood, caralho? o nome sujo combina com o extrato.', 'tá devendo {debtsV} e ainda gasta como milionário, porra. quita essa merda primeiro.', '{debtsV} no vermelho. você não tá endividado, tá patrocinando o banco, parabéns.', 'dívida de {debtsV} e o cartão ainda aceita você. o banco deve ser muito otimista.'],
+  },
+  debt_none: {
+    sobrio: ['Nenhuma pendência em aberto.'],
+    parceiro: ['Nenhuma pendência em aberto, {name}. Isso já é muita coisa boa.'],
+    deboche: ['zero dívida. você é o tipo de pessoa que paga a fatura e ainda cobra o app de ter feito mais.'],
+    semfiltro: ['sem dívida, caralho. milagre, ou você escondeu de mim. continua assim, porra.'],
+  },
+  salary: {
+    sobrio: ['Entram {inc} por mês. Contas fixas e dia a dia somam {outP} disso.'],
+    parceiro: ['Entram {inc} por mês, {name}. Contas e dia a dia levam {outP}. Dá pra respirar um pouco mais.'],
+    deboche: ['entram {inc} e saem {outP} entre contas e dia a dia. o resto é o que sobra da sua boa vontade.', '{inc} de renda. {outP} vão embora antes de você escolher o que gastar. eu falo porque te quero bem.', 'seu salário de {inc} aparece, cumprimenta e {outP} dele já vai embora.'],
+    semfiltro: ['{inc} de salário e {outP} evaporam em conta e dia a dia, porra. o salário entra e sai mais rápido que visita chata.', 'ganha {inc} e gasta {outP} antes de respirar, caralho. você não tem salário, tem uma passagem de ida.', '{inc} por mês e a conta zera. trabalha pra pagar a vida que você ainda nem aproveitou.', 'o salário de {inc} nem esquenta o lugar no extrato. cada centavo já tem destino, quase todos ruins.'],
+  },
+  salary_none: {
+    sobrio: ['Não há entradas cadastradas ainda.'],
+    parceiro: ['Ainda não vi entradas cadastradas. Quer lançar a primeira?'],
+    deboche: ['sem entrada cadastrada. o dinheiro entra por osmose, é isso?'],
+    semfiltro: ['nenhuma entrada cadastrada, porra. cadastra a renda ou para de reclamar.'],
+  },
+};
+const HARD = {
+  hello: {
+    deboche: ['{tod}, {name}. o mês tá aí e eu tô aqui pra falar o que ninguém te fala. com carinho, claro.', 'oi, {name}. hoje cabem {left}. te falo isso porque eu me importo, e mereço respeito.'],
+    semfiltro: ['{tod}, {name}. cabem {left} hoje, porra. vai pensando antes de gastar tudo e vir chorar.', 'e aí, {name}, o que você fez de novo com o dinheiro? pergunta logo, caralho.', '{tod}. sobram {free} no mês, se você não for burro. manda a pergunta.', 'fala, {name}. eu leio teu extrato todo dia e ainda tô aqui, isso é amor ou masoquismo.'],
+  },
+  how: {
+    deboche: ['tô bem, e você? {pace} do plano com {elapsed} do mês, pergunto porque me importo e porque tô de olho.'],
+    semfiltro: ['tô ótimo, porra, eu não pago boleto. você? {pace} do plano com {elapsed} do mês, tá aí a resposta.', 'melhor que o seu extrato, caralho.'],
+  },
+  summary: {
+    deboche: ['sobra prevista de {free}. faltam {d} dias, teto de {per} por dia. falo isso porque eu quero seu bem, você que complica.', '{pace} do plano com {elapsed} do mês e {left} hoje. tá indo, só não se ilude.'],
+    semfiltro: ['sobram {free} no mês, porra, e {per} por dia pelos próximos {d} dias. não gasta mais que isso, caralho.', '{pace} do plano com {elapsed} do mês. {left} hoje. você tá ok, mas eu conheço o seu histórico.', 'resumo: {free} sobrando e {d} dias pela frente. o único risco é você, como sempre.'],
+  },
+  pace_ok: {
+    deboche: ['no ritmo: {pace} com {elapsed} do mês. fico até emocionado, mas não conta pra ninguém.'],
+    semfiltro: ['{pace} do plano com {elapsed} do mês, caralho. tá ok, não ocorreu um milagre, é só o mínimo.', 'ritmo bom, porra. não vai ter desconto de gentileza amanhã.'],
+  },
+  pace_fast: {
+    deboche: ['acelerou: {pace} do plano com {elapsed} do mês. te falo com amor, mas o bolso tá pedindo socorro.'],
+    semfiltro: ['{pace} do plano com {elapsed} do mês, caralho. você gasta como se o mês fosse acabar amanhã.', 'tá gastando feito herdeiro, porra. {per} por dia daqui pra frente e fecha essa carteira.', '{pace} com {elapsed} do mês. o seu cartão ainda não te abandonou por pena.'],
+  },
+  doing_good: {
+    deboche: ['tá indo bem, {name}. me dói admitir. fico orgulhoso e isso é raro.'],
+    semfiltro: ['tá indo bem pra caralho, {pace} com {elapsed} do mês. eu esperava o pior, confesso.'],
+  },
+  doing_mid: {
+    deboche: ['no limite. {pace} com {elapsed} do mês. um passo errado e a gente conversa de novo.'],
+    semfiltro: ['{pace} com {elapsed} do mês, na corda bamba. um ifood a mais e você cai, porra.'],
+  },
+  doing_bad: {
+    deboche: ['não tá bem, {name}. {pace} do plano com {elapsed} do mês. eu falo com carinho: respira e corta o que dá.'],
+    semfiltro: ['tá mal, caralho. {pace} do plano com {elapsed} do mês. você tá torrando dinheiro como se tivesse herança.', 'péssimo, porra. {pace} com {elapsed} do mês. seu extrato é uma comédia, só que sem graça.'],
+  },
+  today_ok: {
+    deboche: ['hoje cabem {left}. gasta com consciência, que eu tô olhando.'],
+    semfiltro: ['hoje cabem {left}, porra. não é convite pra torrar tudo, caralho.', '{left} pra hoje e eu duvido que você segure.'],
+  },
+  today_over: {
+    deboche: ['hoje já estourou. te falo porque gosto de você: amanhã segura a mão.'],
+    semfiltro: ['hoje já passou do teto, caralho. quer que eu faça o quê, uma festa?', 'estourou o dia, porra. amanhã é {per}, nem um real a mais, entendeu?'],
+  },
+  biggest: {
+    deboche: ['{top} lidera com {topV}, {topP} do mês. falo porque me importo: reduz isso.'],
+    semfiltro: ['{top}, porra: {topV}, {topP} de tudo. você tem um relacionamento sério com essa categoria.', 'o seu maior vício é {top}: {topV} e {topP} do gasto, caralho. tem tratamento.', '{topV} em {top}. {topP} do seu dinheiro vira isso e você ainda reclama.'],
+  },
+  delivery: {
+    deboche: ['{n14} pedidos em 14 dias. te falo com amor: até a cozinha já esqueceu seu rosto.'],
+    semfiltro: ['{n14} delivery em 14 dias, caralho. você não tem fome, tem hábito, e um hábito caro.', '{n14} pedidos em duas semanas, porra. o entregador já tem nome no seu telefone e talvez cadastro no seu cartão.', '{n14} vezes comendo fora. o fogão tá de enfeite e a sua carteira de refém.'],
+  },
+  ride: {
+    deboche: ['{u14} corridas em 14 dias. andar tá liberado, é por minha conta.'],
+    semfiltro: ['{u14} corridas em duas semanas, caralho. você tem pernas, usa. de graça, porra.', '{u14} uber em 14 dias. o motorista já te conhece pelo nome e pelo endereço.'],
+  },
+  subs: {
+    deboche: ['{subsN} assinaturas, {subsV} por mês. te falo com carinho: você usa três e paga {subsN}.'],
+    semfiltro: ['{subsN} assinaturas, {subsV} por mês, porra. tá bancando streaming pra mundo inteiro e ainda reclama de estar sem dinheiro.', '{subsY} por ano em assinatura que você não usa, caralho. cancela essa merda e vai viver.'],
+  },
+  goals: {
+    deboche: ['guardar {freeHalf} da sobra de {free} é um bom começo. falo porque quero te ver bem.'],
+    semfiltro: ['separa {freeHalf} da sobra de {free} e joga no cofre, caralho, antes que você torre. isso é o mínimo.', 'guardar, porra. {freeHalf} no cofre e você finge que esse dinheiro nunca existiu.'],
+  },
+  cut: {
+    deboche: ['corta {top} primeiro, e as assinaturas que você jura que usa. te falo porque me importo.'],
+    semfiltro: ['corta {top} e as assinaturas inúteis, caralho. o resto é desculpa, você sabe.', 'começa por {top}, que é o seu maior vício. depois cancela o que você nem lembra que paga, porra.'],
+  },
+  close_ok: {
+    deboche: ['o mês fecha com {free} de sobra. você conseguiu, e eu duvidei. peço desculpas, um pouco.'],
+    semfiltro: ['fecha com {free} de sobra, caralho. se você não estragar nos últimos dias, que é a sua especialidade.'],
+  },
+  close_red: {
+    deboche: ['vermelho. te falo com amor, {name}: ainda dá pra virar, mas o delivery vai ter que esperar.'],
+    semfiltro: ['o mês fecha no vermelho, caralho. você é o único responsável e eu sou testemunha.', 'vermelho, porra. quem diria, gastar mais do que ganha dá nisso. surpresa nenhuma.'],
+  },
+  buy_today: {
+    deboche: ['cabe. {amt} dentro dos {left}. aproveita, que dura pouco.'],
+    semfiltro: ['cabe, porra. {amt} dentro dos {left} de hoje. compra, aproveita e não vem chorar.', 'pode comprar, caralho. a conta bate, uma vez na vida.'],
+  },
+  buy_month: {
+    deboche: ['hoje passa {gap}, mas cabe no mês. te falo porque me importo: espera uns dias.'],
+    semfiltro: ['hoje passa {gap} do teto, caralho. cabe no mês, mas vai apertar o resto, vai ver.', 'dá pra comprar, porra, mas você vai passar o resto do mês de miojo. você que escolhe.'],
+  },
+  buy_no: {
+    deboche: ['não, {name}. {amt} passa da sobra em {over}. te falo porque te quero bem: respira antes de clicar.'],
+    semfiltro: ['de jeito nenhum, caralho. {amt} passa da sobra em {over}. quer parcelar? parcelar não é ter dinheiro, porra.', '{amt} com {over} acima da sobra? você é ou não é ligado em dinheiro? não compra essa merda.', 'não. a sua carteira não tem esse dinheiro e o seu cartão não é remédio pra isso.'],
+  },
+  roast: {
+    deboche: ['quer que eu zoe? tá, com carinho: {top} é {topP} do seu gasto, {n14} delivery em 14 dias. falo porque me importo com você e com a sua dignidade.', '{top} lidera com {topV}. você é o único pagando o salário do entregador, eu admiro, só não ajuda.'],
+    semfiltro: ['quer que eu detone? {top} é {topP} do que você gasta, caralho. você não tem finanças, tem um hobby caro.', 'o seu extrato é um filme de terror: {top} com {topV}, {n14} delivery em duas semanas, {u14} uber. você é um mistério, porra.', 'pediu, toma: {topP} do seu dinheiro vai embora em {top}. o resto vai pra boleto, e o que sobra, porra, sobra nada.', 'você gasta como se tivesse herança e se queixa como quem não tem. o extrato não mente, caralho.'],
+  },
+  praise: {
+    deboche: ['quer elogio? tá no ritmo, {name}. fico orgulhoso, e olha que eu não me emociono fácil.'],
+    semfiltro: ['elogio, porra? tá bom, tá indo bem. mas não me pede de novo, caralho, eu não sou terapeuta.'],
+  },
+  thanks: {
+    deboche: ['de nada. se quiser agradecer de verdade, gasta menos.'],
+    semfiltro: ['de nada, porra. agradece gastando menos, caralho.', 'imagina. o que eu faço aqui é te salvar de você mesmo.'],
+  },
+};
+Object.assign(BANK, MORE);
+for (const [intent, tones] of Object.entries(HARD)) {
+  BANK[intent] = BANK[intent] || {};
+  if (tones.deboche) BANK[intent].deboche = [...(BANK[intent].deboche || []), ...tones.deboche];
+  if (tones.semfiltro) BANK[intent].semfiltro = [...tones.semfiltro, ...(BANK[intent].semfiltro || []).slice(0, 1)];
+}

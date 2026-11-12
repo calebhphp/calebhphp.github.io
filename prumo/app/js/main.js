@@ -48,8 +48,8 @@ function renderChrome() {
   if (r === 'personalizar') pf.setAttribute('aria-current', 'page'); else pf.removeAttribute('aria-current');
   const lv = levelInfo(s.game.xp);
   document.getElementById('me-chip').innerHTML =
-    `<span class="ring" style="--p:${Math.round(lv.pct * 100)}" aria-hidden="true"><span>${lv.level}</span></span>
-     <span><strong>${esc(s.profile.name)}</strong><small>${t('game.levelShort', { level: lv.level, xp: lv.toNext })}</small></span>`;
+    `${s.profile.avatar ? `<span class="me-photo" aria-hidden="true"><img src="${s.profile.avatar}" alt="" width="44" height="44"><b>${lv.level}</b></span>` : `<span class="ring" style="--p:${Math.round(lv.pct * 100)}" aria-hidden="true"><span>${lv.level}</span></span>`}
+     <span><strong>${esc(s.profile.nick || s.profile.name)}</strong><small>${t('game.levelShort', { level: lv.level, xp: lv.toNext })}</small></span>`;
   document.getElementById('me-chip').setAttribute('aria-label', `${s.profile.name}. ${t('game.levelAria', { level: lv.level, xp: lv.toNext })}`);
   document.getElementById('month-label').textContent = monthLabel(ctx.ym);
 }
