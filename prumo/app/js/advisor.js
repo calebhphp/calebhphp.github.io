@@ -15,8 +15,10 @@ import { getPrefs, setPref } from './prefs.js';
 import { parseQuick, CATS } from './quick.js';
 import { helpAnswer, appGuide } from './advisor-help.js';
 import { earn, ctx } from './actions.js';
+import { voiceAnswer, fallback, helloLine, toneSwitchLine, facts, kicker } from './voice.js';
 
 const chat = { turns: [], busy: false, pending: null };
+let lastTone = null;
 let localOnce = false;
 const hosts = new Set();
 
@@ -44,7 +46,7 @@ function paint() {
   hosts.forEach(h => {
     const list = h.querySelector('.msgs');
     if (!list) return;
-    list.innerHTML = chat.turns.length ? chat.turns.map(bubble).join('') : `<li class="msg msg-assistant"><div>${say('ai.hello')}</div></li>`;
+    list.innerHTML = chat.turns.length ? chat.turns.map(bubble).join('') : `<li class="msg msg-assistant"><div>${store.get() ? esc(helloLine(store.get(), ctx.ym)) : ""}</div></li>`;
     list.scrollTop = list.scrollHeight;
     h.querySelector('.chips').innerHTML = suggestions().map(k => `<button type="button" class="chip" data-ask="${esc(t(k))}">${t(k)}</button>`).join('')
       + (['deboche', 'semfiltro'].includes(tone()) ? `<button type="button" class="chip chip-easy" data-chat="easy">${t('tone.easy')}</button>` : '');
@@ -132,6 +134,7 @@ function snapshot(s, ym) {
     pendencias: s.debts.filter(d => !d.paid).map(d => ({ nome: d.name, valor: d.amount })),
     quedaDeRenda: drop ? { mes: drop.ym, de: drop.from, para: drop.to } : null,
     cartao: (c => c ? { faturaDoMes: c.inv.total, parcelasDoMes: c.inv.parc, limite: c.card.limit, limiteLivre: c.free, parcelas: c.inv.parcels.map(p => ({ item: p.desc.slice(0, 40), parcela: p.k + '/' + p.n, valor: p.parcel })) } : null)(cardStatus(s, ym)),
+    habitos: (f => ({ pedidosDeComidaUltimos14Dias: f.n14, corridasUltimos14Dias: f.u14, categoriaQuePesaMais: f.top, quantoPesa: f.topP, diasSeguidosLancando: f.streak }))(facts(s, ym)),
     mei: s.mei.enabled ? { faturadoNoAno: meiYear(s).ytd, limite: s.mei.limit, ritmoAnual: Math.round(meiYear(s).pace) } : null,
   };
 }
@@ -139,6 +142,8 @@ function snapshot(s, ym) {
 function localAnswer(q, s, ym) {
   const x = monthSummary(s, ym), sp = spending(s, ym);
   const lq = q.toLowerCase();
+  const va = voiceAnswer(q, s, ym);
+  if (va) return va;
   if (/compr|sofá|sofa|afford|buy|posso/.test(lq)) {
     const next = wishlistStatus(s).find(w => w.state !== 'bought');
     const h = next ? ' ' + t('wish.hoursLine', { h: Math.round(workHours(s, next.price, ym)) }) : '';
@@ -159,6 +164,7 @@ function localAnswer(q, s, ym) {
   if (/mei|limite|cap/.test(lq) && s.mei.enabled) { const m = meiYear(s); return t('local.mei', { ytd: money(m.ytd), pace: money(m.pace), limit: money(s.mei.limit) }); }
   if (/conta|vence|bill/.test(lq)) { const open = bills(s, ym).filter(b => !b.isPaid); return t('local.bills', { n: open.length, v: money(open.reduce((a, b) => a + b.amount, 0)) }); }
   if (/assinatura|subscription|cortar|cut/.test(lq)) { const r = subsReview(s); return t('local.subs', { v: money(r.total), y: money(r.total * 12) }); }
+  if (/^pt/.test(getPrefs().lang)) return fallback(s, ym);
   return say('local.default', { free: money(x.free), d: sp.daysLeft, per: money(sp.perDayLeft) });
 }
 
@@ -178,7 +184,7 @@ async function send(q) {
   if (help) { chat.turns.push({ role: 'assistant', content: help }); paint(); return; }
   const st = store.get();
   const spec = pickChart(q, st, ctx.ym);
-  const local = () => (spec && spec.text ? say(spec.text.key, spec.text.vars) : localAnswer(q, st, ctx.ym));
+  const local = () => (spec && spec.text ? (base => (/^pt/.test(getPrefs().lang) && !/pet|saúde|saude|veterin/i.test(base) ? base + ' ' + kicker(facts(st, ctx.ym)) : base).trim())(say(spec.text.key, spec.text.vars)) : localAnswer(q, st, ctx.ym));
   chat.turns.push({ role: 'assistant', content: t('ai.thinking'), chart: spec });
   const idx = chat.turns.length - 1;
   paint();
@@ -224,4 +230,11 @@ export function initOverlay() {
   panel.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
   window.addEventListener('hashchange', paint);
   onPrefs(paint);
+  onPrefs(() => {
+    if (tone() === lastTone) return;
+    lastTone = tone();
+    if (!hosts.size || !store.get()) return;
+    chat.turns.push({ role: 'assistant', content: toneSwitchLine(store.get(), ctx.ym) });
+    paint();
+  });
 }

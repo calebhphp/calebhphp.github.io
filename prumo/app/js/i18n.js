@@ -2,6 +2,7 @@
 import { getPrefs } from './prefs.js';
 import { ptX, enX, esX } from './i18n-extra.js';
 import { ptT, enT } from './i18n-tone.js';
+import { ptV } from './i18n-voice.js';
 
 const pt = {
   'nav.inicio': 'Visão geral', 'nav.contas': 'Contas a pagar', 'nav.bancos': 'Bancos', 'nav.entradas': 'Entradas',
@@ -305,6 +306,7 @@ const es = {
 Object.assign(pt, ptX);
 Object.assign(en, enX);
 Object.assign(pt, ptT);
+Object.assign(pt, ptV);
 Object.assign(en, enT);
 Object.assign(es, esX);
 const DICTS = { 'pt-BR': pt, en, es };
