@@ -7,7 +7,7 @@ import { earn } from '../actions.js';
 import * as store from '../store.js';
 import { head, heroFlow, levelCard, billsCard, meiCard, goalsCard, alerts, subsCard } from './parts.js';
 import { insightList } from './conselheiro.js';
-import { todayHero, monthCard } from './home-hero.js';
+import { todayHero, monthCard, statTiles, ringCard, trackCard } from './home-hero.js';
 import { quizBanner } from './comecar.js';
 import { icon, toast } from '../ui.js';
 import { say } from '../tone.js';
@@ -38,6 +38,9 @@ export function render(s, ctx) {
     ${isReal() ? '' : quizBanner(s)}
     ${retroBanner(s, ctx)}
     ${todayHero(s, ctx.ym)}
+    ${statTiles(s, ctx.ym)}
+    ${ringCard(s, ctx.ym, "span-8")}
+    ${trackCard(s, ctx.ym, "span-4")}
     ${monthCard(s, ctx.ym, s.modules.includes('conquistas') ? 'span-8' : 'span-12')}
     ${s.modules.includes('conquistas') ? levelCard(s) : ''}
     ${bfCard(s, ctx.ym, true)}

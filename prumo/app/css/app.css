@@ -880,3 +880,51 @@ html[data-motion="off"] *, html[data-motion="off"] ::view-transition-old(root), 
 .theme-btn[aria-pressed="true"] .ic-sun { display: block; }
 .theme-btn[aria-pressed="true"] .ic-moon { display: none; }
 @media (max-width: 900px) { .top-actions .theme-btn { display: inline-grid; } }
+
+/* Home, second pass: money tiles, category ring, status card with a spending line (inspired by the best finance apps) */
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.tile { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); min-width: 0; }
+.tile > div { min-width: 0; }
+.tile-ic { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; }
+.tile-ic svg { width: 22px; height: 22px; }
+.tile-ic.is-in { background: var(--good-soft); color: var(--good); }
+.tile-ic.is-out { background: var(--bad-soft); color: var(--bad); }
+.tile small { display: block; color: var(--ink-3); font-size: .82rem; }
+.tile b { display: block; font-size: clamp(1.1rem, 4.4vw, 1.55rem); font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.tile em { display: block; font-style: normal; color: var(--ink-3); font-size: .78rem; }
+.ring-card { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 10px 28px; }
+.ring-card .card-head { grid-column: 1 / -1; }
+.ring { position: relative; width: 176px; height: 176px; }
+.ring svg { width: 100%; height: 100%; display: block; }
+.ring-mid { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+.ring-mid b { font-size: 1.15rem; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.ring-mid small { color: var(--ink-3); font-size: .78rem; }
+.ring-legend { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.ring-legend li { display: grid; grid-template-columns: 12px 1fr auto; align-items: center; gap: 12px; }
+.ring-legend i { width: 12px; height: 12px; border-radius: 50%; }
+.ring-legend b { font-variant-numeric: tabular-nums; font-weight: 600; }
+.track-card { display: grid; align-content: start; gap: 14px; }
+.track-card.is-ok { background: color-mix(in srgb, var(--good-soft) 65%, var(--surface)); border-color: color-mix(in srgb, var(--good) 30%, transparent); }
+.track-card.is-fast { background: color-mix(in srgb, var(--warn-soft) 65%, var(--surface)); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
+.track-top { display: flex; gap: 14px; align-items: center; }
+.track-top h2 { font-size: 1.05rem; margin: 0 0 2px; }
+.track-top p { margin: 0; color: var(--ink-2); font-size: .92rem; }
+.track-ic { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; }
+.track-ic svg { width: 22px; height: 22px; }
+.is-ok .track-ic { background: var(--good); color: var(--surface); }
+.is-fast .track-ic { background: var(--warn); color: var(--surface); }
+.spark { width: 100%; height: 64px; overflow: visible; }
+.sp-line { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.sp-area { fill: color-mix(in srgb, var(--brass) 28%, transparent); stroke: none; }
+.sp-ideal { stroke: var(--ink-3); stroke-width: 1.4; stroke-dasharray: 4 4; }
+.spark-key { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0; color: var(--ink-3); font-size: .78rem; }
+.spark-key span { display: inline-flex; align-items: center; gap: 6px; }
+.spark-key i { width: 14px; height: 0; border-top: 2.4px solid var(--ink); }
+.spark-key .k-ideal { border-top: 2px dashed var(--ink-3); }
+@media (max-width: 760px) { .ring-card { grid-template-columns: 1fr; justify-items: center; } .ring-legend { width: 100%; } }
+.ring-card .card-head { justify-self: start; }
+.ring-mid b { font-size: .95rem; }
+@media (max-width: 560px) {
+  .tile { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px; }
+  .tile b { font-size: 1.2rem; }
+}

@@ -117,3 +117,72 @@ export function monthCard(s, ym, span = 'span-8') {
       <li class="w-rest"><span class="w-l">${tx('rest')}</span><span class="w-bar"><b style="width:${Math.max(0, (x.free / inc) * 100)}%"></b></span><span class="w-v">${money(x.free)} <small>${pct(Math.max(0, x.free) / inc)}</small></span></li></ul>
   </section>`;
 }
+
+// Cards in the spirit of the best finance apps: two money tiles, a category ring, a status card and a small
+// spending-vs-plan line. Same data as everything else on the screen, shown at a glance.
+const TXT2 = {
+  pt: { in: 'Entrou este mês', out: 'Gastou este mês', of: 'de {v} previstos', ring: 'Pra onde foi', total: 'gasto', others: 'Outros', okT: 'Você está no ritmo', okS: '{v} abaixo do ritmo do mês.', fastT: 'Gasto à frente do mês', fastS: '{v} acima do ritmo do mês.', lineA: 'Seu gasto no mês', lineB: 'Ritmo ideal' },
+  en: { in: 'Income this month', out: 'Spent this month', of: 'of {v} planned', ring: 'Where it went', total: 'spent', others: 'Other', okT: 'You are on pace', okS: '{v} under the month\'s pace.', fastT: 'Spending ahead of the month', fastS: '{v} over the month\'s pace.', lineA: 'Your spending', lineB: 'Ideal pace' },
+};
+const t2 = (k, vars = {}) => (TXT2[getPrefs().lang === 'en' ? 'en' : 'pt'][k] || k).replace(/\{(\w+)\}/g, (_, n) => vars[n]);
+const RING = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--brass)'];
+
+export function statTiles(s, ym) {
+  const x = monthSummary(s, ym);
+  const sp = spending(s, ym);
+  return `<div class="tiles span-12">
+    <div class="tile"><span class="tile-ic is-in">${icon('i-down')}</span><div><small>${t2('in')}</small><b>${money(x.income)}</b></div></div>
+    <div class="tile"><span class="tile-ic is-out">${icon('i-up')}</span><div><small>${t2('out')}</small><b>${money(sp.spent)}</b><em>${t2('of', { v: money(sp.budget) })}</em></div></div>
+  </div>`;
+}
+
+export function ringCard(s, ym, span = 'span-8') {
+  const sp = spending(s, ym);
+  const by = {};
+  for (const g of sp.list) by[g.cat] = (by[g.cat] || 0) + g.amount;
+  const sorted = Object.entries(by).sort((a, b) => b[1] - a[1]);
+  const total = sorted.reduce((a, r) => a + r[1], 0);
+  if (!total) return '';
+  const top = sorted.slice(0, 4);
+  const rest = sorted.slice(4).reduce((a, r) => a + r[1], 0);
+  if (rest > 0) top.push(['__o', rest]);
+  const R = 42, C = 2 * Math.PI * R;
+  let off = 0;
+  const arcs = top.map(([c, v], i) => {
+    const len = (v / total) * C;
+    const seg = `<circle cx="60" cy="60" r="${R}" fill="none" stroke="${RING[i]}" stroke-width="16" stroke-dasharray="${Math.max(0, len - 1.5).toFixed(2)} ${(C - Math.max(0, len - 1.5)).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 60 60)"/>`;
+    off += len;
+    return seg;
+  }).join('');
+  const legend = top.map(([c, v], i) => `<li><i style="background:${RING[i]}"></i><span>${esc(c === '__o' ? t2('others') : t('cat.' + c))}</span><b>${pct(v / total)}</b></li>`).join('');
+  return `<section class="card ${span} ring-card" aria-labelledby="rg-t">
+    <div class="card-head"><h2 id="rg-t">${t2('ring')}</h2></div>
+    <div class="ring"><svg viewBox="0 0 120 120" role="img" aria-label="${esc(t2('ring'))}"><circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--track)" stroke-width="16"/>${arcs}</svg>
+      <div class="ring-mid"><b>${money(total)}</b><small>${t2('total')}</small></div></div>
+    <ul class="ring-legend">${legend}</ul>
+  </section>`;
+}
+
+export function trackCard(s, ym, span = 'span-4') {
+  const sp = spending(s, ym);
+  if (!sp.budget) return '';
+  const diff = sp.elapsed * sp.budget - sp.spent;
+  const ahead = diff < -sp.budget * 0.04;
+  const days = sp.days;
+  const per = Array.from({ length: days }, () => 0);
+  for (const g of sp.list) per[+g.date.slice(8) - 1] += g.amount;
+  const upto = Math.max(1, Math.round(sp.elapsed * days));
+  let acc = 0;
+  const pts = per.slice(0, upto).map((v, i) => { acc += v; return [i, acc]; });
+  const max = Math.max(sp.budget, acc) || 1;
+  const X = (i) => (i / (days - 1)) * 220;
+  const Y = (v) => 56 - (v / max) * 52;
+  const line = pts.map(([i, v], k) => `${k ? 'L' : 'M'}${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join('');
+  const area = pts.length > 1 ? `${line}L${X(pts[pts.length - 1][0]).toFixed(1)} 56L0 56Z` : '';
+  return `<section class="card ${span} track-card ${ahead ? 'is-fast' : 'is-ok'}" aria-labelledby="tk-t">
+    <div class="track-top"><span class="track-ic">${icon(ahead ? 'i-alert' : 'i-check')}</span>
+      <div><h2 id="tk-t">${t2(ahead ? 'fastT' : 'okT')}</h2><p>${t2(ahead ? 'fastS' : 'okS', { v: money(Math.abs(diff)) })}</p></div></div>
+    <svg class="spark" viewBox="0 0 220 60" role="img" aria-label="${esc(t2('lineA'))}"><line x1="0" y1="56" x2="220" y2="${Y(sp.budget).toFixed(1)}" class="sp-ideal"/><path d="${area}" class="sp-area"/><path d="${line}" class="sp-line"/></svg>
+    <p class="spark-key"><span><i class="k-line"></i>${t2('lineA')}</span><span><i class="k-ideal"></i>${t2('lineB')}</span></p>
+  </section>`;
+}

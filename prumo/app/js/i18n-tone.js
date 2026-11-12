@@ -441,7 +441,7 @@ export const enT = {
   'nav.retro': 'Recap', 'nav.cartao': 'Card and installments',
   'tone.title': 'Prumo voice', 'tone.sub': 'Changes how the app and the advisor talk to you. Bills due and the MEI cap always stay plain.',
   'tone.sobrio': 'Plain', 'tone.sobrioHint': 'Just facts and numbers.', 'tone.parceiro': 'Friendly', 'tone.parceiroHint': 'Light, a joke now and then.',
-  'tone.deboche': 'Savage', 'tone.debocheHint': 'Acid humor about your choices. Never about you.', 'tone.semfiltro': 'No filter', 'tone.semfiltroHint': 'Savage with swearing. 18+ only.',
+  'tone.deboche': 'Acid', 'tone.debocheHint': 'Acid humor about your choices. Never about you.', 'tone.semfiltro': 'No filter', 'tone.semfiltroHint': 'Savage with swearing. 18+ only.',
   'tone.locked': 'Unlocks at level {n}', 'tone.label': 'Voice', 'tone.set': 'Voice set to {name}',
   'tone.adultTitle': 'No filter mode', 'tone.adultBody': 'This mode swears. Confirm you are 18 or older. You can switch back any time.', 'tone.adultDo': 'I am 18 or older',
   'tone.easy': 'Ease up', 'tone.easyDone': 'Fine, back to friendly.', 'tone.unlocked': 'Savage mode unlocked. Change the voice in Customize or in the advisor.',
