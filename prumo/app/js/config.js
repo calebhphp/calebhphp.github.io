@@ -7,5 +7,5 @@ export const NOTIFY_URL = 'https://formsubmit.co/ajax/matheusvillanova1@gmail.co
 // Public by design (Cloudflare Turnstile site key). The secret half lives only in Supabase.
 export const TURNSTILE_KEY = '0x4AAAAAAF9NqVGr13wZJOkV';
 // The advisor service (supabase/functions/advisor, Gemini) is deployed? Keep false until it is: the chat then answers from local rules.
-export const ADVISOR_ON = false;
+export const ADVISOR_ON = true;
 export const CONTACT = 'matheusvillanova1@gmail.com';
