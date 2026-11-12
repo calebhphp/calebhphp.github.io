@@ -981,3 +981,13 @@ html[data-motion="off"] *, html[data-motion="off"] ::view-transition-old(root), 
 .ins.ins-warn .ins-art { background: var(--warn-soft); }
 .ins.ins-bad .ins-art { background: var(--bad-soft); }
 .ins.ins-good .ins-art { background: var(--good-soft); }
+
+/* Radar without a card: the plumb hangs straight on the page background, above the headline */
+.home-radar { margin: 0 0 4px; }
+.radar { background: none; border: 0; box-shadow: none; padding: 2px 0 0; }
+.radar .plumb { width: min(52vw, 190px); }
+.radar .plumb svg { max-height: 210px; }
+.radar .plumb figcaption { margin-top: -4px; }
+.home-radar + .head, .home-radar + header, .home-radar + h1 { text-align: center; }
+.home-radar + .view-head { text-align: center; }
+.home-radar + .view-head h1 { font-size: clamp(1.5rem, 5vw, 2rem); }

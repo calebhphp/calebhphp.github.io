@@ -194,20 +194,30 @@ export function trackCard(s, ym, span = 'span-4') {
 }
 
 // The radar: the plumb bob, big and centered, shows at a glance whether the month hangs straight.
-export function radarCard(s, ym) {
+function radarState(s, ym) {
   const sp = spending(s, ym);
   const x = monthSummary(s, ym);
-  if (!sp.budget) return '';
+  if (!sp.budget) return null;
   const dev = sp.pace - sp.elapsed;
   const proj = sp.elapsed > 0.04 ? sp.spent / sp.elapsed : sp.spent;
   const over = proj - sp.budget;
   const state = sp.pace > 1 ? 'bad' : over > sp.budget * 0.03 ? 'warn' : 'ok';
   const end = x.free + (sp.budget - proj);
   const msg = state === 'bad' ? t2('fcBad', { v: money(sp.spent - sp.budget) }) : state === 'warn' ? t2('fcWarn', { v: money(over) }) : t2('fcOk', { p: pct(Math.min(1, proj / sp.budget)) });
-  return `<section class="card span-12 radar is-${state}" aria-label="${esc(t2('fc'))}">
-    <div class="radar-art">${plumb(dev)}</div>
-  </section>
-  <section class="card span-12 forecast is-${state}" aria-labelledby="fc-t">
+  return { sp, dev, proj, over, state, end, msg };
+}
+
+export function radarCard(s, ym) {
+  const r = radarState(s, ym);
+  if (!r) return '';
+  return `<section class="radar span-12 is-${r.state}" aria-label="${esc(t2('fc'))}"><div class="radar-art">${plumb(r.dev)}</div></section>`;
+}
+
+export function forecastCard(s, ym) {
+  const r = radarState(s, ym);
+  if (!r) return '';
+  const { sp, state, end, msg } = r;
+  return `<section class="card span-12 forecast is-${state}" aria-labelledby="fc-t">
     <div class="fc-top"><div><h2 id="fc-t">${t2('fc')}</h2><p class="fc-sub">${t2('fcSub')}</p></div>${ico3d(state === 'ok' ? 'trophy' : state === 'warn' ? 'bulb' : 'fire', 56)}</div>
     <p class="fc-val ${end < 0 ? 'neg' : ''}">${money(end)}</p>
     <div class="fc-bar" role="img" aria-label="${esc(pct(Math.min(1, sp.pace)))} ${esc(t2('fcBar'))}"><b style="width:${Math.min(100, sp.pace * 100).toFixed(1)}%"></b><i style="left:${Math.min(100, sp.elapsed * 100).toFixed(1)}%"></i></div>
