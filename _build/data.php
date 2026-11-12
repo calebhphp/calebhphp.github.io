@@ -17,6 +17,8 @@ return [
         'cnpj' => '',
         // Google Analytics 4 measurement ID (ex.: G-XXXXXXX). When filled, visits and WhatsApp clicks are measured.
         'ga4' => 'G-3F9Z07XSRL',
+        // Real testimonials only: each ['quote' => '...', 'name' => '...', 'role' => 'cargo, empresa']. The block stays hidden while this is empty.
+        'testimonials' => [],
         // Google Tag Manager container (GTM-XXXXXXX). Add the GA4 tag inside GTM.
         'gtm' => 'GTM-5JPKV6G7',
         // Launch / Black Friday promotion. Set promo_off to 0 to turn it off. It also disappears by itself after promo_end.

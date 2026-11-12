@@ -434,7 +434,11 @@ foreach (array_keys($LANGS) as $l) {
     }
     $chips = $chips ? '<div class="hero-chips"><span>'.e($cv['chips_label']).'</span><div>'.$chips.'</div></div>' : '';
     $proofItems = implode('', array_map(fn ($p) => '<li><b>'.e($p[0]).'</b><span>'.e($p[1]).'</span></li>', $cv['proof']));
-    $proofHtml = '<section class="proof" id="prova"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($cv['proof_eyebrow']).'</span><h2>'.e($cv['proof_h2']).'</h2></div><ul class="proof-list">'.$proofItems.'</ul><p class="muted proof-note">'.e($cv['proof_note']).'</p></div></section>';
+    $quotesHtml = '';
+    if (! empty($site['testimonials'])) {
+        $quotesHtml = '<ul class="quotes">'.implode('', array_map(fn ($t) => '<li><blockquote><p>“'.e($t['quote']).'”</p></blockquote><footer><b>'.e($t['name']).'</b><span>'.e($t['role']).'</span></footer></li>', $site['testimonials'])).'</ul>';
+    }
+    $proofHtml = '<section class="proof" id="prova"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($cv['proof_eyebrow']).'</span><h2>'.e($cv['proof_h2']).'</h2></div><ul class="proof-list">'.$proofItems.'</ul>'.($cv['proof_note'] ? '<p class="muted proof-note">'.e($cv['proof_note']).'</p>' : '').$quotesHtml.'</div></section>';
     $leadMsg = e($cv['wa_lead']);
     $leadHtml = '<section class="lead" id="previa"><div class="wrap lead-grid"><div class="section-head reveal"><span class="eyebrow">'.e($cv['lead_eyebrow']).'</span><h2>'.e($cv['lead_h2']).'</h2><p>'.e($cv['lead_p']).'</p></div>'
         .'<form class="lead-form" data-lead data-endpoint="https://formsubmit.co/ajax/'.e($site['email']).'" data-wamsg="'.$leadMsg.'" data-ok="'.e($cv['f_ok']).'" data-err="'.e($cv['f_err']).'" data-sending="'.e($cv['f_sending']).'" data-walabel="'.e($cv['f_wa']).'" novalidate>'
@@ -448,7 +452,71 @@ foreach (array_keys($LANGS) as $l) {
 
     $body = <<<HTML
 <header class="hero">
-  <div class="orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="codebg" aria-hidden="true"><pre>&lt;section class="hero" id="topo"&gt;
+  &lt;h1&gt;Clínica Vida&lt;/h1&gt;
+  &lt;p&gt;Atendimento com hora marcada.&lt;/p&gt;
+  &lt;a class="btn" href="https://wa.me/5511999990000"&gt;Agendar&lt;/a&gt;
+&lt;/section&gt;
+
+const slots = await fetch("/api/horarios").then(r =&gt; r.json());
+slots.filter(s =&gt; s.livre).forEach(renderSlot);
+
+@media (min-width: 860px) {
+  .hero { display: grid; grid-template-columns: 1.1fr .9fr; }
+  .btn:hover { transform: translateY(-2px); }
+}
+
+function confirmar(cliente, horario) {
+  if (!horario.livre) return false;
+  enviarLembrete(cliente.telefone, horario.inicio);
+  return true;
+}
+
+&lt;form data-lead novalidate&gt;
+  &lt;input name="nome" required autocomplete="name"&gt;
+  &lt;input name="contato" required autocomplete="tel"&gt;
+  &lt;button type="submit"&gt;Quero a prévia&lt;/button&gt;
+&lt;/form&gt;
+
+document.querySelectorAll("[data-wa]").forEach(a =&gt; {
+  a.href = "https://wa.me/" + numero;
+});
+
+.card { border-radius: 22px; backdrop-filter: blur(18px); }
+.card:hover::after { opacity: .55; }
+
+&lt;section class="hero" id="topo"&gt;
+  &lt;h1&gt;Clínica Vida&lt;/h1&gt;
+  &lt;p&gt;Atendimento com hora marcada.&lt;/p&gt;
+  &lt;a class="btn" href="https://wa.me/5511999990000"&gt;Agendar&lt;/a&gt;
+&lt;/section&gt;
+
+const slots = await fetch("/api/horarios").then(r =&gt; r.json());
+slots.filter(s =&gt; s.livre).forEach(renderSlot);
+
+@media (min-width: 860px) {
+  .hero { display: grid; grid-template-columns: 1.1fr .9fr; }
+  .btn:hover { transform: translateY(-2px); }
+}
+
+function confirmar(cliente, horario) {
+  if (!horario.livre) return false;
+  enviarLembrete(cliente.telefone, horario.inicio);
+  return true;
+}
+
+&lt;form data-lead novalidate&gt;
+  &lt;input name="nome" required autocomplete="name"&gt;
+  &lt;input name="contato" required autocomplete="tel"&gt;
+  &lt;button type="submit"&gt;Quero a prévia&lt;/button&gt;
+&lt;/form&gt;
+
+document.querySelectorAll("[data-wa]").forEach(a =&gt; {
+  a.href = "https://wa.me/" + numero;
+});
+
+.card { border-radius: 22px; backdrop-filter: blur(18px); }
+.card:hover::after { opacity: .55; }</pre></div>
   <div class="wrap grid">
     <div>
       <span class="eyebrow">{$h['eyebrow']}</span>
