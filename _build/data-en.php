@@ -22,9 +22,9 @@ return [
             'short' => 'One page built to turn visitors into leads. Perfect for ads and campaigns.',
             'price' => 'US$ 490',
             'price_note' => 'one-time payment',
-            'deadline' => '5 days',
-            'title' => 'Landing Page Design for Small Business | Ready in 5 Days',
-            'description' => 'Custom landing page design for small businesses: fast on mobile, clear copy and one-tap contact. Built for Google and Facebook ads. Ready in 5 days.',
+            'deadline' => '3 business days',
+            'title' => 'Landing Page Design for Small Business | Free Preview in 24h',
+            'description' => 'Custom landing page design for small businesses: fast on mobile, clear copy and one-tap contact. Built for Google and Facebook ads. Free preview in 24 business hours.',
             'h1' => 'A landing page that turns visitors into customers',
             'intro' => 'You pay for an ad, someone clicks, and they land on a slow or confusing page. They leave and go to a competitor. A well-built landing page shows what you offer in seconds and takes people straight to a call, a message or a booking.',
             'benefits' => [

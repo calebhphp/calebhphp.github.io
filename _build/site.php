@@ -150,6 +150,12 @@ function layout(string $l, string $key, array $o, string $body): string
     if (! empty($site['google_verification'])) {
         $head .= '<meta name="google-site-verification" content="'.e($site['google_verification']).'">';
     }
+    $gtmBody = '';
+    if (! empty($site['gtm'])) {
+        $g = e($site['gtm']);
+        $head .= "<script>window.dataLayer=window.dataLayer||[];(function(w,d,s,l,i){w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{$g}');</script>";
+        $gtmBody = "<noscript><iframe src=\"https://www.googletagmanager.com/ns.html?id={$g}\" title=\"Google Tag Manager\" height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>";
+    }
     if (! empty($site['ga4'])) {
         $id = e($site['ga4']);
         $head .= "<script async src=\"https://www.googletagmanager.com/gtag/js?id={$id}\"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','{$id}');</script>";
@@ -245,7 +251,7 @@ function layout(string $l, string $key, array $o, string $body): string
 {$ldTag}
 </head>
 <body>
-<a class="skip" href="#conteudo">{$n['skip']}</a>
+{$gtmBody}<a class="skip" href="#conteudo">{$n['skip']}</a>
 {$promoBar}
 <nav class="nav" aria-label="{$n['main']}">
   <div class="wrap">
@@ -415,6 +421,27 @@ foreach (array_keys($LANGS) as $l) {
         $lzShots .= '<li><img src="/assets/img/prumo-'.$shotFiles[$k].'.webp" alt="" width="520" height="925" loading="lazy" decoding="async"><span>'.e($cap).'</span></li>';
     }
     $dgu = $u['diag'];
+    $cv = $u['conv'];
+    $chipList = ['clinicas-e-consultorios', 'advogados-e-escritorios', 'restaurantes-e-delivery', 'saloes-e-barbearias', 'lojas-e-comercio', 'escolas-e-professores', 'pet-shops', 'oficinas-e-estetica-automotiva'];
+    $chips = '';
+    foreach ($chipList as $cs) {
+        if (! empty($d['niches'][$cs])) {
+            $chips .= '<a class="fchip" href="'.url($l, 'niche', $cs).'">'.e($d['niches'][$cs]['name']).'</a>';
+        }
+    }
+    $chips = $chips ? '<div class="hero-chips"><span>'.e($cv['chips_label']).'</span><div>'.$chips.'</div></div>' : '';
+    $proofItems = implode('', array_map(fn ($p) => '<li><b>'.e($p[0]).'</b><span>'.e($p[1]).'</span></li>', $cv['proof']));
+    $proofHtml = '<section class="proof" id="prova"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($cv['proof_eyebrow']).'</span><h2>'.e($cv['proof_h2']).'</h2></div><ul class="proof-list">'.$proofItems.'</ul><p class="muted proof-note">'.e($cv['proof_note']).'</p></div></section>';
+    $leadMsg = e($cv['wa_lead']);
+    $leadHtml = '<section class="lead" id="previa"><div class="wrap lead-grid"><div class="section-head reveal"><span class="eyebrow">'.e($cv['lead_eyebrow']).'</span><h2>'.e($cv['lead_h2']).'</h2><p>'.e($cv['lead_p']).'</p></div>'
+        .'<form class="lead-form" data-lead data-endpoint="https://formsubmit.co/ajax/'.e($site['email']).'" data-wamsg="'.$leadMsg.'" data-ok="'.e($cv['f_ok']).'" data-err="'.e($cv['f_err']).'" data-sending="'.e($cv['f_sending']).'" data-walabel="'.e($cv['f_wa']).'" novalidate>'
+        .'<label>'.e($cv['f_name']).'<input name="nome" required autocomplete="name"></label>'
+        .'<label>'.e($cv['f_biz']).'<input name="negocio" required></label>'
+        .'<label>'.e($cv['f_phone']).'<input name="contato" required autocomplete="tel"></label>'
+        .'<label>'.e($cv['f_need']).'<textarea name="necessidade" rows="3"></textarea></label>'
+        .'<input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">'
+        .'<input type="hidden" name="_subject" value="Pedido de prévia grátis (site)"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table">'
+        .'<button class="btn btn-wa" type="submit">'.e($cv['f_send']).'</button><p class="muted lead-note">'.e($cv['f_lgpd']).'</p><p class="lead-status" role="status" aria-live="polite"></p></form></div></section>';
 
     $body = <<<HTML
 <header class="hero">
@@ -428,6 +455,7 @@ foreach (array_keys($LANGS) as $l) {
         <a class="btn btn-ghost" href="#diagnostico">{$h['cta_diag']}</a>
       </div>
       <ul class="trust">{$trust}</ul>
+      {$chips}
     </div>
     <figure class="phone-fig">
       <div class="phone">
@@ -440,6 +468,8 @@ foreach (array_keys($LANGS) as $l) {
     </figure>
   </div>
 </header>
+
+{$proofHtml}
 
 <section id="servicos" style="padding-top:0">
   <div class="wrap">
@@ -536,6 +566,8 @@ foreach (array_keys($LANGS) as $l) {
   </div>
 </section>
 
+{$leadHtml}
+
 <section class="dark final">
   <div class="wrap">
     <h2>{$s['final_h2']} <em>{$s['final_grad']}</em></h2>
@@ -602,6 +634,7 @@ HTML;
     $nc = $u['niche'];
     $nicheList = $d['niches'];
     $nicheList['__sst'] = $d['sst'] ?? null;
+    $prevMap = ['clinicas-e-consultorios' => 'saude', 'dentistas' => 'saude', 'nutricionistas-e-psicologos' => 'saude', 'restaurantes-e-delivery' => 'gastro', 'cafeterias-e-padarias' => 'gastro', 'saloes-e-barbearias' => 'beleza', 'estudios-e-academias' => 'beleza', 'pet-shops' => 'pet', 'lojas-e-comercio' => 'loja', 'advogados-e-escritorios' => 'juridico', 'contadores-e-despachantes' => 'juridico', 'escolas-e-professores' => 'escola', 'oficinas-e-estetica-automotiva' => 'auto'];
     foreach ($nicheList as $slug => $n) {
         if (! $n) {
             continue;
@@ -627,9 +660,13 @@ HTML;
         }
         $others .= $slug !== '__sst' ? '<a class="btn btn-outline btn-sm" href="'.url($l, 'sst').'">'.e($u['footer']['sst']).'</a>' : '';
         $nicheExtra .= '<section style="padding-top:0"><div class="wrap" style="text-align:center"><div class="section-head reveal"><span class="eyebrow">'.e($nc['also_eyebrow']).'</span><h2>'.e($nc['also_h2']).'</h2></div><div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">'.$others.'</div></div></section>';
-        $body = '<header class="page-hero"><div class="wrap"><div class="crumbs"><a href="'.url($l, 'home').'">'.e($sv['home']).'</a> / '.e($n['name']).'</div>'
+        $cv = $u['conv'];
+        $prevImg = $l === 'pt' ? ($prevMap[$slug] ?? null) : null;
+        $prevMsg = str_replace('{who}', $who, $cv['prev_wa']);
+        $prevFig = $prevImg ? '<figure class="ph-prev"><img src="/assets/img/previa-'.$prevImg.'.webp" alt="'.e($cv['prev_alt']).'" width="540" height="675" decoding="async" fetchpriority="high"><figcaption>'.e($cv['prev_label']).'</figcaption></figure>' : '';
+        $body = '<header class="page-hero"><div class="wrap'.($prevImg ? ' ph-grid' : '').'"><div><div class="crumbs"><a href="'.url($l, 'home').'">'.e($sv['home']).'</a> / '.e($n['name']).'</div>'
             .'<span class="eyebrow">'.e($nc['for'].' '.$lower).'</span><h1>'.e($n['h1']).'</h1><p class="lede">'.e($n['intro']).'</p>'
-            .'<div class="ctas"><a class="btn btn-wa" data-wa="'.e($msg).'">'.$WA.e($nc['cta']).'</a><a class="btn btn-ghost" href="'.url($l, 'home').'#diagnostico">'.e($nc['cta2']).'</a></div></div></header>'
+            .'<div class="ctas"><a class="btn btn-wa" data-wa="'.e($prevMsg).'">'.$WA.e($cv['prev_cta']).'</a><a class="btn btn-ghost" href="'.url($l, 'home').'#diagnostico">'.e($nc['cta2']).'</a></div><ul class="trust"><li>'.e($u['home']['trust'][0]).'</li><li>'.e($u['home']['trust'][1]).'</li></ul></div>'.$prevFig.'</div></header>'
             .'<section><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($nc['pains_eyebrow']).'</span><h2>'.e($nc['pains_h2']).'</h2></div><div class="pains">'.$pains.'</div></div></section>'
             .$extra
             .'<section style="padding-top:0"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($nc['sol_eyebrow']).'</span><h2>'.e(str_replace('{name}', $lower, $nc['sol_h2'])).'</h2></div><div class="services">'.$svc.'</div></div></section>'

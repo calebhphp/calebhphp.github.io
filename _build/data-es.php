@@ -22,9 +22,9 @@ return [
             'short' => 'Una página pensada para convertir visitas en contactos, ideal para anuncios y campañas.',
             'price' => '490 €',
             'price_note' => 'pago único',
-            'deadline' => '5 días',
+            'deadline' => '3 días hábiles',
             'title' => 'Diseño de landing page para pequeñas empresas',
-            'description' => 'Landing page a medida, rápida en el móvil y pensada para convertir visitas en contactos por WhatsApp. Ideal para anuncios en Google e Instagram. En 5 días.',
+            'description' => 'Landing page a medida, rápida en el móvil y pensada para convertir visitas en contactos por WhatsApp. Ideal para anuncios en Google e Instagram. Vista previa gratis en 24 horas.',
             'h1' => 'Una landing page que convierte visitas en clientes',
             'intro' => 'Pagas un anuncio, alguien hace clic y llega a una página lenta o confusa. La cierra y se va con la competencia. Una landing page bien hecha muestra lo que ofreces en segundos y lleva a la persona directa a tu WhatsApp.',
             'benefits' => [

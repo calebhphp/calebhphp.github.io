@@ -17,6 +17,8 @@ return [
         'cnpj' => '',
         // Google Analytics 4 measurement ID (ex.: G-XXXXXXX). When filled, visits and WhatsApp clicks are measured.
         'ga4' => '',
+        // Google Tag Manager container (GTM-XXXXXXX). Add the GA4 tag inside GTM.
+        'gtm' => 'GTM-5JPKV6G7',
         // Launch / Black Friday promotion. Set promo_off to 0 to turn it off. It also disappears by itself after promo_end.
         'promo_off' => 30,
         'promo_end' => '2026-11-30',
@@ -30,9 +32,9 @@ return [
             'short' => 'Uma página feita para transformar visita em contato, perfeita para anúncios e campanhas.',
             'price' => 'R$ 997',
             'price_note' => 'pagamento único',
-            'deadline' => '5 dias',
-            'title' => 'Criação de landing page em São Paulo | Pronta em 5 dias',
-            'description' => 'Landing page personalizada, rápida no celular e feita para virar contato no WhatsApp. Ideal para anúncios no Google e Instagram. Pronta em até 5 dias.',
+            'deadline' => '3 dias úteis',
+            'title' => 'Criação de landing page em São Paulo | Prévia grátis em 24h',
+            'description' => 'Landing page personalizada, rápida no celular e feita para virar contato no WhatsApp. Ideal para anúncios no Google e Instagram. Prévia grátis em 24 horas úteis.',
             'h1' => 'Landing page que transforma visita em cliente',
             'intro' => 'Você paga por anúncio, a pessoa clica e cai numa página lenta ou confusa. Ela fecha e vai para o concorrente. Uma landing page bem feita mostra o que você oferece em segundos e leva a pessoa direto para o seu WhatsApp.',
             'benefits' => [

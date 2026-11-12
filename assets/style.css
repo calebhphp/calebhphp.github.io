@@ -424,3 +424,31 @@ main>section .eyebrow::before{content:counter(sec,decimal-leading-zero) " /";wid
 .car-btn:disabled{opacity:.35;cursor:default}
 @media (hover:hover) and (pointer:fine){.car-btn:not(:disabled):hover{border-color:var(--accent);color:var(--accent)}}
 .car-count{min-width:5ch;text-align:center;font:500 .9rem var(--mono);color:var(--muted)}
+
+/* ---------- Conversion round: profession chips, proof, lead form, niche preview ---------- */
+.hero-chips{margin-top:26px;display:grid;gap:10px}
+.hero-chips>span{font:500 .78rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hero-chips>div{display:flex;flex-wrap:wrap;gap:8px}
+.hero-chips .fchip{text-decoration:none;display:inline-flex;align-items:center;font-size:.88rem;min-height:44px}
+.proof-list{display:grid;grid-template-columns:repeat(4,1fr);gap:0;list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.proof-list li{padding:26px 24px 26px 0;display:grid;gap:8px;align-content:start;border-bottom:1px solid var(--line)}
+.proof-list b{font:700 clamp(2rem,4vw,3rem)/1 var(--display);color:var(--accent)}
+.proof-list span{color:var(--muted);max-width:22ch}
+.proof-note{margin-top:20px;max-width:60ch}
+.lead-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
+.lead-form{display:grid;gap:14px}
+.lead-form label{display:grid;gap:6px;font-weight:600;font-size:.95rem}
+.lead-form input,.lead-form textarea{font:inherit;color:var(--text);background:var(--surface);border:1.5px solid var(--control);border-radius:10px;padding:12px 14px;min-height:48px}
+.lead-form input:focus-visible,.lead-form textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.lead-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.lead-form .btn{justify-self:start}
+.lead-note{font-size:.85rem;margin:0}
+.lead-status{margin:0;font-weight:600;min-height:1.4em}
+.lead-status a{color:var(--accent);text-decoration:underline}
+.ph-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(28px,5vw,64px);align-items:center}
+.ph-prev{margin:0;display:grid;gap:10px;justify-items:center}
+.ph-prev img{width:100%;max-width:380px;height:auto;border-radius:18px;border:1px solid var(--line)}
+.ph-prev figcaption{font:500 .78rem var(--mono);color:var(--muted);text-align:center}
+.page-hero .trust{margin-top:22px}
+@media (max-width:860px){.proof-list{grid-template-columns:1fr 1fr}.lead-grid,.ph-grid{grid-template-columns:1fr}.ph-prev{order:-1}.ph-prev img{max-width:260px}}
+.hero h1{font-size:clamp(2.4rem,5vw,4.5rem)}
