@@ -2,6 +2,18 @@
 // say() picks one (steady through the day for headlines, rotating for reactions like toasts).
 // These override the single lines in i18n-tone.js for the parceiro, ácido (deboche) and sem filtro tones.
 export const ptV = {
+  // Retrospectiva: no amounts anywhere, so the cards are safe to post
+  'retro.daySub': '{p} do gasto do mês caiu nesse dia', 'retro.endSub': 'do plano do dia a dia',
+  'retro.charLine': '{cat} levou {p} de tudo que você gastou no dia a dia.',
+  'retro.charLine@parceiro': '{cat} foi {p} do seu mês. Dá pra olhar com carinho e ajustar.',
+  'retro.charLine@deboche': '{cat}: {p} do mês foi pra isso. só uma observação, com carinho. || {p} do seu dinheiro foi parar em {cat}. eu não julgo, eu anoto. || {cat} levou {p} do mês e nem agradeceu.',
+  'retro.charLine@semfiltro': '{cat} comeu {p} do seu mês, porra. foi seu maior amor e seu maior erro. || {p} em {cat}, caralho. tem gente que faz terapia por menos. || {cat} ficou com {p} de tudo, porra. você é generoso com quem não precisa.',
+  'retro.dayLine': 'O maior gasto do mês foi {item}.',
+  'retro.dayLine@parceiro': 'O dia mais pesado teve {item}. Todo mês tem um desses. || O maior gasto foi {item}. Acontece com todo mundo.',
+  'retro.dayLine@deboche': 'o dia em que o cartão chorou: {item}. || o pico do mês foi {item}. o extrato ainda lembra. || {item} foi o ponto alto, ou baixo, do mês.',
+  'retro.dayLine@semfiltro': 'o dia em que o cartão pediu socorro, porra: {item}. || {item}, caralho. foi aí que o mês desandou. || {item} foi o maior gasto do mês e a pior decisão do calendário.',
+  'retro.paceLine@deboche': '{n} dias na linha. os outros {o} a gente não comenta. || {n} dias certinhos e {o} dias de improviso criativo. || {n} dias de disciplina, {o} de arte.',
+  'retro.paceLine@semfiltro': '{n} dias na linha, porra. os outros {o} foram uma merda. || {n} dias no ritmo e {o} de bagunça, caralho.',
   // Default questions (suggested chips): every one of them answers in the voice, with the person's numbers
   'local.buyYes@parceiro': 'Pode sim! O cofre já tem os {v} do {item}, então a compra nem mexe no seu mês. Toca em Comprar no card dos cofres. || Boa notícia: {item} tá liberado, os {v} já estão guardados. Compra sem culpa! || Liberado! O {item} já tem os {v} no cofre. Aproveita.',
   'local.buyYes@deboche': 'pode. os {v} do {item} já tão no cofre. compra sem culpa, isso é raro. || o {item} tá liberado e pago com dinheiro guardado. você, planejando. quem diria. || pode comprar o {item}. {v} já guardados. fico até orgulhoso, não conta pra ninguém.',
@@ -111,9 +123,4 @@ export const ptV = {
   'retro.endLine@deboche': 'mês que vem tem mais. tenta não ser personagem de novo. || e o próximo capítulo? você decide. eu só escrevo. || mês que vem, outro personagem. escolhe com carinho.',
   'retro.endLine@semfiltro': 'mês que vem tem mais, porra. tenta não fazer a mesma merda. || próximo mês: sem repetir os erros, caralho.',
   'retro.paceLine@parceiro': '{n} dias na linha. Os outros {o} a gente ajusta junto || Foram {n} dias no ritmo. Dá pra melhorar os outros {o}',
-  'retro.paceLine@deboche': '{n} dias na linha. os outros {o} a gente não comenta. || {n} dias no ritmo e {o} no improviso. || {n} dias certinhos, {o} dias de arte.',
-  'retro.paceLine@semfiltro': '{n} dias na linha, porra. os outros {o} foram uma merda. || {n} dias no ritmo e {o} de bagunça, caralho.',
-  'retro.dayLine@parceiro': 'O dia mais pesado foi {item} ({v}). Todo mês tem um || O maior gasto foi {item} ({v}). Acontece',
-  'retro.dayLine@deboche': 'o dia em que o cartão chorou. o maior foi {item} ({v}). || o pico: {item}, {v}. o cartão pediu licença. || {item} custou {v}. o extrato ainda lembra.',
-  'retro.dayLine@semfiltro': 'o dia em que o cartão pediu socorro, porra: {item}, {v}. || {item} por {v}, caralho. foi aí que tudo desandou.',
 };

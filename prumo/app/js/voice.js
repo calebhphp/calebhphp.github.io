@@ -69,6 +69,8 @@ export function facts(s, ym) {
     n14: recent.filter(g => DELIVERY.test(norm(g.desc)) || (g.cat === 'restaurante' && !RIDE.test(norm(g.desc)))).length,
     u14: recent.filter(g => RIDE.test(norm(g.desc))).length,
     v14: money(recent.reduce((a, g) => a + g.amount, 0)), c14: recent.length,
+    delV: money(recent.filter(g => DELIVERY.test(norm(g.desc)) || (g.cat === 'restaurante' && !RIDE.test(norm(g.desc)))).reduce((a, g) => a + g.amount, 0)),
+    rideV: money(recent.filter(g => RIDE.test(norm(g.desc))).reduce((a, g) => a + g.amount, 0)),
     big: big ? big.desc : '', bigV: big ? money(big.amount) : '',
     last: lastTx ? lastTx.desc : '', lastV: lastTx ? money(lastTx.amount) : '',
     streak: streak(s).count || 0,
@@ -115,7 +117,7 @@ export function voiceAnswer(q, s, ym) {
   if (/^(oi|ola|e ai|eai|opa|bom dia|boa tarde|boa noite|fala|salve|hey|hello)\b/.test(n)) return line('hello', f);
   if (/obrigad|valeu|brigad|thanks/.test(n)) return line('thanks', f);
   if (/tudo bem|como vai|como voce esta|como vc ta|beleza\?/.test(n)) return line('how', f);
-  if (/(me )?(zoa|zoe|xinga|esculacha|detona|humilha|roast|pega pesado|me ofende)/.test(n)) return serious ? line('summary', f) : line('roast', f) + ' ' + (kicker(f) || '');
+  if (/(me )?(zoa|zoe|xinga|esculacha|detona|humilha|roast|pega pesado|me ofende)/.test(n)) return serious ? line('summary', f) : roast(f);
   if (/(me )?(elogia|elogie|parabeniza|parabens|motiva|anima)/.test(n)) return line('praise', f);
   const amt = amountIn(q);
   if (/compr|sofa|wishlist|desejo/.test(n) && amt < 5) return '';
@@ -527,4 +529,45 @@ for (const [intent, tones] of Object.entries(HARD)) {
   BANK[intent] = BANK[intent] || {};
   if (tones.deboche) BANK[intent].deboche = [...(BANK[intent].deboche || []), ...tones.deboche];
   if (tones.semfiltro) BANK[intent].semfiltro = [...tones.semfiltro, ...(BANK[intent].semfiltro || []).slice(0, 1)];
+}
+
+// ---------- roast: two or three barbs picked from what is actually true about this person this month.
+// Each barb only exists when the fact is real. Ácido says it like a friend who loves you; sem filtro does not hold back.
+const BARBS = [
+  { ok: f => f.n14 >= 3, deboche: ['{n14} pedidos de comida em 14 dias, {delV}. a cozinha da sua casa já pediu transferência de departamento.', 'você pediu comida {n14} vezes em duas semanas e gastou {delV}. o fogão tá virando peça de museu.'],
+    semfiltro: ['{n14} delivery em 14 dias, {delV}, caralho. o seu fogão tem tanta poeira que virou patrimônio histórico.', '{delV} em comida pedida, porra. você não tem fome, tem assinatura de entregador.', '{n14} vezes o app de comida em duas semanas. {delV}. o entregador sabe em que andar você mora e em que mês você desistiu de cozinhar.'] },
+  { ok: f => f.top && f.topShare >= 0.25, deboche: ['{top} é {topP} do que você gasta. isso já não é categoria, é relacionamento.', '{topP} do seu gasto vai em {top}. eu respeito a dedicação, só não sei se o seu bolso respeita.'],
+    semfiltro: ['{top} é {topP} do que você gasta, porra. não é categoria, é relacionamento sério e você nem pediu em namoro.', '{topV} em {top}, {topP} de tudo, caralho. o resto da sua vida come as migalhas.'] },
+  { ok: f => f.big && f.bigV, deboche: ['o maior gasto do mês foi "{big}", {bigV}. eu vi e fingi que não.', '"{big}" por {bigV}. a gente não vai falar disso, mas tá no histórico.'],
+    semfiltro: ['o maior gasto do mês foi "{big}": {bigV}, caralho. quem faz isso com o próprio dinheiro?', '"{big}" por {bigV}. essa merda sozinha podia ter pago uma semana de vida decente, porra.'] },
+  { ok: f => f.last && f.lastV, deboche: ['o último lançamento foi "{last}", {lastV}. continua a história, eu aguardo.', 'seu último movimento: "{last}", {lastV}. coerente com o resto.'],
+    semfiltro: ['último lançamento: "{last}", {lastV}. é assim que você trata o próprio dinheiro, porra?', '"{last}", {lastV}. dava pra ser pior? dava. mas você tá se esforçando, caralho.'] },
+  { ok: f => f.c14 >= 8, deboche: ['{c14} lançamentos em 14 dias somando {v14}. seu extrato lê como um diário de impulsos.'],
+    semfiltro: ['{c14} lançamentos em 14 dias, {v14}, caralho. você não tem finanças, tem um diário de arrependimentos.'] },
+  { ok: f => f.subsN >= 4, deboche: ['{subsN} assinaturas por {subsV} por mês. você usa uma e sustenta o streaming dos outros.'],
+    semfiltro: ['{subsN} assinaturas, {subsV} por mês, porra. tá patrocinando empresa que nem sabe seu nome, caralho.'] },
+  { ok: f => f.u14 >= 3, deboche: ['{u14} corridas em 14 dias, {rideV}. as suas pernas estão em greve e eu entendo, mas não apoio.'],
+    semfiltro: ['{u14} corridas em 14 dias, {rideV}, porra. você tem perna, usa. o motorista já acha que mora no carro.'] },
+  { ok: f => f.paceN > f.elapsedN + 0.05, deboche: ['você tá a {pace} do plano com {elapsed} do mês. gastando como se o mês tivesse acabado antes de você chegar.'],
+    semfiltro: ['{pace} do plano com {elapsed} do mês, caralho. você gasta como se tivesse herança e nenhum parente.'] },
+  { ok: f => f.incN && f.outN > 0.6, deboche: ['{outP} da sua renda de {inc} some antes de você decidir qualquer coisa. o salário só passa pra fazer visita.'],
+    semfiltro: ['{inc} entram, {outP} já tem dono antes de você abrir o app, porra. o salário cai e vai embora mais rápido que visita chata.'] },
+  { ok: f => f.debtsN > 0, deboche: ['{debtsV} em aberto e ainda sobra paciência pra pedir comida. isso é fé.'],
+    semfiltro: ['{debtsV} de dívida e {n14} delivery, caralho. você tá financiando jantar com o nome sujo.', 'tá devendo {debtsV} e ainda gasta como se o banco te devesse, porra.'] },
+];
+const CLOSE = {
+  deboche: ['falo isso porque te quero bem, e porque alguém precisa falar.', 'é com carinho. com um pouco de dó, mas com carinho.', 'se serve de consolo, eu sigo torcendo por você.', 'respira e corrige a rota, você consegue.'],
+  semfiltro: ['agora para de chorar e vai economizar, porra.', 'isso não é xingamento, caralho, é o seu extrato falando.', 'o app só repete o que você fez. a culpa é sua, porra.', 'se doeu, ótimo. mudar dá trabalho, caralho.'],
+};
+function roast(f) {
+  const tn = tone();
+  if (tn !== 'deboche' && tn !== 'semfiltro') return line('roast', f) + ' ' + (kicker(f) || '');
+  const pool = BARBS.filter(b => b.ok(f));
+  if (!pool.length) return line('summary', f);
+  const chosen = [];
+  const bag = pool.slice();
+  const n = Math.min(bag.length, 2 + (Math.random() > 0.85 ? 1 : 0));
+  while (chosen.length < n && bag.length) chosen.push(bag.splice(Math.floor(Math.random() * bag.length), 1)[0]);
+  const parts = chosen.map(b => fill(pick(b[tn], 'barb' + tn + BARBS.indexOf(b)), f));
+  return parts.join(' ') + ' ' + pick(CLOSE[tn], 'close' + tn);
 }

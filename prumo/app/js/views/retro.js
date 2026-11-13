@@ -51,12 +51,12 @@ function cards(s, ym, r) {
   return [
     { k: 'cover', kicker: esc(m), big: t('retro.cover'), line: say('retro.coverSub', { n: r.list.length }) },
     { k: 'char', kicker: t('retro.char'), big: esc(charName),
-      line: r.monk ? t('retro.monkLine', { p: pct(r.spent / r.budget) }) : say('retro.charLine', { cat: catName, v: money(r.topV), p: pct(r.topV / r.spent) }) },
-    { k: 'day', kicker: t('retro.day'), big: esc(dayLabel(date)), sub: money(r.maxV),
-      line: say('retro.dayLine', { item: esc(r.maxItem.desc), v: money(r.maxItem.amount) }) },
+      line: r.monk ? t('retro.monkLine', { p: pct(r.spent / r.budget) }) : say('retro.charLine', { cat: catName, p: pct(r.topV / r.spent) }) },
+    { k: 'day', kicker: t('retro.day'), big: esc(dayLabel(date)), sub: t('retro.daySub', { p: pct(r.maxV / r.spent) }),
+      line: say('retro.dayLine', { item: esc(r.maxItem.desc) }) },
     { k: 'pace', kicker: t('retro.pace'), big: `${r.inside}<small>/${r.days}</small>`,
       line: say('retro.paceLine', { n: r.inside, d: r.days, o: r.days - r.inside, v: money(r.allowance) }) },
-    { k: 'end', kicker: t('retro.end'), big: money(r.spent), sub: t('retro.plan', { v: money(r.budget) }) + (vs ? `<br>${esc(vs)}` : ''),
+    { k: 'end', kicker: t('retro.end'), big: pct(r.spent / r.budget), sub: t('retro.endSub') + (vs ? `<br>${esc(vs)}` : ''),
       line: (r.reserve ? (r.next ? t('retro.savedLine', { p: resPct, item: esc(r.next.name) }) : t('retro.savedNone', { p: resPct })) + ' ' : '') + say('retro.endLine') },
   ];
 }
@@ -165,7 +165,7 @@ export function mount(root, s, ctx) {
   });
   root.querySelector('#retro-share').addEventListener('click', async () => {
     const c = cards(s, ym, r);
-    const text = t('retro.shareText', { m: monthIn(ym, { month: 'long' }), char: c[1].big, day: `${c[2].big} (${c[2].sub})`, n: r.inside, d: r.days });
+    const text = t('retro.shareText', { m: monthIn(ym, { month: 'long' }), char: c[1].big, day: c[2].big, n: r.inside, d: r.days });
     try { await navigator.clipboard.writeText(text); toast(t('retro.copied')); } catch (e) { toast(text); }
   });
 }
