@@ -748,15 +748,27 @@ HTML;
 
     /* ---------- About page ---------- */
     $ab = $u['about'];
-    $tl = implode('', array_map(fn ($t) => '<li class="reveal"><span class="when">'.e($t[0]).'</span><h3>'.e($t[1]).'</h3><p>'.e($t[2]).'</p></li>', $timelines[$l]));
-    $ch = implode('', array_map(fn ($c) => '<div class="benefit reveal"><h3>'.e($c[0]).'</h3><p>'.e($c[1]).'</p></div>', $ab['challenges']));
+    $tl = implode('', array_map(fn ($t) => '<li class="reveal"><span class="when">'.e($t[0]).'</span><h3>'.e($t[1]).'</h3><p>'.e($t[2]).'</p><p class="ab-means">'.e($t[3] ?? '').'</p></li>', $timelines[$l]));
     $wins = implode('', array_map(fn ($w) => '<li>'.e($w).'</li>', $ab['wins']));
-    $body = '<header class="page-hero"><div class="wrap"><div class="about-hero"><div class="avatar big"><img src="/assets/logo.svg" alt="" width="96" height="96"></div><div><span class="eyebrow">'.e($ab['eyebrow']).'</span><h1>'.e($ab['h1']).'</h1></div></div><p class="lede">'.e($ab['lede']).'</p>'
-        .'<div class="ctas"><a class="btn btn-wa" data-wa="'.e($n_wa = $u['nav']['wa_msg']).'">'.$WA.e($ab['cta']).'</a><a class="btn btn-ghost" href="'.$site['linkedin'].'" rel="me">'.e($ab['linkedin']).'</a></div></div></header>'
-        .'<section><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($ab['timeline_eyebrow']).'</span><h2>'.e($ab['timeline_h2']).'</h2></div><ol class="timeline">'.$tl.'</ol></div></section>'
-        .'<section style="padding-top:0"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($ab['challenges_eyebrow']).'</span><h2>'.e($ab['challenges_h2']).'</h2></div><div class="benefits three">'.$ch.'</div></div></section>'
+    $photo = file_exists("$root/assets/img/matheus.webp") ? '<img src="/assets/img/matheus.webp" alt="'.e($site['name']).'" width="120" height="120" decoding="async">' : '<img src="/assets/logo.svg" alt="" width="96" height="96">';
+    $stats = implode('', array_map(fn ($x) => '<li><b>'.e($x[0]).'</b><span>'.e($x[1]).'</span></li>', $ab['stats']));
+    $pledges = implode('', array_map(fn ($x, $i) => '<li class="reveal"><span class="ab-n">'.str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT).'</span><h3>'.e($x[0]).'</h3><p>'.e($x[1]).'</p></li>', $ab['pledges'], array_keys($ab['pledges'])));
+    $story = implode('', array_map(fn ($p) => '<p>'.e($p).'</p>', $ab['story']));
+    $built = implode('', array_map(fn ($x) => '<a class="ab-built reveal" href="'.$x[3].'"><div><h3>'.e($x[1]).'</h3><p>'.e($x[2]).'</p><span class="go">'.e($x[4]).' →</span></div></a>', $ab['built']));
+    $steps = implode('', array_map(fn ($x, $i) => '<li class="reveal"><span class="ab-n">'.($i + 1).'</span><h3>'.e($x[0]).'</h3><p>'.e($x[1]).'</p></li>', $ab['steps'], array_keys($ab['steps'])));
+    $wa = e($u['nav']['wa_msg']);
+    $body = '<header class="page-hero ab-hero"><div class="wrap ab-hero-grid"><div><span class="eyebrow">'.e($ab['eyebrow']).'</span><h1>'.e($ab['h1']).'</h1><p class="lede">'.e($ab['lede']).'</p>'
+        .'<div class="ctas"><a class="btn btn-wa" data-wa="'.$wa.'">'.$WA.e($ab['cta']).'</a><a class="btn btn-ghost" href="'.$site['linkedin'].'" rel="me">'.e($ab['linkedin']).'</a></div></div>'
+        .'<aside class="ab-card" aria-label="'.e($site['name']).'"><div class="ab-photo">'.$photo.'</div><b>'.e($site['name']).'</b><span>'.e($ab['role']).'</span>'
+        .'<ul><li>'.e($ab['place']).'</li><li>'.e($ab['langs']).'</li></ul><p class="ab-status"><i></i>'.e($ab['status']).'</p></aside></div></header>'
+        .'<section class="ab-stats-wrap"><div class="wrap"><ul class="ab-stats">'.$stats.'</ul></div></section>'
+        .'<section><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($ab['pledge_eyebrow']).'</span><h2>'.e($ab['pledge_h2']).'</h2></div><ul class="ab-pledges">'.$pledges.'</ul></div></section>'
+        .'<section style="padding-top:0"><div class="wrap ab-story"><div class="reveal"><span class="eyebrow">'.e($ab['story_eyebrow']).'</span><h2>'.e($ab['story_h2']).'</h2></div><div class="reveal">'.$story.'</div></div></section>'
+        .'<section style="padding-top:0"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($ab['path_eyebrow']).'</span><h2>'.e($ab['path_h2']).'</h2></div><ol class="timeline">'.$tl.'</ol></div></section>'
+        .'<section style="padding-top:0"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($ab['built_eyebrow']).'</span><h2>'.e($ab['built_h2']).'</h2></div><div class="ab-builts">'.$built.'</div></div></section>'
         .'<section class="dark"><div class="wrap split"><div class="reveal"><span class="eyebrow">'.e($ab['wins_eyebrow']).'</span><h2 style="margin:14px 0 24px">'.e($ab['wins_h2']).'</h2><ul class="wins">'.$wins.'</ul></div><div class="reveal"><span class="eyebrow">'.e($ab['skills_eyebrow']).'</span><h2 style="margin:14px 0 24px">'.e($ab['skills_h2']).'</h2><p class="skills">'.e($ab['skills']).'</p></div></div></section>'
-        .'<section class="final"><div class="wrap"><h2>'.e($ab['cta_h2']).'</h2><div class="ctas"><a class="btn btn-wa" data-wa="'.e($u['nav']['wa_msg']).'">'.$WA.e($ab['cta']).'</a><a class="btn btn-outline" href="'.url($l, 'home').'#diagnostico">'.e($u['nav']['diag']).'</a></div></div></section>';
+        .'<section><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($ab['steps_eyebrow']).'</span><h2>'.e($ab['steps_h2']).'</h2></div><ol class="ab-steps">'.$steps.'</ol></div></section>'
+        .'<section class="dark final"><div class="wrap"><h2>'.e($ab['cta_h2']).'</h2><div class="ctas"><a class="btn btn-wa" data-wa="'.$wa.'">'.$WA.e($ab['cta']).'</a><a class="btn btn-ghost" href="'.url($l, 'home').'#diagnostico">'.e($u['nav']['diag']).'</a></div></div></section>';
     write($pages['about'][$l], layout($l, 'about', [
         'title' => $ab['title'], 'description' => $ab['description'],
         'schema' => ['@context' => 'https://schema.org', '@graph' => [
