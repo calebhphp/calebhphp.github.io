@@ -6,7 +6,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prumo: quanto ainda dá pra gastar hoje?</title>
-<meta name="description" content="App de finanças pessoais que separa os gastos de uma frase, mostra quanto dá para gastar por dia e roda no seu aparelho, sem senha de banco.">
+<meta name="description" content="App de finanças pessoais com um pêndulo que mostra se o mês está de pé, o fechamento previsto, lançamento por frase e um conselheiro com IA. Sem senha de banco.">
 <link rel="canonical" href="https://matheusvillanova.com/prumo/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -180,12 +180,12 @@
     <div class="wrap"><div class="hero-text grid hero__grid">
       <div class="hero__text span-5">
         <h1 id="hero-h">Quanto ainda dá pra gastar hoje?</h1>
-        <p class="hero__lead">Você escreve "almoço 32, uber 18, ifood 47,90" do jeito que mandaria no zap. O Prumo separa, põe categoria e diz quanto ainda dá pra gastar hoje. Sem pedir senha de banco.</p>
+        <p class="hero__lead">Um pêndulo mostra se o mês está de pé e o Prumo já calcula como ele fecha. Você escreve "almoço 32, uber 18, ifood 47,90" do jeito que mandaria no zap e ele separa tudo. Sem pedir senha de banco.</p>
         <div class="btn-row"><a class="btn btn--primary" href="app/index.html">Abrir a demo<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#produto">Ver por dentro</a></div>
         <p class="hero__proof">Fiz pra mim, que recebo salário e nota no mesmo mês.</p>
       </div>
-      <div class="hero__art span-6 start-7" role="img" aria-label="Tela inicial do Prumo: a caixa para escrever os gastos do dia, quanto ainda dá para gastar hoje e o fio de prumo do mês">
-        <div class="ly-piece ly-piece--main shot" aria-hidden="true"><picture><source media="(max-width: 639px)" srcset="img/app-home-m.png" width="1170" height="2532"><img src="img/app-home.png" alt="" width="1440" height="900" fetchpriority="high"></picture></div>
+      <div class="hero__art span-6 start-7" role="img" aria-label="Tela inicial do Prumo: o pêndulo que mostra se o mês está de pé, o fechamento previsto, a caixa para escrever os gastos e os cards de entrada, gasto e quanto pode gastar hoje">
+        <div class="ly-piece ly-piece--main shot" aria-hidden="true"><picture><source media="(max-width: 639px)" srcset="img/n-home-m.webp" width="780" height="1688"><img src="img/n-home-hero.webp" alt="" width="1192" height="900" fetchpriority="high"></picture></div>
         <div class="ly-piece ly-piece--note ui ui-panel pv-note" aria-hidden="true" data-ly-steps="700">
           <div class="pv-note__q">almoço 32, uber 18, ifood 47,90</div>
           <div class="pv-note__row" data-step><span>Almoço · Comer fora</span><b>R$ 32,00</b></div>
@@ -200,11 +200,11 @@
   <section class="section" id="produto" aria-labelledby="produto-h">
     <div class="wrap">
       <div class="grid grid--top">
-        <h2 id="produto-h" class="span-5">Pergunta pro conselheiro e ele responde com gráfico</h2>
-        <p class="span-6 start-7 muted">Tipo "quanto foi de ifood essa semana?". O gráfico sai dos seus próprios lançamentos, e a IA comenta em cima dele.</p>
+        <h2 id="produto-h" class="span-5">Pergunta pro conselheiro. Ele responde com os seus números.</h2>
+        <p class="span-6 start-7 muted">Tipo "posso comprar o sofá?" ou "quanto foi de ifood essa semana?". O gráfico sai dos seus próprios lançamentos, a IA comenta em cima dele e a resposta vem no tom que você escolheu.</p>
       </div>
-      <div class="shot shot--wide fill m-swap" role="img" aria-label="Tela do conselheiro: à esquerda o que ele está vendo no mês, à direita a pergunta sobre comer fora por semana respondida com um gráfico">
-        <picture><source media="(max-width: 639px)" srcset="img/app-chat-m.png"><img src="img/app-conselheiro.png" alt="" width="1440" height="900" loading="lazy"></picture>
+      <div class="shot shot--wide fill m-swap" role="img" aria-label="Tela do conselheiro com IA: a pergunta sobre comer fora por semana respondida com um gráfico e, ao lado, o que ele está vendo no mês">
+        <picture><source media="(max-width: 639px)" srcset="img/n-cons-m.webp" width="780" height="1688"><img src="img/n-cons-d.webp" alt="" width="1440" height="900" loading="lazy"></picture>
       </div>
     </div>
   </section>
@@ -219,27 +219,28 @@
           <article class="card card--row card--open span-6">
             <h3 class="mono-title">almoço 32, uber 18</h3>
             <p>Vira dois gastos com categoria. Dá pra falar em vez de digitar, ou subir o extrato OFX ou CSV do banco.</p>
-            <div class="panel panel--shot"><img class="frame__img" src="img/app-lancar-d.png" alt="A frase almoço 32, uber 18, ifood 47,90 separada em três gastos com categoria, prontos para conferir" width="1316" height="939" loading="lazy"></div>
+            <div class="panel panel--shot"><img class="frame__img" src="img/n-lancar-d.webp" alt="A frase almoço 32, uber 18, ifood 47,90 escrita na caixa de lançar, com o prumo e o fechamento previsto acima" width="1440" height="900" loading="lazy"></div>
           </article>
           <article class="card card--row card--open span-6">
-            <h3>Parcela não some mais da cabeça</h3>
-            <p>Escreveu "geladeira 3290 em 10x", ela aparece em cada fatura até a última.</p>
-            <div class="panel panel--shot"><img class="frame__img" src="img/app-parcelas-d.png" alt="Lista de parcelas em andamento, com quantas faltam e o valor de cada uma" width="1384" height="514" style="object-fit:contain;object-position:center" loading="lazy"></div>
+            <h3>Pra onde o dinheiro foi, num olhar</h3>
+            <p>Anel por categoria e uma linha do seu gasto contra o ritmo ideal. Quando o mês foge do plano, o card muda de cor.</p>
+            <div class="panel panel--shot"><img class="frame__img" src="img/n-ring-d.webp" alt="Anel com a divisão do gasto por categoria e o card de ritmo com a linha do gasto do mês" width="1440" height="900" loading="lazy"></div>
           </article>
         </div>
       </div>
       <div class="grid">
         <article class="card card--row card--open span-6">
-          <h3>Sofá só quando o dinheiro estiver no cofre</h3>
-          <p>Cada coisa da casa espera a vez na fila. E item novo fica 48 horas de molho antes de liberar.</p>
-          <div class="panel panel--shot"><img class="frame__img" src="img/app-fila-d.png" alt="Fila de compras da casa: cada item com o que falta no cofre e quantas horas de trabalho custa" width="1384" height="966" loading="lazy"></div>
-          </article>
+          <h3>Gastar bem dá prêmio</h3>
+          <p>XP só vem de ação real, como pagar uma conta ou guardar no cofre. A recompensa de cada nível é você quem escolhe.</p>
+          <div class="panel panel--shot"><img class="frame__img" src="img/n-conq-d.webp" alt="Tela de Conquistas com o troféu, o nível, a sequência de dias e as missões de hoje" width="1440" height="900" loading="lazy"></div>
+        </article>
         <article class="card card--row card--open span-6">
-          <h3>DAS e teto do MEI no radar</h3>
-          <p>O ritmo do ano contra os R$ 81 mil, e o lembrete do DAS no dia 20.</p>
-          <div class="panel panel--shot"><img class="frame__img" src="img/app-mei-d.png" alt="Faturamento do MEI no ano contra o limite, com o ritmo atual e o DAS do mês" width="676" height="1009" loading="lazy"></div>
-          </article>
+          <h3>Do seu jeito</h3>
+          <p>Foto, apelido, cor de destaque, tema claro ou escuro e um modo que borra os valores quando tem gente olhando.</p>
+          <div class="panel panel--shot"><img class="frame__img" src="img/n-perfil-d.webp" alt="Tela de perfil com foto, nome, apelido, tema e cores de destaque" width="1440" height="900" loading="lazy"></div>
+        </article>
       </div>
+      <p class="muted" style="margin-top: var(--s-6)">E mais: parcelas do cartão em cada fatura, fila de compras da casa que só libera com o dinheiro no cofre, e o teto do MEI com o lembrete do DAS.</p>
     </div>
   </section>
 
@@ -255,14 +256,14 @@
       <div class="grid grid--top fill">
         <div class="span-5 stack-4">
           <h2 id="tom-h">Você escolhe como ele fala com você</h2>
-          <p class="muted">Vai do sóbrio, só número, até o sem filtro, com palavrão. O ácido já vem liberado desde o primeiro dia. Dívida, salário, saúde e pet nunca viram piada, e tem um botão de "pega leve" quando bater.</p>
+          <p class="muted">Vai do sóbrio, só número, até o sem filtro, um roast pesado com palavrão. O ácido é o amigo que te quer bem e tem farpa, e o sem filtro só liga para maiores de 18. Os dois usam os seus próprios lançamentos e podem cutucar dívida e salário. Saúde, pet, luto e perda de emprego nunca viram piada, e tem um botão de "pega leve" quando bater.</p>
         </div>
         <div class="ui ui-panel tones span-6 start-7" role="img" aria-label="O seletor de tom do conselheiro com um exemplo de frase de cada um dos quatro tons, ácido marcado">
           <div class="tones__head" aria-hidden="true">Tom do conselheiro</div>
           <div class="tone" aria-hidden="true"><span class="tone__dot"></span><div><span class="tone__name">Sóbrio <span>padrão</span></span><q>Comer fora já usou 92% do limite e faltam 12 dias.</q></div></div>
           <div class="tone" aria-hidden="true"><span class="tone__dot"></span><div><span class="tone__name">Parceiro <span>escolha no quiz</span></span><q>Comer fora já foi 92% do limite. Vai com calma.</q></div></div>
-          <div class="tone is-on" aria-hidden="true"><span class="tone__dot"></span><div><span class="tone__name">Ácido <span>liberado de cara</span></span><q>quarto ifood da semana. o motoboy já sabe teu nome.</q></div></div>
-          <div class="tone" aria-hidden="true"><span class="tone__dot"></span><div><span class="tone__name">Sem filtro <span>só para maiores de 18</span></span><q>terceiro uber hoje, porra? anda que é cardio.</q></div></div>
+          <div class="tone is-on" aria-hidden="true"><span class="tone__dot"></span><div><span class="tone__name">Ácido <span>liberado de cara</span></span><q>quarto ifood da semana. o motoboy já salvou teu contato, e olha que eu torço por você.</q></div></div>
+          <div class="tone" aria-hidden="true"><span class="tone__dot"></span><div><span class="tone__name">Sem filtro <span>só para maiores de 18</span></span><q>terceiro uber hoje? você tem perna, usa. o seu extrato não é benefício do motorista.</q></div></div>
         </div>
       </div>
     </div>
@@ -272,12 +273,12 @@
     <div class="wrap">
       <div class="grid grid--top">
         <h2 id="retro-h" class="span-5">Todo dia 1, a retrospectiva do mês</h2>
-        <p class="span-6 start-7 muted">Cinco cards no tamanho do story. O personagem do mês, o dia em que o cartão chorou e quantos dias você ficou no teto.</p>
+        <p class="span-6 start-7 muted">Cinco cards no tamanho do story, sem nenhum valor em reais, só percentuais, pra você poder postar sem expor o seu dinheiro. O personagem do mês, o dia em que o cartão chorou e quantos dias você ficou no teto.</p>
       </div>
       <div class="stories stories--real" role="img" aria-label="Três cards da Retrospectiva de outubro: o personagem do mês, o dia mais caro e quantos dias ficaram dentro do teto">
-        <img src="img/app-retro-char.png" alt="" loading="lazy">
-        <img src="img/app-retro-day.png" alt="" loading="lazy">
-        <img src="img/app-retro-pace.png" alt="" loading="lazy">
+        <img src="img/n-retro-char.webp" alt="" width="600" height="1070" loading="lazy">
+        <img src="img/n-retro-day.webp" alt="" width="600" height="1070" loading="lazy">
+        <img src="img/n-retro-pace.webp" alt="" width="600" height="1070" loading="lazy">
       </div>
     </div>
   </section>
@@ -302,7 +303,7 @@
         <div class="faq__item"><h3>Por que não colar o extrato num chat de IA?</h3><p>Dá, eu fazia. Mas todo mês é exportar, colar e explicar tudo de novo, e chat nenhum avisa antes da fatura fechar.</p></div>
         <div class="faq__item"><h3>Funciona no celular?</h3><p>Sim. No iPhone, abra no Safari, toque em Compartilhar e em Adicionar à Tela de Início. No Android, Chrome, três pontinhos, Instalar app. Depois ele abre e salva gastos até sem internet.</p></div>
         <div class="faq__item"><h3>Quanto custa?</h3><p>A demo é grátis e não pede cadastro. Exportar os seus dados vai ser grátis em qualquer plano.</p></div>
-        <div class="faq__item"><h3>O modo ácido é obrigatório?</h3><p>Não. O padrão é o tom sóbrio. O ácido só aparece se você escolher, e nunca faz piada com dívida, salário, saúde ou pet.</p></div>
+        <div class="faq__item"><h3>O modo ácido é obrigatório?</h3><p>Não. O padrão é o tom sóbrio. O ácido e o sem filtro só aparecem se você escolher, e o sem filtro pede a confirmação de 18 anos. Em nenhum tom o Prumo faz piada com saúde, pet, luto ou perda de emprego.</p></div>
       </div>
     </div>
   </section>

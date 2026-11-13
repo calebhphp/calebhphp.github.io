@@ -46,13 +46,14 @@ function choose(raw, key) {
   }
   return list[i];
 }
+import { polishPiece } from './polish.js';
 export function say(key, vars) {
   const order = TONES.slice(0, TONES.indexOf(tone()) + 1).reverse();
   for (const lv of order) {
     if (lv === 'sobrio') break;
     if (has(`${key}@${lv}`)) {
       const raw = t(`${key}@${lv}`, vars);
-      return raw.includes(' || ') ? fillVars(choose(raw, key), vars) : raw;
+      return polishPiece(raw.includes(' || ') ? fillVars(choose(raw, key), vars) : raw, tone());
     }
   }
   return t(key, vars);

@@ -7,6 +7,7 @@ import { money, pct, addMonths, isoDay, displayName } from './format.js';
 import { spending, monthSummary, subsReview, wishlistStatus } from './finance.js';
 import { streak } from './game.js';
 import { t } from './i18n.js';
+import { polishPiece } from './polish.js';
 
 const ORDER = ['semfiltro', 'deboche', 'parceiro', 'sobrio'];
 const last = {};
@@ -153,10 +154,10 @@ export function fallback(s, ym) {
 }
 
 export function helloLine(s, ym) {
-  return line('hello', facts(s, ym));
+  return polishPiece(line('hello', facts(s, ym)), tone());
 }
 export function toneSwitchLine(s, ym) {
-  return line('tone_switch', facts(s, ym));
+  return polishPiece(line('tone_switch', facts(s, ym)), tone());
 }
 
 // ---------- the bank. Variables: see facts(). Each tone has several lines so repeating a question never repeats the answer.
