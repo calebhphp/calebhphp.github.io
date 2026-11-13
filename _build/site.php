@@ -438,7 +438,7 @@ foreach (array_keys($LANGS) as $l) {
     if (! empty($site['testimonials'])) {
         $quotesHtml = '<ul class="quotes">'.implode('', array_map(fn ($t) => '<li><blockquote><p>“'.e($t['quote']).'”</p></blockquote><footer><b>'.e($t['name']).'</b><span>'.e($t['role']).'</span></footer></li>', $site['testimonials'])).'</ul>';
     }
-    $proofHtml = '<section class="proof" id="prova"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($cv['proof_eyebrow']).'</span><h2>'.e($cv['proof_h2']).'</h2></div><ul class="proof-list">'.$proofItems.'</ul>'.($cv['proof_note'] ? '<p class="muted proof-note">'.e($cv['proof_note']).'</p>' : '').$quotesHtml.'</div></section>';
+    $proofHtml = empty($site['testimonials']) ? '' : '<section class="proof" id="prova"><div class="wrap"><div class="section-head reveal"><span class="eyebrow">'.e($cv['proof_eyebrow']).'</span><h2>'.e($cv['proof_h2']).'</h2></div><ul class="proof-list">'.$proofItems.'</ul>'.($cv['proof_note'] ? '<p class="muted proof-note">'.e($cv['proof_note']).'</p>' : '').$quotesHtml.'</div></section>';
     $leadMsg = e($cv['wa_lead']);
     $leadHtml = '<section class="lead" id="previa"><div class="wrap lead-grid"><div class="section-head reveal"><span class="eyebrow">'.e($cv['lead_eyebrow']).'</span><h2>'.e($cv['lead_h2']).'</h2><p>'.e($cv['lead_p']).'</p></div>'
         .'<form class="lead-form" data-lead data-endpoint="https://formsubmit.co/ajax/'.e($site['email']).'" data-wamsg="'.$leadMsg.'" data-ok="'.e($cv['f_ok']).'" data-err="'.e($cv['f_err']).'" data-sending="'.e($cv['f_sending']).'" data-walabel="'.e($cv['f_wa']).'" novalidate>'
