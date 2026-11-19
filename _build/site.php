@@ -405,7 +405,6 @@ foreach (array_keys($LANGS) as $l) {
         $cats = ['cafeteria' => 'alimentacao', 'agenda' => 'beleza', 'fidelidade' => 'beleza', 'assistente' => 'saude', 'cartao' => 'saude', 'estoque' => 'loja', 'loja-accra' => 'loja', 'orcamento' => 'servicos'];
         $demoHtml .= $demoCard('/exemplos/'.$slug.'/', 'ex-'.$slug, $real ? $tag : $tag.' · '.$u['demo_fict'], $real, $title, $desc, $cats[$slug] ?? 'servicos');
     }
-    $soonHtml = implode('', array_map(fn ($x) => '<li><span class="tag">'.e($u['soon_label']).'</span><h3>'.e($x[0]).'</h3><p>'.e($x[1]).'</p></li>', $u['soon']));
     $filterBtns = '<button type="button" class="fchip" data-f="all" aria-pressed="true">'.e($u['filters']['all']).'</button>';
     foreach (['produto', 'alimentacao', 'beleza', 'saude', 'loja', 'servicos'] as $fk) {
         $filterBtns .= '<button type="button" class="fchip" data-f="'.$fk.'" aria-pressed="false">'.e($u['filters'][$fk]).'</button>';
@@ -415,6 +414,9 @@ foreach (array_keys($LANGS) as $l) {
     $trust = implode('', array_map(fn ($t) => '<li>'.e($t).'</li>', $h['trust']));
     $chat = implode('', array_map(fn ($m) => '<div class="msg '.$m[0].'">'.e($m[1]).'<time>'.e($m[2]).'</time></div>', $h['chat']));
     $lz = $u['launch'];
+    $sn = $u['nextp'];
+    $snItems = implode('', array_map(fn ($i) => '<li class="soon-card reveal"><span class="soon-k">'.e($i[0]).'</span><h3>'.e($i[1]).'</h3><p>'.e($i[2]).'</p><span class="soon-tag">'.e($i[3]).'</span></li>', $sn['items']));
+    $snWa = e($sn['note']);
     $lzItems = implode('', array_map(fn ($i) => '<li>'.e($i).'</li>', $lz['items']));
     $shotFiles = ['home-m', 'lancar', 'chat-m', 'fila', 'tom', 'retro-char'];
     $lzShots = '';
@@ -550,7 +552,6 @@ document.querySelectorAll("[data-wa]").forEach(a =&gt; {
       <ul class="demos" tabindex="0" aria-label="{$u['nav']['examples']}" data-track>{$demoHtml}</ul>
       <div class="car-ctl"><button type="button" class="car-btn" data-prev aria-label="{$u['filters']['prev']}">←</button><span class="car-count" data-count aria-live="polite"></span><button type="button" class="car-btn" data-next aria-label="{$u['filters']['next']}">→</button></div>
     </div>
-    <ul class="soon" aria-label="{$u['soon_label']}">{$soonHtml}</ul>
   </div>
 </section>
 
@@ -604,6 +605,14 @@ document.querySelectorAll("[data-wa]").forEach(a =&gt; {
       </div>
     </div>
     <ul class="shots" tabindex="0" aria-label="{$lz['sub']}">{$lzShots}</ul>
+  </div>
+</section>
+
+<section class="nextp" id="em-breve" aria-labelledby="soon-h">
+  <div class="wrap">
+    <div class="section-head reveal"><span class="eyebrow">{$sn['eyebrow']}</span><h2 id="soon-h">{$sn['h2']}</h2></div>
+    <ul class="soon-grid">{$snItems}</ul>
+    <p class="soon-note">{$sn['note']} <a class="btn btn-ghost" data-wa="{$snWa}">{$sn['cta']}</a></p>
   </div>
 </section>
 
