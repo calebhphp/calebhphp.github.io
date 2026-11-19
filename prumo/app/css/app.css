@@ -1059,3 +1059,17 @@ html[data-motion="off"] *, html[data-motion="off"] ::view-transition-old(root), 
 @media (max-width:560px){.profile-card .pf-grid{grid-template-columns:1fr}}
 [data-hide="1"] .money,[data-hide="1"] .money-xl,[data-hide="1"] .fc-val,[data-hide="1"] .tile b,[data-hide="1"] .tile em,[data-hide="1"] .ring-mid b,[data-hide="1"] .w-v,[data-hide="1"] .tx-amount,[data-hide="1"] .today-chip b{filter:blur(9px);transition:filter .2s ease}
 [data-hide="1"] .money:hover,[data-hide="1"] .money-xl:hover,[data-hide="1"] .fc-val:hover,[data-hide="1"] .tile b:hover,[data-hide="1"] .tile em:hover,[data-hide="1"] .ring-mid b:hover,[data-hide="1"] .w-v:hover,[data-hide="1"] .today-chip b:hover,[data-hide="1"] .money:active,[data-hide="1"] .fc-val:active,[data-hide="1"] .tile b:active{filter:none}
+
+/* ---------- Acessibilidade (auditoria de 20/11): contraste AA e alvos de toque ---------- */
+.ach-prog i { background: color-mix(in srgb, var(--xp) 34%, var(--track)); }
+.rc-foot { opacity: .9; }
+.spark-key { color: var(--ink-2); }
+.badge.b-xp { color: color-mix(in srgb, var(--xp) 72%, var(--ink)); }
+@media (pointer: coarse) {
+  .btn-sm { min-height: 40px; padding-inline: 12px; }
+  .chip { min-height: 40px; }
+  .check { position: relative; }
+  .check::after, .switch::before, .link::after { content: ""; position: absolute; inset: -9px; }
+  .link { position: relative; }
+  select { min-height: 40px; }
+}

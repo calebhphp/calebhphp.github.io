@@ -101,7 +101,7 @@ export function monthCard(s, ym, span = 'span-8') {
     const d = i + 1;
     const cls = d > today ? 'is-next' : v > cap ? 'is-over' : v > 0 ? 'is-ok' : 'is-zero';
     const tip = v > 0 ? tx('day', { d, v: money(v) }) : tx('dayNone', { d });
-    return `<i class="${cls}${d === today ? ' is-today' : ''}" style="--a:${Math.min(1, 0.35 + (v / (cap || 1)) * 0.65).toFixed(2)}" title="${esc(tip)}"><span class="sr-only">${esc(tip)}</span></i>`;
+    return `<i class="${cls}${d === today ? ' is-today' : ''}" style="--a:${Math.min(1, 0.35 + (v / (cap || 1)) * 0.65).toFixed(2)}" role="listitem" title="${esc(tip)}"><span class="sr-only">${esc(tip)}</span></i>`;
   }).join('');
   const inc = x.income || 1;
   const rows = [

@@ -14,7 +14,7 @@ export function projectionChart(rows, currentYm) {
   const label = rows.map(r => `${monthLabel(r.ym, { month: 'short' })}: ${t('chart.income')} ${money(r.income)}, ${t('chart.out')} ${money(r.out)}`).join('; ');
 
   const svg = `
-  <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t('chart.projAria'))}. ${esc(label)}">
+  <svg viewBox="0 0 ${W} ${H}" role="group" aria-label="${esc(t('chart.projAria'))}. ${esc(label)}">
     <g class="axis">
       ${ticks.map(v => `<line class="grid-line" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/>
         <text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${moneyShort(v)}</text>`).join('')}
