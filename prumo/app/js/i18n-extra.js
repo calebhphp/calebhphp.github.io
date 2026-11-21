@@ -220,7 +220,7 @@ Object.assign(enX, {
 // Spanish for the screens added after the first version. What is not here still falls back to pt-BR.
 export const esX = {
   'nav.gastos': 'Anotar gastos', 'nav.conselheiro': 'Consejero', 'nav.comecar': 'Armar mi Prumo', 'nav.dados': 'Tus datos',
-  'nav.retro': 'Retrospectiva', 'nav.cartao': 'Tarjeta y cuotas', 'fab.label': 'Consejero',
+  'nav.retro': 'Retrospectiva', 'nav.relatorio': 'Informe del mes', 'nav.cartao': 'Tarjeta y cuotas', 'fab.label': 'Consejero',
   'tab.today': 'Hoy', 'tab.log': 'Anotar', 'tab.advisor': 'Consejero', 'tab.more': 'Más',
   'cat.mercado': 'Supermercado', 'cat.restaurante': 'Comer afuera', 'cat.transporte': 'Transporte', 'cat.casa': 'Casa', 'cat.saude': 'Salud',
   'cat.lazer': 'Ocio', 'cat.pet': 'Mascota', 'cat.compras': 'Compras', 'cat.outros': 'Otros', 'cat.trabalho': 'Trabajo y herramientas',

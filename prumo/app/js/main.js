@@ -17,6 +17,7 @@ const NAV = [
   { r: 'gastos', i: 'i-pen' },
   { r: 'conselheiro', i: 'i-chat' },
   { r: 'retro', i: 'i-star' },
+  { r: 'relatorio', i: 'i-chart', always: true },
   { r: 'cartao', i: 'i-card' },
   { r: 'contas', i: 'i-cal' },
   { r: 'bancos', i: 'i-bank' },
@@ -42,7 +43,7 @@ async function loadView(name) {
 function renderChrome() {
   const s = store.get();
   const r = route();
-  document.getElementById('nav').innerHTML = NAV.filter(n => s.modules.includes(n.r)).map(n =>
+  document.getElementById('nav').innerHTML = NAV.filter(n => n.always || s.modules.includes(n.r)).map(n =>
     `<li><a href="#${n.r}" ${n.r === r ? 'aria-current="page"' : ''}>${icon(n.i)}<span>${t('nav.' + n.r)}</span></a></li>`).join('');
   const pf = document.querySelector('.side-foot a[data-route="personalizar"]');
   if (r === 'personalizar') pf.setAttribute('aria-current', 'page'); else pf.removeAttribute('aria-current');
@@ -58,7 +59,7 @@ async function render({ focusHeading = false } = {}) {
   const name = route();
   const s = store.get();
   if (!document.documentElement.classList.contains('authed')) return;
-  const valid = ['personalizar', 'comecar', 'dados'].includes(name) || s.modules.includes(name) || (name === 'admin' && cloud.user()?.role === 'admin' && store.isReal());
+  const valid = ['personalizar', 'comecar', 'dados', 'relatorio'].includes(name) || s.modules.includes(name) || (name === 'admin' && cloud.user()?.role === 'admin' && store.isReal());
   const target = valid ? name : 'inicio';
   renderChrome();
   // Keep focus on the control the person just used, if it survives the re-render.
@@ -275,7 +276,7 @@ document.addEventListener('prumo:signout', async () => { await leaveAccount(); d
 document.addEventListener('prumo:save-now', () => flush());
 document.addEventListener('prumo:logout', () => {
   document.documentElement.classList.remove('authed');
-  document.title = 'Prumo Demo';
+  document.title = 'Prumo';
   document.getElementById('email').focus();
 });
 
@@ -293,19 +294,23 @@ const ua = navigator.userAgent;
 const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const inAppBrowser = /FBAN|FBAV|Instagram|Twitter|LinkedInApp|Line\/|Snapchat|TikTok/i.test(ua);
 if (standalone()) installBtn.hidden = true;
-addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; });
-installBtn.addEventListener('click', async () => {
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; document.documentElement.classList.add('can-install'); });
+// The menu button and the invitation on the home screen share this.
+const askInstall = async () => {
   if (installEvt) {
     installEvt.prompt();
     await installEvt.userChoice;
     installEvt = null;
+    document.documentElement.classList.remove('can-install');
     return;
   }
-  // iPhone and some browsers have no install prompt: show the steps for this phone.
-  const key = inAppBrowser ? 'pwa.stepsInApp' : isIOS ? 'pwa.stepsIOS' : 'pwa.stepsAndroid';
+  // iPhone and some browsers have no install prompt: show the steps for this device.
+  const key = inAppBrowser ? 'pwa.stepsInApp' : isIOS ? 'pwa.stepsIOS' : /Android/i.test(ua) ? 'pwa.stepsAndroid' : 'pwa.stepsDesktop';
   openDialog({ title: t('pwa.howTitle'), submit: t('common.continue'), body: '<div class="how-install">' + t(key) + '</div>', onSubmit: () => {} });
-});
-addEventListener('appinstalled', () => { installBtn.hidden = true; toast(t('pwa.installed')); });
+};
+installBtn.addEventListener('click', askInstall);
+document.addEventListener('prumo:install', askInstall);
+addEventListener('appinstalled', () => { installBtn.hidden = true; setPref('noInstall', true); toast(t('pwa.installed')); });
 document.getElementById('tab-menu').addEventListener('click', () => setMenu(true));
 document.getElementById('tabbar').addEventListener('click', e => { if (e.target.closest('[data-tab]') && navigator.vibrate) navigator.vibrate(8); });
 function markTab() {

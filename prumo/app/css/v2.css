@@ -1,0 +1,182 @@
+/* Prumo, pass of 21/11: the number of the day first, home in sections, category values and caps,
+   entries grouped by day with search, the month report and the install invitation.
+   Loaded last. New class names are specific on purpose (.days and .ring already collided once). */
+
+/* Columns of figures line up; running text and big display numbers keep the font's own digit widths. */
+.amt, .cr-v, .cr-p, .cp-v, .tx-amount, .rep-nums dd, table.data td.n, .w-v { font-variant-numeric: tabular-nums; }
+
+/* ---------- Home: headline, then the number ---------- */
+.home-top + .view-head { margin: 0 0 12px; }
+.home-top + .view-head h1 { font-size: clamp(1.2rem, 1.9vw, 1.5rem); font-weight: 600; letter-spacing: -.015em; text-wrap: balance; }
+.h-hero { display: grid; gap: 14px; margin-bottom: 22px; }
+.h-hero > .forecast { margin: 0; }
+.hn { display: grid; gap: 20px; align-content: start; }
+.hn-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.hn-fig { min-width: 0; }
+.hn-label { margin: 0; font-size: .98rem; font-weight: 600; color: var(--ink-2); }
+.hn-num { margin: 4px 0 6px; }
+.hn-num .money-xl { font-size: clamp(3rem, 13.5vw, 5.4rem); }
+.hn-num .money .cur, .hn-num .money .cents { color: var(--ink-2); }
+.hn-num.neg .money, .hn-num.neg .money .cur, .hn-num.neg .money .cents { color: var(--bad); }
+.hn-cap { margin: 0; color: var(--ink-2); font-size: .95rem; }
+.hn .plumb { flex: none; width: 96px; }
+.hn .plumb figcaption { margin-top: 2px; font-size: .78rem; line-height: 1.25; }
+.hn-empty { display: grid; gap: 12px; justify-items: start; padding: 16px; border-radius: 14px; border: 1px dashed var(--line); width: 100%; }
+.hn-empty p { margin: 0; color: var(--ink-2); }
+.hn-empty strong { color: var(--ink); }
+.hn .today-form label { grid-column: 1 / -1; font-weight: 600; font-size: 1.02rem; margin-bottom: 2px; }
+.hn .today-form .btn span { display: inline; }
+.hn .today-list { margin-top: 0; }
+.today-more { margin-left: auto; font-size: .88rem; }
+.today-tag { text-transform: none; letter-spacing: 0; font-size: .84rem; font-weight: 600; }
+@media (min-width: 981px) {
+  .h-hero { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
+  .h-hero > .forecast { align-content: center; }
+  .hn { padding: 30px 34px; gap: 24px; }
+  .hn .plumb { width: 150px; }
+  .hn .plumb figcaption { font-size: .86rem; }
+}
+@media (max-width: 420px) {
+  .hn .plumb { width: 78px; }
+  .hn .today-form input { font-size: .95rem; padding: 14px; }
+  .hn .today-form .btn { padding-inline: 14px; }
+}
+
+/* ---------- Home: sections ---------- */
+.h-sec { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+.h-sec h2 { margin: 0; font-size: 1.3rem; letter-spacing: -.02em; }
+.h-sec .link { font-size: .92rem; }
+
+/* ---------- Where it went: ring plus rows with value, share and change ---------- */
+.cat-card .card-head { margin-bottom: 6px; }
+.cat-card .card-sub, .caps-card .card-sub { margin: 0 0 12px; }
+.cat-body { display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 10px 28px; align-items: center; }
+.cat-body .cat-ring { width: 148px; height: 148px; }
+.cat-body .ring-mid b { font-size: .88rem; }
+.cat-rows { list-style: none; margin: 0; padding: 0; }
+.cat-rows li + li { border-top: 1px solid var(--line); }
+.cr-row { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 2.9em 16px; gap: 10px; align-items: center; min-height: 48px; padding: 8px; margin: 0 -8px; border-radius: 10px; color: inherit; text-decoration: none; }
+a.cr-row:hover { background: var(--surface-2); }
+.cr-row > i { width: 12px; height: 12px; border-radius: 50%; }
+.cr-n { display: grid; gap: 1px; min-width: 0; font-weight: 500; }
+.cr-d { display: inline-flex; align-items: center; gap: 3px; font-size: .78rem; font-weight: 500; color: var(--ink-2); }
+.cr-d svg { width: 12px; height: 12px; flex: none; }
+.cr-d.is-up { color: var(--warn); }
+.cr-d.is-down { color: var(--good); }
+.cr-v { font-weight: 600; white-space: nowrap; }
+.cr-p { text-align: right; font-size: .86rem; color: var(--ink-2); }
+.cr-row > svg { width: 16px; height: 16px; color: var(--ink-3); }
+@media (max-width: 760px) {
+  .cat-body { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .cat-rows { width: 100%; }
+}
+
+/* ---------- Caps by category ---------- */
+.caps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.caps a { display: grid; gap: 7px; padding: 10px 8px; margin: 0 -8px; border-radius: 10px; color: inherit; text-decoration: none; }
+.caps a:hover { background: var(--surface-2); }
+.cp-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.cp-n { font-weight: 600; }
+.cp-v { font-size: .86rem; color: var(--ink-2); white-space: nowrap; }
+.caps .meter.thin { margin-top: 0; }
+.cp-s { display: inline-flex; align-items: center; gap: 5px; font-size: .84rem; color: var(--ink-2); }
+.cp-s svg { width: 13px; height: 13px; flex: none; }
+.caps .is-bad .cp-s { color: var(--bad); font-weight: 600; }
+.caps .is-warn .cp-s { color: var(--warn); font-weight: 600; }
+.caps-more { margin: 10px 0 0; font-size: .86rem; color: var(--ink-2); }
+
+/* ---------- The month as a strip of days (own name: .days belongs to the bills card) ---------- */
+.mdays { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 4px; margin-top: 6px; }
+.mdays > * { display: block; aspect-ratio: 1 / 2.2; border-radius: 5px; background: var(--track); }
+.mdays > .is-ok { background: color-mix(in srgb, var(--s1) calc(var(--a) * 100%), var(--track)); }
+.mdays > .is-over { background: var(--s2); }
+.mdays > .is-next { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.mdays > .is-today { outline: 2px solid var(--ink); outline-offset: 2px; }
+.mdays > a:hover { filter: brightness(1.12); }
+@media (max-width: 900px) {
+  .mdays { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+  .mdays > * { aspect-ratio: auto; height: 40px; border-radius: 8px; }
+}
+
+/* ---------- Install invitation: phones always, desktop only when the browser offers to install ---------- */
+.inst { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 14px 18px; border: 1px dashed color-mix(in srgb, var(--ink) 28%, transparent); border-radius: var(--radius-l); }
+.inst img { border-radius: 12px; flex: none; }
+.inst-txt { flex: 1 1 200px; min-width: 0; }
+.inst h2 { margin: 0; font-size: 1rem; }
+.inst p { margin: 2px 0 0; color: var(--ink-2); font-size: .9rem; }
+.inst-act { display: flex; gap: 6px; }
+@media (hover: hover) and (pointer: fine) { html:not(.can-install) .inst { display: none; } }
+.how-install .how-why { margin: 0 0 10px; color: var(--ink-2); }
+
+/* ---------- Entries: search, filter, grouped by day ---------- */
+.txf { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, auto); gap: 8px; margin-bottom: 12px; }
+.txf input, .txf select { min-height: 44px; min-width: 0; padding: 8px 14px; border: 1.5px solid var(--line); border-radius: var(--radius-m); background: var(--surface-2); color: var(--ink); }
+.txf input::placeholder { color: var(--ink-3); opacity: 1; }
+.txf input:focus-visible, .txf select:focus-visible { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 30%, transparent); }
+.tx-sum { display: flex; align-items: center; gap: 6px 12px; flex-wrap: wrap; margin: 0; color: var(--ink-2); font-size: .92rem; }
+.tx-sum strong { color: var(--ink); }
+.tx-day > h3 { display: flex; justify-content: space-between; gap: 12px; margin: 20px 0 0; padding-bottom: 6px; border-bottom: 1px solid var(--line); font-size: .84rem; font-weight: 600; color: var(--ink-2); }
+.tx-day > h3 span:first-child::first-letter { text-transform: uppercase; }
+.tx-rows > li { padding: 0; border-top: 0; }
+.tx-rows > li + li { border-top: 1px solid var(--line); }
+.tx-row { display: flex; align-items: center; gap: 12px; width: calc(100% + 16px); min-height: 52px; margin: 0 -8px; padding: 8px; border: 0; border-radius: 10px; background: none; text-align: left; cursor: pointer; }
+.tx-row:hover { background: var(--surface-2); }
+.tx-row .grow { display: grid; gap: 3px; }
+.tx-row .meta { display: flex; gap: 6px; flex-wrap: wrap; }
+.tx-row > svg { width: 16px; height: 16px; color: var(--ink-3); flex: none; }
+.tx-none { margin: 18px 0 4px; color: var(--ink-2); }
+.tx-more { margin-top: 14px; }
+.dlg-del { margin: 4px 0 0; }
+@media (max-width: 560px) { .txf { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Month report ---------- */
+.rep-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.rep-nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
+.rep-nums > div { padding: 2px 22px; border-left: 1px solid var(--line); min-width: 0; }
+.rep-nums > div:first-child { padding-left: 0; border-left: 0; }
+.rep-nums dt { font-size: .86rem; color: var(--ink-2); }
+.rep-nums dd { margin: 4px 0 0; font-size: clamp(1.25rem, 2.2vw, 1.7rem); font-weight: 700; letter-spacing: -.02em; }
+.rep-nums dd small { display: block; margin-top: 2px; font-size: .8rem; font-weight: 400; letter-spacing: 0; color: var(--ink-2); }
+.rep-note { margin: 12px 0 0; font-size: .84rem; color: var(--ink-2); }
+.rep-table td.is-up { color: var(--warn); }
+.rep-table td.is-down { color: var(--good); }
+.rep-table tfoot th, .rep-table tfoot td { font-weight: 700; border-top: 2px solid var(--line); }
+.rep-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.rep-bars li { display: grid; grid-template-columns: 6.5em minmax(0, 1fr) auto; gap: 12px; align-items: center; font-size: .9rem; }
+.rep-bars .w-bar b { background: var(--s1); }
+.rep-bars .is-now .w-l { font-weight: 600; }
+.rep-bars .is-now .w-bar b { background: var(--brass); }
+.rep-top .tx-row { cursor: default; }
+[data-hide="1"] .rep-nums dd, [data-hide="1"] .cr-v, [data-hide="1"] .cp-v, [data-hide="1"] .rep-table td.n, [data-hide="1"] .tx-day h3 span:last-child { filter: blur(9px); }
+@media (max-width: 760px) {
+  .rep-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 0; }
+  .rep-nums > div:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .rep-bars li { grid-template-columns: 5.2em minmax(0, 1fr) auto; gap: 8px; font-size: .86rem; }
+}
+@media print {
+  .side, .top, .tabbar, .fab, .toasts, .rep-actions, .backdrop, .advisor-panel { display: none !important; }
+  .app, .main-col { display: block !important; }
+  body { background: #fff; }
+  main.content { padding: 0 !important; }
+  .card { break-inside: avoid; box-shadow: none; }
+}
+
+/* Phone: the comparison keeps this month and the difference; last month's column gives way. */
+@media (max-width: 560px) {
+  .rep-vs th:nth-child(3), .rep-vs td:nth-child(3) { display: none; }
+  .rep-table { font-size: .84rem; }
+  .rep-actions { width: 100%; }
+  .rep-actions .btn { flex: 1 1 auto; }
+}
+
+/* Phone: the round "+" keeps its name for screen readers (display:none removed it). */
+@media (max-width: 900px) {
+  .top-actions .btn-primary span { display: inline; position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+}
+/* Touch targets of 40px for the controls that were still under it. */
+@media (pointer: coarse) {
+  .link::after { inset: -10px; }
+  .seg button, .seg-b { min-height: 40px; }
+  .sw { width: 40px; height: 40px; }
+  .home-brand { min-height: 40px; }
+}

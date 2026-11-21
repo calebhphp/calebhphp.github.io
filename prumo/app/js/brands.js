@@ -41,7 +41,7 @@ export function logo(name, size = 36) {
   const b = brandOf(name);
   const letter = (String(name || '?').trim()[0] || '?').toUpperCase();
   if (!b) return `<span class="logo logo-plain" style="--sz:${size}px" aria-hidden="true">${esc(letter)}</span>`;
-  const ink = b.ink || (luminance(b.hex) > .45 ? '#111' : '#fff');
+  const ink = b.ink || (luminance(b.hex) > .2 ? '#111' : '#fff');
   if (b.d) return `<span class="logo" style="--sz:${size}px;background:${b.hex}" aria-hidden="true"><svg viewBox="0 0 24 24" fill="${ink}"><path d="${b.d}"/></svg></span>`;
   return `<span class="logo logo-mono" style="--sz:${size}px;background:${b.hex};color:${ink}" aria-hidden="true">${esc(b.mono)}</span>`;
 }

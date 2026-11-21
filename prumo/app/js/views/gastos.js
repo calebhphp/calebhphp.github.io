@@ -1,8 +1,9 @@
 // Quick entry: type or speak a whole day of spending, or drop a bank statement.
 import { t } from '../i18n.js';
 import * as store from '../store.js';
-import { spending, favorites } from '../finance.js';
-import { money, moneyHtml, pct, esc, isoDay, ymOf, dayLabel } from '../format.js';
+import { spending, favorites, capsUsed, capCrossed } from '../finance.js';
+import { capNudge } from './home-hero.js';
+import { money, moneyHtml, pct, esc, isoDay, ymOf } from '../format.js';
 import { CATS, parseQuick, parseCSV, parseOFX } from '../quick.js';
 import { head } from './parts.js';
 import { icon, toast, announce } from '../ui.js';
@@ -38,7 +39,51 @@ function previewHtml() {
     </div></div>`;
 }
 
+// Search, category and day filters of the entries list. They survive re-renders; a link from the home
+// (a category row or a day of the month) arrives as #gastos?cat=... or #gastos?dia=AAAA-MM-DD.
+const flt = { q: '', cat: '', day: '', limit: 60, jump: false };
+const TX = {
+  pt: { search: 'Buscar gasto', searchPh: 'Buscar por nome ou categoria', allCats: 'Todas as categorias', one: '1 gasto', many: '{n} gastos', sum: '{n}, {v}', clear: 'Limpar filtros', day: 'Só o dia {d}', none: 'Nenhum gasto com esse filtro.', more: 'Mostrar mais {n}', edit: 'Editar {name}, {v}' },
+  en: { search: 'Search entries', searchPh: 'Search by name or category', allCats: 'All categories', one: '1 entry', many: '{n} entries', sum: '{n}, {v}', clear: 'Clear filters', day: 'Only day {d}', none: 'No entry matches this filter.', more: 'Show {n} more', edit: 'Edit {name}, {v}' },
+};
+const L = (k, vars = {}) => (TX[getPrefs().lang === 'en' ? 'en' : 'pt'][k] || k).replace(/\{(\w+)\}/g, (_, n) => vars[n]);
+const plain = v => String(v).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const longDay = iso => new Intl.DateTimeFormat(getPrefs().lang, { weekday: 'long', day: 'numeric', month: 'short' }).format(new Date(iso + 'T12:00'));
+
+function readQuery(ym) {
+  const q = location.hash.split('?')[1];
+  if (q) {
+    const p = new URLSearchParams(q);
+    flt.cat = CATS.includes(p.get('cat')) ? p.get('cat') : '';
+    flt.day = /^\d{4}-\d{2}-\d{2}$/.test(p.get('dia') || '') ? p.get('dia') : '';
+    flt.q = ''; flt.limit = 60; flt.jump = true;
+    history.replaceState(null, '', '#gastos');
+  }
+  if (flt.day && !flt.day.startsWith(ym)) flt.day = '';
+}
+
+function txList(list) {
+  const q = plain(flt.q.trim());
+  const hit = list.filter(x => (!flt.cat || x.cat === flt.cat) && (!flt.day || x.date === flt.day) && (!q || plain(x.desc).includes(q) || plain(t('cat.' + x.cat)).includes(q)));
+  const total = hit.reduce((a, x) => a + x.amount, 0);
+  const filtered = !!(q || flt.cat || flt.day);
+  const shown = hit.slice(0, flt.limit);
+  const days = [];
+  for (const x of shown) { const d = days[days.length - 1]; if (d && d.date === x.date) d.rows.push(x); else days.push({ date: x.date, rows: [x] }); }
+  const dayTotal = date => hit.filter(x => x.date === date).reduce((a, x) => a + x.amount, 0);
+  return `<p class="tx-sum" role="status"><span>${L('sum', { n: `<strong>${hit.length === 1 ? L('one') : L('many', { n: hit.length })}</strong>`, v: `<strong class="tx-amount">${money(total)}</strong>` })}</span>
+      ${flt.day ? `<span class="badge">${L('day', { d: +flt.day.slice(8) })}</span>` : ''}
+      ${filtered ? `<button type="button" class="btn btn-ghost btn-sm" data-q="txClear">${L('clear')}</button>` : ''}</p>
+    ${hit.length ? days.map(d => `<section class="tx-day"><h3><span>${esc(longDay(d.date))}</span><span>${money(dayTotal(d.date))}</span></h3>
+      <ul class="rows tx-rows">${d.rows.map(x => `<li><button type="button" class="tx-row" data-action="txEdit" data-id="${x.id}" aria-label="${esc(L('edit', { name: x.desc, v: money(x.amount) }))}">
+        <span class="grow"><span class="title">${esc(x.desc)}</span><span class="meta"><span class="badge">${t('cat.' + x.cat)}</span></span></span>
+        <span class="amt tx-amount">${money(x.amount)}</span>${icon('i-right')}</button></li>`).join('')}</ul></section>`).join('')
+      : `<p class="tx-none">${L('none')}</p>`}
+    ${hit.length > shown.length ? `<button type="button" class="btn tx-more" data-q="txMore">${L('more', { n: Math.min(60, hit.length - shown.length) })}</button>` : ''}`;
+}
+
 export function render(s, ctx) {
+  readQuery(ctx.ym);
   const sp = spending(s, ctx.ym);
   const favs = favorites(s);
   const timePct = Math.round(sp.elapsed * 100);
@@ -80,12 +125,14 @@ export function render(s, ctx) {
         <button type="button" class="btn btn-ghost btn-sm" data-action="budget" data-id="${c.cat}" aria-label="${esc(t('budget.editAria', { cat: t('cat.' + c.cat) }))}">${t('common.edit')}</button></li>`).join('')}</ul>
     </section>
 
-    <section class="card span-12" aria-labelledby="tx-t">
+    <section class="card span-12" aria-labelledby="tx-t" id="tx-card">
       <div class="card-head"><h2 id="tx-t">${t('tx.title', { n: sp.list.length })}</h2><a class="link" href="#dados">${t('priv.csvShort')}</a></div>
-      ${sp.list.length ? `<div class="table-wrap"><table class="data tx"><thead><tr><th scope="col">${t('tx.date')}</th><th scope="col">${t('add.name')}</th><th scope="col">${t('quick.category')}</th><th scope="col" class="n">${t('common.amount')}</th><th scope="col"><span class="sr-only">${t('tx.actions')}</span></th></tr></thead>
-      <tbody>${sp.list.slice(0, 40).map(x => `<tr><td>${dayLabel(new Date(x.date + 'T12:00'))}</td><td>${esc(x.desc)}</td><td><span class="badge">${t('cat.' + x.cat)}</span></td><td class="n">${money(x.amount)}</td>
-        <td class="n"><button type="button" class="btn btn-ghost btn-sm icon-btn" data-action="txDel" data-id="${x.id}" aria-label="${esc(t('tx.delete', { name: x.desc }))}">${icon('i-x')}</button></td></tr>`).join('')}</tbody></table></div>`
-        : `<p class="empty">${t('tx.empty')}</p>`}
+      ${sp.list.length ? `<div class="txf">
+        <label class="sr-only" for="tx-q">${L('search')}</label>
+        <input type="search" id="tx-q" placeholder="${esc(L('searchPh'))}" value="${esc(flt.q)}" autocomplete="off" enterkeyhint="search">
+        <label class="sr-only" for="tx-cat">${t('quick.category')}</label>
+        <select id="tx-cat"><option value="">${L('allCats')}</option>${CATS.filter(c => sp.list.some(x => x.cat === c)).map(c => `<option value="${c}" ${c === flt.cat ? 'selected' : ''}>${t('cat.' + c)}</option>`).join('')}</select>
+      </div><div id="tx-list">${txList(sp.list)}</div>` : `<p class="empty">${t('tx.empty')}</p>`}
     </section>
   </div>`;
 }
@@ -95,9 +142,11 @@ function saveRows(rows, ym, source) {
   if (!valid.length) return;
   const today = ymOf(new Date()) === ym ? isoDay(new Date()) : `${ym}-01`;
   const total = valid.reduce((a, r) => a + r.amount, 0);
+  const before = capsUsed(store.get(), ym);
   earn(s => {
     for (const r of valid) store.pushRow(s, { ...r, cat: CATS.includes(r.cat) ? r.cat : 'outros' }, r.date && r.date.startsWith(ym) ? r.date : (r.date || today));
   }, 'xp.log', Math.min(30, 5 + valid.length * 3), (source === 'import' ? t : say)(source === 'import' ? 'quick.imported' : 'quick.saved', { n: valid.length, v: money(total) }));
+  capNudge(capCrossed(before, store.get(), ym));
 }
 
 let live = null;
@@ -111,6 +160,12 @@ export function mount(root, s, ctx) {
   const box = root.querySelector('#q-preview');
   const refresh = () => { box.innerHTML = previewHtml(); };
   ta.addEventListener('input', () => { draft.text = ta.value; });
+  // Filters repaint only the list, so the search field keeps focus while typing.
+  const listBox = root.querySelector('#tx-list');
+  const paint = () => { if (listBox) listBox.innerHTML = txList(spending(store.get(), ctx.ym).list); };
+  root.querySelector('#tx-q')?.addEventListener('input', e => { flt.q = e.target.value; flt.limit = 60; paint(); }, on);
+  root.querySelector('#tx-cat')?.addEventListener('change', e => { flt.cat = e.target.value; flt.limit = 60; paint(); }, on);
+  if (flt.jump) { flt.jump = false; requestAnimationFrame(() => root.querySelector('#tx-card')?.scrollIntoView({ block: 'start' })); }
   ta.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); root.querySelector('[data-q="parse"]').click(); } });
 
   root.querySelector('#q-file').addEventListener('change', async e => {
@@ -136,6 +191,8 @@ export function mount(root, s, ctx) {
     const b = e.target.closest('button[data-q]');
     if (!b) return;
     const q = b.dataset.q;
+    if (q === 'txClear') { flt.q = ''; flt.cat = ''; flt.day = ''; flt.limit = 60; const fi = root.querySelector('#tx-q'), fc = root.querySelector('#tx-cat'); if (fi) fi.value = ''; if (fc) fc.value = ''; paint(); fi?.focus(); return; }
+    if (q === 'txMore') { flt.limit += 60; paint(); return; }
     if (q === 'parse') {
       draft.rows = parseQuick(ta.value); draft.source = 'text';
       refresh();

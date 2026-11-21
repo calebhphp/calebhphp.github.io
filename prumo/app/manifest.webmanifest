@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Prumo",
   "short_name": "Prumo",
-  "description": "Quanto ainda dá pra gastar hoje?. Roda no seu aparelho, sem conectar banco.",
+  "description": "Quanto ainda dá pra gastar hoje? Roda no seu aparelho, sem conectar banco.",
   "lang": "pt-BR",
   "start_url": "./#inicio",
   "scope": "./",
@@ -36,17 +36,80 @@
     {
       "name": "Lançar gasto",
       "short_name": "Lançar",
-      "url": "./#gastos"
+      "url": "./#gastos",
+      "icons": [
+        {
+          "src": "icons/icon-192.png?v=2",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Relatório do mês",
+      "short_name": "Relatório",
+      "url": "./#relatorio",
+      "icons": [
+        {
+          "src": "icons/icon-192.png?v=2",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Conselheiro",
       "short_name": "Conselheiro",
-      "url": "./#conselheiro"
+      "url": "./#conselheiro",
+      "icons": [
+        {
+          "src": "icons/icon-192.png?v=2",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Cartão e parcelas",
       "short_name": "Cartão",
-      "url": "./#cartao"
+      "url": "./#cartao",
+      "icons": [
+        {
+          "src": "icons/icon-192.png?v=2",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/shot-hoje.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Quanto ainda dá pra gastar hoje"
+    },
+    {
+      "src": "icons/shot-gastos.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Gastos do mês, dia por dia"
+    },
+    {
+      "src": "icons/shot-relatorio.png",
+      "sizes": "780x1688",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Relatório do mês"
+    },
+    {
+      "src": "icons/shot-wide.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Visão geral no computador"
     }
   ]
 }

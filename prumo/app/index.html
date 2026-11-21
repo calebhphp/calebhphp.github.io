@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-aMtqZXLu+rwmDaRNUiCERGp4/RgPnBA63NnF3izYRec=' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; img-src 'self' data: blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; font-src 'self' data: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; connect-src 'self' https://challenges.cloudflare.com https://*.supabase.co https://formsubmit.co https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; media-src 'self' blob: https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; frame-src https://challenges.cloudflare.com https://vlibras.gov.br https://*.vlibras.gov.br https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' mailto:">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Prumo Demo</title>
+<title>Prumo</title>
 <meta name="theme-color" content="#17221f">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="mobile-web-app-capable" content="yes">
@@ -17,9 +17,10 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%229%22%20fill%3D%22%2317221f%22%2F%3E%3Cpath%20d%3D%22M16%204.5v7%22%20stroke%3D%22%23c9973a%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2212.2%22%20y%3D%2211%22%20width%3D%227.6%22%20height%3D%222.6%22%20rx%3D%221.3%22%20fill%3D%22%23c9973a%22%2F%3E%3Cpath%20d%3D%22M11.3%2014.6h9.4c.6%200%201%20.6.7%201.2l-4.5%2010.4c-.3.6-1.1.6-1.4%200l-4.5-10.4c-.2-.6.1-1.2.7-1.2z%22%20fill%3D%22%23c9973a%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css">
-<link rel="stylesheet" href="css/tokens.css?v=23">
-<link rel="stylesheet" href="css/app.css?v=30">
+<link rel="stylesheet" href="css/tokens.css?v=24">
+<link rel="stylesheet" href="css/app.css?v=31">
 <link rel="stylesheet" href="css/login.css?v=26">
+<link rel="stylesheet" href="css/v2.css?v=1">
 <link rel="modulepreload" href="js/main.js">
 <script>try{if(top!==self&&location.hostname==='matheusvillanova.com')document.documentElement.style.display='none';if(sessionStorage.getItem('prumo.session')||localStorage.getItem('prumo.auth'))document.documentElement.classList.add('authed');var p=JSON.parse(localStorage.getItem('prumo.prefs')||'{}');if(p.theme&&p.theme!=='auto')document.documentElement.dataset.theme=p.theme;if(p.contrast)document.documentElement.dataset.contrast='high';if(p.font)document.documentElement.style.fontSize=p.font+'%';if(p.motion==='off')document.documentElement.dataset.motion='off';if(p.lang)document.documentElement.lang=p.lang;}catch(e){}</script>
 </head>
@@ -33,6 +34,8 @@
     <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></symbol>
     <symbol id="i-bank" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 4l9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/></symbol>
     <symbol id="i-in" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
     <symbol id="i-mei" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
     <symbol id="i-sub" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></symbol>
     <symbol id="i-safe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="15" rx="3"/><circle cx="12" cy="11.5" r="3.5"/><path d="M12 8v1M12 14v1M7 19v2M17 19v2"/></symbol>

@@ -219,3 +219,31 @@ export function runway(s, ym) {
   const saved = reserve ? reserve.saved : 0;
   return { ym: drop.ym, gap, saved, months: gap > 0 ? Math.floor(saved / gap * 10) / 10 : null };
 }
+
+// This month against the previous one, cut at the same day so a month in progress compares like with like.
+export function vsLastMonth(s, ym, today = new Date()) {
+  const prev = addMonths(ym, -1);
+  const partial = ym === ymOf(today);
+  const upto = partial ? today.getDate() : 31;
+  const a = s.tx.filter(x => x.date.startsWith(ym));
+  const b = s.tx.filter(x => x.date.startsWith(prev) && +x.date.slice(8) <= upto);
+  const byCat = l => l.reduce((m, x) => { m[x.cat] = r2((m[x.cat] || 0) + x.amount); return m; }, {});
+  return { prev, upto, partial, has: b.length > 0, now: r2(sum(a, x => x.amount)), before: r2(sum(b, x => x.amount)), cats: { now: byCat(a), before: byCat(b) } };
+}
+
+// Day-to-day spending of the last months that have anything logged, oldest first.
+export function monthsSpent(s, ym, n = 6) {
+  return Array.from({ length: n }, (_, i) => addMonths(ym, i - n + 1))
+    .map(m => ({ ym: m, spent: r2(sum(s.tx.filter(x => x.date.startsWith(m)), x => x.amount)) }))
+    .filter((r, i, all) => r.spent > 0 || all.slice(0, i).some(p => p.spent > 0));
+}
+
+// A category that just crossed 80% or 100% of its cap, comparing before and after a change.
+export const capsUsed = (s, ym) => Object.fromEntries(spending(s, ym).cats.map(c => [c.cat, c.used]));
+export function capCrossed(before, s, ym) {
+  const hit = spending(s, ym).cats.filter(c => c.budget > 0)
+    .map(c => ({ ...c, was: before[c.cat] || 0 }))
+    .filter(c => (c.was <= 1 && c.used > 1) || (c.was < 0.8 && c.used >= 0.8))
+    .sort((a, b) => b.used - a.used)[0];
+  return hit ? { ...hit, over: hit.used > 1 } : null;
+}

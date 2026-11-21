@@ -5,7 +5,8 @@ import { openDialog, toast, announce } from './ui.js';
 import { t } from './i18n.js';
 import { money, ymOf, addMonths, monthIn, esc } from './format.js';
 import { monthSummary, incomeDrop, meiYear } from './finance.js';
-import { getPrefs } from './prefs.js';
+import { getPrefs, setPref } from './prefs.js';
+import { CATS } from './quick.js';
 import { speak } from './ai.js';
 import { say, chooseTone } from './tone.js';
 import { exportIcs } from './export.js';
@@ -259,6 +260,30 @@ export const actions = {
       },
     });
   },
+  // Edit one entry: name, amount, category and day. Deleting lives here too, with undo.
+  txEdit(el) {
+    const x = store.get().tx.find(y => y.id === el.dataset.id);
+    if (!x) return;
+    const en = getPrefs().lang === 'en';
+    const L = en ? { title: 'Edit entry', day: 'Day', del: 'Delete this entry', saved: '{name} updated' } : { title: 'Editar gasto', day: 'Dia', del: 'Apagar este gasto', saved: '{name} atualizado' };
+    openDialog({
+      title: L.title, submit: t('common.save'),
+      body: `<div class="field"><label for="f-name">${t('add.name')}</label><input id="f-name" name="name" required autocomplete="off" value="${esc(x.desc)}"></div>
+        ${moneyInput('amount', t('common.amount'), x.amount.toFixed(2).replace('.', ','))}
+        <div class="field"><label for="f-cat">${t('quick.category')}</label><select id="f-cat" name="cat">${CATS.map(c => `<option value="${c}" ${c === x.cat ? 'selected' : ''}>${t('cat.' + c)}</option>`).join('')}</select></div>
+        <div class="field"><label for="f-date">${L.day}</label><input id="f-date" name="date" type="date" required value="${x.date}"></div>
+        <p class="dlg-del"><button type="button" class="btn btn-ghost btn-sm btn-danger" id="f-del">${L.del}</button></p>`,
+      onOpen: dlg => dlg.querySelector('#f-del').addEventListener('click', () => { dlg.close(); actions.txDel(el); }),
+      onSubmit: d => {
+        const v = num(d.amount), name = String(d.name || '').trim();
+        if (!(v > 0) || !name || !/^\d{4}-\d{2}-\d{2}$/.test(d.date)) return false;
+        store.update(s => { const y = s.tx.find(z => z.id === x.id); if (y) Object.assign(y, { desc: name.slice(0, 80), amount: v, cat: CATS.includes(d.cat) ? d.cat : y.cat, date: d.date }); });
+        toast(L.saved.replace('{name}', name));
+      },
+    });
+  },
+  install() { document.dispatchEvent(new CustomEvent('prumo:install')); },
+  installLater() { setPref('noInstall', true); },
   txDel(el) {
     const x = store.get().tx.find(y => y.id === el.dataset.id);
     const at = store.get().tx.indexOf(x);
